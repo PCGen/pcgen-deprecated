@@ -101,12 +101,6 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    protected void doSave()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     private class SelectionHandler implements ListSelectionListener
     {
 

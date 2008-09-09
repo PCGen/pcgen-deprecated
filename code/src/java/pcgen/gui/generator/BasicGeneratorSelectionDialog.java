@@ -39,7 +39,6 @@ import pcgen.gui.tools.AbstractSelectionDialog;
 import pcgen.gui.tools.FilteredTreeViewSelectionPanel;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.util.DefaultGenericListModel;
-import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 
 /**
@@ -56,7 +55,6 @@ public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog
 
     private Action addAsAction;
     private FilteredTreeViewSelectionPanel selectionPanel;
-    private BasicGeneratorSelectionModel model;
 
     public BasicGeneratorSelectionDialog()
     {
@@ -125,27 +123,15 @@ public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog
     protected Object createNewItem()
     {
         return new DefaultMutableGenerator(JOptionPane.showInputDialog(this,
-                                                                       ResourceManager.getText("creategen")));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected void doSave()
-    {
-        model.setAvailableGenerators(availableModel);
-        model.setSelectedGenerators(selectedModel);
+                                                                       ResourceManager.getText("createGen")));
     }
 
     @SuppressWarnings("unchecked")
     public void setModel(BasicGeneratorSelectionModel model)
     {
-        this.model = model;
-        availableModel = new DefaultGenericListModel(new GenericListModelWrapper(model.getAvailableGenerators()));
-        selectedModel = new DefaultGenericListModel(new GenericListModelWrapper(model.getSelectedGenerators()));
+        super.setModel(model);
         selectionPanel.restoreState(selectionPanel.createState(model.getCharacter(),
                                                                model.getTreeViewModel()));
-        availableList.setModel(availableModel);
-        selectedList.setModel(selectedModel);
     }
 
     private class AddAsAction extends AbstractAction

@@ -1,5 +1,5 @@
 /*
- * BasicGeneratorSelectionModel.java
+ * GenericSelectionModel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,23 +16,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 26, 2008, 2:45:25 PM
+ * Created on Sep 8, 2008, 8:55:24 PM
  */
-package pcgen.gui.generator;
+package pcgen.gui.tools;
 
-import pcgen.gui.facade.CharacterFacade;
-import pcgen.gui.filter.FilterableTreeViewModel;
-import pcgen.gui.tools.GenericSelectionModel;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface BasicGeneratorSelectionModel<E> extends GenericSelectionModel<Generator<E>>
+public interface GenericSelectionModel<E>
 {
 
-    public CharacterFacade getCharacter();
+    public GenericListModel<E> getAvailableList();
 
-    public FilterableTreeViewModel<E> getTreeViewModel();
+    public GenericListModel<E> getSelectedList();
+
+    public void setAvailableList(GenericListModel<E> list);
+
+    public void setSelectedList(GenericListModel<E> list);
 
 }

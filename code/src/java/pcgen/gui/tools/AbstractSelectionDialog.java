@@ -46,6 +46,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.tools.ResourceManager.Icons;
 import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.event.PopupMouseAdapter;
 
 /**
@@ -67,6 +68,7 @@ public abstract class AbstractSelectionDialog extends JDialog
     protected final Action downAction;
     protected DefaultGenericListModel<?> availableModel;
     protected DefaultGenericListModel<?> selectedModel;
+    private GenericSelectionModel model;
 
     public AbstractSelectionDialog()
     {
@@ -166,6 +168,17 @@ public abstract class AbstractSelectionDialog extends JDialog
         pack();
     }
 
+    @SuppressWarnings("unchecked")
+    protected void setModel(GenericSelectionModel<?> model)
+    {
+        this.model = model;
+        availableModel = new DefaultGenericListModel(new GenericListModelWrapper(model.getAvailableList()));
+        selectedModel = new DefaultGenericListModel(new GenericListModelWrapper(model.getSelectedList()));
+
+        availableList.setModel(availableModel);
+        selectedList.setModel(selectedModel);
+    }
+
     protected abstract Component getLeftComponent();
 
     protected abstract String getAvailableListTitle();
@@ -182,13 +195,13 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     protected abstract Object createNewItem();
 
-    protected abstract void doSave();
-
+    @SuppressWarnings("unchecked")
     private void doClose(boolean save)
     {
         if (save)
         {
-            doSave();
+            model.setAvailableList(availableModel);
+            model.setSelectedList(selectedModel);
         }
         setVisible(false);
         dispose();
