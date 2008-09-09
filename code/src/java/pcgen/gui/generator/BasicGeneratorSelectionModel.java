@@ -1,5 +1,5 @@
 /*
- * GeneratorSelectionModel.java
+ * BasicGeneratorSelectionModel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ import pcgen.gui.util.GenericListModel;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface GeneratorSelectionModel<E>
+public interface BasicGeneratorSelectionModel<E>
 {
 
     public CharacterFacade getCharacter();

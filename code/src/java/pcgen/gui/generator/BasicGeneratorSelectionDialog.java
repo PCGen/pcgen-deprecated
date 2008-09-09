@@ -1,5 +1,5 @@
 /*
- * GeneratorSelectionDialog.java
+ * BasicGeneratorSelectionDialog.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class GeneratorSelectionDialog extends AbstractSelectionDialog
+public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog
 {
 
     static
@@ -56,9 +56,9 @@ public class GeneratorSelectionDialog extends AbstractSelectionDialog
 
     private Action addAsAction;
     private FilteredTreeViewSelectionPanel selectionPanel;
-    private GeneratorSelectionModel model;
+    private BasicGeneratorSelectionModel model;
 
-    public GeneratorSelectionDialog()
+    public BasicGeneratorSelectionDialog()
     {
         initComponents();
     }
@@ -137,7 +137,7 @@ public class GeneratorSelectionDialog extends AbstractSelectionDialog
     }
 
     @SuppressWarnings("unchecked")
-    public void setModel(GeneratorSelectionModel model)
+    public void setModel(BasicGeneratorSelectionModel model)
     {
         this.model = model;
         availableModel = new DefaultGenericListModel(new GenericListModelWrapper(model.getAvailableGenerators()));
