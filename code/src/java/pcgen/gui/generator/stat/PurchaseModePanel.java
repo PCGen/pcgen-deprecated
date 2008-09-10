@@ -1,5 +1,5 @@
 /*
- * AssignmentModeGenerator.java
+ * PurchaseModePanel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,19 +16,23 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 31, 2008, 12:56:33 AM
+ * Created on Sep 9, 2008, 2:23:58 PM
  */
 package pcgen.gui.generator.stat;
 
-import pcgen.gui.generator.*;
+import java.awt.GridBagLayout;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface AssignmentModeGenerator extends Generator<Integer>
+public class PurchaseModePanel extends JPanel
 {
 
-    public boolean isAssignable();
+    public PurchaseModePanel()
+    {
+        super(new GridBagLayout());
+    }
 
 }

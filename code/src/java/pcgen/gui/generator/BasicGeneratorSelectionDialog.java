@@ -33,6 +33,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.tools.AbstractSelectionDialog;
@@ -45,7 +46,7 @@ import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog
+public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog<Generator<?>>
 {
 
     static
@@ -53,77 +54,64 @@ public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog
         ResourceManager.ensureLoaded(ResourceManager.GENERATOR_BUNDLE);
     }
 
-    private Action addAsAction;
     private FilteredTreeViewSelectionPanel selectionPanel;
+    private Action addAsAction;
 
     public BasicGeneratorSelectionDialog()
     {
-        initComponents();
+        super(ResourceManager.getText("availGen"),
+              ResourceManager.getText("selGen"),
+              ResourceManager.getToolTip("newGen"),
+              ResourceManager.getToolTip("copyGen"),
+              ResourceManager.getToolTip("deleteGen"),
+              ResourceManager.getToolTip("addGen"),
+              ResourceManager.getToolTip("removeGen"));
     }
 
-    private void initComponents()
+    protected void initComponents()
     {
+        this.addAsAction = new AddAsAction();
+        this.selectionPanel = new FilteredTreeViewSelectionPanel();
+        selectionPanel.add(new JButton(addAsAction), BorderLayout.SOUTH);
+
         SelectionHandler handler = new SelectionHandler();
         availableList.addListSelectionListener(handler);
         selectedList.addListSelectionListener(handler);
-        availableList.setCellRenderer(new GeneratorListCellRenderer());
-        selectedList.setCellRenderer(new GeneratorListCellRenderer());
         selectionPanel.addItemListener(handler);
+    }
+
+    @Override
+    protected ListCellRenderer createDefaultCellRenderer()
+    {
+        return new GeneratorListCellRenderer();
     }
 
     @Override
     protected Component getLeftComponent()
     {
-        if (selectionPanel == null)
-        {
-            selectionPanel = new FilteredTreeViewSelectionPanel();
-            addAsAction = new AddAsAction();
-            selectionPanel.add(new JButton(addAsAction), BorderLayout.SOUTH);
-        }
         return selectionPanel;
     }
 
     @Override
-    protected String getAvailableListTitle()
+    @SuppressWarnings("unchecked")
+    protected Generator<?> createMutableItem(Generator<?> item)
     {
-        return ResourceManager.getText("availGen");
+        MutableGenerator generator = new DefaultMutableGenerator(JOptionPane.showInputDialog(this,
+                                                                                             ResourceManager.getText("createGen")));
+        if (item != null)
+        {
+            for (Object obj : item.getAll())
+            {
+                generator.add(obj);
+            }
+        }
+        return generator;
     }
 
     @Override
-    protected String getSelectedListTitle()
+    protected boolean isMutable(Object item)
     {
-        return ResourceManager.getText("selGen");
-    }
-
-    @Override
-    protected String getNewActionToolTip()
-    {
-        return ResourceManager.getToolTip("newGen");
-    }
-
-    @Override
-    protected String getDeleteActionToolTip()
-    {
-        return ResourceManager.getToolTip("deleteGen");
-    }
-
-    @Override
-    protected String getAddActionToolTip()
-    {
-        return ResourceManager.getToolTip("addGen");
-    }
-
-    @Override
-    protected String getRemoveActionToolTip()
-    {
-        return ResourceManager.getToolTip("removeGen");
-    }
-
-    @Override
-    protected Object createNewItem()
-    {
-        return new DefaultMutableGenerator(JOptionPane.showInputDialog(this,
-                                                                       ResourceManager.getText("createGen")));
+        return item instanceof MutableGenerator;
     }
 
     @SuppressWarnings("unchecked")
@@ -166,23 +154,21 @@ public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog
             {
                 JList list = (JList) source;
                 Generator<?> value = (Generator<?>) list.getSelectedValue();
-                boolean valid = value != null;
-                if (list.getParent() == availableList)
+                boolean nonNull = value != null;
+                if (nonNull)
                 {
-                    deleteAction.setEnabled(valid &&
-                                            value instanceof MutableGenerator);
-                    if (valid)
+                    if (list.getParent() == availableList)
                     {
-                        selectionPanel.setEditable(value instanceof MutableGenerator);
+                        selectionPanel.setEditable(isMutable(value));
                         selectionPanel.setSelectionType(SelectionType.CHECKBOX);
                         selectionPanel.setSelectedObjects(value.getAll());
                     }
-                }
-                else if (valid && !availableModel.contains(value))
-                {
-                    selectionPanel.setEditable(false);
-                    selectionPanel.setSelectionType(SelectionType.RADIO);
-                    selectionPanel.setSelectedObjects(value.getAll());
+                    else if (!availableModel.contains(value))
+                    {
+                        selectionPanel.setEditable(false);
+                        selectionPanel.setSelectionType(SelectionType.RADIO);
+                        selectionPanel.setSelectedObjects(value.getAll());
+                    }
                 }
             }
             else
@@ -227,9 +213,16 @@ public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog
                                                                 index,
                                                                 isSelected,
                                                                 cellHasFocus);
-            if (!isSelected && value instanceof MutableGenerator)
+            if (!isSelected)
             {
-                comp.setForeground(Color.BLUE);
+                if (value instanceof MutableGenerator)
+                {
+                    comp.setForeground(Color.BLUE);
+                }
+                else if (((Generator<?>) value).isSingleton())
+                {
+                    comp.setForeground(Color.RED);
+                }
             }
             return comp;
         }

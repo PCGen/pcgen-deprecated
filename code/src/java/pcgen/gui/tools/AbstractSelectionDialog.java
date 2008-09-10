@@ -20,6 +20,7 @@
  */
 package pcgen.gui.tools;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,10 +28,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.util.Collections;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -41,6 +44,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -53,7 +57,7 @@ import pcgen.gui.util.event.PopupMouseAdapter;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractSelectionDialog extends JDialog
+public abstract class AbstractSelectionDialog<E> extends JDialog
 {
 
     protected final JList availableList;
@@ -61,31 +65,39 @@ public abstract class AbstractSelectionDialog extends JDialog
     protected final JPopupMenu availableListPopup;
     protected final JPopupMenu selectedListPopup;
     protected final Action newAction;
+    protected final Action copyAction;
     protected final Action deleteAction;
     protected final Action addAction;
     protected final Action removeAction;
     protected final Action upAction;
     protected final Action downAction;
-    protected DefaultGenericListModel<?> availableModel;
-    protected DefaultGenericListModel<?> selectedModel;
-    private GenericSelectionModel model;
+    protected DefaultGenericListModel<E> availableModel;
+    protected DefaultGenericListModel<E> selectedModel;
+    private GenericSelectionModel<E> model;
 
-    public AbstractSelectionDialog()
+    protected AbstractSelectionDialog(String availableListTitle,
+                                       String selectedListTitle,
+                                       String newToolTip, String copyToolTip,
+                                       String deleteToolTip, String addToolTip,
+                                       String removeToolTip)
     {
         this.availableList = new JList();
         this.selectedList = new JList();
         this.availableListPopup = new JPopupMenu();
         this.selectedListPopup = new JPopupMenu();
-        this.newAction = new NewAction();
-        this.deleteAction = new DeleteAction();
-        this.addAction = new AddAction();
-        this.removeAction = new RemoveAction();
+        this.newAction = new NewAction(newToolTip);
+        this.copyAction = new CopyAction(copyToolTip);
+        this.deleteAction = new DeleteAction(deleteToolTip);
+        this.addAction = new AddAction(addToolTip);
+        this.removeAction = new RemoveAction(removeToolTip);
         this.upAction = new UpAction();
         this.downAction = new DownAction();
         initComponents();
+        initComponents(availableListTitle, selectedListTitle);
     }
 
-    private void initComponents()
+    private void initComponents(String availableListTitle,
+                                 String selectedListTitle)
     {
         getContentPane().setLayout(new GridBagLayout());
         addWindowListener(
@@ -103,20 +115,35 @@ public abstract class AbstractSelectionDialog extends JDialog
         FlippingSplitPane subSplitPane = new FlippingSplitPane(JSplitPane.VERTICAL_SPLIT);
         ListPanel panel;
         {//Initialize availableList
-            panel = new ListPanel(availableList, availableListPopup, handler,
-                                  getAvailableListTitle());
+            panel = new ListPanel(availableList, handler,
+                                  availableListTitle);
             panel.add(newAction);
+            panel.add(copyAction);
             panel.add(deleteAction);
+            availableList.setCellRenderer(createDefaultCellRenderer());
+        }
+        {//Initialize availableListPopup
+            availableListPopup.add(new JMenuItem(addAction));
+            availableListPopup.add(new JMenuItem(copyAction));
+            availableListPopup.add(new JMenuItem(newAction));
+            availableListPopup.add(new JMenuItem(deleteAction));
         }
         subSplitPane.setTopComponent(panel);
         {//Initialize selectedList
-            panel = new ListPanel(selectedList, selectedListPopup, handler,
-                                  getSelectedListTitle());
+            panel = new ListPanel(selectedList, handler, selectedListTitle);
             panel.add(addAction);
             panel.add(removeAction);
             panel.addSeparator();
             panel.add(upAction);
             panel.add(downAction);
+            selectedList.setCellRenderer(createDefaultCellRenderer());
+        }
+        {//Initialize selectedListPopup
+            selectedListPopup.add(new JMenuItem(removeAction));
+            selectedListPopup.add(new JMenuItem(deleteAction));
+            selectedListPopup.addSeparator();
+            selectedListPopup.add(new JMenuItem(upAction));
+            selectedListPopup.add(new JMenuItem(downAction));
         }
         subSplitPane.setBottomComponent(panel);
         FlippingSplitPane splitPane = new FlippingSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -132,17 +159,9 @@ public abstract class AbstractSelectionDialog extends JDialog
         getContentPane().add(splitPane, gridBagConstraints);
         JButton button;
         {
-            button = new JButton("OK");
-            button.addActionListener(
-                    new ActionListener()
-                    {
-
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            doClose(true);
-                        }
-
-                    });
+            button = new JButton(ResourceManager.getText("ok"));
+            button.setActionCommand("ok");
+            button.addActionListener(handler);
         }
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.weightx = 1.0;
@@ -150,17 +169,9 @@ public abstract class AbstractSelectionDialog extends JDialog
         gridBagConstraints.insets = new Insets(4, 4, 4, 4);
         getContentPane().add(button, gridBagConstraints);
         {
-            button = new JButton("Cancel");
-            button.addActionListener(
-                    new ActionListener()
-                    {
-
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            doClose(false);
-                        }
-
-                    });
+            button = new JButton(ResourceManager.getText("cancel"));
+            button.setActionCommand("cancel");
+            button.addActionListener(handler);
         }
         gridBagConstraints.weightx = 0.0;
         getContentPane().add(button, gridBagConstraints);
@@ -168,34 +179,39 @@ public abstract class AbstractSelectionDialog extends JDialog
         pack();
     }
 
-    @SuppressWarnings("unchecked")
-    protected void setModel(GenericSelectionModel<?> model)
+    protected void setModel(GenericSelectionModel<E> model)
     {
         this.model = model;
-        availableModel = new DefaultGenericListModel(new GenericListModelWrapper(model.getAvailableList()));
-        selectedModel = new DefaultGenericListModel(new GenericListModelWrapper(model.getSelectedList()));
+        availableModel = new DefaultGenericListModel<E>(new GenericListModelWrapper<E>(model.getAvailableList()));
+        selectedModel = new DefaultGenericListModel<E>(new GenericListModelWrapper<E>(model.getSelectedList()));
 
         availableList.setModel(availableModel);
         selectedList.setModel(selectedModel);
     }
 
+    protected ListCellRenderer createDefaultCellRenderer()
+    {
+        return new ListItemRenderer();
+    }
+
+    /**
+     * This method allows the subclass to initialize its components before the 
+     * parent so that the parent may use those components in its own construction
+     */
+    protected abstract void initComponents();
+
     protected abstract Component getLeftComponent();
 
-    protected abstract String getAvailableListTitle();
+    /**
+     * This creates an item based off <code>item</code> or from scratch 
+     * if <code>item</code> is null
+     * @param item
+     * @return
+     */
+    protected abstract E createMutableItem(E item);
 
-    protected abstract String getSelectedListTitle();
+    protected abstract boolean isMutable(Object item);
 
-    protected abstract String getNewActionToolTip();
-
-    protected abstract String getDeleteActionToolTip();
-
-    protected abstract String getAddActionToolTip();
-
-    protected abstract String getRemoveActionToolTip();
-
-    protected abstract Object createNewItem();
-
-    @SuppressWarnings("unchecked")
     private void doClose(boolean save)
     {
         if (save)
@@ -210,18 +226,34 @@ public abstract class AbstractSelectionDialog extends JDialog
     private class NewAction extends AbstractAction
     {
 
-        public NewAction()
+        public NewAction(String tooltip)
         {
             putValue(NAME, ResourceManager.getText("new"));
             putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("new"));
-            putValue(SHORT_DESCRIPTION, getNewActionToolTip());
+            putValue(SHORT_DESCRIPTION, tooltip);
         }
 
-        @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent e)
         {
-            DefaultGenericListModel model = availableModel;
-            model.add(createNewItem());
+            availableModel.add(createMutableItem(null));
+        }
+
+    }
+
+    private class CopyAction extends AbstractAction
+    {
+
+        public CopyAction(String tooltip)
+        {
+            putValue(NAME, ResourceManager.getText("copy"));
+            putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("copy"));
+            putValue(SHORT_DESCRIPTION, tooltip);
+            setEnabled(false);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            availableModel.add(createMutableItem(availableModel.get(availableList.getSelectedIndex())));
         }
 
     }
@@ -229,11 +261,11 @@ public abstract class AbstractSelectionDialog extends JDialog
     private class DeleteAction extends AbstractAction
     {
 
-        public DeleteAction()
+        public DeleteAction(String tooltip)
         {
             putValue(NAME, ResourceManager.getText("delete"));
             putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("delete"));
-            putValue(SHORT_DESCRIPTION, getDeleteActionToolTip());
+            putValue(SHORT_DESCRIPTION, tooltip);
             setEnabled(false);
         }
 
@@ -249,19 +281,17 @@ public abstract class AbstractSelectionDialog extends JDialog
     private class AddAction extends AbstractAction
     {
 
-        public AddAction()
+        public AddAction(String tooltip)
         {
             putValue(NAME, ResourceManager.getText("add"));
             putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("add"));
-            putValue(SHORT_DESCRIPTION, getAddActionToolTip());
+            putValue(SHORT_DESCRIPTION, tooltip);
             setEnabled(false);
         }
 
-        @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent e)
         {
-            DefaultGenericListModel model = selectedModel;
-            model.add(availableList.getSelectedValue());
+            selectedModel.add(availableModel.get(availableList.getSelectedIndex()));
         }
 
     }
@@ -269,11 +299,11 @@ public abstract class AbstractSelectionDialog extends JDialog
     private class RemoveAction extends AbstractAction
     {
 
-        public RemoveAction()
+        public RemoveAction(String tooltip)
         {
             putValue(NAME, ResourceManager.getText("remove"));
             putValue(MNEMONIC_KEY, ResourceManager.getMnemonic("remove"));
-            putValue(SHORT_DESCRIPTION, getRemoveActionToolTip());
+            putValue(SHORT_DESCRIPTION, tooltip);
             setEnabled(false);
         }
 
@@ -321,7 +351,12 @@ public abstract class AbstractSelectionDialog extends JDialog
 
     }
 
-    private class ActionHandler extends PopupMouseAdapter implements ListSelectionListener
+    /**
+     * This class handles all user based actions, such as menu popup, 
+     * selection handling, and control button event handling(OK/Cancel).
+     */
+    private class ActionHandler extends PopupMouseAdapter
+            implements ActionListener, ListSelectionListener
     {
 
         @Override
@@ -342,7 +377,19 @@ public abstract class AbstractSelectionDialog extends JDialog
             JList list = (JList) e.getSource();
             Object value = list.getSelectedValue();
             boolean nonNull = value != null;
-            if (list.getParent() == selectedList)
+            if (list.getParent() == availableList)
+            {
+                deleteAction.setEnabled(nonNull && isMutable(value));
+                if (nonNull)
+                {
+                    selectedList.setSelectedValue(value, true);
+
+                    boolean unique = !selectedModel.contains(value);
+                    addAction.setEnabled(unique);
+                    removeAction.setEnabled(!unique);
+                }
+            }
+            else
             {
                 int index = e.getFirstIndex();
                 upAction.setEnabled(nonNull && index > 0);
@@ -359,14 +406,33 @@ public abstract class AbstractSelectionDialog extends JDialog
                     }
                 }
             }
-            else if (nonNull)
-            {
-                selectedList.setSelectedValue(value, true);
+        }
 
-                boolean unique = !selectedModel.contains(value);
-                addAction.setEnabled(unique);
-                removeAction.setEnabled(!unique);
+        public void actionPerformed(ActionEvent e)
+        {
+            doClose(e.getActionCommand().equals("ok"));
+        }
+
+    }
+
+    private class ListItemRenderer extends DefaultListCellRenderer
+    {
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value,
+                                                       int index,
+                                                       boolean isSelected,
+                                                       boolean cellHasFocus)
+        {
+            Component comp = super.getListCellRendererComponent(list, value,
+                                                                index,
+                                                                isSelected,
+                                                                cellHasFocus);
+            if (!isSelected && isMutable(value))
+            {
+                comp.setForeground(Color.BLUE);
             }
+            return comp;
         }
 
     }
@@ -375,14 +441,13 @@ public abstract class AbstractSelectionDialog extends JDialog
     {
 
         private final GridBagConstraints gridBagConstraints;
-        private final JPopupMenu popupMenu;
 
-        public ListPanel(JList list, JPopupMenu popupMenu,
-                          ActionHandler handler, String title)
+        public <T extends ListSelectionListener & MouseListener> ListPanel(JList list,
+                                                                            T handler,
+                                                                            String title)
         {
             super(new GridBagLayout());
             this.gridBagConstraints = new GridBagConstraints();
-            this.popupMenu = popupMenu;
 
             gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
             gridBagConstraints.anchor = GridBagConstraints.WEST;
@@ -407,7 +472,6 @@ public abstract class AbstractSelectionDialog extends JDialog
         public void add(Action action)
         {
             add(new JButton(action), gridBagConstraints);
-            popupMenu.add(new JMenuItem(action));
         }
 
         public void addSeparator()
@@ -417,7 +481,6 @@ public abstract class AbstractSelectionDialog extends JDialog
             gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
             gridBagConstraints2.insets = new Insets(4, 0, 4, 0);
             add(new JSeparator(), gridBagConstraints2);
-            popupMenu.addSeparator();
         }
 
     }

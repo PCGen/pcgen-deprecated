@@ -26,7 +26,7 @@ import pcgen.gui.facade.CharacterFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultMutableFilter implements MutableFilter
+public class DefaultMutableFilter<E> implements MutableFilter<E>
 {
 
     private String name;
@@ -58,15 +58,15 @@ public class DefaultMutableFilter implements MutableFilter
         return code;
     }
 
-    public boolean accept(CharacterFacade character, Object object)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     @Override
     public String toString()
     {
         return name;
+    }
+
+    public boolean accept(CharacterFacade character, E object)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

@@ -25,6 +25,7 @@ import java.awt.Component;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import pcgen.gui.generator.Generator;
 import pcgen.gui.tools.AbstractSelectionDialog;
 import pcgen.gui.tools.ResourceManager;
 
@@ -32,7 +33,7 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StatGeneratorSelectionDialog extends AbstractSelectionDialog
+public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Generator<Integer>>
 {
 
     static
@@ -40,65 +41,42 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog
         ResourceManager.ensureLoaded(ResourceManager.GENERATOR_BUNDLE);
     }
 
-    private final CardLayout cards = new CardLayout();
+    private CardLayout cards;
     private JPanel cardPanel;
 
     public StatGeneratorSelectionDialog()
     {
-        initComponents();
+        super(ResourceManager.getText("availStatGen"),
+              ResourceManager.getText("selStatGen"),
+              ResourceManager.getToolTip("newStatGen"),
+              ResourceManager.getToolTip("copyStatGen"),
+              ResourceManager.getToolTip("deleteStatGen"),
+              ResourceManager.getToolTip("addStatGen"),
+              ResourceManager.getToolTip("removeStatGen"));
     }
 
-    private void initComponents()
+    protected void initComponents()
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.cards = new CardLayout();
+        this.cardPanel = new JPanel(cards);
     }
 
     @Override
     protected Component getLeftComponent()
     {
-        return cardPanel = new JPanel(cards);
+        return cardPanel;
     }
 
     @Override
-    protected String getAvailableListTitle()
-    {
-        return ResourceManager.getText("availStatGen");
-    }
-
-    @Override
-    protected String getSelectedListTitle()
-    {
-        return ResourceManager.getText("selStatGen");
-    }
-
-    @Override
-    protected String getNewActionToolTip()
-    {
-        return ResourceManager.getToolTip("newStatGen");
-    }
-
-    @Override
-    protected String getDeleteActionToolTip()
-    {
-        return ResourceManager.getToolTip("deleteStatGen");
-    }
-
-    @Override
-    protected String getAddActionToolTip()
-    {
-        return ResourceManager.getToolTip("addStatGen");
-    }
-
-    @Override
-    protected String getRemoveActionToolTip()
-    {
-        return ResourceManager.getToolTip("removeStatGen");
-    }
-
-    @Override
-    protected Object createNewItem()
+    protected Generator<Integer> createMutableItem(Generator<Integer> item)
     {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected boolean isMutable(Object item)
+    {
+        return false;//TODO
     }
 
     private class SelectionHandler implements ListSelectionListener

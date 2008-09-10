@@ -44,6 +44,7 @@ public final class ResourceManager
 
     public static final String TOOLS_BUNDLE = "pcgen/gui/tools/ToolsBundle";
     public static final String LANGUATE_BUNDLE = "pcgen/gui/prop/LanguageBundle";
+    public static final String LANGUATE_BUNDLE2 = "pcgen/gui/prop/LanguageBundle2";
     public static final String GENERATOR_BUNDLE = "pcgen/gui/generator/GeneratorBundle";
     /** Undefined Property */
     public static final String UNDEFINED = " not defined."; //$NON-NLS-1$
@@ -69,9 +70,14 @@ public final class ResourceManager
             // b) English (if selected) isn't overriden by the system default
             Locale.setDefault(locale);
         }
-        ensureLoaded(LANGUATE_BUNDLE);
+        ensureLoaded(LANGUATE_BUNDLE2);
     }
 
+    /**
+     * This method exists as a temporary handler for multiple ResourceBundles
+     * This is due to be removed once all necessary bundles are joined into one.
+     * @param resourceBundle
+     */
     public static void ensureLoaded(String resourceBundle)
     {
         if (bundleMap.containsKey(resourceBundle))
@@ -123,6 +129,13 @@ public final class ResourceManager
         return image;
     }
 
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws MissingResourceException thrown if the key does not exist in any of the
+     * loaded bundles
+     */
     public static String getString(String key)
     {
         for (ResourceBundle bundle : bundleMap.values())
@@ -143,6 +156,12 @@ public final class ResourceManager
         throw e;
     }
 
+    /**
+     * Note: This method automatically adds "in_" to be beginning of the 
+     * <code>prop</code> parameter
+     * @param prop
+     * @return
+     */
     public static String getText(String prop)
     {
         String value = "in_" + prop;
@@ -157,11 +176,23 @@ public final class ResourceManager
         return value;
     }
 
+    /**
+     * Node: This method automatically adds "Tip" to the end of the 
+     * <code>prop</code> parameter
+     * @param prop
+     * @return
+     */
     public static String getToolTip(String prop)
     {
         return getText(prop + "Tip");
     }
 
+    /**
+     * Note: This method automatically adds "in_mn_" to be beginning of the 
+     * <code>prop</code> parameter
+     * @param prop
+     * @return
+     */
     public static int getMnemonic(String prop)
     {
         String value = "in_mn_" + prop;

@@ -20,12 +20,10 @@
  */
 package pcgen.gui.filter;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -42,44 +40,44 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterSelectionDialog extends AbstractSelectionDialog
+public class FilterSelectionDialog extends AbstractSelectionDialog<DisplayableFilter<?>>
 {
 
+    private FlippingSplitPane leftComponent;
     private JTextArea descriptionArea;
     private JTextArea editorArea;
 
     public FilterSelectionDialog()
     {
-        initComponents();
+        super(ResourceManager.getText("availFilt"),
+              ResourceManager.getText("selFilt"),
+              ResourceManager.getToolTip("newFilt"),
+              ResourceManager.getToolTip("copyFilt"),
+              ResourceManager.getToolTip("deleteFilt"),
+              ResourceManager.getToolTip("addFilt"),
+              ResourceManager.getToolTip("removeFilt"));
     }
 
-    private void initComponents()
+    protected void initComponents()
     {
+        this.leftComponent = new FlippingSplitPane(JSplitPane.VERTICAL_SPLIT);
+
         SelectionHandler handler = new SelectionHandler();
         availableList.addListSelectionListener(handler);
         selectedList.addListSelectionListener(handler);
-        availableList.setCellRenderer(new FilterListCellRenderer());
-        selectedList.setCellRenderer(new FilterListCellRenderer());
-    }
-
-    @Override
-    protected Component getLeftComponent()
-    {
-        FlippingSplitPane splitPane = new FlippingSplitPane(JSplitPane.VERTICAL_SPLIT);
         JPanel panel;
         {
             panel = new JPanel();
-            descriptionArea = createTextArea(ResourceManager.getText("filtDes"),
-                                             panel);
+            this.descriptionArea = createTextArea(ResourceManager.getText("desc"),
+                                                  panel);
         }
-        splitPane.setTopComponent(panel);
+        leftComponent.setTopComponent(panel);
         {
             panel = new JPanel();
-            editorArea = createTextArea(ResourceManager.getText("filtEditor"),
-                                        panel);
+            this.editorArea = createTextArea(ResourceManager.getText("editor"),
+                                             panel);
         }
-        splitPane.setBottomComponent(panel);
-        return splitPane;
+        leftComponent.setBottomComponent(panel);
     }
 
     private JTextArea createTextArea(String title, JPanel panel)
@@ -100,52 +98,28 @@ public class FilterSelectionDialog extends AbstractSelectionDialog
     }
 
     @Override
-    protected String getAvailableListTitle()
+    protected Component getLeftComponent()
     {
-        return ResourceManager.getText("availFilt");
+        return leftComponent;
     }
 
     @Override
-    protected String getSelectedListTitle()
+    protected DisplayableFilter<?> createMutableItem(DisplayableFilter<?> item)
     {
-        return ResourceManager.getText("selFilt");
+        MutableFilter<?> filter = new DefaultMutableFilter(JOptionPane.showInputDialog(this,
+                                                                                       ResourceManager.getText("createFilt")));
+        if (item != null)
+        {
+            filter.setCode(item.getCode());
+            filter.setDescription(item.getDescription());
+        }
+        return filter;
     }
 
     @Override
-    protected String getNewActionToolTip()
+    protected boolean isMutable(Object item)
     {
-        return ResourceManager.getToolTip("newFilt");
-    }
-
-    @Override
-    protected String getDeleteActionToolTip()
-    {
-        return ResourceManager.getToolTip("deleteFilt");
-    }
-
-    @Override
-    protected String getAddActionToolTip()
-    {
-        return ResourceManager.getToolTip("addFilt");
-    }
-
-    @Override
-    protected String getRemoveActionToolTip()
-    {
-        return ResourceManager.getToolTip("removeFilt");
-    }
-
-    @Override
-    protected Object createNewItem()
-    {
-        return new DefaultMutableFilter(JOptionPane.showInputDialog(this,
-                                                                    "Enter name of new Filter"));
-    }
-
-    @Override
-    protected void doSave()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return item instanceof MutableFilter;
     }
 
     private class SelectionHandler implements ListSelectionListener
@@ -168,34 +142,12 @@ public class FilterSelectionDialog extends AbstractSelectionDialog
                 descriptionArea.setText(value.getDescription());
                 editorArea.setText(value.getCode());
 
-                boolean mutable = value instanceof MutableFilter;
+                boolean mutable = isMutable(value);
                 deleteAction.setEnabled(mutable);
                 descriptionArea.setEditable(mutable);
                 editorArea.setEditable(mutable);
                 filter = mutable ? (MutableFilter) value : null;
             }
-        }
-
-    }
-
-    private static class FilterListCellRenderer extends DefaultListCellRenderer
-    {
-
-        @Override
-        public Component getListCellRendererComponent(JList list, Object value,
-                                                       int index,
-                                                       boolean isSelected,
-                                                       boolean cellHasFocus)
-        {
-            Component comp = super.getListCellRendererComponent(list, value,
-                                                                index,
-                                                                isSelected,
-                                                                cellHasFocus);
-            if (!isSelected && value instanceof MutableFilter)
-            {
-                comp.setForeground(Color.BLUE);
-            }
-            return comp;
         }
 
     }

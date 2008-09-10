@@ -1,5 +1,5 @@
 /*
- * StandardStatModePanel.java
+ * StandardModePanel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -38,20 +38,21 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StandardStatModePanel extends JPanel
+public class StandardModePanel extends JPanel
 {
 
     private final JTextField expressionField;
     private final JSpinner rollDropSpinner;
-    private final JSpinner minumumSpinner;
+    private final JSpinner minimumSpinner;
     private final JTextArea textArea;
+    private MutableStandardModeGenerator generator = null;
 
-    public StandardStatModePanel()
+    public StandardModePanel()
     {
         super(new GridBagLayout());
         this.expressionField = new JTextField();
         this.rollDropSpinner = new JSpinner();
-        this.minumumSpinner = new JSpinner();
+        this.minimumSpinner = new JSpinner();
         this.textArea = new JTextArea();
         initComponents();
     }
@@ -69,34 +70,19 @@ public class StandardStatModePanel extends JPanel
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         add(expressionField, gridBagConstraints);
 
+        ActionHandler handler = new ActionHandler();
         JButton button;
         {
             button = new JButton(ResourceManager.getText("roll"));
-            button.addActionListener(
-                    new ActionListener()
-                    {
-
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            throw new UnsupportedOperationException("Not supported yet.");
-                        }
-
-                    });
+            button.setActionCommand("roll");
+            button.addActionListener(handler);
         }
         gridBagConstraints.gridwidth = 1;
         add(button, gridBagConstraints);
         {
             button = new JButton(ResourceManager.getText("clear"));
-            button.addActionListener(
-                    new ActionListener()
-                    {
-
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            throw new UnsupportedOperationException("Not supported yet.");
-                        }
-
-                    });
+            button.setActionCommand("clear");
+            button.addActionListener(handler);
         }
         add(button, gridBagConstraints);
 
@@ -116,7 +102,7 @@ public class StandardStatModePanel extends JPanel
 
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = GridBagConstraints.WEST;
-        add(minumumSpinner, gridBagConstraints);
+        add(minimumSpinner, gridBagConstraints);
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -126,4 +112,44 @@ public class StandardStatModePanel extends JPanel
         add(new JScrollPane(textArea), gridBagConstraints);
     }
 
+    public void setGenerator(StandardModeGenerator generator)
+    {
+        expressionField.setText(generator.getDiceExpression());
+        rollDropSpinner.setValue(generator.getDropCount());
+        minimumSpinner.setValue(generator.getRerollMinimum());
+        textArea.setText(null);
+
+        boolean editable = generator instanceof MutableStandardModeGenerator;
+        expressionField.setEnabled(editable);
+        rollDropSpinner.setEnabled(editable);
+        minimumSpinner.setEnabled(editable);
+        if (editable)
+        {
+            this.generator = (MutableStandardModeGenerator) generator;
+        }
+    }
+
+    public void saveGeneratorData()
+    {
+        generator.setDiceExpression(expressionField.getText());
+        generator.setDropCount((Integer) rollDropSpinner.getValue());
+        generator.setRerollMinimum((Integer) minimumSpinner.getValue());
+    }
+
+    private class ActionHandler implements ActionListener
+    {
+
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getActionCommand().equals("roll"))
+            {
+            //Roll the dice and append the result to the textArea
+            }
+            else
+            {
+                textArea.setText(null);
+            }
+        }
+
+    }
 }
