@@ -26,6 +26,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -35,11 +36,13 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.ResourceManager.Icons;
+import pcgen.gui.util.table.TableCellUtilities;
 
 /**
  *
@@ -55,6 +58,7 @@ public class AssignmentModePanel extends JPanel
     private final JButton removeButton;
     private final JButton upButton;
     private final JButton downButton;
+    private MutableAssignmentModeGenerator generator;
 
     public AssignmentModePanel()
     {
@@ -64,7 +68,16 @@ public class AssignmentModePanel extends JPanel
         this.removeButton = new JButton();
         this.upButton = new JButton();
         this.downButton = new JButton();
-        this.model = new DefaultTableModel();
+        this.model = new DefaultTableModel()
+        {
+
+            @Override
+            public boolean isCellEditable(int row, int column)
+            {
+                return generator != null;
+            }
+
+        };
         this.table = new JTable()
         {
 
@@ -93,6 +106,13 @@ public class AssignmentModePanel extends JPanel
     {
         ActionHandler handler = new ActionHandler();
         table.setShowGrid(false);
+        table.setDefaultRenderer(Integer.class,
+                                 new TableCellUtilities.SpinnerRenderer());
+        table.setDefaultEditor(Integer.class,
+                               new TableCellUtilities.SpinnerEditor(new SpinnerNumberModel(0,
+                                                                                           0,
+                                                                                           null,
+                                                                                           1)));
         model.setColumnIdentifiers(new Object[]{ResourceManager.getText("score")});
         table.setModel(model);
 
@@ -153,15 +173,37 @@ public class AssignmentModePanel extends JPanel
     public void setGenerator(AssignmentModeGenerator generator)
     {
         boolean assignable = generator.isAssignable();
-        addButton.setEnabled(assignable);
-        removeButton.setEnabled(assignable);
-
         List<Integer> scores = generator.getAll();
         int rows = assignable ? 6 : scores.size();
         model.setRowCount(rows);
         for (int i = 0; i < scores.size(); i++)
         {
             model.setValueAt(scores.get(i), i, 0);
+        }
+
+        boolean editable = generator instanceof MutableAssignmentModeGenerator;
+        assignableBox.setSelected(assignable);
+        assignableBox.setEnabled(editable);
+        upButton.setEnabled(editable);
+        downButton.setEnabled(editable);
+        addButton.setEnabled(editable && assignable);
+        removeButton.setEnabled(editable && assignable);
+
+        this.generator = editable ? (MutableAssignmentModeGenerator) generator : null;
+    }
+
+    public void saveGeneratorData()
+    {
+        if (generator != null)
+        {
+            generator.setAssignable(assignableBox.isSelected());
+            int rowcount = model.getRowCount();
+            List<Integer> scores = new ArrayList<Integer>(rowcount);
+            for (int i = 0; i < rowcount; i++)
+            {
+                scores.add((Integer) model.getValueAt(i, 0));
+            }
+            generator.setScores(scores);
         }
     }
 

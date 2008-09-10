@@ -40,7 +40,11 @@ public class DefaultMutableGenerator<E> implements MutableGenerator<E>
         this.name = name;
     }
 
-    public E getRandom()
+    public void reset()
+    {
+    }
+
+    public E getNext()
     {
         if (vector.isEmpty())
         {

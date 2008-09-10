@@ -192,15 +192,14 @@ public final class TableCellUtilities
                                                         int row,
                                                         int column)
         {
-            super.getTableCellRendererComponent(table, value, isSelected,
-                                                hasFocus, row, column);
             if (value == null)
             {
-                return this;
+                return super.getTableCellRendererComponent(table, value,
+                                                           isSelected,
+                                                           hasFocus, row, column);
             }
-            spinner.setBackground(getBackground());
-            spinner.setForeground(getForeground());
             spinner.setValue(value);
+            spinner.setEnabled(table.isCellEditable(row, column));
             return spinner;
         }
 

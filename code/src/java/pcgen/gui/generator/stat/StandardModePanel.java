@@ -123,17 +123,18 @@ public class StandardModePanel extends JPanel
         expressionField.setEnabled(editable);
         rollDropSpinner.setEnabled(editable);
         minimumSpinner.setEnabled(editable);
-        if (editable)
-        {
-            this.generator = (MutableStandardModeGenerator) generator;
-        }
+
+        this.generator = editable ? (MutableStandardModeGenerator) generator : null;
     }
 
     public void saveGeneratorData()
     {
-        generator.setDiceExpression(expressionField.getText());
-        generator.setDropCount((Integer) rollDropSpinner.getValue());
-        generator.setRerollMinimum((Integer) minimumSpinner.getValue());
+        if (generator != null)
+        {
+            generator.setDiceExpression(expressionField.getText());
+            generator.setDropCount((Integer) rollDropSpinner.getValue());
+            generator.setRerollMinimum((Integer) minimumSpinner.getValue());
+        }
     }
 
     private class ActionHandler implements ActionListener

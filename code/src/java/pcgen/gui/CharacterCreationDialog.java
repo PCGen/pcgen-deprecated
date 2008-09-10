@@ -236,7 +236,7 @@ public class CharacterCreationDialog extends JDialog
                                     StatTableModel model = statTablePane.getModel();
                                     if (raceGenerator.isSingleton())
                                     {
-                                        RaceFacade race = raceGenerator.getRandom();
+                                        RaceFacade race = raceGenerator.getNext();
                                         model.setRace(race);
 
                                     }
@@ -274,7 +274,7 @@ public class CharacterCreationDialog extends JDialog
                                         PurchaseModeGenerator purchaseMode = (PurchaseModeGenerator) statGenerator;
                                         if (model.setPurchaseMode(purchaseMode))
                                         {
-                                            statPointsLabel.setPoints(purchaseMode.getRandom());
+                                            statPointsLabel.setPoints(purchaseMode.getNext());
                                             statSpinnerEditor.setPurchaseMode(purchaseMode);
                                         }
                                         statTablePane.setUpperLeft(statPointsLabel);
@@ -530,7 +530,7 @@ public class CharacterCreationDialog extends JDialog
             Generator<ClassFacade> classGenerator = (Generator<ClassFacade>) box.getSelectedItem();
             if (classGenerator.isSingleton())
             {
-                ClassFacade c = classGenerator.getRandom();
+                ClassFacade c = classGenerator.getNext();
                 accept = anyValid(alignmentGenerator, c);
                 if (race != null)
                 {
@@ -550,7 +550,7 @@ public class CharacterCreationDialog extends JDialog
         RaceFacade race = null;
         if (raceGenerator.isSingleton())
         {
-            race = raceGenerator.getRandom();
+            race = raceGenerator.getNext();
         }
         if (race != null)
         {
@@ -617,7 +617,7 @@ public class CharacterCreationDialog extends JDialog
         {
             @SuppressWarnings("unchecked")
             Generator<String> nameGenerator = (Generator<String>) namesetComboBox.getSelectedItem();
-            nameField.setText(nameGenerator.getRandom());
+            nameField.setText(nameGenerator.getNext());
         }
 
     }
@@ -637,7 +637,7 @@ public class CharacterCreationDialog extends JDialog
             StatTableModel model = statTablePane.getModel();
             for ( int i = 0; i < model.getRowCount(); i++)
             {
-                model.setValueAt(statGenerator.getRandom(), i, 1);
+                model.setValueAt(statGenerator.getNext(), i, 1);
             }
         }
 

@@ -41,10 +41,8 @@ public interface PurchaseModeGenerator extends Generator<Integer>
     public int getScoreCost(int score);
 
     /**
-     * 
-     * 
      * @return the number of points that can be distrubuted
      */
-    public Integer getRandom();
+    public Integer getNext();
 
 }

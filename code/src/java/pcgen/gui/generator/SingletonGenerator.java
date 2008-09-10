@@ -37,7 +37,12 @@ public class SingletonGenerator<E> implements Generator<E>
         this.item = item;
     }
 
-    public E getRandom()
+    public void reset()
+    {
+
+    }
+
+    public E getNext()
     {
         return item;
     }
@@ -50,6 +55,12 @@ public class SingletonGenerator<E> implements Generator<E>
     public boolean isSingleton()
     {
         return true;
+    }
+
+    @Override
+    public String toString()
+    {
+        return item.toString();
     }
 
 }

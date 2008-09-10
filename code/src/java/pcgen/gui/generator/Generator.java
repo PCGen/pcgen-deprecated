@@ -35,7 +35,9 @@ public interface Generator<E>
      * Note: This may return the same element each time if it is a singleton Generator
      * @return returns a random element from the <code>Generator</code>
      */
-    public E getRandom();
+    public E getNext();
+
+    public void reset();
 
     public List<E> getAll();
 
