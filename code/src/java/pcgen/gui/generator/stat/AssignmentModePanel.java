@@ -22,12 +22,12 @@ package pcgen.gui.generator.stat;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -48,7 +48,7 @@ import pcgen.gui.util.table.TableCellUtilities;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AssignmentModePanel extends JPanel
+public class AssignmentModePanel extends JPanel implements StatModePanel<AssignmentModeGenerator>
 {
 
     private final DefaultTableModel model;
@@ -62,7 +62,6 @@ public class AssignmentModePanel extends JPanel
 
     public AssignmentModePanel()
     {
-        super(new GridBagLayout());
         this.assignableBox = new JCheckBox();
         this.addButton = new JButton();
         this.removeButton = new JButton();
@@ -104,6 +103,15 @@ public class AssignmentModePanel extends JPanel
 
     private void initComponents()
     {
+        GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints2;
+        {
+            gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+            gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints.anchor = GridBagConstraints.NORTH;
+            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+        }
         ActionHandler handler = new ActionHandler();
         table.setShowGrid(false);
         table.setDefaultRenderer(Integer.class,
@@ -120,54 +128,45 @@ public class AssignmentModePanel extends JPanel
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectionModel.addListSelectionListener(handler);
 
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridheight = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(new JScrollPane(table), gridBagConstraints);
+        gridBagConstraints2 = new GridBagConstraints();
+        gridBagConstraints2.gridheight = GridBagConstraints.REMAINDER;
+        gridBagConstraints2.fill = GridBagConstraints.BOTH;
+        gridBagConstraints2.weightx = 1.0;
+        gridBagConstraints2.weighty = 1.0;
+        add(new JScrollPane(table), gridBagConstraints2);
 
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new Insets(2, 2, 2, 2);
-        {//
-            assignableBox.setText(ResourceManager.getText("assignable"));
-            assignableBox.setActionCommand("assignable");
-            assignableBox.addActionListener(handler);
-        }
-        add(assignableBox, gridBagConstraints);
-        {
-            addButton.setText(ResourceManager.getText("add"));
-            addButton.setActionCommand("add");
-            addButton.addActionListener(handler);
-        }
-        add(addButton, gridBagConstraints);
-        {
-            removeButton.setText(ResourceManager.getText("remove"));
-            removeButton.setActionCommand("remove");
-            removeButton.addActionListener(handler);
-        }
-        add(removeButton, gridBagConstraints);
+        initButton(assignableBox, "assignable", null, handler,
+                   gridBagConstraints);
+        initButton(addButton, "add", null, handler, gridBagConstraints);
+        initButton(removeButton, "remove", null, handler, gridBagConstraints);
 
-        GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+        gridBagConstraints2 = new GridBagConstraints();
         gridBagConstraints2.gridwidth = GridBagConstraints.REMAINDER;
         gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints2.insets = new Insets(4, 0, 4, 0);
+        gridBagConstraints2.ipady = 1;
         add(new JSeparator(), gridBagConstraints2);
+
+        initButton(upButton, "up", Icons.Up16, handler, gridBagConstraints);
+        initButton(downButton, "down", Icons.Down16, handler, gridBagConstraints);
+    }
+
+    private void initButton(AbstractButton button, String prop, Icons icon,
+                             ActionListener listener,
+                             GridBagConstraints gridBagConstraints)
+    {
+        if (icon == null)
         {
-            upButton.setIcon(ResourceManager.getImageIcon(Icons.Up16));
-            upButton.setActionCommand("up");
-            upButton.addActionListener(handler);
+            button.setText(ResourceManager.getText(prop));
         }
-        add(upButton, gridBagConstraints);
+        else
         {
-            downButton.setIcon(ResourceManager.getImageIcon(Icons.Down16));
-            downButton.setActionCommand("down");
-            downButton.addActionListener(handler);
+            button.setIcon(ResourceManager.getImageIcon(icon));
         }
-        add(downButton, gridBagConstraints);
+        button.setActionCommand(prop);
+        button.setEnabled(false);
+        button.addActionListener(listener);
+        add(button, gridBagConstraints);
     }
 
     public void setGenerator(AssignmentModeGenerator generator)

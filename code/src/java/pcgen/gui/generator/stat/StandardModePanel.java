@@ -21,7 +21,6 @@
 package pcgen.gui.generator.stat;
 
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,18 +37,17 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StandardModePanel extends JPanel
+public class StandardModePanel extends JPanel implements StatModePanel<StandardModeGenerator>
 {
 
     private final JTextField expressionField;
     private final JSpinner rollDropSpinner;
     private final JSpinner minimumSpinner;
     private final JTextArea textArea;
-    private MutableStandardModeGenerator generator = null;
+    private StandardModeGenerator generator = null;
 
     public StandardModePanel()
     {
-        super(new GridBagLayout());
         this.expressionField = new JTextField();
         this.rollDropSpinner = new JSpinner();
         this.minimumSpinner = new JSpinner();
@@ -71,20 +69,9 @@ public class StandardModePanel extends JPanel
         add(expressionField, gridBagConstraints);
 
         ActionHandler handler = new ActionHandler();
-        JButton button;
-        {
-            button = new JButton(ResourceManager.getText("roll"));
-            button.setActionCommand("roll");
-            button.addActionListener(handler);
-        }
         gridBagConstraints.gridwidth = 1;
-        add(button, gridBagConstraints);
-        {
-            button = new JButton(ResourceManager.getText("clear"));
-            button.setActionCommand("clear");
-            button.addActionListener(handler);
-        }
-        add(button, gridBagConstraints);
+        initButton("roll", handler, gridBagConstraints);
+        initButton("clear", handler, gridBagConstraints);
 
         gridBagConstraints.fill = GridBagConstraints.NONE;
         gridBagConstraints.weightx = 1.0;
@@ -112,8 +99,19 @@ public class StandardModePanel extends JPanel
         add(new JScrollPane(textArea), gridBagConstraints);
     }
 
+    private void initButton(String prop, ActionListener listener,
+                             GridBagConstraints gridBagConstraints)
+    {
+        JButton button = new JButton(ResourceManager.getText(prop));
+        button.setActionCommand(prop);
+        button.addActionListener(listener);
+        add(button, gridBagConstraints);
+    }
+
     public void setGenerator(StandardModeGenerator generator)
     {
+        this.generator = generator;
+
         expressionField.setText(generator.getDiceExpression());
         rollDropSpinner.setValue(generator.getDropCount());
         minimumSpinner.setValue(generator.getRerollMinimum());
@@ -123,17 +121,16 @@ public class StandardModePanel extends JPanel
         expressionField.setEnabled(editable);
         rollDropSpinner.setEnabled(editable);
         minimumSpinner.setEnabled(editable);
-
-        this.generator = editable ? (MutableStandardModeGenerator) generator : null;
     }
 
     public void saveGeneratorData()
     {
-        if (generator != null)
+        if (generator instanceof MutableStandardModeGenerator)
         {
-            generator.setDiceExpression(expressionField.getText());
-            generator.setDropCount((Integer) rollDropSpinner.getValue());
-            generator.setRerollMinimum((Integer) minimumSpinner.getValue());
+            MutableStandardModeGenerator gen = (MutableStandardModeGenerator) generator;
+            gen.setDiceExpression(expressionField.getText());
+            gen.setDropCount((Integer) rollDropSpinner.getValue());
+            gen.setRerollMinimum((Integer) minimumSpinner.getValue());
         }
     }
 
@@ -144,7 +141,8 @@ public class StandardModePanel extends JPanel
         {
             if (e.getActionCommand().equals("roll"))
             {
-            //Roll the dice and append the result to the textArea
+                saveGeneratorData();
+                textArea.append(generator.getNext() + "\n");
             }
             else
             {

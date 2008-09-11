@@ -1,5 +1,5 @@
 /*
- * DefaultMutableGenerator.java
+ * DefaultMutablePurchaseModeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,51 +16,41 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 26, 2008, 5:11:13 PM
+ * Created on Sep 10, 2008, 6:23:23 PM
  */
-package pcgen.gui.generator;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
-import pcgen.base.util.RandomUtil;
+package pcgen.gui.generator.stat;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultMutableGenerator<E> extends AbstractGenerator<E> implements MutableGenerator<E>
+public class DefaultMutablePurchaseModeGenerator extends DefaultPurchaseModeGenerator
+        implements MutablePurchaseModeGenerator
 {
 
-    private final Vector<E> vector = new Vector<E>();
-
-    public DefaultMutableGenerator(String name)
+    public DefaultMutablePurchaseModeGenerator(String name)
     {
         super(name);
     }
 
-    public E getNext()
+    public void setMaxScore(int score)
     {
-        if (vector.isEmpty())
-        {
-            return null;
-        }
-        return vector.get(RandomUtil.getRandomInt(vector.size()));
+        costs.setSize(score - min + 1);
     }
 
-    public List<E> getAll()
+    public void setMinScore(int score)
     {
-        return Collections.unmodifiableList(vector);
+        this.min = score;
     }
 
-    public void add(E element)
+    public void setPoints(int points)
     {
-        vector.add(element);
+        this.points = points;
     }
 
-    public void remove(E element)
+    public void setScoreCost(int score, int cost)
     {
-        vector.remove(element);
+        costs.set(score - min, cost);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * DefaultMutableGenerator.java
+ * DefaultMutableStandardModeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,51 +16,36 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 26, 2008, 5:11:13 PM
+ * Created on Sep 10, 2008, 4:42:50 PM
  */
-package pcgen.gui.generator;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
-import pcgen.base.util.RandomUtil;
+package pcgen.gui.generator.stat;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultMutableGenerator<E> extends AbstractGenerator<E> implements MutableGenerator<E>
+public class DefaultMutableStandardModeGenerator extends DefaultStandardModeGenerator
+        implements MutableStandardModeGenerator
 {
 
-    private final Vector<E> vector = new Vector<E>();
-
-    public DefaultMutableGenerator(String name)
+    public DefaultMutableStandardModeGenerator(String name)
     {
-        super(name);
+        super(name, null, 0, 0);
     }
 
-    public E getNext()
+    public void setDiceExpression(String expression)
     {
-        if (vector.isEmpty())
-        {
-            return null;
-        }
-        return vector.get(RandomUtil.getRandomInt(vector.size()));
+        this.diceExpression = expression;
     }
 
-    public List<E> getAll()
+    public void setRerollMinimum(int min)
     {
-        return Collections.unmodifiableList(vector);
+        this.rerollMinimum = min;
     }
 
-    public void add(E element)
+    public void setDropCount(int count)
     {
-        vector.add(element);
-    }
-
-    public void remove(E element)
-    {
-        vector.remove(element);
+        this.dropCount = count;
     }
 
 }

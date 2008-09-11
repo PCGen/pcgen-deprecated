@@ -42,10 +42,8 @@ public final class ResourceManager
     {
     }
 
-    public static final String TOOLS_BUNDLE = "pcgen/gui/tools/ToolsBundle";
     public static final String LANGUATE_BUNDLE = "pcgen/gui/prop/LanguageBundle";
     public static final String LANGUATE_BUNDLE2 = "pcgen/gui/prop/LanguageBundle2";
-    public static final String GENERATOR_BUNDLE = "pcgen/gui/generator/GeneratorBundle";
     /** Undefined Property */
     public static final String UNDEFINED = " not defined."; //$NON-NLS-1$
     /** The URL to the resource folder of pcgen */

@@ -1,5 +1,5 @@
 /*
- * DefaultMutableGenerator.java
+ * DefaultMutableAssignmentModeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,51 +16,37 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 26, 2008, 5:11:13 PM
+ * Created on Sep 10, 2008, 5:26:13 PM
  */
-package pcgen.gui.generator;
+package pcgen.gui.generator.stat;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
-import pcgen.base.util.RandomUtil;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultMutableGenerator<E> extends AbstractGenerator<E> implements MutableGenerator<E>
+public class DefaultMutableAssignmentModeGenerator extends DefaultAssignmentModeGenerator
+        implements MutableAssignmentModeGenerator
 {
 
-    private final Vector<E> vector = new Vector<E>();
-
-    public DefaultMutableGenerator(String name)
+    public DefaultMutableAssignmentModeGenerator(String name)
     {
         super(name);
     }
 
-    public E getNext()
+    public void setScores(List<Integer> scores)
     {
-        if (vector.isEmpty())
-        {
-            return null;
-        }
-        return vector.get(RandomUtil.getRandomInt(vector.size()));
+        this.scores = scores;
+        this.temp = new ArrayList<Integer>(scores);
+        reset();
     }
 
-    public List<E> getAll()
+    public void setAssignable(boolean assignable)
     {
-        return Collections.unmodifiableList(vector);
-    }
-
-    public void add(E element)
-    {
-        vector.add(element);
-    }
-
-    public void remove(E element)
-    {
-        vector.remove(element);
+        this.assignable = assignable;
     }
 
 }

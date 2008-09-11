@@ -31,6 +31,6 @@ public interface MutableAssignmentModeGenerator extends AssignmentModeGenerator
 
     public void setScores(List<Integer> scores);
 
-    public boolean setAssignable(boolean assignable);
+    public void setAssignable(boolean assignable);
 
 }

@@ -1,5 +1,5 @@
 /*
- * DefaultMutableGenerator.java
+ * AbstractGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,51 +16,38 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 26, 2008, 5:11:13 PM
+ * Created on Sep 10, 2008, 5:50:55 PM
  */
 package pcgen.gui.generator;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
-import pcgen.base.util.RandomUtil;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultMutableGenerator<E> extends AbstractGenerator<E> implements MutableGenerator<E>
+public abstract class AbstractGenerator<E> implements Generator<E>
 {
 
-    private final Vector<E> vector = new Vector<E>();
+    private String name;
 
-    public DefaultMutableGenerator(String name)
+    public AbstractGenerator(String name)
     {
-        super(name);
+        this.name = name;
     }
 
-    public E getNext()
+    public void reset()
     {
-        if (vector.isEmpty())
-        {
-            return null;
-        }
-        return vector.get(RandomUtil.getRandomInt(vector.size()));
+
     }
 
-    public List<E> getAll()
+    public boolean isSingleton()
     {
-        return Collections.unmodifiableList(vector);
+        return false;
     }
 
-    public void add(E element)
+    @Override
+    public String toString()
     {
-        vector.add(element);
-    }
-
-    public void remove(E element)
-    {
-        vector.remove(element);
+        return name;
     }
 
 }

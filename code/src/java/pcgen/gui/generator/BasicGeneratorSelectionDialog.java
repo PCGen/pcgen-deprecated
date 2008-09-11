@@ -49,11 +49,6 @@ import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog<Generator<?>>
 {
 
-    static
-    {
-        ResourceManager.ensureLoaded(ResourceManager.GENERATOR_BUNDLE);
-    }
-
     private FilteredTreeViewSelectionPanel selectionPanel;
     private Action addAsAction;
 

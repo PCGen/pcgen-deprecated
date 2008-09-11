@@ -36,11 +36,6 @@ import pcgen.gui.tools.ResourceManager;
 public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Generator<Integer>>
 {
 
-    static
-    {
-        ResourceManager.ensureLoaded(ResourceManager.GENERATOR_BUNDLE);
-    }
-
     private CardLayout cards;
     private JPanel cardPanel;
 

@@ -27,19 +27,15 @@ import java.util.List;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class SingletonGenerator<E> implements Generator<E>
+public class SingletonGenerator<E> extends AbstractGenerator<E>
 {
 
     private E item;
 
     public SingletonGenerator(E item)
     {
+        super(item.toString());
         this.item = item;
-    }
-
-    public void reset()
-    {
-
     }
 
     public E getNext()
@@ -52,15 +48,10 @@ public class SingletonGenerator<E> implements Generator<E>
         return Collections.singletonList(item);
     }
 
+    @Override
     public boolean isSingleton()
     {
         return true;
-    }
-
-    @Override
-    public String toString()
-    {
-        return item.toString();
     }
 
 }
