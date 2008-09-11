@@ -20,6 +20,9 @@
  */
 package pcgen.gui.generator;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
@@ -32,6 +35,11 @@ public abstract class AbstractGenerator<E> implements Generator<E>
     public AbstractGenerator(String name)
     {
         this.name = name;
+    }
+
+    public List<E> getAll()
+    {
+        return Collections.emptyList();
     }
 
     public void reset()

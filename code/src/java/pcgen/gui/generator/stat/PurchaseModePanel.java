@@ -22,6 +22,7 @@ package pcgen.gui.generator.stat;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Vector;
 import javax.swing.JLabel;
@@ -54,6 +55,7 @@ public class PurchaseModePanel extends JPanel implements StatModePanel<PurchaseM
 
     public PurchaseModePanel()
     {
+        super(new GridBagLayout());
         this.model = new ScoreCostTableModel();
         this.pointSpinner = new JSpinner();
         this.minSpinner = new JSpinner();

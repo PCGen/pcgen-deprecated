@@ -81,6 +81,7 @@ public class DefaultAssignmentModeGenerator extends AbstractGenerator<Integer>
         index = 0;
     }
 
+    @Override
     public List<Integer> getAll()
     {
         return scores;

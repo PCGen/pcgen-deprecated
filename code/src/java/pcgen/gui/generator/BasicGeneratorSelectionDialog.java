@@ -149,8 +149,7 @@ public class BasicGeneratorSelectionDialog extends AbstractSelectionDialog<Gener
             {
                 JList list = (JList) source;
                 Generator<?> value = (Generator<?>) list.getSelectedValue();
-                boolean nonNull = value != null;
-                if (nonNull)
+                if (value != null)
                 {
                     if (list.getParent() == availableList)
                     {

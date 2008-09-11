@@ -59,11 +59,6 @@ public class DefaultPurchaseModeGenerator extends AbstractGenerator<Integer>
         return points;
     }
 
-    public List<Integer> getAll()
-    {
-        return Collections.emptyList();
-    }
-
     public int getMinScore()
     {
         return min;

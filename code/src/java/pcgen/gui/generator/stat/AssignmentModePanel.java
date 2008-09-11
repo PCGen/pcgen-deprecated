@@ -22,6 +22,7 @@ package pcgen.gui.generator.stat;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,6 +63,7 @@ public class AssignmentModePanel extends JPanel implements StatModePanel<Assignm
 
     public AssignmentModePanel()
     {
+        super(new GridBagLayout());
         this.assignableBox = new JCheckBox();
         this.addButton = new JButton();
         this.removeButton = new JButton();

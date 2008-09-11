@@ -51,11 +51,6 @@ public class DefaultStandardModeGenerator extends AbstractGenerator<Integer>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public List<Integer> getAll()
-    {
-        return Collections.emptyList();
-    }
-
     public String getDiceExpression()
     {
         return diceExpression;

@@ -22,6 +22,7 @@ package pcgen.gui.generator.stat;
 
 import java.awt.CardLayout;
 import java.awt.Component;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -36,8 +37,15 @@ import pcgen.gui.tools.ResourceManager;
 public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Generator<Integer>>
 {
 
+    private static final String ASSIGNMENT_MODE = AssignmentModeGenerator.class.getName();
+    private static final String STANDARD_MODE = StandardModeGenerator.class.getName();
+    private static final String PURCHASE_MODE = PurchaseModeGenerator.class.getName();
     private CardLayout cards;
     private JPanel cardPanel;
+    private AssignmentModePanel assignmentPanel;
+    private StandardModePanel standardPanel;
+    private PurchaseModePanel purchasePanel;
+    private StatModePanel currentPanel = null;
 
     public StatGeneratorSelectionDialog()
     {
@@ -54,6 +62,16 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
     {
         this.cards = new CardLayout();
         this.cardPanel = new JPanel(cards);
+        this.assignmentPanel = new AssignmentModePanel();
+        this.standardPanel = new StandardModePanel();
+        this.purchasePanel = new PurchaseModePanel();
+        cardPanel.add(assignmentPanel, ASSIGNMENT_MODE);
+        cardPanel.add(standardPanel, STANDARD_MODE);
+        cardPanel.add(purchasePanel, PURCHASE_MODE);
+
+        SelectionHandler handler = new SelectionHandler();
+        availableList.addListSelectionListener(handler);
+        selectedList.addListSelectionListener(handler);
     }
 
     @Override
@@ -71,7 +89,9 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
     @Override
     protected boolean isMutable(Object item)
     {
-        return false;//TODO
+        return item instanceof MutableAssignmentModeGenerator ||
+                item instanceof MutablePurchaseModeGenerator ||
+                item instanceof MutableStandardModeGenerator;
     }
 
     private class SelectionHandler implements ListSelectionListener
@@ -79,7 +99,33 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
 
         public void valueChanged(ListSelectionEvent e)
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            JList list = (JList) e.getSource();
+            Generator<?> generator = (Generator<?>) list.getSelectedValue();
+            if (generator != null)
+            {
+                if (currentPanel != null)
+                {
+                    currentPanel.saveGeneratorData();
+                }
+                if (generator instanceof StandardModeGenerator)
+                {
+                    standardPanel.setGenerator((StandardModeGenerator) generator);
+                    cards.show(cardPanel, STANDARD_MODE);
+                    currentPanel = standardPanel;
+                }
+                else if (generator instanceof PurchaseModeGenerator)
+                {
+                    purchasePanel.setGenerator((PurchaseModeGenerator) generator);
+                    cards.show(cardPanel, PURCHASE_MODE);
+                    currentPanel = purchasePanel;
+                }
+                else
+                {
+                    assignmentPanel.setGenerator((AssignmentModeGenerator) generator);
+                    cards.show(cardPanel, ASSIGNMENT_MODE);
+                    currentPanel = assignmentPanel;
+                }
+            }
         }
 
     }

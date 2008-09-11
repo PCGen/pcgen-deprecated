@@ -48,6 +48,7 @@ public class DefaultMutableGenerator<E> extends AbstractGenerator<E> implements 
         return vector.get(RandomUtil.getRandomInt(vector.size()));
     }
 
+    @Override
     public List<E> getAll()
     {
         return Collections.unmodifiableList(vector);

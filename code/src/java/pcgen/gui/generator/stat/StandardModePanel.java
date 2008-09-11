@@ -21,6 +21,7 @@
 package pcgen.gui.generator.stat;
 
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,6 +49,7 @@ public class StandardModePanel extends JPanel implements StatModePanel<StandardM
 
     public StandardModePanel()
     {
+        super(new GridBagLayout());
         this.expressionField = new JTextField();
         this.rollDropSpinner = new JSpinner();
         this.minimumSpinner = new JSpinner();
