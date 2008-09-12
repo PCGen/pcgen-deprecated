@@ -37,6 +37,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.generator.Generator;
@@ -104,15 +106,18 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
     protected Generator<Integer> createMutableItem(Generator<Integer> item)
     {
         Generator<Integer> generator = null;
-        int ret = JOptionPane.CANCEL_OPTION;
-        String mode;
         String name;
+        String mode;
         if (item == null)
         {
             modePanel.resetGeneratorName();
-            ret = JOptionPane.showConfirmDialog(this, modePanel,
-                                                "Generator Details",
-                                                JOptionPane.OK_CANCEL_OPTION);
+            int ret = JOptionPane.showConfirmDialog(this, modePanel,
+                                                    "Generator Details",
+                                                    JOptionPane.OK_CANCEL_OPTION);
+            if (ret != JOptionPane.OK_OPTION)
+            {
+                return null;
+            }
             name = modePanel.getGeneratorName();
             mode = modePanel.getMode();
         }
@@ -122,9 +127,9 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
                                                ResourceManager.getText("createGen"),
                                                "Select Name",
                                                JOptionPane.QUESTION_MESSAGE);
-            mode = getMode(generator);
+            mode = getMode(item);
         }
-        if (ret == JOptionPane.OK_OPTION)
+        if (name != null)
         {
             if (mode == ASSIGNMENT_MODE)
             {
@@ -168,7 +173,6 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
         public void valueChanged(ListSelectionEvent e)
         {
             JList list = (JList) e.getSource();
-            @SuppressWarnings("unchecked")
             Generator<Integer> generator = (Generator<Integer>) list.getSelectedValue();
             if (generator != null)
             {
@@ -179,14 +183,14 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
                 String mode = getMode(generator);
                 StatModePanel panel = cardMap.get(mode);
                 panel.setGenerator(generator);
-                cards.show(cardPanel, mode);
                 currentPanel = panel;
+                cards.show(cardPanel, mode);
             }
         }
 
     }
 
-    private static class ModeSelectionPanel extends JPanel
+    private static class ModeSelectionPanel extends JPanel implements AncestorListener
     {
 
         private final JTextField nameField;
@@ -202,10 +206,12 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
 
         private void initComponents()
         {
+            addAncestorListener(this);
             GridBagConstraints gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.insets = new Insets(2, 2, 2, 2);
             add(new JLabel(ResourceManager.getText("genName") + ":"),
                 gridBagConstraints);
+
 
             gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
             gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -248,6 +254,21 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
         public String getMode()
         {
             return group.getSelection().getActionCommand();
+        }
+
+        public void ancestorAdded(AncestorEvent event)
+        {
+            nameField.requestFocusInWindow();
+        }
+
+        public void ancestorRemoved(AncestorEvent event)
+        {
+
+        }
+
+        public void ancestorMoved(AncestorEvent event)
+        {
+
         }
 
     }

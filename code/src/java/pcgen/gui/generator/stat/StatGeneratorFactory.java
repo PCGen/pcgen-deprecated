@@ -138,6 +138,7 @@ public final class StatGeneratorFactory
             this.points = 0;
             this.min = 0;
             this.costs = new Vector<Integer>();
+            costs.add(0);
         }
 
         public DefaultPurchaseModeGenerator(String name, int points, int min,

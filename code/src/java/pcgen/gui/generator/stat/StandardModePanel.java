@@ -88,6 +88,7 @@ public class StandardModePanel extends StatModePanel<StandardModeGenerator>
 
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         add(minimumSpinner, gridBagConstraints);
 
         gridBagConstraints = new GridBagConstraints();

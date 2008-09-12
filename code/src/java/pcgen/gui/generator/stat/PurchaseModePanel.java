@@ -23,6 +23,7 @@ package pcgen.gui.generator.stat;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.Collections;
 import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -184,7 +185,7 @@ public class PurchaseModePanel extends StatModePanel<PurchaseModeGenerator>
 
     public void setGenerator(PurchaseModeGenerator generator)
     {
-        pointSpinner.setValue(generator.getNext());
+        pointSpinner.setValue(generator.getPoints());
 
         model.setGenerator(generator);
         minSpinner.setValue(model.getMin());
@@ -277,11 +278,18 @@ public class PurchaseModePanel extends StatModePanel<PurchaseModeGenerator>
             this.max = max;
             if (oldmax < max)
             {
-                fireTableRowsInserted(oldmax - min + 1, max - min);
+                int firstRow = oldmax - min + 1;
+                int lastRow = max - min;
+                costs.addAll(firstRow,
+                             Collections.nCopies(lastRow - firstRow + 1, 0));
+                fireTableRowsInserted(firstRow, lastRow);
             }
             else if (max < oldmax)
             {
-                fireTableRowsDeleted(max - min + 1, oldmax - min);
+                int firstRow = max - min + 1;
+                int lastRow = oldmax - min;
+                costs.subList(firstRow, lastRow + 1).clear();
+                fireTableRowsDeleted(firstRow, lastRow);
             }
         }
 
@@ -291,11 +299,13 @@ public class PurchaseModePanel extends StatModePanel<PurchaseModeGenerator>
             this.min = min;
             if (oldmin < min)
             {
-                fireTableRowsDeleted(max - oldmin - 1, max - min);
+                costs.subList(0, min - oldmin).clear();
+                fireTableRowsDeleted(0, min - oldmin - 1);
             }
             else if (min < oldmin)
             {
-                fireTableRowsInserted(max - min - 1, max - oldmin);
+                costs.addAll(0, Collections.nCopies(oldmin - min, 0));
+                fireTableRowsInserted(0, oldmin - min - 1);
             }
         }
 
