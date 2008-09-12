@@ -21,13 +21,11 @@
 package pcgen.gui.generator.stat;
 
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -38,7 +36,7 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StandardModePanel extends JPanel implements StatModePanel<StandardModeGenerator>
+public class StandardModePanel extends StatModePanel<StandardModeGenerator>
 {
 
     private final JTextField expressionField;
@@ -49,7 +47,6 @@ public class StandardModePanel extends JPanel implements StatModePanel<StandardM
 
     public StandardModePanel()
     {
-        super(new GridBagLayout());
         this.expressionField = new JTextField();
         this.rollDropSpinner = new JSpinner();
         this.minimumSpinner = new JSpinner();
@@ -77,7 +74,7 @@ public class StandardModePanel extends JPanel implements StatModePanel<StandardM
 
         gridBagConstraints.fill = GridBagConstraints.NONE;
         gridBagConstraints.weightx = 1.0;
-        add(new JLabel(ResourceManager.getText("dropLow") + ":"),
+        add(new JLabel(ResourceManager.getText("dropLowCount") + ":"),
             gridBagConstraints);
 
         gridBagConstraints.ipadx = 10;

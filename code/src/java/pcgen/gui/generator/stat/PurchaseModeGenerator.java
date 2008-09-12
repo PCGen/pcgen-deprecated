@@ -34,6 +34,11 @@ public interface PurchaseModeGenerator extends Generator<Integer>
     public int getMaxScore();
 
     /**
+     * @return the number of points that can be distrubuted
+     */
+    public int getPoints();
+
+    /**
      * 
      * @param score
      * @return
@@ -41,7 +46,7 @@ public interface PurchaseModeGenerator extends Generator<Integer>
     public int getScoreCost(int score);
 
     /**
-     * @return the number of points that can be distrubuted
+     * @return null
      */
     public Integer getNext();
 

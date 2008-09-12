@@ -45,6 +45,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -71,8 +72,8 @@ public abstract class AbstractSelectionDialog<E> extends JDialog
     protected final Action removeAction;
     protected final Action upAction;
     protected final Action downAction;
-    protected DefaultGenericListModel<E> availableModel;
-    protected DefaultGenericListModel<E> selectedModel;
+    protected DefaultGenericListModel<E> availableModel = new DefaultGenericListModel<E>();
+    protected DefaultGenericListModel<E> selectedModel = new DefaultGenericListModel<E>();
     private GenericSelectionModel<E> model;
 
     protected AbstractSelectionDialog(String availableListTitle,
@@ -81,8 +82,8 @@ public abstract class AbstractSelectionDialog<E> extends JDialog
                                        String deleteToolTip, String addToolTip,
                                        String removeToolTip)
     {
-        this.availableList = new JList();
-        this.selectedList = new JList();
+        this.availableList = new JList((ListModel) availableModel);
+        this.selectedList = new JList((ListModel) selectedModel);
         this.availableListPopup = new JPopupMenu();
         this.selectedListPopup = new JPopupMenu();
         this.newAction = new NewAction(newToolTip);
@@ -235,7 +236,12 @@ public abstract class AbstractSelectionDialog<E> extends JDialog
 
         public void actionPerformed(ActionEvent e)
         {
-            availableModel.add(createMutableItem(null));
+            E item = createMutableItem(null);
+            if (item != null)
+            {
+                availableModel.add(item);
+                availableList.setSelectedValue(item, true);
+            }
         }
 
     }
@@ -253,7 +259,12 @@ public abstract class AbstractSelectionDialog<E> extends JDialog
 
         public void actionPerformed(ActionEvent e)
         {
-            availableModel.add(createMutableItem(availableModel.get(availableList.getSelectedIndex())));
+            E item = createMutableItem(availableModel.get(availableList.getSelectedIndex()));
+            if (item != null)
+            {
+                availableModel.add(item);
+                availableList.setSelectedValue(item, true);
+            }
         }
 
     }
@@ -291,7 +302,11 @@ public abstract class AbstractSelectionDialog<E> extends JDialog
 
         public void actionPerformed(ActionEvent e)
         {
-            selectedModel.add(availableModel.get(availableList.getSelectedIndex()));
+            E item = availableModel.get(availableList.getSelectedIndex());
+            selectedModel.add(item);
+            selectedList.setSelectedIndex(selectedModel.getSize() - 1);
+            setEnabled(false);
+            removeAction.setEnabled(true);
         }
 
     }
@@ -377,32 +392,43 @@ public abstract class AbstractSelectionDialog<E> extends JDialog
             JList list = (JList) e.getSource();
             Object value = list.getSelectedValue();
             boolean nonNull = value != null;
-            if (list.getParent() == availableList)
+            if (list == availableList)
             {
+                copyAction.setEnabled(nonNull);
                 deleteAction.setEnabled(nonNull && isMutable(value));
                 if (nonNull)
                 {
-                    selectedList.setSelectedValue(value, true);
-
                     boolean unique = !selectedModel.contains(value);
                     addAction.setEnabled(unique);
                     removeAction.setEnabled(!unique);
+                    if (unique)
+                    {
+                        selectedList.clearSelection();
+                    }
+                    else
+                    {
+                        selectedList.setSelectedValue(value, true);
+                    }
                 }
             }
             else
             {
-                int index = e.getFirstIndex();
+                int index = selectedList.getSelectedIndex();
                 upAction.setEnabled(nonNull && index > 0);
                 downAction.setEnabled(nonNull &&
                                       index < selectedModel.getSize() - 1);
                 if (nonNull)
                 {
-                    availableList.setSelectedValue(value, true);
-                    //this checks if the selection is unique to the selectionModel
                     if (!availableModel.contains(value))
                     {
                         addAction.setEnabled(false);
                         removeAction.setEnabled(true);
+
+                        availableList.clearSelection();
+                    }
+                    else
+                    {
+                        availableList.setSelectedValue(value, true);
                     }
                 }
             }

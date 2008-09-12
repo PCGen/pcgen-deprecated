@@ -91,6 +91,7 @@ public class FilterSelectionDialog extends AbstractSelectionDialog<DisplayableFi
 
         JTextArea area = new JTextArea();
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.insets = new Insets(0, 0, 0, 0);
         panel.add(area, gridBagConstraints);
@@ -143,7 +144,6 @@ public class FilterSelectionDialog extends AbstractSelectionDialog<DisplayableFi
                 editorArea.setText(value.getCode());
 
                 boolean mutable = isMutable(value);
-                deleteAction.setEnabled(mutable);
                 descriptionArea.setEditable(mutable);
                 editorArea.setEditable(mutable);
                 filter = mutable ? (MutableFilter) value : null;

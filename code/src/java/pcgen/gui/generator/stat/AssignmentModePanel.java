@@ -22,7 +22,6 @@ package pcgen.gui.generator.stat;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +30,6 @@ import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -49,7 +47,7 @@ import pcgen.gui.util.table.TableCellUtilities;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AssignmentModePanel extends JPanel implements StatModePanel<AssignmentModeGenerator>
+public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
 {
 
     private final DefaultTableModel model;
@@ -63,7 +61,6 @@ public class AssignmentModePanel extends JPanel implements StatModePanel<Assignm
 
     public AssignmentModePanel()
     {
-        super(new GridBagLayout());
         this.assignableBox = new JCheckBox();
         this.addButton = new JButton();
         this.removeButton = new JButton();

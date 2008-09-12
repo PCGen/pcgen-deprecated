@@ -22,11 +22,9 @@ package pcgen.gui.generator.stat;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Vector;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
@@ -42,7 +40,7 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class PurchaseModePanel extends JPanel implements StatModePanel<PurchaseModeGenerator>
+public class PurchaseModePanel extends StatModePanel<PurchaseModeGenerator>
 {
 
     private final String SCORE = ResourceManager.getText("score");
@@ -55,7 +53,6 @@ public class PurchaseModePanel extends JPanel implements StatModePanel<PurchaseM
 
     public PurchaseModePanel()
     {
-        super(new GridBagLayout());
         this.model = new ScoreCostTableModel();
         this.pointSpinner = new JSpinner();
         this.minSpinner = new JSpinner();

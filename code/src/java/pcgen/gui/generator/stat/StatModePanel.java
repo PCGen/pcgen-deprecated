@@ -20,14 +20,21 @@
  */
 package pcgen.gui.generator.stat;
 
+import java.awt.GridBagLayout;
+import javax.swing.JPanel;
 import pcgen.gui.generator.Generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface StatModePanel<E extends Generator<Integer>>
+public abstract class StatModePanel<E extends Generator<Integer>> extends JPanel
 {
+
+    public StatModePanel()
+    {
+        super(new GridBagLayout());
+    }
 
     public abstract void setGenerator(E generator);
 

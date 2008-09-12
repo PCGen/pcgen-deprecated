@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import pcgen.gui.filter.FilterSelectionDialog;
+import pcgen.gui.generator.stat.StatGeneratorSelectionDialog;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 import pcgen.gui.util.table.DefaultSortableTableModel;
@@ -63,6 +65,8 @@ public class UtilitiesTester extends javax.swing.JFrame
                                     public void run()
                                     {
                                         new UtilitiesTester().setVisible(true);
+                                        StatGeneratorSelectionDialog dialog = new StatGeneratorSelectionDialog();
+                                        dialog.setVisible(true);
                                     }
 
                                 });

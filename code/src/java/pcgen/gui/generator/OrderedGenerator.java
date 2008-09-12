@@ -1,5 +1,5 @@
 /*
- * DefaultMutableAssignmentModeGenerator.java
+ * OrderedGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,37 +16,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 10, 2008, 5:26:13 PM
+ * Created on Sep 11, 2008, 2:13:52 PM
  */
-package pcgen.gui.generator.stat;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+package pcgen.gui.generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultMutableAssignmentModeGenerator extends DefaultAssignmentModeGenerator
-        implements MutableAssignmentModeGenerator
+public interface OrderedGenerator<E> extends Generator<E>
 {
 
-    public DefaultMutableAssignmentModeGenerator(String name)
-    {
-        super(name);
-    }
-
-    public void setScores(List<Integer> scores)
-    {
-        this.scores = scores;
-        this.temp = new ArrayList<Integer>(scores);
-        reset();
-    }
-
-    public void setAssignable(boolean assignable)
-    {
-        this.assignable = assignable;
-    }
+    public boolean isRandomOrder();
 
 }

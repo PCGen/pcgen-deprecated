@@ -22,8 +22,21 @@ package pcgen.gui.generator.stat;
 
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.generator.Generator;
@@ -37,14 +50,13 @@ import pcgen.gui.tools.ResourceManager;
 public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Generator<Integer>>
 {
 
-    private static final String ASSIGNMENT_MODE = AssignmentModeGenerator.class.getName();
-    private static final String STANDARD_MODE = StandardModeGenerator.class.getName();
-    private static final String PURCHASE_MODE = PurchaseModeGenerator.class.getName();
+    private static final String ASSIGNMENT_MODE = "assignment";
+    private static final String STANDARD_MODE = "dieRoll";
+    private static final String PURCHASE_MODE = "purchase";
+    private final ModeSelectionPanel modePanel;
     private CardLayout cards;
     private JPanel cardPanel;
-    private AssignmentModePanel assignmentPanel;
-    private StandardModePanel standardPanel;
-    private PurchaseModePanel purchasePanel;
+    private Map<String, StatModePanel> cardMap;
     private StatModePanel currentPanel = null;
 
     public StatGeneratorSelectionDialog()
@@ -56,18 +68,26 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
               ResourceManager.getToolTip("deleteStatGen"),
               ResourceManager.getToolTip("addStatGen"),
               ResourceManager.getToolTip("removeStatGen"));
+        this.modePanel = new ModeSelectionPanel();
     }
 
     protected void initComponents()
     {
         this.cards = new CardLayout();
         this.cardPanel = new JPanel(cards);
-        this.assignmentPanel = new AssignmentModePanel();
-        this.standardPanel = new StandardModePanel();
-        this.purchasePanel = new PurchaseModePanel();
-        cardPanel.add(assignmentPanel, ASSIGNMENT_MODE);
-        cardPanel.add(standardPanel, STANDARD_MODE);
-        cardPanel.add(purchasePanel, PURCHASE_MODE);
+        this.cardMap = new HashMap<String, StatModePanel>();
+        StatModePanel panel;
+        panel = new AssignmentModePanel();
+        cardMap.put(ASSIGNMENT_MODE, panel);
+        cardPanel.add(panel, ASSIGNMENT_MODE);
+
+        panel = new StandardModePanel();
+        cardMap.put(STANDARD_MODE, panel);
+        cardPanel.add(panel, STANDARD_MODE);
+
+        panel = new PurchaseModePanel();
+        cardMap.put(PURCHASE_MODE, panel);
+        cardPanel.add(panel, PURCHASE_MODE);
 
         SelectionHandler handler = new SelectionHandler();
         availableList.addListSelectionListener(handler);
@@ -83,7 +103,54 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
     @Override
     protected Generator<Integer> createMutableItem(Generator<Integer> item)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Generator<Integer> generator = null;
+        int ret = JOptionPane.CANCEL_OPTION;
+        String mode;
+        String name;
+        if (item == null)
+        {
+            modePanel.resetGeneratorName();
+            ret = JOptionPane.showConfirmDialog(this, modePanel,
+                                                "Generator Details",
+                                                JOptionPane.OK_CANCEL_OPTION);
+            name = modePanel.getGeneratorName();
+            mode = modePanel.getMode();
+        }
+        else
+        {
+            name = JOptionPane.showInputDialog(this,
+                                               ResourceManager.getText("createGen"),
+                                               "Select Name",
+                                               JOptionPane.QUESTION_MESSAGE);
+            mode = getMode(generator);
+        }
+        if (ret == JOptionPane.OK_OPTION)
+        {
+            if (mode == ASSIGNMENT_MODE)
+            {
+                generator = StatGeneratorFactory.createMutableAssignmentModeGenerator(name,
+                                                                                      (AssignmentModeGenerator) item);
+            }
+            else if (mode == STANDARD_MODE)
+            {
+                generator = StatGeneratorFactory.createMutableStandardModeGenerator(name,
+                                                                                    (StandardModeGenerator) item);
+            }
+            else
+            {
+                generator = StatGeneratorFactory.createMutablePurchaseModeGenerator(name,
+                                                                                    (PurchaseModeGenerator) item);
+            }
+        }
+        return generator;
+    }
+
+    private static String getMode(Generator<Integer> generator)
+    {
+        return generator instanceof AssignmentModeGenerator ? ASSIGNMENT_MODE
+                : generator instanceof StandardModeGenerator ? STANDARD_MODE
+                : generator instanceof PurchaseModeGenerator ? PURCHASE_MODE
+                : null;
     }
 
     @Override
@@ -97,35 +164,90 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
     private class SelectionHandler implements ListSelectionListener
     {
 
+        @SuppressWarnings("unchecked")
         public void valueChanged(ListSelectionEvent e)
         {
             JList list = (JList) e.getSource();
-            Generator<?> generator = (Generator<?>) list.getSelectedValue();
+            @SuppressWarnings("unchecked")
+            Generator<Integer> generator = (Generator<Integer>) list.getSelectedValue();
             if (generator != null)
             {
                 if (currentPanel != null)
                 {
                     currentPanel.saveGeneratorData();
                 }
-                if (generator instanceof StandardModeGenerator)
-                {
-                    standardPanel.setGenerator((StandardModeGenerator) generator);
-                    cards.show(cardPanel, STANDARD_MODE);
-                    currentPanel = standardPanel;
-                }
-                else if (generator instanceof PurchaseModeGenerator)
-                {
-                    purchasePanel.setGenerator((PurchaseModeGenerator) generator);
-                    cards.show(cardPanel, PURCHASE_MODE);
-                    currentPanel = purchasePanel;
-                }
-                else
-                {
-                    assignmentPanel.setGenerator((AssignmentModeGenerator) generator);
-                    cards.show(cardPanel, ASSIGNMENT_MODE);
-                    currentPanel = assignmentPanel;
-                }
+                String mode = getMode(generator);
+                StatModePanel panel = cardMap.get(mode);
+                panel.setGenerator(generator);
+                cards.show(cardPanel, mode);
+                currentPanel = panel;
             }
+        }
+
+    }
+
+    private static class ModeSelectionPanel extends JPanel
+    {
+
+        private final JTextField nameField;
+        private final ButtonGroup group;
+
+        public ModeSelectionPanel()
+        {
+            super(new GridBagLayout());
+            this.nameField = new JTextField();
+            this.group = new ButtonGroup();
+            initComponents();
+        }
+
+        private void initComponents()
+        {
+            GridBagConstraints gridBagConstraints = new GridBagConstraints();
+            gridBagConstraints.insets = new Insets(2, 2, 2, 2);
+            add(new JLabel(ResourceManager.getText("genName") + ":"),
+                gridBagConstraints);
+
+            gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+            gridBagConstraints.fill = GridBagConstraints.BOTH;
+            add(nameField, gridBagConstraints);
+
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.setBorder(new TitledBorder(null,
+                                             ResourceManager.getText("genMode"),
+                                             TitledBorder.DEFAULT_JUSTIFICATION,
+                                             TitledBorder.DEFAULT_POSITION,
+                                             new Font("Tahoma",
+                                                      Font.BOLD,
+                                                      12)));
+            initRadioButton(panel, ASSIGNMENT_MODE);
+            initRadioButton(panel, STANDARD_MODE).setSelected(true);
+            initRadioButton(panel, PURCHASE_MODE);
+            gridBagConstraints.weightx = 1.0;
+            add(panel, gridBagConstraints);
+        }
+
+        private JRadioButton initRadioButton(JPanel panel, String command)
+        {
+            JRadioButton button = new JRadioButton(ResourceManager.getText(command));
+            button.setActionCommand(command);
+            group.add(button);
+            panel.add(button);
+            return button;
+        }
+
+        public void resetGeneratorName()
+        {
+            nameField.setText(null);
+        }
+
+        public String getGeneratorName()
+        {
+            return nameField.getText();
+        }
+
+        public String getMode()
+        {
+            return group.getSelection().getActionCommand();
         }
 
     }
