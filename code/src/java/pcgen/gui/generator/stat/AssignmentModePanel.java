@@ -26,6 +26,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -35,22 +36,20 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.ResourceManager.Icons;
-import pcgen.gui.util.table.TableCellUtilities;
+import pcgen.gui.util.table.ListTableModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
+class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
 {
 
-    private final DefaultTableModel model;
+    private final ScoreTableModel model;
     private final JTable table;
     private final JCheckBox assignableBox;
     private final JButton addButton;
@@ -66,17 +65,8 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
         this.removeButton = new JButton();
         this.upButton = new JButton();
         this.downButton = new JButton();
-        this.model = new DefaultTableModel()
-        {
-
-            @Override
-            public boolean isCellEditable(int row, int column)
-            {
-                return generator != null;
-            }
-
-        };
-        this.table = new JTable()
+        this.model = new ScoreTableModel();
+        this.table = new JTable(model)
         {
 
             @Override
@@ -111,21 +101,10 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
             gridBagConstraints.anchor = GridBagConstraints.NORTH;
             gridBagConstraints.insets = new Insets(2, 2, 2, 2);
         }
-        ActionHandler handler = new ActionHandler();
         table.setShowGrid(false);
-        table.setDefaultRenderer(Integer.class,
-                                 new TableCellUtilities.SpinnerRenderer());
-        table.setDefaultEditor(Integer.class,
-                               new TableCellUtilities.SpinnerEditor(new SpinnerNumberModel(0,
-                                                                                           0,
-                                                                                           null,
-                                                                                           1)));
-        model.setColumnIdentifiers(new Object[]{ResourceManager.getText("score")});
-        table.setModel(model);
-
         ListSelectionModel selectionModel = table.getSelectionModel();
         selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        selectionModel.addListSelectionListener(handler);
+        selectionModel.addListSelectionListener(model);
 
         gridBagConstraints2 = new GridBagConstraints();
         gridBagConstraints2.gridheight = GridBagConstraints.REMAINDER;
@@ -134,10 +113,10 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
         gridBagConstraints2.weighty = 1.0;
         add(new JScrollPane(table), gridBagConstraints2);
 
-        initButton(assignableBox, "assignable", null, handler,
+        initButton(assignableBox, "assignable", null, model,
                    gridBagConstraints);
-        initButton(addButton, "add", null, handler, gridBagConstraints);
-        initButton(removeButton, "remove", null, handler, gridBagConstraints);
+        initButton(addButton, "add", null, model, gridBagConstraints);
+        initButton(removeButton, "remove", null, model, gridBagConstraints);
 
         gridBagConstraints2 = new GridBagConstraints();
         gridBagConstraints2.gridwidth = GridBagConstraints.REMAINDER;
@@ -146,8 +125,8 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
         gridBagConstraints2.ipady = 1;
         add(new JSeparator(), gridBagConstraints2);
 
-        initButton(upButton, "up", Icons.Up16, handler, gridBagConstraints);
-        initButton(downButton, "down", Icons.Down16, handler, gridBagConstraints);
+        initButton(upButton, "up", Icons.Up16, model, gridBagConstraints);
+        initButton(downButton, "down", Icons.Down16, model, gridBagConstraints);
     }
 
     private void initButton(AbstractButton button, String prop, Icons icon,
@@ -171,19 +150,13 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
     public void setGenerator(AssignmentModeGenerator generator)
     {
         boolean assignable = generator.isAssignable();
-        List<Integer> scores = generator.getAll();
-        int rows = assignable ? 6 : scores.size();
-        model.setRowCount(rows);
-        for (int i = 0; i < scores.size(); i++)
-        {
-            model.setValueAt(scores.get(i), i, 0);
-        }
+        model.setGenerator(generator);
 
         boolean editable = generator instanceof MutableAssignmentModeGenerator;
         assignableBox.setSelected(assignable);
         assignableBox.setEnabled(editable);
-        upButton.setEnabled(editable);
-        downButton.setEnabled(editable);
+        upButton.setEnabled(false);
+        downButton.setEnabled(false);
         addButton.setEnabled(editable && assignable);
         removeButton.setEnabled(editable && assignable);
 
@@ -195,20 +168,57 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
         if (generator != null)
         {
             generator.setAssignable(assignableBox.isSelected());
-            int rowcount = model.getRowCount();
-            List<Integer> scores = new ArrayList<Integer>(rowcount);
-            for (int i = 0; i < rowcount; i++)
-            {
-                scores.add((Integer) model.getValueAt(i, 0));
-            }
+            List<Integer> scores = new ArrayList<Integer>(model);
             generator.setScores(scores);
         }
     }
 
-    private class ActionHandler implements ActionListener,
-                                            ListSelectionListener
+    private class ScoreTableModel extends ListTableModel<Integer> implements ActionListener,
+                                                                              ListSelectionListener
     {
 
+        public ScoreTableModel()
+        {
+            super(ResourceManager.getText("score"));
+        }
+
+        @SuppressWarnings("unchecked")
+        public void setGenerator(AssignmentModeGenerator generator)
+        {
+            removeAllElements();
+            addAll(generator.getAll());
+            setAssignable(generator.isAssignable());
+        }
+
+        @SuppressWarnings("unchecked")
+        private void setAssignable(boolean assignable)
+        {
+            if (assignable)
+            {
+                if (getSize() < 6)
+                {
+                    addAll(Collections.nCopies(6 - getSize(), 0));
+                }
+                else
+                {
+                    setSize(6);
+                }
+            }
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex)
+        {
+            return Integer.class;
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column)
+        {
+            return generator != null;
+        }
+
+        @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent e)
         {
             String command = e.getActionCommand();
@@ -217,26 +227,23 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
                 boolean selected = assignableBox.isSelected();
                 addButton.setEnabled(selected);
                 removeButton.setEnabled(selected);
-                if (selected)
-                {
-                    model.setRowCount(6);
-                }
+                setAssignable(selected);
             }
             else if (command.equals("add"))
             {
-                model.addRow(new Object[]{0});
+                add(0);
             }
             else
             {
                 int row = table.getSelectedRow();
                 if (command.equals("remove"))
                 {
-                    model.removeRow(row);
+                    remove(row);
                 }
                 else
                 {
                     int newrow = row + (command.equals("up") ? -1 : 1);
-                    model.moveRow(row, row, newrow);
+                    Collections.swap(this, row, newrow);
                     table.setRowSelectionInterval(newrow, newrow);
                 }
             }
@@ -244,9 +251,10 @@ public class AssignmentModePanel extends StatModePanel<AssignmentModeGenerator>
 
         public void valueChanged(ListSelectionEvent e)
         {
-            int index = e.getFirstIndex();
-            upButton.setEnabled(index > 0);
-            downButton.setEnabled(index != -1 && index < model.getRowCount() - 1);
+            int index = table.getSelectedRow();
+            upButton.setEnabled(generator != null && index > 0);
+            downButton.setEnabled(generator != null && index != -1 && index <
+                                  getRowCount() - 1);
         }
 
     }

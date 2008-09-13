@@ -36,7 +36,7 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StandardModePanel extends StatModePanel<StandardModeGenerator>
+class StandardModePanel extends StatModePanel<StandardModeGenerator>
 {
 
     private final JTextField expressionField;

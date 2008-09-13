@@ -108,7 +108,7 @@ public final class StatGeneratorFactory
         @SuppressWarnings("unchecked")
         public DefaultMutableAssignmentModeGenerator(String name)
         {
-            super(name, Collections.EMPTY_LIST, false);
+            super(name, Collections.EMPTY_LIST, true);
         }
 
         public void setScores(List<Integer> scores)

@@ -1,5 +1,5 @@
 /*
- * StatModePanel.java
+ * MutableAbilityBuild.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,28 +16,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 10, 2008, 3:34:09 PM
+ * Created on Sep 12, 2008, 2:13:36 PM
  */
-package pcgen.gui.generator.stat;
+package pcgen.gui.generator.ability;
 
-import java.awt.GridBagLayout;
-import javax.swing.JPanel;
-import pcgen.gui.generator.Generator;
+import pcgen.gui.facade.AbilityCatagoryFacade;
+import pcgen.gui.facade.AbilityFacade;
+import pcgen.gui.generator.OrderedGenerator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-abstract class StatModePanel<E extends Generator<Integer>> extends JPanel
+public interface MutableAbilityBuild extends AbilityBuild
 {
 
-    public StatModePanel()
-    {
-        super(new GridBagLayout());
-    }
-
-    public abstract void setGenerator(E generator);
-
-    public abstract void saveGeneratorData();
+    public void putGenerator(AbilityCatagoryFacade catagory,
+                              OrderedGenerator<AbilityFacade> generator);
 
 }

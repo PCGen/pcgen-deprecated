@@ -41,7 +41,7 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class PurchaseModePanel extends StatModePanel<PurchaseModeGenerator>
+class PurchaseModePanel extends StatModePanel<PurchaseModeGenerator>
 {
 
     private final String SCORE = ResourceManager.getText("score");

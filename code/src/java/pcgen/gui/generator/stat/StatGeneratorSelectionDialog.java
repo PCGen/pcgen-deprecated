@@ -212,7 +212,6 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
             add(new JLabel(ResourceManager.getText("genName") + ":"),
                 gridBagConstraints);
 
-
             gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
             gridBagConstraints.fill = GridBagConstraints.BOTH;
             add(nameField, gridBagConstraints);
