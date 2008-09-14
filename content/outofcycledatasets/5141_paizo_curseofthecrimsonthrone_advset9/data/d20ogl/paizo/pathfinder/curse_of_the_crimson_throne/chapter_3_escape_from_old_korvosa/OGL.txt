@@ -37,3 +37,4 @@ Pathfinder 9: Escape from Old Korvosa. Copyright 2008, Paizo Publishing, LLC; Au
 Advanced Bestiary. Copyright 2004, Green Ronin Publishing, LLC; Author Matthew Sernett.
 Necropolis. Copyright 2002. Necromancer Games, Inc.; Authors: Gary Gygax, with Bill Webb, Scott Greene, Lance Hawvermale, Clark Peterson.
 Tome of Horrors. Copyright 2002, Necromancer Games, Inc.; Authors: Scott Greene, with Clark Peterson, Erica Balsley, Kevin Baase, Casey Christofferson, Lance Hawvermale, Travis Hawvermale, Patrick Lawinger, and Bill Webb; Based on original content from TSR.
+PCGen dataset conversion for "Pathfinder 9: Escape From Old Korvosa" Copyright 2008, PCGen Data Team (including, but not limited to Andrew Maitland and Eric Smith)
