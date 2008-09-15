@@ -32,11 +32,7 @@ The following text is the property of Wizards of the Coast, Inc. and is Copyrigh
 
 15 COPYRIGHT NOTICE
 Open Game License v 1.0 Copyright 2000, Wizards of the Coast, Inc.
-
 System Reference Document. Copyright 2000. Wizards of the Coast, Inc; Authors Jonathan Tweet, Monte Cook, Skip Williams, based on Material by E. Gary Gygax and Dave Arneson.
-
 Pathfinder 10: A History of Ashes. Copyright 2008, Paizo Publishing, LLC; Author: Michael Kortes
-
 Advanced Bestiary. Copyright 2004, Green Ronin Publishing, LLC; Author Matthew Sernett
-
 PCGen dataset conversion for "Pathfinder 10: A History of Ashes" Copyright 2007-2008, PCGen Data Team (including, but not limited to, Paul Grosse.)
