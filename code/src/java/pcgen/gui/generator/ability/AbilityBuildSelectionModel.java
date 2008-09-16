@@ -20,20 +20,93 @@
  */
 package pcgen.gui.generator.ability;
 
+import java.awt.Component;
+import java.util.Properties;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.filter.FilterableTreeViewModel;
-import pcgen.gui.tools.GenericSelectionModel;
+import pcgen.gui.tools.SelectionDialog;
+import pcgen.gui.tools.SelectionDialogModel;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface AbilityBuildSelectionModel extends GenericSelectionModel<AbilityBuild>
+public class AbilityBuildSelectionModel implements SelectionDialogModel<AbilityBuild>
 {
 
-    public CharacterFacade getCharacter();
+    private static final Properties props = new Properties();
 
-    public FilterableTreeViewModel<AbilityFacade> getTreeViewModel();
+    static
+    {
+        props.setProperty(SelectionDialogModel.AVAILABLE_TEXT_PROP,
+                          "availAbilBuild");
+        props.setProperty(SelectionDialogModel.SELECTION_TEXT_PROP,
+                          "selAbilBuild");
+        props.setProperty(SelectionDialogModel.NEW_TOOLTIP_PROP,
+                          "newAbilBuild");
+        props.setProperty(SelectionDialogModel.COPY_TOOLTIP_PROP,
+                          "copyAbilBuild");
+        props.setProperty(SelectionDialogModel.DELETE_TOOLTIP_PROP,
+                          "deleteAbilBuild");
+        props.setProperty(SelectionDialogModel.ADD_TOOLTIP_PROP,
+                          "addAbilBuild");
+        props.setProperty(SelectionDialogModel.REMOVE_TOOLTIP_PROP,
+                          "removeAbilBuild");
+    }
+
+    public CharacterFacade getCharacter()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public FilterableTreeViewModel<AbilityFacade> getTreeViewModel()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public GenericListModel<AbilityBuild> getAvailableList()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public GenericListModel<AbilityBuild> getSelectedList()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAvailableList(GenericListModel<AbilityBuild> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setSelectedList(GenericListModel<AbilityBuild> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Component getItemPanel(SelectionDialog<AbilityBuild> selectionDialog,
+                                   Component currentItemPanel,
+                                   AbilityBuild selectedItem)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public AbilityBuild createMutableItem(SelectionDialog<AbilityBuild> selectionDialog,
+                                           AbilityBuild templateItem)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean isMutable(Object item)
+    {
+        return item instanceof MutableAbilityBuild;
+    }
+
+    public Properties getDisplayProperties()
+    {
+        return props;
+    }
 
 }

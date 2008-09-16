@@ -20,9 +20,10 @@
  */
 package pcgen.gui.generator;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  *
@@ -32,34 +33,29 @@ public class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
 {
 
     protected List<E> items;
-    private List<E> temp = null;
+    private Queue<E> queue = null;
     protected boolean randomOrder;
-    private int index;
 
-    public DefaultOrderedGenerator(String name, List<E> items, boolean randomOrder)
+    public DefaultOrderedGenerator(String name, List<E> items,
+                                    boolean randomOrder)
     {
         super(name);
         this.items = items;
         this.randomOrder = randomOrder;
-        if (randomOrder)
-        {
-            temp = new ArrayList<E>(items);
-        }
         reset();
     }
 
     public E getNext()
     {
-        List<E> list = randomOrder ? temp : items;
-        if (list.isEmpty())
+        if (items.isEmpty())
         {
             return null;
         }
-        if (index == list.size())
+        if (queue.isEmpty())
         {
             reset();
         }
-        return list.get(index++);
+        return queue.poll();
     }
 
     public boolean isRandomOrder()
@@ -73,18 +69,20 @@ public class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
         return items;
     }
 
+    protected Queue<E> createQueue()
+    {
+        LinkedList<E> temp = new LinkedList<E>(items);
+        if (randomOrder)
+        {
+            Collections.shuffle(temp);
+        }
+        return temp;
+    }
+
     @Override
     public void reset()
     {
-        index = 0;
-        if (randomOrder)
-        {
-            if (temp == null)
-            {
-                temp = new ArrayList<E>(items);
-            }
-            Collections.shuffle(temp);
-        }
+        queue = createQueue();
     }
 
 }

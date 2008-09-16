@@ -25,83 +25,11 @@ public class SummaryPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-
         setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-
-        jButton2.setText("jButton2");
-        jPanel1.add(jButton2);
-
-        jButton1.setText("jButton1");
-        jPanel1.add(jButton1);
-
-        add(jPanel1, java.awt.BorderLayout.CENTER);
-
-        jButton3.setText("jButton3");
-        jPanel2.add(jButton3);
-
-        jButton4.setText("jButton4");
-        jPanel2.add(jButton4);
-
-        jButton5.setText("jButton5");
-        jPanel2.add(jButton5);
-
-        jButton6.setText("jButton6");
-        jPanel2.add(jButton6);
-
-        jButton7.setText("jButton7");
-        jPanel2.add(jButton7);
-
-        jButton8.setText("jButton8");
-        jPanel2.add(jButton8);
-
-        add(jPanel2, java.awt.BorderLayout.PAGE_START);
-
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
-
-        jButton9.setText("jButton9");
-        jPanel3.add(jButton9);
-
-        jButton10.setText("jButton10");
-        jPanel3.add(jButton10);
-
-        add(jPanel3, java.awt.BorderLayout.EAST);
-
-        jButton11.setText("jButton11");
-        add(jButton11, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -1,5 +1,5 @@
 /*
- * StatGeneratorFactory.java
+ * GeneratorFactory.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -18,22 +18,31 @@
  * 
  * Created on Sep 11, 2008, 5:22:51 PM
  */
-package pcgen.gui.generator.stat;
+package pcgen.gui.generator;
 
+import java.util.ArrayList;
+import pcgen.gui.facade.SkillFacade;
+import pcgen.gui.generator.stat.*;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Vector;
-import pcgen.gui.generator.AbstractGenerator;
-import pcgen.gui.generator.DefaultOrderedGenerator;
+import pcgen.base.util.WeightedCollection;
+import pcgen.gui.generator.skill.MutableSkillGenerator;
+import pcgen.gui.generator.skill.SkillGenerator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public final class StatGeneratorFactory
+public final class GeneratorFactory
 {
 
-    private StatGeneratorFactory()
+    private GeneratorFactory()
     {
     }
 
@@ -77,6 +86,22 @@ public final class StatGeneratorFactory
             generator.setDiceExpression(template.getDiceExpression());
             generator.setDropCount(template.getDropCount());
             generator.setRerollMinimum(template.getRerollMinimum());
+        }
+        return generator;
+    }
+
+    public static MutableSkillGenerator createMutableSkillGenerator(String name,
+                                                                      SkillGenerator template)
+    {
+        MutableSkillGenerator generator = new DefaultMutableSkillGenerator(name);
+        if (template != null)
+        {
+            generator.setRandomOrder(template.isRandomOrder());
+            for (SkillFacade skill : template.getAll())
+            {
+                generator.setSkillPriority(skill,
+                                           template.getSkillPriority(skill));
+            }
         }
         return generator;
     }
@@ -270,6 +295,137 @@ public final class StatGeneratorFactory
         public void setDropCount(int count)
         {
             this.dropCount = count;
+        }
+
+    }
+
+    private static class DefaultSkillGenerator extends DefaultOrderedGenerator<SkillFacade>
+            implements SkillGenerator
+    {
+
+        protected Map<SkillFacade, Integer> priorityMap;
+
+        public DefaultSkillGenerator(String name,
+                                      Map<SkillFacade, Integer> priorityMap,
+                                      boolean randomOrder)
+        {
+            super(name, new ArrayList<SkillFacade>(priorityMap.keySet()),
+                  randomOrder);
+            this.priorityMap = priorityMap;
+        }
+
+        public int getSkillPriority(SkillFacade skill)
+        {
+            return priorityMap.get(skill);
+        }
+
+        @Override
+        protected Queue<SkillFacade> createQueue()
+        {
+            if (!randomOrder)
+            {
+                Comparator<SkillFacade> comparator = new Comparator<SkillFacade>()
+                {
+
+                    public int compare(SkillFacade o1,
+                                        SkillFacade o2)
+                    {
+                        // compare the numbers in reverse in order for the highest priority
+                        // Skills to be used first
+                        return priorityMap.get(o2).compareTo(priorityMap.get(o1));
+                    }
+
+                };
+                Queue<SkillFacade> queue = new PriorityQueue<SkillFacade>(priorityMap.size(),
+                                                                          comparator);
+                queue.addAll(priorityMap.keySet());
+                return queue;
+            }
+            return new RandomWeightedQueue();
+        }
+
+        private class RandomWeightedQueue extends WeightedCollection<SkillFacade>
+                implements Queue<SkillFacade>
+        {
+
+            private SkillFacade element = null;
+
+            public RandomWeightedQueue()
+            {
+                for (SkillFacade skill : priorityMap.keySet())
+                {
+                    add(skill, priorityMap.get(skill));
+                }
+            }
+
+            public boolean offer(SkillFacade o)
+            {
+                return false;
+            }
+
+            public SkillFacade poll()
+            {
+                if (isEmpty())
+                {
+                    return null;
+                }
+                return remove();
+            }
+
+            public SkillFacade remove()
+            {
+                SkillFacade skill = element();
+                remove(skill);
+                element = null;
+                return skill;
+            }
+
+            public SkillFacade peek()
+            {
+                if (isEmpty())
+                {
+                    return null;
+                }
+                return element();
+            }
+
+            public SkillFacade element()
+            {
+                if (element == null)
+                {
+                    element = getRandomValue();
+                }
+                return element;
+            }
+
+        }
+    }
+
+    private static class DefaultMutableSkillGenerator extends DefaultSkillGenerator
+            implements MutableSkillGenerator
+    {
+
+        public DefaultMutableSkillGenerator(String name)
+        {
+            super(name, new HashMap<SkillFacade, Integer>(), false);
+            // This makes getNext() work correctly
+            this.items = Collections.singletonList(null);
+        }
+
+        @Override
+        public List<SkillFacade> getAll()
+        {
+            return new ArrayList<SkillFacade>(priorityMap.keySet());
+        }
+
+        public void setSkillPriority(SkillFacade skill, int priority)
+        {
+            priorityMap.put(skill, priority);
+        }
+
+        public void setRandomOrder(boolean randomOrder)
+        {
+            this.randomOrder = randomOrder;
         }
 
     }

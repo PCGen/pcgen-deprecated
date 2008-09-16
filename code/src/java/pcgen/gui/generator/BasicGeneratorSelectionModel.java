@@ -20,19 +20,193 @@
  */
 package pcgen.gui.generator;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Properties;
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.filter.FilterableTreeViewModel;
-import pcgen.gui.tools.GenericSelectionModel;
+import pcgen.gui.tools.FilteredTreeViewSelectionPanel;
+import pcgen.gui.tools.ResourceManager;
+import pcgen.gui.tools.SelectionDialog;
+import pcgen.gui.tools.SelectionDialogModel;
+import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface BasicGeneratorSelectionModel<E> extends GenericSelectionModel<Generator<E>>
+public class BasicGeneratorSelectionModel<E> implements SelectionDialogModel<Generator<E>>
 {
 
-    public CharacterFacade getCharacter();
+    private static final Properties props = new Properties();
 
-    public FilterableTreeViewModel<E> getTreeViewModel();
+    static
+    {
+        props.setProperty(SelectionDialogModel.AVAILABLE_TEXT_PROP, "availGen");
+        props.setProperty(SelectionDialogModel.SELECTION_TEXT_PROP, "selGen");
+        props.setProperty(SelectionDialogModel.NEW_TOOLTIP_PROP, "newGen");
+        props.setProperty(SelectionDialogModel.COPY_TOOLTIP_PROP, "copyGen");
+        props.setProperty(SelectionDialogModel.DELETE_TOOLTIP_PROP, "deleteGen");
+        props.setProperty(SelectionDialogModel.ADD_TOOLTIP_PROP, "addGen");
+        props.setProperty(SelectionDialogModel.REMOVE_TOOLTIP_PROP, "removeGen");
+    }
 
+    private final FilteredTreeViewSelectionPanel selectionPanel;
+    private final AddAsAction addAsAction;
+
+    public BasicGeneratorSelectionModel()
+    {
+        this.addAsAction = new AddAsAction();
+        this.selectionPanel = new FilteredTreeViewSelectionPanel();
+
+        selectionPanel.getSelectionModel().addListSelectionListener(addAsAction);
+        selectionPanel.add(new JButton(addAsAction), BorderLayout.SOUTH);
+        selectionPanel.addItemListener(addAsAction);
+        //TODO: initialize the filters for selectionPanel
+    }
+
+    public CharacterFacade getCharacter()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public FilterableTreeViewModel<E> getTreeViewModel()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public GenericListModel<Generator<E>> getAvailableList()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public GenericListModel<Generator<E>> getSelectedList()
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setAvailableList(GenericListModel<Generator<E>> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setSelectedList(GenericListModel<Generator<E>> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Component getItemPanel(SelectionDialog<Generator<E>> selectionDialog,
+                                   Component currentItemPanel,
+                                   Generator<E> selectedItem)
+    {
+        DefaultGenericListModel<Generator<E>> model = selectionDialog.getAvailableModel();
+        boolean mutable = isMutable(selectedItem);
+        if (model.contains(selectedItem))
+        {
+            selectionPanel.setEditable(mutable);
+            selectionPanel.setSelectionType(SelectionType.CHECKBOX);
+            selectionPanel.setSelectedObjects(selectedItem.getAll());
+        }
+        else
+        {
+            selectionPanel.setEditable(false);
+            selectionPanel.setSelectionType(SelectionType.RADIO);
+            selectionPanel.setSelectedObjects(selectedItem.getAll());
+        }
+        addAsAction.setSelectionDialog(selectionDialog);
+        if (mutable)
+        {
+            addAsAction.setGenerator((MutableGenerator<E>) selectedItem);
+        }
+        return selectionPanel;
+    }
+
+    public Generator<E> createMutableItem(SelectionDialog<Generator<E>> selectionDialog,
+                                           Generator<E> templateItem)
+    {
+        MutableGenerator<E> generator = new DefaultMutableGenerator<E>(JOptionPane.showInputDialog(selectionDialog,
+                                                                                                   ResourceManager.getText("createGen")));
+        if (templateItem != null)
+        {
+            for (E obj : templateItem.getAll())
+            {
+                generator.add(obj);
+            }
+        }
+        return generator;
+    }
+
+    public boolean isMutable(Object item)
+    {
+        return item instanceof MutableGenerator;
+    }
+
+    public Properties getDisplayProperties()
+    {
+        return props;
+    }
+
+    private class AddAsAction extends AbstractAction implements ListSelectionListener,
+                                                                 ItemListener
+    {
+
+        private SelectionDialog<Generator<E>> selectionDialog;
+        private MutableGenerator<E> generator;
+
+        public AddAsAction()
+        {
+            putValue(NAME, ResourceManager.getText("addGenAs"));
+            setEnabled(false);
+        }
+
+        public void setSelectionDialog(SelectionDialog<Generator<E>> selectionDialog)
+        {
+            this.selectionDialog = selectionDialog;
+        }
+
+        public void setGenerator(MutableGenerator<E> generator)
+        {
+            this.generator = generator;
+        }
+
+        @SuppressWarnings("unchecked")
+        public void actionPerformed(ActionEvent e)
+        {
+            DefaultGenericListModel model = selectionDialog.getSelectedModel();
+            for (Object data : selectionPanel.getSelectedData())
+            {
+                model.add(data);
+            }
+        }
+
+        public void valueChanged(ListSelectionEvent e)
+        {
+            setEnabled(!selectionPanel.getSelectedData().isEmpty());
+        }
+
+        public void itemStateChanged(ItemEvent e)
+        {
+            @SuppressWarnings("unchecked")
+            E item = (E) e.getItem();
+            if (e.getStateChange() == ItemEvent.SELECTED)
+            {
+                generator.add(item);
+            }
+            else
+            {
+                generator.remove(item);
+            }
+        }
+
+    }
 }

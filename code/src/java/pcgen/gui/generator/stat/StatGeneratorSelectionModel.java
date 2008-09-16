@@ -1,5 +1,5 @@
 /*
- * StatGeneratorSelectionDialog.java
+ * StatGeneratorSelectionModel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,11 +16,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 31, 2008, 1:09:10 AM
+ * Created on Sep 15, 2008, 3:21:57 PM
  */
 package pcgen.gui.generator.stat;
 
-import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -29,9 +28,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -39,79 +38,98 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import pcgen.gui.generator.Generator;
-import pcgen.gui.tools.AbstractSelectionDialog;
+import pcgen.gui.generator.GeneratorFactory;
 import pcgen.gui.tools.ResourceManager;
+import pcgen.gui.tools.SelectionDialog;
+import pcgen.gui.tools.SelectionDialogModel;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Generator<Integer>>
+public class StatGeneratorSelectionModel implements SelectionDialogModel<Generator<Integer>>
 {
 
     private static final String ASSIGNMENT_MODE = "assignment";
     private static final String STANDARD_MODE = "dieRoll";
     private static final String PURCHASE_MODE = "purchase";
+    private static final Properties props = new Properties();
+
+    static
+    {
+        props.setProperty(SelectionDialogModel.AVAILABLE_TEXT_PROP,
+                          "availStatGen");
+        props.setProperty(SelectionDialogModel.SELECTION_TEXT_PROP, "selStatGen");
+        props.setProperty(SelectionDialogModel.NEW_TOOLTIP_PROP, "newStatGen");
+        props.setProperty(SelectionDialogModel.COPY_TOOLTIP_PROP, "copyStatGen");
+        props.setProperty(SelectionDialogModel.DELETE_TOOLTIP_PROP,
+                          "deleteStatGen");
+        props.setProperty(SelectionDialogModel.ADD_TOOLTIP_PROP, "addStatGen");
+        props.setProperty(SelectionDialogModel.REMOVE_TOOLTIP_PROP,
+                          "removeStatGen");
+    }
+
     private final ModeSelectionPanel modePanel;
-    private CardLayout cards;
-    private JPanel cardPanel;
-    private Map<String, StatModePanel> cardMap;
-    private StatModePanel currentPanel = null;
+    private final Map<String, StatModePanel> panelMap;
 
-    public StatGeneratorSelectionDialog()
+    public StatGeneratorSelectionModel()
     {
-        super(ResourceManager.getText("availStatGen"),
-              ResourceManager.getText("selStatGen"),
-              ResourceManager.getToolTip("newStatGen"),
-              ResourceManager.getToolTip("copyStatGen"),
-              ResourceManager.getToolTip("deleteStatGen"),
-              ResourceManager.getToolTip("addStatGen"),
-              ResourceManager.getToolTip("removeStatGen"));
         this.modePanel = new ModeSelectionPanel();
+        this.panelMap = new HashMap<String, StatModePanel>();
+        panelMap.put(ASSIGNMENT_MODE, new AssignmentModePanel());
+        panelMap.put(STANDARD_MODE, new StandardModePanel());
+        panelMap.put(PURCHASE_MODE, new PurchaseModePanel());
     }
 
-    protected void initComponents()
+    public GenericListModel<Generator<Integer>> getAvailableList()
     {
-        this.cards = new CardLayout();
-        this.cardPanel = new JPanel(cards);
-        this.cardMap = new HashMap<String, StatModePanel>();
-        StatModePanel panel;
-        panel = new AssignmentModePanel();
-        cardMap.put(ASSIGNMENT_MODE, panel);
-        cardPanel.add(panel, ASSIGNMENT_MODE);
-
-        panel = new StandardModePanel();
-        cardMap.put(STANDARD_MODE, panel);
-        cardPanel.add(panel, STANDARD_MODE);
-
-        panel = new PurchaseModePanel();
-        cardMap.put(PURCHASE_MODE, panel);
-        cardPanel.add(panel, PURCHASE_MODE);
-
-        SelectionHandler handler = new SelectionHandler();
-        availableList.addListSelectionListener(handler);
-        selectedList.addListSelectionListener(handler);
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    protected Component getLeftComponent()
+    public GenericListModel<Generator<Integer>> getSelectedList()
     {
-        return cardPanel;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    protected Generator<Integer> createMutableItem(Generator<Integer> item)
+    public void setAvailableList(GenericListModel<Generator<Integer>> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setSelectedList(GenericListModel<Generator<Integer>> list)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @SuppressWarnings("unchecked")
+    public Component getItemPanel(SelectionDialog<Generator<Integer>> selectionDialog,
+                                   Component currentItemPanel,
+                                   Generator<Integer> selectedItem)
+    {
+        StatModePanel panel = (StatModePanel) currentItemPanel;
+        if (panel != null)
+        {
+            panel.saveGeneratorData();
+        }
+
+        String mode = getMode(selectedItem);
+        panel = panelMap.get(mode);
+        panel.setGenerator(selectedItem);
+        return panel;
+    }
+
+    public Generator<Integer> createMutableItem(SelectionDialog<Generator<Integer>> selectionDialog,
+                                                 Generator<Integer> templateItem)
     {
         Generator<Integer> generator = null;
         String name;
         String mode;
-        if (item == null)
+        if (templateItem == null)
         {
             modePanel.resetGeneratorName();
-            int ret = JOptionPane.showConfirmDialog(this, modePanel,
+            int ret = JOptionPane.showConfirmDialog(selectionDialog, modePanel,
                                                     "Generator Details",
                                                     JOptionPane.OK_CANCEL_OPTION);
             if (ret != JOptionPane.OK_OPTION)
@@ -123,28 +141,28 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
         }
         else
         {
-            name = JOptionPane.showInputDialog(this,
+            name = JOptionPane.showInputDialog(selectionDialog,
                                                ResourceManager.getText("createGen"),
                                                "Select Name",
                                                JOptionPane.QUESTION_MESSAGE);
-            mode = getMode(item);
+            mode = getMode(templateItem);
         }
         if (name != null)
         {
             if (mode == ASSIGNMENT_MODE)
             {
-                generator = StatGeneratorFactory.createMutableAssignmentModeGenerator(name,
-                                                                                      (AssignmentModeGenerator) item);
+                generator = GeneratorFactory.createMutableAssignmentModeGenerator(name,
+                                                                                  (AssignmentModeGenerator) templateItem);
             }
             else if (mode == STANDARD_MODE)
             {
-                generator = StatGeneratorFactory.createMutableStandardModeGenerator(name,
-                                                                                    (StandardModeGenerator) item);
+                generator = GeneratorFactory.createMutableStandardModeGenerator(name,
+                                                                                (StandardModeGenerator) templateItem);
             }
             else
             {
-                generator = StatGeneratorFactory.createMutablePurchaseModeGenerator(name,
-                                                                                    (PurchaseModeGenerator) item);
+                generator = GeneratorFactory.createMutablePurchaseModeGenerator(name,
+                                                                                (PurchaseModeGenerator) templateItem);
             }
         }
         return generator;
@@ -158,36 +176,16 @@ public class StatGeneratorSelectionDialog extends AbstractSelectionDialog<Genera
                 : null;
     }
 
-    @Override
-    protected boolean isMutable(Object item)
+    public boolean isMutable(Object item)
     {
         return item instanceof MutableAssignmentModeGenerator ||
                 item instanceof MutablePurchaseModeGenerator ||
                 item instanceof MutableStandardModeGenerator;
     }
 
-    private class SelectionHandler implements ListSelectionListener
+    public Properties getDisplayProperties()
     {
-
-        @SuppressWarnings("unchecked")
-        public void valueChanged(ListSelectionEvent e)
-        {
-            JList list = (JList) e.getSource();
-            Generator<Integer> generator = (Generator<Integer>) list.getSelectedValue();
-            if (generator != null)
-            {
-                if (currentPanel != null)
-                {
-                    currentPanel.saveGeneratorData();
-                }
-                String mode = getMode(generator);
-                StatModePanel panel = cardMap.get(mode);
-                panel.setGenerator(generator);
-                currentPanel = panel;
-                cards.show(cardPanel, mode);
-            }
-        }
-
+        return props;
     }
 
     private static class ModeSelectionPanel extends JPanel implements AncestorListener
