@@ -75,4 +75,6 @@ public interface CharacterFacade
 
     public boolean isTempBonusApplied(TempBonusFacade bonus);
 
+    public DataSetFacade getDataSet();
+
 }

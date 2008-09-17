@@ -62,6 +62,7 @@ import javax.swing.table.TableColumnModel;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.StatFacade;
+import pcgen.gui.generator.FacadeGenerator;
 import pcgen.gui.generator.Generator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.util.ComboSelectionBox;
@@ -232,7 +233,7 @@ public class CharacterCreationDialog extends JDialog
                                 if (e.getStateChange() == ItemEvent.SELECTED)
                                 {
                                     @SuppressWarnings("unchecked")
-                                    Generator<RaceFacade> raceGenerator = (Generator<RaceFacade>) e.getItem();
+                                    FacadeGenerator<RaceFacade> raceGenerator = (FacadeGenerator<RaceFacade>) e.getItem();
                                     StatTableModel model = statTablePane.getModel();
                                     if (raceGenerator.isSingleton())
                                     {
@@ -527,7 +528,7 @@ public class CharacterCreationDialog extends JDialog
         if (box.isEnabled())
         {
             @SuppressWarnings("unchecked")
-            Generator<ClassFacade> classGenerator = (Generator<ClassFacade>) box.getSelectedItem();
+            FacadeGenerator<ClassFacade> classGenerator = (FacadeGenerator<ClassFacade>) box.getSelectedItem();
             if (classGenerator.isSingleton())
             {
                 ClassFacade c = classGenerator.getNext();
@@ -546,7 +547,7 @@ public class CharacterCreationDialog extends JDialog
     private void checkSelectionValidity()
     {
         Generator<Integer> alignmentGenerator = (Generator<Integer>) alignmentComboBox.getSelectedItem();
-        Generator<RaceFacade> raceGenerator = (Generator<RaceFacade>) raceSelectionBox.getSelectedItem();
+        FacadeGenerator<RaceFacade> raceGenerator = (FacadeGenerator<RaceFacade>) raceSelectionBox.getSelectedItem();
         RaceFacade race = null;
         if (raceGenerator.isSingleton())
         {

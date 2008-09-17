@@ -1,5 +1,5 @@
 /*
- * AbstractGenerator.java
+ * AbstractFacadeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,41 +16,40 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 10, 2008, 5:50:55 PM
+ * Created on Sep 16, 2008, 4:24:34 PM
  */
 package pcgen.gui.generator;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import pcgen.gui.facade.InfoFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractGenerator<E> implements Generator<E>
+public abstract class AbstractFacadeGenerator<E extends InfoFacade> extends AbstractGenerator<E>
+        implements FacadeGenerator<E>
 {
 
-    private String name;
-
-    public AbstractGenerator(String name)
+    public AbstractFacadeGenerator(String name)
     {
-        this.name = name;
+        super(name);
     }
 
-    public List<E> getAll()
+    public boolean isSingleton()
     {
-        return Collections.emptyList();
+        return false;
     }
 
-    public void reset()
+    public Set<String> getSources()
     {
-
-    }
-
-    @Override
-    public String toString()
-    {
-        return name;
+        Set<String> sources = new HashSet<String>();
+        for (E facade : getAll())
+        {
+            sources.add(facade.getSource());
+        }
+        return sources;
     }
 
 }

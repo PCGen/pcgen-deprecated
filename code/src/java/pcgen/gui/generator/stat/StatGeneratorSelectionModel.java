@@ -20,6 +20,7 @@
  */
 package pcgen.gui.generator.stat;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -42,14 +43,14 @@ import pcgen.gui.generator.Generator;
 import pcgen.gui.generator.GeneratorFactory;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.SelectionDialog;
-import pcgen.gui.tools.SelectionDialogModel;
+import pcgen.gui.tools.SelectionModel;
 import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StatGeneratorSelectionModel implements SelectionDialogModel<Generator<Integer>>
+public class StatGeneratorSelectionModel implements SelectionModel<Generator<Integer>>
 {
 
     private static final String ASSIGNMENT_MODE = "assignment";
@@ -59,20 +60,22 @@ public class StatGeneratorSelectionModel implements SelectionDialogModel<Generat
 
     static
     {
-        props.setProperty(SelectionDialogModel.AVAILABLE_TEXT_PROP,
+        props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP,
                           "availStatGen");
-        props.setProperty(SelectionDialogModel.SELECTION_TEXT_PROP, "selStatGen");
-        props.setProperty(SelectionDialogModel.NEW_TOOLTIP_PROP, "newStatGen");
-        props.setProperty(SelectionDialogModel.COPY_TOOLTIP_PROP, "copyStatGen");
-        props.setProperty(SelectionDialogModel.DELETE_TOOLTIP_PROP,
+        props.setProperty(SelectionModel.SELECTION_TEXT_PROP, "selStatGen");
+        props.setProperty(SelectionModel.NEW_TOOLTIP_PROP, "newStatGen");
+        props.setProperty(SelectionModel.COPY_TOOLTIP_PROP, "copyStatGen");
+        props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP,
                           "deleteStatGen");
-        props.setProperty(SelectionDialogModel.ADD_TOOLTIP_PROP, "addStatGen");
-        props.setProperty(SelectionDialogModel.REMOVE_TOOLTIP_PROP,
+        props.setProperty(SelectionModel.ADD_TOOLTIP_PROP, "addStatGen");
+        props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP,
                           "removeStatGen");
     }
 
     private final ModeSelectionPanel modePanel;
     private final Map<String, StatModePanel> panelMap;
+    private GenericListModel<Generator<Integer>> availableList;
+    private GenericListModel<Generator<Integer>> selectedList;
 
     public StatGeneratorSelectionModel()
     {
@@ -85,22 +88,22 @@ public class StatGeneratorSelectionModel implements SelectionDialogModel<Generat
 
     public GenericListModel<Generator<Integer>> getAvailableList()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return availableList;
     }
 
     public GenericListModel<Generator<Integer>> getSelectedList()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return selectedList;
     }
 
-    public void setAvailableList(GenericListModel<Generator<Integer>> list)
+    public void setAvailableList(GenericListModel<Generator<Integer>> availableList)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.availableList = availableList;
     }
 
-    public void setSelectedList(GenericListModel<Generator<Integer>> list)
+    public void setSelectedList(GenericListModel<Generator<Integer>> selectedList)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.selectedList = selectedList;
     }
 
     @SuppressWarnings("unchecked")
@@ -176,7 +179,24 @@ public class StatGeneratorSelectionModel implements SelectionDialogModel<Generat
                 : null;
     }
 
-    public boolean isMutable(Object item)
+    public boolean isAddable(Generator<Integer> item)
+    {
+        return true;
+    }
+
+    public Color getItemColor(Generator<Integer> item)
+    {
+        if (isMutable(item))
+        {
+            return Color.BLUE;
+        }
+        else
+        {
+            return Color.BLACK;
+        }
+    }
+
+    public boolean isMutable(Generator<Integer> item)
     {
         return item instanceof MutableAssignmentModeGenerator ||
                 item instanceof MutablePurchaseModeGenerator ||

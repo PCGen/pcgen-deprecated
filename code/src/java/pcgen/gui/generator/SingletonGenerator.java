@@ -22,12 +22,15 @@ package pcgen.gui.generator;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import pcgen.gui.facade.InfoFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class SingletonGenerator<E> extends AbstractGenerator<E>
+public class SingletonGenerator<E extends InfoFacade> extends AbstractGenerator<E>
+        implements FacadeGenerator<E>
 {
 
     private E item;
@@ -43,6 +46,7 @@ public class SingletonGenerator<E> extends AbstractGenerator<E>
         return item;
     }
 
+    @Override
     public List<E> getAll()
     {
         return Collections.singletonList(item);
@@ -52,6 +56,11 @@ public class SingletonGenerator<E> extends AbstractGenerator<E>
     public boolean isSingleton()
     {
         return true;
+    }
+
+    public Set<String> getSources()
+    {
+        return Collections.singleton(item.getSource());
     }
 
 }

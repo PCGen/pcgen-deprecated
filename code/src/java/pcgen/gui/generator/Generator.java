@@ -41,8 +41,6 @@ public interface Generator<E>
 
     public List<E> getAll();
 
-    public boolean isSingleton();
-
     /**
      * This returns the name of this generator that will be displayed.
      * @return the string representation for this Generator

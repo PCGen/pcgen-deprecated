@@ -20,6 +20,7 @@
  */
 package pcgen.gui.filter;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -33,27 +34,27 @@ import javax.swing.JTextArea;
 import pcgen.gui.tools.FlippingSplitPane;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.SelectionDialog;
-import pcgen.gui.tools.SelectionDialogModel;
+import pcgen.gui.tools.SelectionModel;
 import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class FilterSelectionModel implements SelectionDialogModel<DisplayableFilter<?>>
+public class FilterSelectionModel implements SelectionModel<DisplayableFilter<?>>
 {
 
     private static final Properties props = new Properties();
 
     static
     {
-        props.setProperty(SelectionDialogModel.AVAILABLE_TEXT_PROP, "availFilt");
-        props.setProperty(SelectionDialogModel.SELECTION_TEXT_PROP, "selFilt");
-        props.setProperty(SelectionDialogModel.NEW_TOOLTIP_PROP, "newFilt");
-        props.setProperty(SelectionDialogModel.COPY_TOOLTIP_PROP, "copyFilt");
-        props.setProperty(SelectionDialogModel.DELETE_TOOLTIP_PROP, "deleteFilt");
-        props.setProperty(SelectionDialogModel.ADD_TOOLTIP_PROP, "addFilt");
-        props.setProperty(SelectionDialogModel.REMOVE_TOOLTIP_PROP, "removeFilt");
+        props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP, "availFilt");
+        props.setProperty(SelectionModel.SELECTION_TEXT_PROP, "selFilt");
+        props.setProperty(SelectionModel.NEW_TOOLTIP_PROP, "newFilt");
+        props.setProperty(SelectionModel.COPY_TOOLTIP_PROP, "copyFilt");
+        props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP, "deleteFilt");
+        props.setProperty(SelectionModel.ADD_TOOLTIP_PROP, "addFilt");
+        props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP, "removeFilt");
     }
 
     private final JTextArea descriptionArea;
@@ -146,14 +147,28 @@ public class FilterSelectionModel implements SelectionDialogModel<DisplayableFil
         return filter;
     }
 
-    public boolean isMutable(Object item)
+    public Properties getDisplayProperties()
+    {
+        return props;
+    }
+
+    public boolean isMutable(DisplayableFilter<?> item)
     {
         return item instanceof MutableFilter;
     }
 
-    public Properties getDisplayProperties()
+    public boolean isAddable(DisplayableFilter<?> item)
     {
-        return props;
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Color getItemColor(DisplayableFilter<?> item)
+    {
+        if (isMutable(item))
+        {
+            return Color.BLUE;
+        }
+        return Color.BLACK;
     }
 
 }

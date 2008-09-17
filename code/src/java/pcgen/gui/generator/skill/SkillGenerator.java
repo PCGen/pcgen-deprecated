@@ -21,13 +21,14 @@
 package pcgen.gui.generator.skill;
 
 import pcgen.gui.facade.SkillFacade;
+import pcgen.gui.generator.FacadeGenerator;
 import pcgen.gui.generator.OrderedGenerator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface SkillGenerator extends OrderedGenerator<SkillFacade>
+public interface SkillGenerator extends OrderedGenerator<SkillFacade>, FacadeGenerator<SkillFacade>
 {
 
     public int getSkillPriority(SkillFacade skill);

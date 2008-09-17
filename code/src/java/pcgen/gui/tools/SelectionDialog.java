@@ -21,7 +21,6 @@
 package pcgen.gui.tools;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -77,7 +76,7 @@ public class SelectionDialog<E> extends JDialog
     private final Action downAction;
     private DefaultGenericListModel<E> availableModel;
     private DefaultGenericListModel<E> selectedModel;
-    private SelectionDialogModel<E> model;
+    private SelectionModel<E> model;
 
     protected SelectionDialog()
     {
@@ -184,7 +183,7 @@ public class SelectionDialog<E> extends JDialog
         pack();
     }
 
-    protected void setModel(SelectionDialogModel<E> model)
+    protected void setModel(SelectionModel<E> model)
     {
         this.model = model;
         availableModel = new DefaultGenericListModel<E>(new GenericListModelWrapper<E>(model.getAvailableList()));
@@ -403,8 +402,8 @@ public class SelectionDialog<E> extends JDialog
                 if (nonNull)
                 {
                     boolean unique = !selectedModel.contains(value);
-                    addAction.setEnabled(unique);
                     removeAction.setEnabled(!unique);
+                    addAction.setEnabled(unique && model.isAddable(value));
                     if (unique)
                     {
                         selectedList.clearSelection();
@@ -465,6 +464,7 @@ public class SelectionDialog<E> extends JDialog
     {
 
         @Override
+        @SuppressWarnings("unchecked")
         public Component getListCellRendererComponent(JList list, Object value,
                                                        int index,
                                                        boolean isSelected,
@@ -474,9 +474,9 @@ public class SelectionDialog<E> extends JDialog
                                                                 index,
                                                                 isSelected,
                                                                 cellHasFocus);
-            if (!isSelected && model.isMutable(value))
+            if (!isSelected)
             {
-                comp.setForeground(Color.BLUE);
+                comp.setForeground(model.getItemColor((E) value));
             }
             return comp;
         }

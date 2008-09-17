@@ -1,5 +1,5 @@
 /*
- * MutableGenerator.java
+ * GeneratorSelectionManager.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,19 +16,33 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 25, 2008, 2:34:36 AM
+ * Created on Sep 15, 2008, 7:24:10 PM
  */
 package pcgen.gui.generator;
+
+import pcgen.gui.facade.DataSetFacade;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableGenerator<E> extends Generator<E>
+public class GeneratorSelectionManager
 {
 
-    public void add(E element);
+    private GeneratorSelectionManager()
+    {
+    }
 
-    public void remove(E element);
+    public static <T> GenericListModel<T> getSelectedGenerators(DataSetFacade dataSet,
+                                                          Class<T> c)
+    {
+        return null;
+    }
+
+    public static <T> GenericListModel<T> getAvailableGenerators(Class<T> c)
+    {
+        return null;
+    }
 
 }

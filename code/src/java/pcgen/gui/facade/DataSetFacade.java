@@ -20,7 +20,8 @@
  */
 package pcgen.gui.facade;
 
-import java.util.List;
+import java.util.Set;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
@@ -29,18 +30,20 @@ import java.util.List;
 public interface DataSetFacade
 {
 
-    public List<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
+    public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
 
-    public List<AbilityCatagoryFacade> getAbilityCatagories();
+    public GenericListModel<AbilityCatagoryFacade> getAbilityCatagories();
 
-    public List<SkillFacade> getSkills();
+    public GenericListModel<SkillFacade> getSkills();
 
-    public List<RaceFacade> getRaces();
+    public GenericListModel<RaceFacade> getRaces();
 
-    public List<ClassFacade> getClasses();
+    public GenericListModel<ClassFacade> getClasses();
 
-    public List<TempBonusFacade> getTempBonuses();
+    public GenericListModel<TempBonusFacade> getTempBonuses();
 
-    public List<TemplateFacade> getTemplates();
+    public GenericListModel<TemplateFacade> getTemplates();
+
+    public Set<String> getSources();
 
 }

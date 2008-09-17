@@ -1,5 +1,5 @@
 /*
- * AbstractGenerator.java
+ * MutableFacadeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,41 +16,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 10, 2008, 5:50:55 PM
+ * Created on Aug 25, 2008, 2:34:36 AM
  */
 package pcgen.gui.generator;
 
-import java.util.Collections;
-import java.util.List;
+import pcgen.gui.facade.InfoFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractGenerator<E> implements Generator<E>
+public interface MutableFacadeGenerator<E extends InfoFacade> extends FacadeGenerator<E>
 {
 
-    private String name;
+    public void add(E element);
 
-    public AbstractGenerator(String name)
-    {
-        this.name = name;
-    }
-
-    public List<E> getAll()
-    {
-        return Collections.emptyList();
-    }
-
-    public void reset()
-    {
-
-    }
-
-    @Override
-    public String toString()
-    {
-        return name;
-    }
+    public void remove(E element);
 
 }

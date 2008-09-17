@@ -1,5 +1,5 @@
 /*
- * DefaultMutableGenerator.java
+ * AbilityGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,52 +16,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 26, 2008, 5:11:13 PM
+ * Created on Sep 16, 2008, 4:47:23 PM
  */
-package pcgen.gui.generator;
+package pcgen.gui.generator.ability;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
-import pcgen.base.util.RandomUtil;
+import pcgen.gui.facade.AbilityFacade;
+import pcgen.gui.generator.FacadeGenerator;
+import pcgen.gui.generator.OrderedGenerator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class DefaultMutableGenerator<E> extends AbstractGenerator<E> implements MutableGenerator<E>
+public interface AbilityGenerator extends OrderedGenerator<AbilityFacade>,
+                                           FacadeGenerator<AbilityFacade>
 {
-
-    private final Vector<E> vector = new Vector<E>();
-
-    public DefaultMutableGenerator(String name)
-    {
-        super(name);
-    }
-
-    public E getNext()
-    {
-        if (vector.isEmpty())
-        {
-            return null;
-        }
-        return vector.get(RandomUtil.getRandomInt(vector.size()));
-    }
-
-    @Override
-    public List<E> getAll()
-    {
-        return Collections.unmodifiableList(vector);
-    }
-
-    public void add(E element)
-    {
-        vector.add(element);
-    }
-
-    public void remove(E element)
-    {
-        vector.remove(element);
-    }
-
 }

@@ -32,6 +32,7 @@ import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.filter.DisplayableFilter;
 import pcgen.gui.generator.Generator;
+import pcgen.gui.tools.SelectionModel;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
 
@@ -47,6 +48,19 @@ public final class PCGenUIManager
 
     private PCGenUIManager()
     {
+    }
+
+    public static <T> SelectionModel<T> getGeneratorSelectionModel(Class<T> c)
+    {
+        if (c == Integer.class)
+        {
+            
+        }
+        else if (c == SkillFacade.class)
+        {
+
+        }
+        return null;
     }
 
     public static boolean isQualified(CharacterFacade character, ClassFacade c)

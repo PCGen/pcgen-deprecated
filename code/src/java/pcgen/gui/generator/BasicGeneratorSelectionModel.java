@@ -21,6 +21,7 @@
 package pcgen.gui.generator;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -32,11 +33,12 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.facade.CharacterFacade;
+import pcgen.gui.facade.InfoFacade;
 import pcgen.gui.filter.FilterableTreeViewModel;
 import pcgen.gui.tools.FilteredTreeViewSelectionPanel;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.SelectionDialog;
-import pcgen.gui.tools.SelectionDialogModel;
+import pcgen.gui.tools.SelectionModel;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
@@ -45,20 +47,20 @@ import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class BasicGeneratorSelectionModel<E> implements SelectionDialogModel<Generator<E>>
+public class BasicGeneratorSelectionModel<E extends InfoFacade> implements SelectionModel<FacadeGenerator<E>>
 {
 
     private static final Properties props = new Properties();
 
     static
     {
-        props.setProperty(SelectionDialogModel.AVAILABLE_TEXT_PROP, "availGen");
-        props.setProperty(SelectionDialogModel.SELECTION_TEXT_PROP, "selGen");
-        props.setProperty(SelectionDialogModel.NEW_TOOLTIP_PROP, "newGen");
-        props.setProperty(SelectionDialogModel.COPY_TOOLTIP_PROP, "copyGen");
-        props.setProperty(SelectionDialogModel.DELETE_TOOLTIP_PROP, "deleteGen");
-        props.setProperty(SelectionDialogModel.ADD_TOOLTIP_PROP, "addGen");
-        props.setProperty(SelectionDialogModel.REMOVE_TOOLTIP_PROP, "removeGen");
+        props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP, "availGen");
+        props.setProperty(SelectionModel.SELECTION_TEXT_PROP, "selGen");
+        props.setProperty(SelectionModel.NEW_TOOLTIP_PROP, "newGen");
+        props.setProperty(SelectionModel.COPY_TOOLTIP_PROP, "copyGen");
+        props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP, "deleteGen");
+        props.setProperty(SelectionModel.ADD_TOOLTIP_PROP, "addGen");
+        props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP, "removeGen");
     }
 
     private final FilteredTreeViewSelectionPanel selectionPanel;
@@ -72,7 +74,7 @@ public class BasicGeneratorSelectionModel<E> implements SelectionDialogModel<Gen
         selectionPanel.getSelectionModel().addListSelectionListener(addAsAction);
         selectionPanel.add(new JButton(addAsAction), BorderLayout.SOUTH);
         selectionPanel.addItemListener(addAsAction);
-        //TODO: initialize the filters for selectionPanel
+    //TODO: initialize the filters for selectionPanel
     }
 
     public CharacterFacade getCharacter()
@@ -85,31 +87,31 @@ public class BasicGeneratorSelectionModel<E> implements SelectionDialogModel<Gen
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public GenericListModel<Generator<E>> getAvailableList()
+    public GenericListModel<FacadeGenerator<E>> getAvailableList()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public GenericListModel<Generator<E>> getSelectedList()
+    public GenericListModel<FacadeGenerator<E>> getSelectedList()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setAvailableList(GenericListModel<Generator<E>> list)
+    public void setAvailableList(GenericListModel<FacadeGenerator<E>> list)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setSelectedList(GenericListModel<Generator<E>> list)
+    public void setSelectedList(GenericListModel<FacadeGenerator<E>> list)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Component getItemPanel(SelectionDialog<Generator<E>> selectionDialog,
+    public Component getItemPanel(SelectionDialog<FacadeGenerator<E>> selectionDialog,
                                    Component currentItemPanel,
-                                   Generator<E> selectedItem)
+                                   FacadeGenerator<E> selectedItem)
     {
-        DefaultGenericListModel<Generator<E>> model = selectionDialog.getAvailableModel();
+        DefaultGenericListModel<FacadeGenerator<E>> model = selectionDialog.getAvailableModel();
         boolean mutable = isMutable(selectedItem);
         if (model.contains(selectedItem))
         {
@@ -126,29 +128,44 @@ public class BasicGeneratorSelectionModel<E> implements SelectionDialogModel<Gen
         addAsAction.setSelectionDialog(selectionDialog);
         if (mutable)
         {
-            addAsAction.setGenerator((MutableGenerator<E>) selectedItem);
+            addAsAction.setGenerator((MutableFacadeGenerator<E>) selectedItem);
         }
         return selectionPanel;
     }
 
-    public Generator<E> createMutableItem(SelectionDialog<Generator<E>> selectionDialog,
-                                           Generator<E> templateItem)
+    public FacadeGenerator<E> createMutableItem(SelectionDialog<FacadeGenerator<E>> selectionDialog,
+                                                 FacadeGenerator<E> templateItem)
     {
-        MutableGenerator<E> generator = new DefaultMutableGenerator<E>(JOptionPane.showInputDialog(selectionDialog,
-                                                                                                   ResourceManager.getText("createGen")));
-        if (templateItem != null)
-        {
-            for (E obj : templateItem.getAll())
-            {
-                generator.add(obj);
-            }
-        }
-        return generator;
+        return GeneratorFactory.createMutableFacadeGenerator(JOptionPane.showInputDialog(selectionDialog,
+                                                                                         ResourceManager.getText("createGen")),
+                                                             templateItem);
+
     }
 
-    public boolean isMutable(Object item)
+    public boolean isMutable(FacadeGenerator<E> item)
     {
-        return item instanceof MutableGenerator;
+        return item instanceof MutableFacadeGenerator;
+    }
+
+    public boolean isAddable(FacadeGenerator<E> item)
+    {
+        return getCharacter().getDataSet().getSources().containsAll(item.getSources());
+    }
+
+    public Color getItemColor(FacadeGenerator<E> item)
+    {
+        if (!isAddable(item))
+        {
+            return Color.RED;
+        }
+        else if (isMutable(item))
+        {
+            return Color.BLUE;
+        }
+        else
+        {
+            return Color.BLACK;
+        }
     }
 
     public Properties getDisplayProperties()
@@ -160,8 +177,8 @@ public class BasicGeneratorSelectionModel<E> implements SelectionDialogModel<Gen
                                                                  ItemListener
     {
 
-        private SelectionDialog<Generator<E>> selectionDialog;
-        private MutableGenerator<E> generator;
+        private SelectionDialog<FacadeGenerator<E>> selectionDialog;
+        private MutableFacadeGenerator<E> generator;
 
         public AddAsAction()
         {
@@ -169,12 +186,12 @@ public class BasicGeneratorSelectionModel<E> implements SelectionDialogModel<Gen
             setEnabled(false);
         }
 
-        public void setSelectionDialog(SelectionDialog<Generator<E>> selectionDialog)
+        public void setSelectionDialog(SelectionDialog<FacadeGenerator<E>> selectionDialog)
         {
             this.selectionDialog = selectionDialog;
         }
 
-        public void setGenerator(MutableGenerator<E> generator)
+        public void setGenerator(MutableFacadeGenerator<E> generator)
         {
             this.generator = generator;
         }

@@ -1,5 +1,5 @@
 /*
- * SelectionDialogModel.java
+ * SelectionModel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 package pcgen.gui.tools;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.util.Properties;
 import pcgen.gui.util.GenericListModel;
@@ -28,7 +29,7 @@ import pcgen.gui.util.GenericListModel;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface SelectionDialogModel<E>
+public interface SelectionModel<E>
 {
 
     public static final String AVAILABLE_TEXT_PROP = "avail";
@@ -51,9 +52,14 @@ public interface SelectionDialogModel<E>
                                    Component currentItemPanel,
                                    E selectedItem);
 
-    public E createMutableItem(SelectionDialog<E> selectionDialog, E templateItem);
+    public E createMutableItem(SelectionDialog<E> selectionDialog,
+                                E templateItem);
 
-    public boolean isMutable(Object item);
+    public boolean isMutable(E item);
+
+    public boolean isAddable(E item);
+
+    public Color getItemColor(E item);
 
     public Properties getDisplayProperties();
 

@@ -26,12 +26,17 @@ import pcgen.gui.generator.stat.*;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Vector;
+import pcgen.base.util.RandomUtil;
 import pcgen.base.util.WeightedCollection;
+import pcgen.gui.facade.InfoFacade;
 import pcgen.gui.generator.skill.MutableSkillGenerator;
 import pcgen.gui.generator.skill.SkillGenerator;
 
@@ -44,6 +49,20 @@ public final class GeneratorFactory
 
     private GeneratorFactory()
     {
+    }
+
+    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(String name,
+                                                                                                  FacadeGenerator<T> template)
+    {
+        MutableFacadeGenerator<T> generator = new DefaultMutableFacadeGenerator<T>(name);
+        if (template != null)
+        {
+            for (T obj : template.getAll())
+            {
+                generator.add(obj);
+            }
+        }
+        return generator;
     }
 
     public static MutableAssignmentModeGenerator createMutableAssignmentModeGenerator(String name,
@@ -104,6 +123,114 @@ public final class GeneratorFactory
             }
         }
         return generator;
+    }
+
+    private static class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
+    {
+
+        protected List<E> items;
+        private Queue<E> queue = null;
+        protected boolean randomOrder;
+
+        public DefaultOrderedGenerator(String name, List<E> items,
+                                        boolean randomOrder)
+        {
+            super(name);
+            this.items = items;
+            this.randomOrder = randomOrder;
+            reset();
+        }
+
+        public E getNext()
+        {
+            if (items.isEmpty())
+            {
+                return null;
+            }
+            if (queue.isEmpty())
+            {
+                reset();
+            }
+            return queue.poll();
+        }
+
+        public boolean isRandomOrder()
+        {
+            return randomOrder;
+        }
+
+        @Override
+        public List<E> getAll()
+        {
+            return items;
+        }
+
+        protected Queue<E> createQueue()
+        {
+            LinkedList<E> temp = new LinkedList<E>(items);
+            if (randomOrder)
+            {
+                Collections.shuffle(temp);
+            }
+            return temp;
+        }
+
+        @Override
+        public void reset()
+        {
+            queue = createQueue();
+        }
+
+    }
+
+    private static class DefaultFacadeGenerator<E extends InfoFacade> extends AbstractFacadeGenerator<E>
+    {
+
+        protected List<E> list;
+
+        public DefaultFacadeGenerator(String name, List<E> items)
+        {
+            super(name);
+            list = new Vector<E>(items);
+        }
+
+        public E getNext()
+        {
+            if (list.isEmpty())
+            {
+                return null;
+            }
+            return list.get(RandomUtil.getRandomInt(list.size()));
+        }
+
+        @Override
+        public List<E> getAll()
+        {
+            return Collections.unmodifiableList(list);
+        }
+
+    }
+
+    private static class DefaultMutableFacadeGenerator<E extends InfoFacade>
+            extends DefaultFacadeGenerator<E> implements MutableFacadeGenerator<E>
+    {
+
+        @SuppressWarnings("unchecked")
+        public DefaultMutableFacadeGenerator(String name)
+        {
+            super(name, Collections.EMPTY_LIST);
+        }
+
+        public void add(E element)
+        {
+            list.add(element);
+        }
+
+        public void remove(E element)
+        {
+            list.remove(element);
+        }
+
     }
 
     private static class DefaultAssignmentModeGenerator extends DefaultOrderedGenerator<Integer>
@@ -317,6 +444,21 @@ public final class GeneratorFactory
         public int getSkillPriority(SkillFacade skill)
         {
             return priorityMap.get(skill);
+        }
+
+        public boolean isSingleton()
+        {
+            return false;
+        }
+
+        public Set<String> getSources()
+        {
+            Set<String> sources = new HashSet<String>();
+            for (SkillFacade skill : priorityMap.keySet())
+            {
+                sources.add(skill.getSource());
+            }
+            return sources;
         }
 
         @Override

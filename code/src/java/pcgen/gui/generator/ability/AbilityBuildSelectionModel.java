@@ -20,39 +20,40 @@
  */
 package pcgen.gui.generator.ability;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.util.Properties;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.filter.FilterableTreeViewModel;
 import pcgen.gui.tools.SelectionDialog;
-import pcgen.gui.tools.SelectionDialogModel;
+import pcgen.gui.tools.SelectionModel;
 import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class AbilityBuildSelectionModel implements SelectionDialogModel<AbilityBuild>
+public class AbilityBuildSelectionModel implements SelectionModel<AbilityBuild>
 {
 
     private static final Properties props = new Properties();
 
     static
     {
-        props.setProperty(SelectionDialogModel.AVAILABLE_TEXT_PROP,
+        props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP,
                           "availAbilBuild");
-        props.setProperty(SelectionDialogModel.SELECTION_TEXT_PROP,
+        props.setProperty(SelectionModel.SELECTION_TEXT_PROP,
                           "selAbilBuild");
-        props.setProperty(SelectionDialogModel.NEW_TOOLTIP_PROP,
+        props.setProperty(SelectionModel.NEW_TOOLTIP_PROP,
                           "newAbilBuild");
-        props.setProperty(SelectionDialogModel.COPY_TOOLTIP_PROP,
+        props.setProperty(SelectionModel.COPY_TOOLTIP_PROP,
                           "copyAbilBuild");
-        props.setProperty(SelectionDialogModel.DELETE_TOOLTIP_PROP,
+        props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP,
                           "deleteAbilBuild");
-        props.setProperty(SelectionDialogModel.ADD_TOOLTIP_PROP,
+        props.setProperty(SelectionModel.ADD_TOOLTIP_PROP,
                           "addAbilBuild");
-        props.setProperty(SelectionDialogModel.REMOVE_TOOLTIP_PROP,
+        props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP,
                           "removeAbilBuild");
     }
 
@@ -99,14 +100,24 @@ public class AbilityBuildSelectionModel implements SelectionDialogModel<AbilityB
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean isMutable(Object item)
+    public Properties getDisplayProperties()
+    {
+        return props;
+    }
+
+    public boolean isMutable(AbilityBuild item)
     {
         return item instanceof MutableAbilityBuild;
     }
 
-    public Properties getDisplayProperties()
+    public boolean isAddable(AbilityBuild item)
     {
-        return props;
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Color getItemColor(AbilityBuild item)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
