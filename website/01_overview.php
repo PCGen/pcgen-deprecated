@@ -6,13 +6,6 @@ require_once('include/header.php.inc');
 
     <div id="content" class="content">
 
-        <h1>A sad week for gaming</h1>
-        <p>
-        	On behalf of the PCGen team and the community at large the PCGen BoD would like to extend our deepest sympathies to Gary Gygax's family and 		
-            friends.  Simply put, our community would never have come into being with out the work that Gary and Dave started, so thanks for inspiring us to 
-            explore our imaginations Gary!  You will be sorely missed :(.
-        </p>
-
         <h1>Major Links</h1>
         <ul>
 	        <li><a href="03_get_pcgen.php">Get PCGen</a> - Download PCGen </li>
