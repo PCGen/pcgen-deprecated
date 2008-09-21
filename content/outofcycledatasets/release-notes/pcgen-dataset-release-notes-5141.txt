@@ -14,6 +14,7 @@ Data Sets in this release
     Publisher: Mongoose Publishing
     Game Mode: 35e
     Release Date: 2008-08-27
+
     Title: Curse of the Crimson Throne - Chapter 1: Edge of Anarch
     File: 5141_paizo_curseofthecrimsonthrown_advset7_1.0.zip
     Publisher: Paizo Publishing
@@ -25,6 +26,24 @@ Data Sets in this release
     Publisher: Paizo Publishing
     Game Mode: 35e
     Release Date: 2008-08-11
+
+    Title: Curse of the Crimson Throne - Chapter 4: A History of Ashes
+    File: 5141_paizo_curseofthecrimsonthrone_advset10_1.0.zip
+    Publisher: Paizo Publishing
+    Game Mode: 35e
+    Release Date: 2008-09-21
+
+    Title: Curse of the Crimson Throne - Chapter 5: Skeletons of Scarwall
+    File: 5141_paizo_curseofthecrimsonthrone_advset11_1.0.zip
+    Publisher: Paizo Publishing
+    Game Mode: 35e
+    Release Date: 2008-09-21
+
+    Title: Curse of the Crimson Throne - Chapter 6: Crown of Fangs
+    File: 5141_paizo_curseofthecrimsonthrone_advset12_1.0.zip
+    Publisher: Paizo Publishing
+    Game Mode: 35e
+    Release Date: 2008-09-21
 
     Title: Curse of the Crimson Throne - Player's Guide
     File: 5141_paizo_curseofthecrimsonthrown_playersguide_1.0.zip
@@ -62,6 +81,17 @@ Data Sets in this release
     Game Mode: 35e
     Release Date: 2008-08-08
 
+    Title: Second Darkness - Chapter 1: Shadow in the Sky
+    File: 5141_paizo_seconddarkness_advset13_1.0.zip
+    Publisher: Paizo Publishing
+    Game Mode: 35e
+    Release Date: 2008-09-21
+
+    Title: Second Darkness - Player's Guide
+    File: 5141_paizo_seconddarkness_playersguide_1.0.zip
+    Publisher: Paizo Publishing
+    Game Mode: 35e
+    Release Date: 2008-09-21
 
 Installing Data Sets
 
