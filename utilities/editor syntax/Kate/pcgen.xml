@@ -17,7 +17,6 @@
 			<item> ALTDAMAGE </item>
 			<item> ALTTYPE </item>
 			<item> ARMORTYPE </item>
-			<item> ASPECT </item>
 			<item> ASSIGNTOALL </item>
 			<item> ATTACKCYCLE </item>
 			<item> AUTO </item>
@@ -44,7 +43,6 @@
 			<item> CRITMULT </item>
 			<item> CRITRANGE </item>
 			<item> DAMAGE </item>
-			<item> DEFINE </item>
 			<item> DEITYWEAP </item>
 			<item> DESCISPI </item>
 			<item> DESCRIPTOR </item>
@@ -508,22 +506,38 @@
 			<item> PREWEAPONPROF </item>
 		</list>
 		<contexts>
-			<context attribute="Normal Text" lineEndContext="#stay" name="Normal">
+			<context attribute="Normal Text" lineEndContext="Normal" name="Normal">
 				<keyword attribute="Tags" context="#stay" String="tags" />
 				<keyword attribute="PCCTags" context="#stay" String="pcc-tags" />
 				<keyword attribute="PRETags" context="#stay" String="pre-tags" />
 				<keyword attribute="Sub-Tags" context="#stay" String="subtags" />
-				<Int attribute="Decimal" context="#stay" />
 				<RegExpr attribute="Comment" context="#stay" String="^#.*$" />
-				<StringDetect String="DESC:" attribute="Tags" context="Descriptive" beginRegion="description" />
-				<StringDetect String="BENEFIT:" attribute="Tags" context="Descriptive" beginRegion="Description" />
-				<StringDetect String="SAB:" attribute="Tags" context="Descriptive" beginRegion="description" />
-				<StringDetect String="SA:" attribute="Tags" context="Descriptive" beginRegion="description" />
+				<StringDetect String="DESC" attribute="Tags" context="Descriptive" />
+				<StringDetect String="BENEFIT" attribute="Tags" context="Descriptive" />
+				<StringDetect String="SAB" attribute="Tags" context="Descriptive" />
+				<StringDetect String="SA" attribute="Tags" context="Descriptive" />
+				<StringDetect String="ASPECT" attribute="Tags" context="DefineAspect" />
+				<StringDetect String="DEFINE" attribute="Tags" context="DefineVar" />
+				<DetectChar char="|" attribute="Pipes" context="#stay" />
 			</context>
 			<context name="Descriptive" attribute="DescText" lineEndContext="Normal">
-				<RegExpr attribute="Sub-Tags" String="[%][|\d]" />
-				<RegExpr attribute="Descriptive" context="#pop#pop" String="[\t|]" endRegion="description" />
+				<DetectChar char=":" attribute="Normal Text" />
+				<DetectChar char="|" attribute="Pipes" context="Variables" />
+				<RegExpr String="[%][\d]*" attribute="Sub-Tags" />
+				<RegExpr attribute="Normal Text" context="Normal" String="[\t]" />
 			</context>
+			<context name="Variables" attribute="Variables" lineEndContext="Normal">
+				<DetectChar char="|" attribute="Pipes" context="#stay" />
+				<RegExpr attribute="Normal Text" context="Normal" String="[\t]" />
+			</context>
+			<context name="DefineAspect" attribute="ASPECT/VAR Defined" >
+				<DetectChar char=":" attribute="Normal Text" />
+				<DetectChar char="|" attribute="Pipes" context="Descriptive" />
+			</context>
+			<context name="DefineVar" attribute="ASPECT/VAR Defined" >
+				 <DetectChar char=":" attribute="Normal Text" />
+				 <DetectChar char="|" attribute="Pipes" context="Variables" />
+			 </context>
 		</contexts>
 		<itemDatas>
 			<itemData name="Normal Text" defStyleNum="dsNormal" />
@@ -531,9 +545,11 @@
 			<itemData name="PRETags" defStyleNum="dsKeyword" />
 			<itemData name="PCCTags" defStyleNum="dsKeyword" />
 			<itemData name="Sub-Tags" defStyleNum="dsDataType" />
-			<itemData name="Decimal" defStyleNum="dsDecVal" />
+			<itemData name="Pipes" defStyleNum="dsDecVal" />
 			<itemData name="Comment" defStyleNum="dsComment" />
 			<itemData name="DescText" defStyleNum="dsComment" bold="1" />
+			<itemData name="Variables" defStyleNum="dsDataType" italic="1" />
+			<itenData name="ASPECT/VAR Defined" defStyleNum="dsKeyword" italic="1" />
 		</itemDatas>
 		<comments>
 			<comment name="singleLine" start="#" />
