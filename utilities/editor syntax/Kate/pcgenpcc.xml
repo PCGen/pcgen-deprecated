@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language name="PCGen PCC file" section="Other" version="1.00" kateversion="2.3" extensions="*.pcc" mimetype="text/pcgen" author="Michael W. Fender (fluxxdog@gmail.com)" license="GPL">
+	<highlighting>
+		<list name="pcc-tags">
+			<item> ABILITY </item>
+			<item> ABILITYCATEGORY </item>
+			<item> BIOSET </item>
+			<item> BOOKTYPE </item>
+			<item> CAMPAIGN </item>
+			<item> CLASS </item>
+			<item> COMPANIONMOD </item>
+			<item> COPYRIGHT </item>
+			<item> COVER </item>
+			<item> DEITY </item>
+			<item> DOMAIN </item>
+			<item> EQUIPMENT </item>
+			<item> EQUIPMOD </item>
+			<item> EXCLUDE </item>
+			<item> FEAT </item>
+			<item> GAMEMODE </item>
+			<item> GENRE </item>
+			<item> HIDETYPE </item>
+			<item> INCLUDE </item>
+			<item> INFOTEXT </item>
+			<item> ISLICENSED </item>
+			<item> ISMATURE </item>
+			<item> ISOGL </item>
+			<item> KIT </item>
+			<item> LANGUAGE </item>
+			<item> LICENSED </item>
+			<item> LSTEXCLUDE </item>
+			<item> OPTION </item>
+			<item> PCC </item>
+			<item> PUBNAMELONG </item>
+			<item> PUBNAMESHORT </item>
+			<item> PUBNAMEWEB </item>
+			<item> RACE </item>
+			<item> RANK </item>
+			<item> REQSKILL </item>
+			<item> SETTING </item>
+			<item> SHOWINMENU </item>
+			<item> SKILL </item>
+			<item> SOURCEDATE </item>
+			<item> SOURCELONG </item>
+			<item> SOURCESHORT </item>
+			<item> SOURCEWEB </item>
+			<item> SPELL </item>
+			<item> WEAPONPROF </item>
+			<item> TYPE </item>
+		</list>
+		<contexts>
+			<context attribute="Normal Text" lineEndContext="Normal" name="Normal">
+				<keyword attribute="PCCTags" String="pcc-tags" />
+				<RegExpr attribute="Comment" String="^#.*$" />
+			</context>
+		</contexts>
+		<itemData>
+			<itemData name="PCCTags" defStyleNum="dsKeyword" />
+			<itemData name="Comment" defStyleNum="dsComment" />
+		</itemDatas>
+		<comments>
+			<comment name="singleLine" start="#" />
+		</comments>
+	</highlighting>
+</language>

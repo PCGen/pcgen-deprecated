@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE language SYSTEM "language.dtd">
-<language name="PCGen data file" section="Other" version="1.00" kateversion="2.3" extensions="*.lst;*.pcc" mimetype="text/pcgen" author="Stefan Radermacher (radermacher@netcologne.de)" license="LPGL">
+<!DOCTYPE language SYSTEM "language.dtd" >
+<language name="PCGen data file" section="Other" version="1.01b" kateversion="2.3" extensions="*.lst" mimetype="text/pcgen" author="Michael W. Fender (fluxxdog@gmail.com)" license="GPL" >
 	<highlighting>
-		<list name="tags">
+		<list name="tags" >
 			<item> ABB </item>
-			<item> ABILITY </item>
 			<item> ABILITYCATEGORY </item>
 			<item> ACCHECK </item>
 			<item> ACHECK </item>
@@ -22,7 +21,6 @@
 			<item> AUTO </item>
 			<item> BASEITEM </item>
 			<item> BASEQTY </item>
-			<item> BONUS </item>
 			<item> CAST </item>
 			<item> CASTAS </item>
 			<item> CASTTIME </item>
@@ -105,7 +103,6 @@
 			<item> MOVE </item>
 			<item> MOVEA </item>
 			<item> MOVECLONE </item>
-			<item> MULT </item>
 			<item> NAMEISPI </item>
 			<item> NAMEOPT </item>
 			<item> NATURALATTACKS </item>
@@ -152,7 +149,6 @@
 			<item> SPELLTYPE </item>
 			<item> SPROP </item>
 			<item> SR </item>
-			<item> STACK </item>
 			<item> STARTFEATS </item>
 			<item> STARTPACK </item>
 			<item> STARTSKILLPTS </item>
@@ -168,7 +164,6 @@
 			<item> TEMPDESC </item>
 			<item> TEMPLATE </item>
 			<item> TITLE </item>
-			<item> TYPE </item>
 			<item> UDAM </item>
 			<item> UMULT </item>
 			<item> UNENCUMBEREDMOVE </item>
@@ -185,114 +180,7 @@
 			<item> XPCOST </item>
 			<item> XTRASKILLPTSPERLVL </item>
 		</list>
-		<list name="pcc-tags">
-			<item> ABILITY </item>
-			<item> ABILITYCATEGORY </item>
-			<item> BIOSET </item>
-			<item> BOOKTYPE </item>
-			<item> CAMPAIGN </item>
-			<item> CLASS </item>
-			<item> COMPANIONMOD </item>
-			<item> COPYRIGHT </item>
-			<item> COVER </item>
-			<item> DEITY </item>
-			<item> DOMAIN </item>
-			<item> EQUIPMENT </item>
-			<item> EQUIPMOD </item>
-			<item> EXCLUDE </item>
-			<item> FEAT </item>
-			<item> GAMEMODE </item>
-			<item> GENRE </item>
-			<item> HIDETYPE </item>
-			<item> INCLUDE </item>
-			<item> INFOTEXT </item>
-			<item> ISLICENSED </item>
-			<item> ISMATURE </item>
-			<item> ISOGL </item>
-			<item> KIT </item>
-			<item> LANGUAGE </item>
-			<item> LICENSED </item>
-			<item> LSTEXCLUDE </item>
-			<item> OPTION </item>
-			<item> PCC </item>
-			<item> PUBNAMELONG </item>
-			<item> PUBNAMESHORT </item>
-			<item> PUBNAMEWEB </item>
-			<item> RACE </item>
-			<item> RANK </item>
-			<item> REQSKILL </item>
-			<item> SETTING </item>
-			<item> SHOWINMENU </item>
-			<item> SKILL </item>
-			<item> SOURCEDATE </item>
-			<item> SOURCELONG </item>
-			<item> SOURCESHORT </item>
-			<item> SOURCEWEB </item>
-			<item> SPELL </item>
-			<item> WEAPONPROF </item>
-			<item> TYPE </item>
-		</list>
-		<list name="subtags">
-			<item> ARMORPROF </item>
-			<item> BASE </item>
-			<item> CASTERLEVEL </item>
-			<item> CHECKS </item>
-			<item> CHOOSE </item>
-			<item> CLASSSKILLS </item>
-			<item> CLEAR </item>
-			<item> COMBAT </item>
-			<item> DAMAGE </item>
-			<item> DC </item>
-			<item> DISPLAY </item>
-			<item> DOMAIN </item>
-			<item> ENCUMBERANCE </item>
-			<item> EQM </item>
-			<item> EQMARMOR </item>
-			<item> EQMWEAPON </item>
-			<item> EXPORT </item>
-			<item> FEATNAME </item>
-			<item> FEATTYPE </item>
-			<item> FILE </item>
-			<item> HP </item>
-			<item> LEVEL </item>
-			<item> MARTIAL </item>
-			<item> MELEE </item>
-			<item> MISC </item>
-			<item> MOD </item>
-			<item> MOVEADD </item>
-			<item> MOVEMULT </item>
-			<item> NO </item>
-			<item> NUMCHOICES </item>
-			<item> PCLEVEL </item>
-			<item> POSTMOVEADD </item>
-			<item> PROFICIENT </item>
-			<item> QUALIFY </item>
-			<item> RANGED </item>
-			<item> RANGEMULT </item>
-			<item> REPLACE </item>
-			<item> SHIELDPROF </item>
-			<item> SIMPLE </item>
-			<item> SIZEMOD </item>
-			<item> SKILL </item>
-			<item> SKILLPOINTS </item>
-			<item> SKILLRANK </item>
-			<item> SKILLSNAMED </item>
-			<item> SPECIAL </item>
-			<item> SPELLCAST </item>
-			<item> SPELLCASTER </item>
-			<item> SPELLCASTMULT </item>
-			<item> SPELLLIST </item>
-			<item> STAT </item>
-			<item> THROWN </item>
-			<item> TIMES </item>
-			<item> TOHIT </item>
-			<item> VAR </item>
-			<item> WEAPON </item>
-			<item> WEAPONPROF </item>
-			<item> WEAPONPROFS </item>
-			<item> YES </item>
-		</list>
-		<list name="words">
+		<list name="words" >
 			<item> Abjuration </item>
 			<item> AC </item>
 			<item> Acid </item>
@@ -303,6 +191,7 @@
 			<item> Arcane </item>
 			<item> Armor </item>
 			<item> BAB </item>
+			<item> Bardic </item>
 			<item> BaseMaterial </item>
 			<item> Bludgeoning </item>
 			<item> Bow </item>
@@ -406,6 +295,7 @@
 			<item> Projectile </item>
 			<item> Ranged </item>
 			<item> Reflex </item>
+			<item> Reserve </item>
 			<item> Resistance </item>
 			<item> Ring </item>
 			<item> Scroll </item>
@@ -441,115 +331,116 @@
 			<item> Willpower </item>
 			<item> WIS </item>
 			<item> Wisdom </item>
+			<item> Wizard </item>
 			<item> Wondrous </item>
 			<item> Wooden </item>
 		</list>
-		<list name="pre-tags">
-			<item> PREABILITY </item>
-			<item> PREALIGN </item>
-			<item> PREAPPLY </item>
-			<item> PREATT </item>
-			<item> PRECHECK </item>
-			<item> PRECHECKBASE </item>
-			<item> PRECLASS </item>
-			<item> PREDEFAULTMONSTER </item>
-			<item> PREDEITY </item>
-			<item> PREDEITYDOMAIN </item>
-			<item> PREDOMAIN </item>
-			<item> PREFEAT </item>
-			<item> PREGENDER </item>
-			<item> PREHANDSEQ </item>
-			<item> PREHANDSGT </item>
-			<item> PREHANDSGTEQ </item>
-			<item> PREHANDSLT </item>
-			<item> PREHANDSLTEQ </item>
-			<item> PREITEM </item>
-			<item> PRELANG </item>
-			<item> PRELEVEL </item>
-			<item> PRELEVELMAX </item>
-			<item> PREMOVE </item>
-			<item> PREMULT </item>
-			<item> PRERACE </item>
-			<item> PRERACETYPE </item>
-			<item> PREREACH </item>
-			<item> PREREACHEQ </item>
-			<item> PREREACHGT </item>
-			<item> PREREACHGTEQ </item>
-			<item> PREREACHLT </item>
-			<item> PREREACHLTEQ </item>
-			<item> PREREGION </item>
-			<item> PRESA </item>
-			<item> PRESIZEEQ </item>
-			<item> PRESIZEGT </item>
-			<item> PRESIZEGTEQ </item>
-			<item> PRESIZELT </item>
-			<item> PRESIZELTEQ </item>
-			<item> PRESKILL </item>
-			<item> PRESPELL </item>
-			<item> PRESPELLBOOK </item>
-			<item> PRESPELLCAST </item>
-			<item> PRESPELLDESCRIPTOR </item>
-			<item> PRESPELLSCHOOL </item>
-			<item> PRESPELLSCHOOLSUB </item>
-			<item> PRESPELLTYPE </item>
-			<item> PRESTAT </item>
-			<item> PRESUBCLASS </item>
-			<item> PRETEMPLATE </item>
-			<item> PRETEXT </item>
-			<item> PRETYPE </item>
-			<item> PREVAREQ </item>
-			<item> PREVARNEQ </item>
-			<item> PREVARGT </item>
-			<item> PREVARGTEQ </item>
-			<item> PREVARLT </item>
-			<item> PREVARLTEQ </item>
-			<item> PREWEAPONPROF </item>
+		<list name="statmods" >
+			<item> STR </item>
+			<item> DEX </item>
+			<item> CON </item>
+			<item> INT </item>
+			<item> WIS </item>
+			<item> CHA </item>
+		</list>
+		<list name="TagsWithSub">
+			<item> BONUS </item>
+			<item> CHOOSE </item>
+			<item> MULT </item>
+			<item> STACK </item>
+		</list>
+		<list name="colortext">
+			<item> DESC </item>
+			<item> BENEFIT </item>
+			<item> SAB </item>
+			<item> SA </item>
+		</list>
+		<list name="modifiers">
+			<item> CLEAR </item>
+			<item> MOD </item>
+			<item> FORGET </item>
+		</list>
+		<list name="typers" >
+			<item> TYPE </item>
+			<item> KEY </item>
 		</list>
 		<contexts>
-			<context attribute="Normal Text" lineEndContext="Normal" name="Normal">
-				<keyword attribute="Tags" context="#stay" String="tags" />
-				<keyword attribute="PCCTags" context="#stay" String="pcc-tags" />
-				<keyword attribute="PRETags" context="#stay" String="pre-tags" />
-				<keyword attribute="Sub-Tags" context="#stay" String="subtags" />
-				<RegExpr attribute="Comment" context="#stay" String="^#.*$" />
-				<StringDetect String="DESC" attribute="Tags" context="Descriptive" />
-				<StringDetect String="BENEFIT" attribute="Tags" context="Descriptive" />
-				<StringDetect String="SAB" attribute="Tags" context="Descriptive" />
-				<StringDetect String="SA" attribute="Tags" context="Descriptive" />
+			<context attribute="Normal Text" lineEndContext="Normal" name="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<keyword attribute="Tags" String="tags" />
+				<keyword attribute="Tags" String="colortext" context="Descriptive" />
+				<keyword attribute="Altered" String="modifiers" />
+				<RegExpr attribute="Comment" String="^#.*$" />
 				<StringDetect String="ASPECT" attribute="Tags" context="DefineAspect" />
 				<StringDetect String="DEFINE" attribute="Tags" context="DefineVar" />
-				<DetectChar char="|" attribute="Pipes" context="#stay" />
+				<StringDetect String="ABILITY" attribute="Tags" context="DefineAbility" />
+				<keyword attribute="Tags" String="TagsWithSub" context="Tags2Sub" />
+				<DetectChar char="|" attribute="Pipes" />
+				<RegExpr attribute="PRETags" String="[!]*PRE[\w]*" context="PRExxx" />
 			</context>
-			<context name="Descriptive" attribute="DescText" lineEndContext="Normal">
-				<DetectChar char=":" attribute="Normal Text" />
+			<context name="KeepNeat" >
+				<RegExpr String="[]:=,.()[]" attribute="Normal Text" />
+				<RegExpr attribute="PRETags" String="[!]*PRE[\w]*" context="PRExxx" />
+				<keyword String="typers" attribute="Tags" context="Typing"/>
+				<RegExpr attribute="Normal Text" context="Normal" String="[\t]" />
+				<keyword attribute="Altered" String="modifiers" />
+			</context>
+			<context name="Descriptive" attribute="DescText" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" context="Variables" />
 				<RegExpr String="[%][\d]*" attribute="Sub-Tags" />
-				<RegExpr attribute="Normal Text" context="Normal" String="[\t]" />
 			</context>
-			<context name="Variables" attribute="Variables" lineEndContext="Normal">
-				<DetectChar char="|" attribute="Pipes" context="#stay" />
-				<RegExpr attribute="Normal Text" context="Normal" String="[\t]" />
-			</context>
-			<context name="DefineAspect" attribute="ASPECT/VAR Defined" >
-				<DetectChar char=":" attribute="Normal Text" />
+			<context name="DefineAspect" attribute="ASPECT/VAR Defined" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" context="Descriptive" />
 			</context>
-			<context name="DefineVar" attribute="ASPECT/VAR Defined" >
-				 <DetectChar char=":" attribute="Normal Text" />
-				 <DetectChar char="|" attribute="Pipes" context="Variables" />
-			 </context>
+			<context name="DefineVar" attribute="ASPECT/VAR Defined" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" context="Variables" />
+			</context>
+			<context name="Variables" attribute="Variables" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" />
+				<Int attribute="Numbers" />
+				<keyword attribute="Numbers" String="statmods" />
+			</context>
+			<context name="PRExxx" attribute="Normal Text" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<Int attribute="Numbers" context="Normal" />
+				<RegExpr String="[\w]" context="Normal" />
+			</context>
+			<context name="Tags2Sub" attribute="Sub-Tags" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" context="Clarify" />
+			</context>
+			<context name="Clarify" attribute="Assignment" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" context="Variables" />
+			</context>
+			<context name="Typing" attribute="Keywords" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<keyword attribute="Keywords" String="words" />
+				<DetectChar char="|" attribute="Pipes" context="#pop" />
+			</context>
+			<context name="DefineAbility" lineEndContext="Normal" >
+				<DetectChar char=":" attribute="Normal Text" context="Tags2Sub" />
+				<DetectChar char="|" attribute="Pipes" context="Tags2Sub" />
+			</context>
 		</contexts>
 		<itemDatas>
 			<itemData name="Normal Text" defStyleNum="dsNormal" />
 			<itemData name="Tags" defStyleNum="dsKeyword" />
 			<itemData name="PRETags" defStyleNum="dsKeyword" />
-			<itemData name="PCCTags" defStyleNum="dsKeyword" />
 			<itemData name="Sub-Tags" defStyleNum="dsDataType" />
+			<itemData name="Assignment" defStyleNum="dsString" />
 			<itemData name="Pipes" defStyleNum="dsDecVal" />
+			<itemData name="Numbers" defStyleNum="dsOthers" />
 			<itemData name="Comment" defStyleNum="dsComment" />
 			<itemData name="DescText" defStyleNum="dsComment" bold="1" />
 			<itemData name="Variables" defStyleNum="dsDataType" italic="1" />
-			<itenData name="ASPECT/VAR Defined" defStyleNum="dsKeyword" italic="1" />
+			<itemData name="ASPECT/VAR Defined" defStyleNum="dsKeyword" italic="1" />
+			<itemData name="Altered" defStyleNum="dsError" />
+			<itemData name="Keywords" defStyleNum="dsFunction" />
 		</itemDatas>
 		<comments>
 			<comment name="singleLine" start="#" />
