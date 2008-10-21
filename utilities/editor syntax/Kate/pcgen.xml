@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd" >
-<language name="PCGen data file" section="Other" version="1.01b" kateversion="2.3" extensions="*.lst" mimetype="text/pcgen" author="Michael W. Fender (fluxxdog@gmail.com)" license="GPL" >
+<language name="PCGen data file" section="Other" version="1.01c" kateversion="2.3" extensions="*.lst" mimetype="text/pcgen" author="Michael W. Fender (fluxxdog@gmail.com)" license="GPL" >
 	<highlighting>
 		<list name="tags" >
 			<item> ABB </item>
@@ -114,6 +114,7 @@
 			<item> PROF </item>
 			<item> PROFICIENCY </item>
 			<item> PROHIBITSPELL </item>
+			<item> QUALIFY </item>
 			<item> QTY </item>
 			<item> RACENAME </item>
 			<item> RACESUBTYPE </item>
@@ -170,7 +171,6 @@
 			<item> USEUNTRAINED </item>
 			<item> VARIANTS </item>
 			<item> VFEAT </item>
-			<item> VISIBLE </item>
 			<item> VISION </item>
 			<item> WEAPONAUTO </item>
 			<item> WEAPONBONUS </item>
@@ -348,6 +348,7 @@
 			<item> CHOOSE </item>
 			<item> MULT </item>
 			<item> STACK </item>
+			<item> VISIBLE </item>
 		</list>
 		<list name="colortext">
 			<item> DESC </item>

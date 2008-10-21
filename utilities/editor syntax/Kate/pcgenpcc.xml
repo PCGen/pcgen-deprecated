@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language SYSTEM "language.dtd">
-<language name="PCGen PCC file" section="Other" version="1.00" kateversion="2.3" extensions="*.pcc" mimetype="text/pcgen" author="Michael W. Fender (fluxxdog@gmail.com)" license="GPL">
+<language name="PCGen PCC file" section="Other" version="1.01" kateversion="2.3" extensions="*.pcc" mimetype="text/pcgen" author="Michael W. Fender (fluxxdog@gmail.com)" license="GPL">
 	<highlighting>
 		<list name="pcc-tags">
 			<item> ABILITY </item>
@@ -50,13 +50,26 @@
 			<item> TYPE </item>
 		</list>
 		<contexts>
-			<context attribute="Normal Text" lineEndContext="Normal" name="Normal">
+			<context attribute="Normal Text" lineEndContext="Normal" name="Normal" >
+				<IncludeRules context="KeepNeat" />
 				<keyword attribute="PCCTags" String="pcc-tags" />
 				<RegExpr attribute="Comment" String="^#.*$" />
 			</context>
+			<context name="KeepNeat" >
+				<RegExpr String="[]:=,.()[]" attribute="Normal Text" />
+				<RegExpr attribute="PRETags" String="[!]*PRE[\w]*" context="PRExxx" />
+				<RegExpr attribute="Normal Text" context="Normal" String="[\t]" />
+			</context>
+			<context name="PRExxx" attribute="Normal Text" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<Int attribute="Numbers" context="Normal" />
+				<RegExpr String="[\w]" context="Normal" />
+			</context>
 		</contexts>
-		<itemData>
+		<itemDatas>
+			<itemData name="Normal Text" defStyleNum="dsNormal" />
 			<itemData name="PCCTags" defStyleNum="dsKeyword" />
+			<itemData name="PRETags" defStyleNum="dsKeyword" bold="1" />
 			<itemData name="Comment" defStyleNum="dsComment" />
 		</itemDatas>
 		<comments>
