@@ -93,6 +93,12 @@ Data Sets in this release
     Game Mode: 35e
     Release Date: 2008-09-21
 
+    Title: Skirmisher - Nuisances: Director's Cut
+    File: 5141_skirmisher_nuisances_1.0.zip
+    Publisher: Skirmisher Publishing LLC
+    Game Mode: 35e
+    Release Date: 2008-10-20
+
 Installing Data Sets
 
 To install any of these data sets follow these instructions.
