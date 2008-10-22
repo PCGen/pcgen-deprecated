@@ -127,6 +127,7 @@
 			<item> REPLACES </item>
 			<item> SAVEINFO </item>
 			<item> SAVES </item>
+			<item> SELECT </item>
 			<item> SIZE </item>
 			<item> SKILLMULT </item>
 			<item> SCHOOL </item>
@@ -345,10 +346,12 @@
 		</list>
 		<list name="TagsWithSub">
 			<item> BONUS </item>
-			<item> CHOOSE </item>
 			<item> MULT </item>
 			<item> STACK </item>
 			<item> VISIBLE </item>
+		</list>
+		<list name="TagsWithMultiSub" >
+			<item> CHOOSE </item>
 		</list>
 		<list name="colortext">
 			<item> DESC </item>
@@ -360,6 +363,7 @@
 			<item> CLEAR </item>
 			<item> MOD </item>
 			<item> FORGET </item>
+			<item> COPY </item>
 		</list>
 		<list name="typers" >
 			<item> TYPE </item>
@@ -376,6 +380,7 @@
 				<StringDetect String="DEFINE" attribute="Tags" context="DefineVar" />
 				<StringDetect String="ABILITY" attribute="Tags" context="DefineAbility" />
 				<keyword attribute="Tags" String="TagsWithSub" context="Tags2Sub" />
+				<keyword attribute="Tags" String="TagsWithMultiSub" context="TagsMultiSub" />
 				<DetectChar char="|" attribute="Pipes" />
 				<RegExpr attribute="PRETags" String="[!]*PRE[\w]*" context="PRExxx" />
 			</context>
@@ -426,6 +431,11 @@
 			<context name="DefineAbility" lineEndContext="Normal" >
 				<DetectChar char=":" attribute="Normal Text" context="Tags2Sub" />
 				<DetectChar char="|" attribute="Pipes" context="Tags2Sub" />
+			</context>
+			<context name="TagsMultiSub" lineEndContext="Normal" >
+				<DetectChar char=":" attribute="Normal Text" context="Tags2Sub" />
+				<DetectChar char="|" attribute="Pipes" context="Tags2Sub" />
+				<StringDetect String="ABILITY" attribute="Tags" context="DefineAbility" />
 			</context>
 		</contexts>
 		<itemDatas>

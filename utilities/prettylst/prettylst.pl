@@ -14416,7 +14416,7 @@ work.
 
 =head1 PARAMETERS
 
-=head2 B<-inputpath> or B<-o>
+=head2 B<-inputpath> or B<-i>
 
 Path to an input directory that will be scanned for .pcc files. A list of
 files to parse will be built from the .pcc files found. Only the known filetypes will
