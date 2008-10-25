@@ -6,452 +6,445 @@
 			<item> ABB </item>
 			<item> ABILITYCATEGORY </item>
 			<item> ACCHECK </item>
-			<item> ACHECK </item>
-			<item> ADD </item>
+			<item> ADDDOMAINS </item>
+			<item> ADDLEVEL </item>
 			<item> ADDSPELLLEVEL </item>
 			<item> AGE </item>
+			<item> AGEDIEROLL </item>
 			<item> AGESET </item>
 			<item> ALIGN </item>
 			<item> ALTCRITICAL </item>
+			<item> ALTCRITRANGE </item>
+			<item> ALTCRITMULT </item>
 			<item> ALTDAMAGE </item>
-			<item> ALTTYPE </item>
-			<item> ARMORTYPE </item>
-			<item> ASSIGNTOALL </item>
 			<item> ATTACKCYCLE </item>
-			<item> AUTO </item>
+			<item> BASEAGE </item>
+			<item> BASEAGEADD </item>
+			<item> BASEHT </item>
 			<item> BASEITEM </item>
 			<item> BASEQTY </item>
+			<item> BASEWT </item>
+			<item> BONUSSKILLPOINTS </item>
+			<item> BONUSSPELLSTAT </item>
 			<item> CAST </item>
-			<item> CASTAS </item>
 			<item> CASTTIME </item>
 			<item> CATEGORY </item>
 			<item> CCSKILL </item>
 			<item> CSKILL </item>
-			<item> CHANGEPROF </item>
 			<item> CHARGES </item>
-			<item> CHOICE </item>
 			<item> CLASS </item>
 			<item> CLASSES </item>
 			<item> COMPS </item>
-			<item> CONTAINS </item>
+			<item> COPYMASTERBAB </item>
+			<item> COPYMASTERCHECK </item>
+			<item> COPYMASTERHP </item>
 			<item> COST </item>
 			<item> COSTPRE </item>
-			<item> COUNT </item>
 			<item> CR </item>
 			<item> CRITMULT </item>
 			<item> CRITRANGE </item>
+			<item> CT </item>
 			<item> DAMAGE </item>
+			<item> DEITY </item>
 			<item> DEITYWEAP </item>
 			<item> DESCISPI </item>
 			<item> DESCRIPTOR </item>
 			<item> DISPLAYLOCATION </item>
+			<item> DOMAIN </item>
 			<item> DOMAINS </item>
-			<item> DURATION </item>
 			<item> DR </item>
 			<item> EDITABLE </item>
 			<item> EDITPOOL </item>
-			<item> EFFECTS </item>
-			<item> EFFECTTYPE </item>
-			<item> EQMOD </item>
+			<item> EDR </item>
 			<item> EXCHANGELEVEL </item>
 			<item> EXCLASS </item>
-			<item> EXCLUSIVE </item>
-			<item> EXTRAFILE </item>
 			<item> FACE </item>
 			<item> FAVCLASS </item>
 			<item> FAVOREDCLASS </item>
 			<item> FEAT </item>
-			<item> FEATAUTO </item>
 			<item> FOLLOWER </item>
+			<item> FOLLOWERADJUSTMENT </item>
 			<item> FOLLOWERALIGN </item>
-			<item> FRACTIONALPOOL </item>
-			<item> GEAR </item>
+			<item> FOLLOWERS </item>
+			<item> FUMBLERANGE </item>
 			<item> GENDERLOCK </item>
+			<item> HAIR </item>
 			<item> HANDS </item>
-			<item> HASSUBCLASS </item>
-			<item> HASSUBSTITUTIONLEVEL </item>
 			<item> HD </item>
 			<item> HEIGHT </item>
 			<item> HITDIE </item>
 			<item> HITDICEADVANCEMENT </item>
+			<item> HTDIEROLL </item>
 			<item> IGNORES </item>
 			<item> ITEM </item>
+			<item> ITEMCOST </item>
 			<item> ITEMCREATE </item>
-			<item> ITYPE </item>
-			<item> KEY </item>
 			<item> KEYSTAT </item>
+			<item> KIT </item>
 			<item> KNOWN </item>
 			<item> KNOWNSPELLS </item>
 			<item> KNOWNSPELLSFROMSPECIALTY </item>
 			<item> LANGAUTO </item>
 			<item> LANGBONUS </item>
-			<item> LANGUAGE </item>
 			<item> LEGS </item>
+			<item> LEVEL </item>
 			<item> LEVELADJUSTMENT </item>
 			<item> LEVELSPERFEAT </item>
-			<item> LOCATION </item>
 			<item> MASTERBONUSRACE </item>
+			<item> MAXAGE </item>
 			<item> MAXDEX </item>
 			<item> MAXLEVEL </item>
-			<item> MEMORIZE </item>
 			<item> MFEAT </item>
-			<item> MODTOSKILLS </item>
-			<item> MODS </item>
+			<item> MODIFYABILITYCHOICE </item>
+			<item> MODIFYFEATCHOICE </item>
 			<item> MONCCSKILL </item>
 			<item> MONCSKILL </item>
+			<item> MONNONSKILLHD </item>
+			<item> MONSKILL </item>
 			<item> MONSTERCLASS </item>
 			<item> MOVE </item>
-			<item> MOVEA </item>
 			<item> MOVECLONE </item>
-			<item> NAMEISPI </item>
 			<item> NAMEOPT </item>
-			<item> NATURALATTACKS </item>
+			<item> NONPP </item>
+			<item> NUMPAGES </item>
 			<item> OUTPUTNAME </item>
+			<item> PAGEUSAGE </item>
 			<item> PANTHEON </item>
 			<item> PLURAL </item>
 			<item> PLUS </item>
 			<item> POOL </item>
 			<item> PROF </item>
+			<item> PPCOST </item>
 			<item> PROFICIENCY </item>
+			<item> PROHIBITCOST </item>
+			<item> PROHIBITED </item>
 			<item> PROHIBITSPELL </item>
-			<item> QUALIFY </item>
 			<item> QTY </item>
+			<item> QUALITY </item>
+			<item> RACE </item>
 			<item> RACENAME </item>
 			<item> RACESUBTYPE </item>
 			<item> RACETYPE </item>
-			<item> RACIAL </item>
-			<item> RANGE </item>
+			<item> RATEOFFIRE </item>
 			<item> REACH </item>
+			<item> REACHMULT </item>
 			<item> REGION </item>
-			<item> REMOVABLE </item>
+			<item> REPEATLEVEL </item>
+			<item> REMOVE </item>
 			<item> REPLACES </item>
-			<item> SAVEINFO </item>
 			<item> SAVES </item>
 			<item> SELECT </item>
 			<item> SIZE </item>
-			<item> SKILLMULT </item>
 			<item> SCHOOL </item>
+			<item> SKILLMULT </item>
 			<item> SKILLLIST </item>
+			<item> SKINTONE </item>
 			<item> SLOTS </item>
-			<item> SOURCE </item>
-			<item> SOURCEDATE </item>
-			<item> SOURCELONG </item>
-			<item> SOURCEPAGE </item>
-			<item> SOURCESHORT </item>
-			<item> SOURCEWEB </item>
 			<item> SPECIALS </item>
 			<item> SPECIALTYKNOWN </item>
-			<item> SPELL </item>
-			<item> SPELLBOOK </item>
 			<item> SPELLFAILURE </item>
-			<item> SPELLLEVEL </item>
+			<item> SPELLLIST </item>
 			<item> SPELLRES </item>
-			<item> SPELLS </item>
 			<item> SPELLSTAT </item>
-			<item> SPELLTYPE </item>
-			<item> SPROP </item>
 			<item> SR </item>
 			<item> STARTFEATS </item>
 			<item> STARTPACK </item>
 			<item> STARTSKILLPTS </item>
+			<item> STAT </item>
 			<item> SUBCLASS </item>
 			<item> SUBCLASSLEVEL </item>
 			<item> SUBSTITUTIONCLASS </item>
 			<item> SUBSTITUTIONLEVEL </item>
 			<item> SUBRACE </item>
-			<item> SUBSCHOOL </item>
-			<item> SYMBOL </item>
+			<item> SUBREGION </item>
 			<item> SYNERGY </item>
-			<item> TARGETAREA </item>
-			<item> TEMPDESC </item>
-			<item> TEMPLATE </item>
-			<item> TITLE </item>
+			<item> TOTALWT </item>
 			<item> UDAM </item>
 			<item> UMULT </item>
 			<item> UNENCUMBEREDMOVE </item>
-			<item> USEUNTRAINED </item>
 			<item> VARIANTS </item>
 			<item> VFEAT </item>
 			<item> VISION </item>
 			<item> WEAPONAUTO </item>
 			<item> WEAPONBONUS </item>
 			<item> WEIGHT </item>
-			<item> WORSHIPPERS </item>
+			<item> WEILD </item>
 			<item> WT </item>
+			<item> WTDIEROLL </item>
 			<item> XPCOST </item>
+			<item> XTRAFEATS </item>
 			<item> XTRASKILLPTSPERLVL </item>
 		</list>
-		<list name="words" >
-			<item> Abjuration </item>
-			<item> AC </item>
-			<item> Acid </item>
-			<item> Air </item>
-			<item> ALL </item>
-			<item> Ammunition </item>
-			<item> ANYPC </item>
-			<item> Arcane </item>
-			<item> Armor </item>
+		<list name="globalvariables" >
+			<item> ACCHECK </item>
+			<item> ARMORACCHECK </item>
+			<item> AllowExtraTurning </item>
+			<item> AllowHolyAvenger </item>
 			<item> BAB </item>
-			<item> Bardic </item>
-			<item> BaseMaterial </item>
-			<item> Bludgeoning </item>
-			<item> Bow </item>
-			<item> Buckler </item>
+			<item> BardicKnowledge </item>
+			<item> BardicMusic </item>
+			<item> BASESPELLSTAT </item>
+			<item> BL </item>
+			<item> CASTERLEVEL </item>
 			<item> CHA </item>
-			<item> Charisma </item>
-			<item> CE </item>
-			<item> CG </item>
+			<item> CHASCORE </item>
 			<item> CL </item>
-			<item> CN </item>
-			<item> Close </item>
-			<item> Cold </item>
-			<item> Competence </item>
-			<item> Compulsion </item>
+			<item> CLASS </item>
+			<item> CLASSLEVEL </item>
 			<item> CON </item>
-			<item> Conjuration </item>
-			<item> Constitution </item>
-			<item> Container </item>
-			<item> COUNT </item>
-			<item> Craft </item>
-			<item> Creation </item>
-			<item> Crossbow </item>
-			<item> CROSSCLASSSKILLS </item>
-			<item> CURRENTMAX </item>
-			<item> Death </item>
-			<item> Deflection </item>
+			<item> CONSCORE </item>
+			<item> CR </item>
 			<item> DEX </item>
-			<item> Dexterity </item>
-			<item> Divination </item>
-			<item> Divine </item>
-			<item> Dodge </item>
-			<item> Dorje </item>
-			<item> Earth </item>
-			<item> Enchantment </item>
-			<item> Enhancement </item>
-			<item> Electricity </item>
-			<item> ELSE </item>
-			<item> EQ </item>
-			<item> EquipmentCircumstance </item>
-			<item> Evil </item>
-			<item> Evocation </item>
-			<item> Exotic </item>
-			<item> Fear </item>
-			<item> Finesseable </item>
-			<item> Fighter </item>
-			<item> Fire </item>
-			<item> Force </item>
-			<item> Fortitude </item>
-			<item> General </item>
-			<item> Good </item>
-			<item> GT </item>
-			<item> GTEQ </item>
-			<item> Healing </item>
-			<item> Heavy </item>
-			<item> IF </item>
-			<item> Illusion </item>
-			<item> INITIATIVE </item>
-			<item> Innate </item>
+			<item> DEXSCORE </item>
+			<item> ECL </item>
+			<item> ENCUMBERANCE </item>
+			<item> HASDEITY </item>
+			<item> HASFEAT </item>
+			<item> HD </item>
+			<item> HP </item>
+			<item> INITIATIVEMISC </item>
+			<item> INITIATIVEMOD </item>
 			<item> INT </item>
-			<item> Instantaneous </item>
-			<item> Intelligence </item>
-			<item> ItemCreation </item>
-			<item> Knowledge </item>
-			<item> LE </item>
-			<item> LG </item>
-			<item> Light </item>
-			<item> LIST </item>
-			<item> LN </item>
-			<item> Long </item>
-			<item> LT </item>
-			<item> LTEQ </item>
-			<item> Luck </item>
-			<item> max </item>
-			<item> min </item>
-			<item> Magic </item>
-			<item> MagicalEnhancement </item>
-			<item> Martial </item>
-			<item> Medium </item>
-			<item> Melee </item>
-			<item> Metal </item>
-			<item> Metamagic </item>
-			<item> Morale </item>
-			<item> Natural </item>
-			<item> NaturalArmor </item>
-			<item> Necromancy </item>
-			<item> NE </item>
-			<item> NEQ </item>
-			<item> NG </item>
-			<item> NotRanged </item>
-			<item> NUMBER </item>
-			<item> PC </item>
-			<item> Permanent </item>
-			<item> Personal </item>
-			<item> Phantasm </item>
-			<item> Piercing </item>
-			<item> Potion </item>
-			<item> Prestige </item>
-			<item> PRIMARY </item>
-			<item> PROJECTILE </item>
-			<item> Profession </item>
-			<item> Projectile </item>
-			<item> Ranged </item>
-			<item> Reflex </item>
-			<item> Reserve </item>
-			<item> Resistance </item>
-			<item> Ring </item>
-			<item> Scroll </item>
-			<item> SECONDARY </item>
-			<item> SECONDARYATTACKS </item>
-			<item> Shadow </item>
-			<item> Shield </item>
-			<item> SHORTRANGE </item>
-			<item> Simple </item>
-			<item> Slashing </item>
-			<item> Sonic </item>
-			<item> Special </item>
-			<item> Specific </item>
-			<item> Staff </item>
-			<item> Standard </item>
+			<item> INTSCORE </item>
+			<item> MOVEBASE </item>
+			<item> SHIELDACCHECK </item>
+			<item> SIZE </item>
+			<item> SKILLRANK </item>
+			<item> SKILLTOTAL </item>
+			<item> SPELLFAILURE </item>
+			<item> SR </item>
 			<item> STR </item>
-			<item> Strength </item>
-			<item> Suit </item>
-			<item> Summoning </item>
-			<item> Teleportation </item>
-			<item> THEN </item>
-			<item> Thrown </item>
-			<item> TN </item>
-			<item> Touch </item>
-			<item> Tower </item>
-			<item> Transmutation </item>
-			<item> Walk </item>
-			<item> Wand </item>
-			<item> Water </item>
-			<item> Weapon </item>
-			<item> WEIGHTADD </item>
-			<item> WEIGHTDIV </item>
-			<item> Willpower </item>
+			<item> STRSCORE </item>
+			<item> TL </item>
+			<item> TurnUndead </item>
+			<item> VARDEFINED </item>
 			<item> WIS </item>
-			<item> Wisdom </item>
-			<item> Wizard </item>
-			<item> Wondrous </item>
-			<item> Wooden </item>
+			<item> WISSCORE </item>
+			<item> %LIST </item>
+			<item> %CHOICE </item>
 		</list>
-		<list name="statmods" >
-			<item> STR </item>
-			<item> DEX </item>
-			<item> CON </item>
-			<item> INT </item>
-			<item> WIS </item>
-			<item> CHA </item>
-		</list>
-		<list name="TagsWithSub">
-			<item> BONUS </item>
-			<item> MULT </item>
-			<item> STACK </item>
-			<item> VISIBLE </item>
-		</list>
-		<list name="TagsWithMultiSub" >
-			<item> CHOOSE </item>
+		<list name="adjustments" >
+			<item> EQMOD </item>
+			<item> ALTEQMOD </item>
+			<item> ARMORTYPE </item>
 		</list>
 		<list name="colortext">
-			<item> DESC </item>
+			<item> APPEARANCE </item>
 			<item> BENEFIT </item>
-			<item> SAB </item>
+			<item> DESC </item>
+			<item> DURATION </item>
+			<item> RANGE </item>
 			<item> SA </item>
+			<item> SAB </item>
+			<item> SAVEINFO </item>
+			<item> SPROP </item>
+			<item> SYMBOL </item>
+			<item> TARGETAREA </item>
+			<item> TEMPDESC </item>
+			<item> TITLE </item>
+			<item> WORSHIPPERS </item>
+		</list>
+		<list name="enforcers" >
+			<item> ADD </item>
+			<item> AUTO </item>
+			<item> CHOICE </item>
+			<item> CHOOSE </item>
+			<item> COMPANIONLIST </item>
+			<item> QUALIFY </item>
+			<item> SERVEAS </item>
+			<item> SPELLLEVEL </item>
+			<item> TEMPLATE </item>
 		</list>
 		<list name="modifiers">
 			<item> CLEAR </item>
 			<item> MOD </item>
 			<item> FORGET </item>
 			<item> COPY </item>
+			<item> REPLACE </item>
+			<item> STACK </item>
+		</list>
+		<list name="tagswithyesno">
+			<item> ACHECK </item>
+			<item> ALLOWBASECLASS </item>
+			<item> ASSIGNTOALL </item>
+			<item> DESCISPI </item>
+			<item> EDITABLE </item>
+			<item> EDITPOOL </item>
+			<item> EXCLUSIVE </item>
+			<item> FRACTIONALPOOL </item>
+			<item> HASSUBCLASS </item>
+			<item> HASSUBSTITUTIONLEVEL </item>
+			<item> MEMORIZE </item>
+			<item> MODS </item>
+			<item> MODTOSKILLS </item>
+			<item> MULT </item>
+			<item> NAMEISPI </item>
+			<item> REMOVABLE </item>
+			<item> SPELLBOOK </item>
+			<item> STACK </item>
+			<item> VISIBLE </item>
+			<item> USEMASTERSKILL </item>
+			<item> USEUNTRAINED </item>
 		</list>
 		<list name="typers" >
-			<item> TYPE </item>
+			<item> ALIGNMENT </item>
+			<item> ALTEQMOD </item>
+			<item> ALTTYPE </item>
+			<item> BASE </item>
+			<item> CHANGEPROF </item>
+			<item> CLASS </item>
+			<item> CONTAINS </item>
+			<item> DAMAGE </item>
+			<item> DESCRIPTOR </item>
+			<item> DOMAIN </item>
+			<item> ITYPE </item>
 			<item> KEY </item>
+			<item> PROHIBITSPELL </item>
+			<item> TYPE </item>
+			<item> SCHOOL </item>
+			<item> SPELL </item>
+			<item> SPELLTYPE </item>
+			<item> SUBSCHOOL </item>
+		</list>
+		<list name="yesno">
+			<item> YES </item>
+			<item> NO </item>
+			<item> Y </item>
+			<item> N </item>
+			<item> HIDDEN </item>
+			<item> DISPLAY </item>
+			<item> QUALIFY </item>
+			<item> PROFICIENT </item>
+			<item> DOUBLE </item>
+			<item> WEIGHT </item>
+			<item> EXPORT </item>
 		</list>
 		<contexts>
 			<context attribute="Normal Text" lineEndContext="Normal" name="Normal" >
-				<IncludeRules context="KeepNeat" />
-				<keyword attribute="Tags" String="tags" />
-				<keyword attribute="Tags" String="colortext" context="Descriptive" />
-				<keyword attribute="Altered" String="modifiers" />
 				<RegExpr attribute="Comment" String="^#.*$" />
-				<StringDetect String="ASPECT" attribute="Tags" context="DefineAspect" />
-				<StringDetect String="DEFINE" attribute="Tags" context="DefineVar" />
-				<StringDetect String="ABILITY" attribute="Tags" context="DefineAbility" />
-				<keyword attribute="Tags" String="TagsWithSub" context="Tags2Sub" />
-				<keyword attribute="Tags" String="TagsWithMultiSub" context="TagsMultiSub" />
+				<keyword String="tags" attribute="Tags" />
+				<keyword String="colortext" attribute="Tags" context="Descriptive" />
+				<RegExpr String="SOURCE[\w]*" attribute="Tags" context="Descriptive" />
+				<keyword String="modifiers" attribute="Altered" />
+				<keyword String="adjustments" attribute="Tags" context="Adjusters" />
+				<keyword String="enforcers" attribute="Tags" context="Enforce" />
+				<keyword String="tagswithyesno" attribute="Tags" context="TagsWithYN" />
+				<StringDetect String="ABILITY" attribute="Tags" context="ABILITY" />
+				<StringDetect String="ASPECT" attribute="Tags" context="ASPECT" />
+				<StringDetect String="BONUS" context="BONUS" />
+				<StringDetect String="DEFINE" attribute="Tags" context="DEFINE" />
+				<StringDetect String="NATURALATTACKS" attribute="Tags" context="NatAttacks" />
+				<StringDetect String="SPELLS" attribute="Tags" context="SPELLS" />
+				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" />
-				<RegExpr attribute="PRETags" String="[!]*PRE[\w]*" context="PRExxx" />
 			</context>
 			<context name="KeepNeat" >
-				<RegExpr String="[]:=,.()[]" attribute="Normal Text" />
-				<RegExpr attribute="PRETags" String="[!]*PRE[\w]*" context="PRExxx" />
+				<RegExpr context="Normal" String="[\t]" />
+				<RegExpr String="[!]*PRE[\w]*" attribute="PRETags" context="PRExxx" />
+				<AnyChar String="]/=,.()[+*%!:^{}-]" attribute="Normal Text" />
+				<RegExpr attribute="Dice" String="[\d]d[\d]" />
 				<keyword String="typers" attribute="Tags" context="Typing"/>
-				<RegExpr attribute="Normal Text" context="Normal" String="[\t]" />
-				<keyword attribute="Altered" String="modifiers" />
+				<keyword Context="Altered" string="modifiers" />
+				<Int attribute="Numbers" />
+				<keyword attribute="Numbers" String="globalvariables" />
 			</context>
-			<context name="Descriptive" attribute="DescText" lineEndContext="Normal" >
+			<context name="ABILITY" attribute="Sub-Tags" lineEndContext="Normal" >
+				<DetectChar char="=" attribute="Normal" context="#pop" />
+				<StringDetect String="NORMAL" attribute="Sub-Tags" context="Listing" />
+				<StringDetect String="AUTOMATIC" attribute="Sub-Tags" context="Listing" />
+				<StringDetect String="VIRTUAL" attribute="Sub-Tags" context="Listing" />
+				<DetectChar char="|" attribute="Pipes" />
 				<IncludeRules context="KeepNeat" />
-				<DetectChar char="|" attribute="Pipes" context="Variables" />
-				<RegExpr String="[%][\d]*" attribute="Sub-Tags" />
 			</context>
-			<context name="DefineAspect" attribute="ASPECT/VAR Defined" lineEndContext="Normal" >
+			<context name="Adjusters" attribute="Keywords" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" />
+			</context>
+			<context name="Altered" attribute="Altered" lineEndContext="Normal" >
+				<RegExpr context="Normal" String="[\t]" />
+			</context>
+			<context name="ASPECT" attribute="Assignment" lineEndContext="Normal" >
 				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" context="Descriptive" />
 			</context>
-			<context name="DefineVar" attribute="ASPECT/VAR Defined" lineEndContext="Normal" >
+			<context name="BONUS" lineEndContext="Normal" attribute="Tags">
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" context="Tags2Sub" />
+			</context>
+			<context name="DEFINE" attribute="Assignment" lineEndContext="Normal" >
 				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" context="Variables" />
 			</context>
-			<context name="Variables" attribute="Variables" lineEndContext="Normal" >
+			<context name="Descriptive" attribute="Descrpitive" lineEndContext="Normal" >
+				<DetectString String="CASTERLEVEL" attribute="Numbers" />
+				<DetectChar char="|" attribute="Pipes" context="Variables" />
+				<RegExpr String="[%][\d]*" attribute="Sub-Tags" />
+				<IncludeRules context="KeepNeat" />
+			</context>
+			<context name="Enforce" attribute="Tags" lineEndContext="Normal">
+				<IncludeRules context="KeepNeat" />
+				<StringDetect String="NUMCHOICES" attribute="Tags" context="Typing" />
+				<StringDetect String="ABILITY" attribute="Tags" context="ABILITY" />
+				<StringDetect String="ADDCHOICE" attribute="Tags" context="Listing" />
+				<StringDetect String="CHOOSE" attribute="Tags" context="Listing" />
+				<DetectChar char="|" attribute="Pipes" context="Listing" />
+			</context>
+			<context name="Listing" attribute="Assignment" lineEndContext="Normal" >
 				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" />
-				<Int attribute="Numbers" />
-				<keyword attribute="Numbers" String="statmods" />
+			</context>
+			<context name="NatAttacks" attribute="Assignment" lineEndContext="Normal" >
+				<DetectChar char="," attribute="Normal" context="Typing" />
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" />
 			</context>
 			<context name="PRExxx" attribute="Normal Text" lineEndContext="Normal" >
 				<IncludeRules context="KeepNeat" />
+				<DetectChar char="Q" attribute="Sub-Tags" />
 				<Int attribute="Numbers" context="Normal" />
 				<RegExpr String="[\w]" context="Normal" />
 			</context>
-			<context name="Tags2Sub" attribute="Sub-Tags" lineEndContext="Normal" >
+			<context name="SPELLS" attribute="Descrpitive" lineEndContext="Normal" >
+				<StringDetect String="TIMES" attribute="Tags" context="Typing" />
+				<StringDetect String="TIMESUNIT" attribute="Tags" context="Typing" />
+				<StringDetect String="CASTERLEVEL" attribute="Tags" context="Typing" />
+				<DetectChar char="|" attribute="Pipes" />
 				<IncludeRules context="KeepNeat" />
-				<DetectChar char="|" attribute="Pipes" context="Clarify" />
 			</context>
-			<context name="Clarify" attribute="Assignment" lineEndContext="Normal" >
-				<IncludeRules context="KeepNeat" />
+			<context name="Tags2Sub" attribute="Sub-Tags" lineEndContext="Normal" >
 				<DetectChar char="|" attribute="Pipes" context="Variables" />
+				<IncludeRules context="KeepNeat" />
+			</context>
+			<context name="TagsWithYN" lineEndContext="Normal" >
+				<IncludeRules context="KeepNeat" />
+				<keyword String="yesno" attribute="Sub-Tags" context="Normal" />
 			</context>
 			<context name="Typing" attribute="Keywords" lineEndContext="Normal" >
 				<IncludeRules context="KeepNeat" />
-				<keyword attribute="Keywords" String="words" />
 				<DetectChar char="|" attribute="Pipes" context="#pop" />
 			</context>
-			<context name="DefineAbility" lineEndContext="Normal" >
-				<DetectChar char=":" attribute="Normal Text" context="Tags2Sub" />
-				<DetectChar char="|" attribute="Pipes" context="Tags2Sub" />
-			</context>
-			<context name="TagsMultiSub" lineEndContext="Normal" >
-				<DetectChar char=":" attribute="Normal Text" context="Tags2Sub" />
-				<DetectChar char="|" attribute="Pipes" context="Tags2Sub" />
-				<StringDetect String="ABILITY" attribute="Tags" context="DefineAbility" />
+			<context name="Variables" attribute="Variables" lineEndContext="Normal" >
+				<keyword string="globalvariables"  attribute="Numbers" />
+				<RegExpr string="COUNT\[[\w]+([\W][\w]+)*\]" attribute="Numbers" />
+				<RegExpr String="WEIGHT\.[\w]+" attribute="Numbers" />
+				<IncludeRules context="KeepNeat" />
+				<DetectChar char="|" attribute="Pipes" />
 			</context>
 		</contexts>
 		<itemDatas>
 			<itemData name="Normal Text" defStyleNum="dsNormal" />
 			<itemData name="Tags" defStyleNum="dsKeyword" />
-			<itemData name="PRETags" defStyleNum="dsKeyword" />
+			<itemData name="PRETags" defStyleNum="dsAlert"/>
 			<itemData name="Sub-Tags" defStyleNum="dsDataType" />
 			<itemData name="Assignment" defStyleNum="dsString" />
-			<itemData name="Pipes" defStyleNum="dsDecVal" />
-			<itemData name="Numbers" defStyleNum="dsOthers" />
+			<itemData name="Pipes" defStyleNum="dsFloat" />
+			<itemData name="Numbers" defStyleNum="dsDecVal" />
 			<itemData name="Comment" defStyleNum="dsComment" />
-			<itemData name="DescText" defStyleNum="dsComment" bold="1" />
-			<itemData name="Variables" defStyleNum="dsDataType" italic="1" />
-			<itemData name="ASPECT/VAR Defined" defStyleNum="dsKeyword" italic="1" />
+			<itemData name="Descrpitive" defStyleNum="dsComment" />
+			<itemData name="Variables" defStyleNum="dsDecVal" italic="1" />
 			<itemData name="Altered" defStyleNum="dsError" />
-			<itemData name="Keywords" defStyleNum="dsFunction" />
+			<itemData name="Keywords" defStyleNum="dsOthers" />
+			<itemData name="Dice" defStyleNum="dsBaseN" />
 		</itemDatas>
 		<comments>
 			<comment name="singleLine" start="#" />
