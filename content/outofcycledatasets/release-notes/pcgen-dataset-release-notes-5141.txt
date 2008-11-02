@@ -17,79 +17,85 @@ Data Sets in this release
 
     Title: Curse of the Crimson Throne - Chapter 1: Edge of Anarch
     File: 5141_paizo_curseofthecrimsonthrown_advset7_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-11
 
     Title: Curse of the Crimson Throne - Chapter 2: Seven Days to the Grave
     File: 5141_paizo_curseofthecrimsonthrown_advset8_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-11
 
     Title: Curse of the Crimson Throne - Chapter 4: A History of Ashes
     File: 5141_paizo_curseofthecrimsonthrone_advset10_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-09-21
 
     Title: Curse of the Crimson Throne - Chapter 5: Skeletons of Scarwall
     File: 5141_paizo_curseofthecrimsonthrone_advset11_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-09-21
 
     Title: Curse of the Crimson Throne - Chapter 6: Crown of Fangs
     File: 5141_paizo_curseofthecrimsonthrone_advset12_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-09-21
 
     Title: Curse of the Crimson Throne - Player's Guide
     File: 5141_paizo_curseofthecrimsonthrown_playersguide_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-11
 
     Title: Rise of the Runelords - Chapter 2: The Skinsaw Murders
     File: 5141_paizo_riseoftherunelords_advset2_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-08
 
     Title: Rise of the Runelords - Chapter 3: The Hook Mountain Massacre
     File: 5141_paizo_riseoftherunelords_advset3_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-08
 
     Title: Rise of the Runelords - Chapter 4: Fortress of the Stone Giants
     File: 5141_paizo_riseoftherunelords_advset4_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-08
 
     Title: Rise of the Runelords - Chapter 5: Sins of the Saviors
     File: 5141_paizo_riseoftherunelords_advset5_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-08
 
     Title: Rise of the Runelords - Chapter 6: Spires of Xin-Shalast
     File: 5141_paizo_riseoftherunelords_advset6_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-08-08
 
     Title: Second Darkness - Chapter 1: Shadow in the Sky
     File: 5141_paizo_seconddarkness_advset13_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-09-21
 
+    Title: Second Darkness - Chapter 2: Children of the Void
+    File: 5141_paizo_seconddarkness_advset14_1.0.zip
+    Publisher: Paizo Publishing *
+    Game Mode: 35e
+    Release Date: 2008-11-01
+
     Title: Second Darkness - Player's Guide
     File: 5141_paizo_seconddarkness_playersguide_1.0.zip
-    Publisher: Paizo Publishing
+    Publisher: Paizo Publishing *
     Game Mode: 35e
     Release Date: 2008-09-21
 
@@ -98,6 +104,11 @@ Data Sets in this release
     Publisher: Skirmisher Publishing LLC
     Game Mode: 35e
     Release Date: 2008-10-20
+
+* Note: These data sets use trademarks and/or copyrights owned by Paizo Publishing, LLC, 
+used with permission. These datasets are not published, endorsed, or specifically approved 
+by Paizo Publishing. For more information about Pathfinder, Paizo Publishing and 
+Paizo products, please visit paizo.com.
 
 Installing Data Sets
 
