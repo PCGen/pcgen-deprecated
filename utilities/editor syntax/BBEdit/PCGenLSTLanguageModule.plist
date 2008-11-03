@@ -23,6 +23,7 @@
 <string>ACVALUE</string>
 <string>ADD</string>
 <string>ADDDOMAINS</string>
+<string>ADDLEVEL</string>
 <string>ADDPROF</string>
 <string>ADDSPELLLEVEL</string>
 <string>AGE</string>
@@ -50,13 +51,16 @@
 <string>ANYPC</string>
 <string>APPLIEDTO</string>
 <string>APPLY</string>
-<string>Arcane</string>
+<string>ARMOR</string>
 <string>ARMORPROF</string>
 <string>ARMORTYPE</string>
+<string>ASPECT</string>
 <string>ASSIGNTOALL</string>
 <string>ATTACKCYCLE</string>
 <string>ATTACKS</string>
+<string>ATWILL</string>
 <string>AUTO</string>
+<string>AUTOMATIC</string>
 <string>AUTOSPELLS</string>
 <string>BAB</string>
 <string>BABATTCYC</string>
@@ -134,6 +138,7 @@
 <string>CLASSBOUGHT</string>
 <string>CLASSES</string>
 <string>CLASSLEVEL</string>
+<string>CLASSLIST</string>
 <string>CLASSSKILL</string>
 <string>CLASSSKILLS</string>
 <string>CLASSSPELL</string>
@@ -170,6 +175,7 @@
 <string>CRITRANGE</string>
 <string>CRITRANGEADD</string>
 <string>CRITRANGEDOUBLE</string>
+<string>CROSSCLASS</string>
 <string>CROSSCLASSSKILLS</string>
 <string>CSKILL</string>
 <string>CSKILLMAX</string>
@@ -218,7 +224,6 @@
 <string>DISTANCEFACTOR</string>
 <string>DISTANCEPATTERN</string>
 <string>DISTANCEUNIT</string>
-<string>Divine</string>
 <string>DOMAIN</string>
 <string>DOMAINS</string>
 <string>DOWN</string>
@@ -277,7 +282,6 @@
 <string>FOLLOWERALIGN</string>
 <string>FORGET</string>
 <string>FORMATCAT</string>
-<string>Fortitude</string>
 <string>FORTITUDE</string>
 <string>FRACTIONALPOOL</string>
 <string>FREE</string>
@@ -299,6 +303,7 @@
 <string>HANDED</string>
 <string>HANDS</string>
 <string>HASSUBCLASS</string>
+<string>HASSUBSTITUTIONLEVEL</string>
 <string>HD</string>
 <string>HEAD</string>
 <string>HEIGHT</string>
@@ -346,6 +351,7 @@
 <string>IS</string>
 <string>ISD20</string>
 <string>ISLICENSED</string>
+<string>ISMATURE</string>
 <string>ISMONSTER</string>
 <string>ISOGL</string>
 <string>ITEM</string>
@@ -410,6 +416,8 @@
 <string>MODTOSKILLS</string>
 <string>MONCSKILL</string>
 <string>MONEY</string>
+<string>MONNONSKILLHD</string>
+<string>MONSKILL</string>
 <string>MONSTERCLASS</string>
 <string>MOVE</string>
 <string>MOVEA</string>
@@ -429,10 +437,12 @@
 <string>NEGLEVEL</string>
 <string>NO</string>
 <string>NOCHOICE</string>
+<string>NOLIMIT</string>
 <string>NOLIST</string>
 <string>NONAME</string>
 <string>NONCLASSSKILLLIST</string>
 <string>NONEXCLUSIVE</string>
+<string>NORANK</string>
 <string>NOSIGN</string>
 <string>NOSTACK</string>
 <string>Not</string>
@@ -441,6 +451,7 @@
 <string>NUMCHOICES</string>
 <string>NUMPAGES</string>
 <string>NUMSLOTS</string>
+<string>OPTION</string>
 <string>OTHER</string>
 <string>OUTPUTNAME</string>
 <string>OUTPUTORDER</string>
@@ -478,6 +489,7 @@
 <string>PREBASESIZELTEQ</string>
 <string>PREBASESIZENEQ</string>
 <string>PREBIRTHPLACE</string>
+<string>PRECAMPAIGN</string>
 <string>PRECHECK</string>
 <string>PRECHECKBASE</string>
 <string>PRECITY</string>
@@ -489,6 +501,7 @@
 <string>PREDEITYALIGN</string>
 <string>PREDEITYDOMAIN</string>
 <string>PREDOMAIN</string>
+<string>PREDR</string>
 <string>PREEQUIP</string>
 <string>PREEQUIPBOTH</string>
 <string>PREEQUIPPRIMARY</string>
@@ -502,6 +515,7 @@
 <string>PREHANDSLT</string>
 <string>PREHANDSLTEQ</string>
 <string>PREHANDSNEQ</string>
+<string>PREHD</string>
 <string>PREITEM</string>
 <string>PRELANG</string>
 <string>PRELEGSEQ</string>
@@ -533,11 +547,11 @@
 <string>PRESPELL</string>
 <string>PRESPELLBOOK</string>
 <string>PRESPELLCAST</string>
+<string>PRESPELLDESCRIPTOR</string>
 <string>PRESPELLSCHOOL</string>
 <string>PRESPELLSCHOOLSUB</string>
 <string>PRESPELLTYPE</string>
 <string>PRESTAT</string>
-<string>Prestige</string>
 <string>PRESUBCLASS</string>
 <string>PRETEMPLATE</string>
 <string>PRETEXT</string>
@@ -560,7 +574,6 @@
 <string>PROHIBITSPELL</string>
 <string>PROJECTILE</string>
 <string>PROMPT</string>
-<string>Psionic</string>
 <string>PSIONLEVEL</string>
 <string>PUBNAMELONG</string>
 <string>PUBNAMESHORT</string>
@@ -585,7 +598,6 @@
 <string>RATEOFFIRE</string>
 <string>REACH</string>
 <string>REACHMULT</string>
-<string>Reflex</string>
 <string>REFLEX</string>
 <string>REGION</string>
 <string>REMOVABLE</string>
@@ -726,6 +738,7 @@
 <string>UATT</string>
 <string>UDAM</string>
 <string>UMULT</string>
+<string>UNIQUE</string>
 <string>UNITSET</string>
 <string>UP</string>
 <string>UNENCUMBEREDMOVE</string>
@@ -737,6 +750,7 @@
 <string>VARIANTS</string>
 <string>VERSION</string>
 <string>VFEAT</string>
+<string>VIRTUAL</string>
 <string>VISIBLE</string>
 <string>VISION</string>
 <string>WALK</string>
@@ -760,7 +774,6 @@
 <string>WEIGHTUNIT</string>
 <string>WIELD</string>
 <string>WIELDCATEGORY</string>
-<string>Will</string>
 <string>WILL</string>
 <string>WIS</string>
 <string>WISMAX0</string>
