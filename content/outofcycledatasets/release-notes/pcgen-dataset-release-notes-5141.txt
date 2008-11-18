@@ -93,6 +93,12 @@ Data Sets in this release
     Game Mode: 35e
     Release Date: 2008-11-01
 
+    Title: Second Darkness - Chapter 3: The Armageddon Echo
+    File: 5141_paizo_seconddarkness_advset15_1.0.zip
+    Publisher: Paizo Publishing *
+    Game Mode: 35e
+    Release Date: 2008-11-17
+
     Title: Second Darkness - Player's Guide
     File: 5141_paizo_seconddarkness_playersguide_1.0.zip
     Publisher: Paizo Publishing *
