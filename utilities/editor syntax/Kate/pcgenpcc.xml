@@ -5,6 +5,7 @@
 		<list name="pcc-tags">
 			<item> ABILITY </item>
 			<item> ABILITYCATEGORY </item>
+			<item> ARMORPROF </item>
 			<item> BIOSET </item>
 			<item> BOOKTYPE </item>
 			<item> CAMPAIGN </item>
@@ -12,6 +13,7 @@
 			<item> COMPANIONMOD </item>
 			<item> COPYRIGHT </item>
 			<item> COVER </item>
+			<item> DESC </item>
 			<item> DEITY </item>
 			<item> DOMAIN </item>
 			<item> EQUIPMENT </item>
@@ -20,6 +22,7 @@
 			<item> FEAT </item>
 			<item> GAMEMODE </item>
 			<item> GENRE </item>
+			<item> HELP </item>
 			<item> HIDETYPE </item>
 			<item> INCLUDE </item>
 			<item> INFOTEXT </item>
@@ -28,7 +31,8 @@
 			<item> ISOGL </item>
 			<item> KIT </item>
 			<item> LANGUAGE </item>
-			<item> LICENSED </item>
+			<item> LICENSE </item>
+			<item> LOGO </item>
 			<item> LSTEXCLUDE </item>
 			<item> OPTION </item>
 			<item> PCC </item>
@@ -39,6 +43,7 @@
 			<item> RANK </item>
 			<item> REQSKILL </item>
 			<item> SETTING </item>
+			<item> SHIELDPROF </item>
 			<item> SHOWINMENU </item>
 			<item> SKILL </item>
 			<item> SOURCEDATE </item>
@@ -47,7 +52,10 @@
 			<item> SOURCEWEB </item>
 			<item> SPELL </item>
 			<item> WEAPONPROF </item>
+			<item> TEMPLATE </item>
 			<item> TYPE </item>
+			<item> URL </item>
+			<item> WEAPONPROF </item>
 		</list>
 		<contexts>
 			<context attribute="Normal Text" lineEndContext="Normal" name="Normal" >
@@ -69,7 +77,7 @@
 		<itemDatas>
 			<itemData name="Normal Text" defStyleNum="dsNormal" />
 			<itemData name="PCCTags" defStyleNum="dsKeyword" />
-			<itemData name="PRETags" defStyleNum="dsKeyword" bold="1" />
+			<itemData name="PRETags" defStyleNum="dsString" bold="1" />
 			<itemData name="Comment" defStyleNum="dsComment" />
 		</itemDatas>
 		<comments>

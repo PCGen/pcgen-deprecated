@@ -58,6 +58,7 @@
 			<item> EDR </item>
 			<item> EXCHANGELEVEL </item>
 			<item> EXCLASS </item>
+			<item> EYES </item>
 			<item> FACE </item>
 			<item> FAVCLASS </item>
 			<item> FAVOREDCLASS </item>
@@ -66,6 +67,7 @@
 			<item> FOLLOWERADJUSTMENT </item>
 			<item> FOLLOWERALIGN </item>
 			<item> FOLLOWERS </item>
+			<item> FORMATCAT </item>
 			<item> FUMBLERANGE </item>
 			<item> GENDERLOCK </item>
 			<item> HAIR </item>
@@ -168,7 +170,7 @@
 			<item> WEAPONAUTO </item>
 			<item> WEAPONBONUS </item>
 			<item> WEIGHT </item>
-			<item> WEILD </item>
+			<item> WIELD </item>
 			<item> WT </item>
 			<item> WTDIEROLL </item>
 			<item> XPCOST </item>
@@ -323,26 +325,27 @@
 			<context attribute="Normal Text" lineEndContext="Normal" name="Normal" >
 				<RegExpr attribute="Comment" String="^#.*$" />
 				<keyword String="tags" attribute="Tags" />
+				<keyword String="tagswithyesno" attribute="Tags" context="TagsWithYN" />
+				<keyword String="adjustments" attribute="Tags" context="Adjusters" />
 				<keyword String="colortext" attribute="Tags" context="Descriptive" />
 				<RegExpr String="SOURCE[\w]*" attribute="Tags" context="Descriptive" />
-				<keyword String="modifiers" attribute="Altered" />
-				<keyword String="adjustments" attribute="Tags" context="Adjusters" />
 				<keyword String="enforcers" attribute="Tags" context="Enforce" />
-				<keyword String="tagswithyesno" attribute="Tags" context="TagsWithYN" />
 				<StringDetect String="ABILITY" attribute="Tags" context="ABILITY" />
 				<StringDetect String="ASPECT" attribute="Tags" context="ASPECT" />
 				<StringDetect String="BONUS" context="BONUS" />
 				<StringDetect String="DEFINE" attribute="Tags" context="DEFINE" />
 				<StringDetect String="NATURALATTACKS" attribute="Tags" context="NatAttacks" />
 				<StringDetect String="SPELLS" attribute="Tags" context="SPELLS" />
+				<keyword String="modifiers" attribute="Altered" />
 				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" />
 			</context>
 			<context name="KeepNeat" >
 				<RegExpr context="Normal" String="[\t]" />
+				<StringDetect String="Prestige" context="#stay" />
 				<RegExpr String="[!]*PRE[\w]*" attribute="PRETags" context="PRExxx" />
 				<AnyChar String="]/=,.()[+*%!:^{}-]" attribute="Normal Text" />
-				<RegExpr attribute="Dice" String="[\d]d[\d]" />
+				<RegExpr attribute="Dice" String="[\d]+d[\d]+" />
 				<keyword String="typers" attribute="Tags" context="Typing"/>
 				<keyword Context="Altered" string="modifiers" />
 				<Int attribute="Numbers" />
@@ -399,14 +402,14 @@
 				<DetectChar char="|" attribute="Pipes" />
 			</context>
 			<context name="PRExxx" attribute="Normal Text" lineEndContext="Normal" >
-				<IncludeRules context="KeepNeat" />
-				<DetectChar char="Q" attribute="Sub-Tags" />
 				<Int attribute="Numbers" context="Normal" />
+				<DetectChar char="Q" attribute="Sub-Tags" />
 				<RegExpr String="[\w]" context="Normal" />
+				<IncludeRules context="KeepNeat" />
 			</context>
 			<context name="SPELLS" attribute="Descrpitive" lineEndContext="Normal" >
+				<StringDetect String="TIMEUNIT" attribute="Tags" context="Typing" />
 				<StringDetect String="TIMES" attribute="Tags" context="Typing" />
-				<StringDetect String="TIMESUNIT" attribute="Tags" context="Typing" />
 				<StringDetect String="CASTERLEVEL" attribute="Tags" context="Typing" />
 				<DetectChar char="|" attribute="Pipes" />
 				<IncludeRules context="KeepNeat" />
