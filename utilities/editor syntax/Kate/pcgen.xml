@@ -336,13 +336,13 @@
 				<StringDetect String="DEFINE" attribute="Tags" context="DEFINE" />
 				<StringDetect String="NATURALATTACKS" attribute="Tags" context="NatAttacks" />
 				<StringDetect String="SPELLS" attribute="Tags" context="SPELLS" />
-				<keyword String="modifiers" attribute="Altered" />
 				<IncludeRules context="KeepNeat" />
 				<DetectChar char="|" attribute="Pipes" />
 			</context>
 			<context name="KeepNeat" >
 				<RegExpr context="Normal" String="[\t]" />
 				<StringDetect String="Prestige" context="#stay" />
+				<keyword String="modifiers" attribute="Altered" />
 				<RegExpr String="[!]*PRE[\w]*" attribute="PRETags" context="PRExxx" />
 				<AnyChar String="]/=,.()[+*%!:^{}-]" attribute="Normal Text" />
 				<RegExpr attribute="Dice" String="[\d]+d[\d]+" />
