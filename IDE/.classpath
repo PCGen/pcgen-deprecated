@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="pcgen/code/src/java"/>
 	<classpathentry kind="src" path="pcgen/code/src/utest"/>
 	<classpathentry kind="src" path="pcgen/code/src/test"/>
-	<classpathentry kind="src" path="pcgen/code/build/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="pcgen/lib/apache/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/cobra/cobra.jar"/>
@@ -16,8 +15,6 @@
 	<classpathentry kind="lib" path="pcgen/lib/fop/xalan-2.5.2.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/fop/xercesImpl-2.5.0.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/fop/xml-apis.jar"/>
-	<classpathentry kind="lib" path="pcgen/lib/jep/djep-2.24.jar"/>
-	<classpathentry kind="lib" path="pcgen/lib/jep/RngPack-1.1a.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/lnf/kunststoff.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/lnf/skinlf.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/javacc.jar"/>
@@ -25,7 +22,6 @@
 	<classpathentry kind="lib" path="pcgen/lib/MRJ141Stubs.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/test/junit-4.1.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/test/xmlunit1.0.jar"/>
-	<classpathentry kind="lib" path="pcgen/lib/jep/ext-1.1.1.jar"/>
 	<classpathentry kind="lib" path="pcgen/lib/jep/jep-2.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
