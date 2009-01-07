@@ -142,6 +142,7 @@
 <string>CLASSSKILL</string>
 <string>CLASSSKILLS</string>
 <string>CLASSSPELL</string>
+<string>CLASSSPELLLIST</string>
 <string>CLASSTYPE</string>
 <string>CLEAR</string>
 <string>CLOSE</string>
@@ -187,6 +188,7 @@
 <string>CUSTOMIZATION</string>
 <string>DAMAGE</string>
 <string>DAMAGEMULT</string>
+<string>DAMAGESIZE</string>
 <string>DATA</string>
 <string>DC</string>
 <string>DEF</string>
@@ -226,6 +228,7 @@
 <string>DISTANCEUNIT</string>
 <string>DOMAIN</string>
 <string>DOMAINS</string>
+<string>DOMAINSPELLLIST</string>
 <string>DOWN</string>
 <string>DR</string>
 <string>DURATION</string>
@@ -283,6 +286,7 @@
 <string>FORGET</string>
 <string>FORMATCAT</string>
 <string>FORTITUDE</string>
+<string>FORWARDREF</string>
 <string>FRACTIONALPOOL</string>
 <string>FREE</string>
 <string>FUMBLERANGE</string>
@@ -306,6 +310,7 @@
 <string>HASSUBSTITUTIONLEVEL</string>
 <string>HD</string>
 <string>HEAD</string>
+<string>HEAVY</string>
 <string>HEIGHT</string>
 <string>HEIGHTFACTOR</string>
 <string>HEIGHTPATTERN</string>
@@ -316,6 +321,7 @@
 <string>HIDDENSKILLTYPES</string>
 <string>HIDESIZEMOD</string>
 <string>HIDETYPE</string>
+<string>HIGHESTLEVELCLASS</string>
 <string>HITDICE</string>
 <string>HITDICEADVANCEMENT</string>
 <string>HITDICESIZE</string>
@@ -770,6 +776,7 @@
 <string>WEIGHTADD</string>
 <string>WEIGHTDIV</string>
 <string>WEIGHTFACTOR</string>
+<string>WEIGHTMULT</string>
 <string>WEIGHTPATTERN</string>
 <string>WEIGHTUNIT</string>
 <string>WIELD</string>
