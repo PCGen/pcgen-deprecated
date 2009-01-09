@@ -169,6 +169,7 @@
 <string>COST</string>
 <string>COSTMOD</string>
 <string>COSTPRE</string>
+<string>COVER</string>
 <string>COUNT</string>
 <string>CR</string>
 <string>CRFORMULA</string>
@@ -391,6 +392,7 @@
 <string>LOADMULT</string>
 <string>LOCATION</string>
 <string>LOCK</string>
+<string>LOGO</string>
 <string>LONG</string>
 <string>LONGNAME</string>
 <string>LSTEXCLUDE</string>
@@ -744,10 +746,11 @@
 <string>UATT</string>
 <string>UDAM</string>
 <string>UMULT</string>
+<string>UNENCUMBEREDMOVE</string>
 <string>UNIQUE</string>
 <string>UNITSET</string>
 <string>UP</string>
-<string>UNENCUMBEREDMOVE</string>
+<string>URL</string>
 <string>USEMASTERSKILL</string>
 <string>USEUNTRAINED</string>
 <string>VALIDFORDEITY</string>
@@ -772,6 +775,7 @@
 <string>WEAPONPROFS</string>
 <string>WEAPONREACH</string>
 <string>WEAPONTYPE</string>
+<string>WEBSITE</string>
 <string>WEIGHT</string>
 <string>WEIGHTADD</string>
 <string>WEIGHTDIV</string>
