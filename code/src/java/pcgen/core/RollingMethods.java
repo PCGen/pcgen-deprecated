@@ -1,6 +1,6 @@
 /*
- * AssignmentModeGenerator.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * RollingMethods.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,19 +16,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 31, 2008, 12:56:33 AM
+ * Created on Jan 8, 2009, 9:59:47 PM
  */
-package pcgen.gui.generator.stat;
-
-import pcgen.gui.generator.*;
+package pcgen.core;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface AssignmentModeGenerator extends Generator<Integer>
+public class RollingMethods
 {
 
-    public boolean isAssignable();
+    public static int roll(String expression)
+    {
+        return 0;
+    }
 
 }

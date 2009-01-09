@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT GENERATOR (SCORE)+>
+<!ELEMENT SCORE (#PCDATA)>
+<!ATTLIST GENERATOR
+ name CDATA #REQUIRED
+ mutable (true | false) "false"
+ min CDATA #REQUIRED
+ max CDATA #REQUIRED
+ points CDATA #REQUIRED>
+<!ATTLIST SCORE
+ cost CDATA #REQUIRED>
+

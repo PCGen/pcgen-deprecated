@@ -20,6 +20,7 @@
  */
 package pcgen.gui.generator.stat;
 
+import java.util.List;
 import pcgen.gui.generator.Generator;
 
 /**
@@ -29,10 +30,8 @@ import pcgen.gui.generator.Generator;
 public interface StandardModeGenerator extends Generator<Integer>
 {
 
-    public String getDiceExpression();
+    public List<String> getDiceExpressions();
 
-    public int getRerollMinimum();
-
-    public int getDropCount();
-
+    public boolean isAssignable();
+    
 }

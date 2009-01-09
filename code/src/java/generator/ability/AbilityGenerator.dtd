@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT GENERATOR (SOURCE*,ABILITY+)>
+<!ELEMENT SOURCE (#PCDATA)>
+<!ELEMENT ABILITY (SOURCE?, #PCDATA)>
+<!ATTLIST GENERATOR 
+name CDATA #REQUIRED
+mutable (true | false) "false"
+ordered (true | false) "true"
+catagory CDATA #REQUIRED>
+<!ATTLIST ABILITY
+weight CDATA "1">
+

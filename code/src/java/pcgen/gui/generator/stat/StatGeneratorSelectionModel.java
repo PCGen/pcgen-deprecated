@@ -53,7 +53,6 @@ import pcgen.gui.util.GenericListModel;
 public class StatGeneratorSelectionModel implements SelectionModel<Generator<Integer>>
 {
 
-    private static final String ASSIGNMENT_MODE = "assignment";
     private static final String STANDARD_MODE = "dieRoll";
     private static final String PURCHASE_MODE = "purchase";
     private static final Properties props = new Properties();
@@ -81,7 +80,6 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
     {
         this.modePanel = new ModeSelectionPanel();
         this.panelMap = new HashMap<String, StatModePanel>();
-        panelMap.put(ASSIGNMENT_MODE, new AssignmentModePanel());
         panelMap.put(STANDARD_MODE, new StandardModePanel());
         panelMap.put(PURCHASE_MODE, new PurchaseModePanel());
     }
@@ -152,12 +150,7 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
         }
         if (name != null)
         {
-            if (mode == ASSIGNMENT_MODE)
-            {
-                generator = GeneratorFactory.createMutableAssignmentModeGenerator(name,
-                                                                                  (AssignmentModeGenerator) templateItem);
-            }
-            else if (mode == STANDARD_MODE)
+            if (mode == STANDARD_MODE)
             {
                 generator = GeneratorFactory.createMutableStandardModeGenerator(name,
                                                                                 (StandardModeGenerator) templateItem);
@@ -173,8 +166,7 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 
     private static String getMode(Generator<Integer> generator)
     {
-        return generator instanceof AssignmentModeGenerator ? ASSIGNMENT_MODE
-                : generator instanceof StandardModeGenerator ? STANDARD_MODE
+        return generator instanceof StandardModeGenerator ? STANDARD_MODE
                 : generator instanceof PurchaseModeGenerator ? PURCHASE_MODE
                 : null;
     }
@@ -198,8 +190,7 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 
     public boolean isMutable(Generator<Integer> item)
     {
-        return item instanceof MutableAssignmentModeGenerator ||
-                item instanceof MutablePurchaseModeGenerator ||
+        return item instanceof MutablePurchaseModeGenerator ||
                 item instanceof MutableStandardModeGenerator;
     }
 
@@ -242,7 +233,6 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
                                              new Font("Tahoma",
                                                       Font.BOLD,
                                                       12)));
-            initRadioButton(panel, ASSIGNMENT_MODE);
             initRadioButton(panel, STANDARD_MODE).setSelected(true);
             initRadioButton(panel, PURCHASE_MODE);
             gridBagConstraints.weightx = 1.0;

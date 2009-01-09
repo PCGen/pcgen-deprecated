@@ -24,13 +24,18 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import org.apache.commons.lang.math.NumberUtils;
+import pcgen.core.RollingMethods;
 import pcgen.gui.tools.ResourceManager;
+import pcgen.gui.util.event.DocumentChangeAdapter;
 
 /**
  *
@@ -39,88 +44,103 @@ import pcgen.gui.tools.ResourceManager;
 class StandardModePanel extends StatModePanel<StandardModeGenerator>
 {
 
-    private final JTextField expressionField;
-    private final JSpinner rollDropSpinner;
-    private final JSpinner minimumSpinner;
-    private final JTextArea textArea;
+    private final JCheckBox assignableBox;
+    private final JTextField mainExpressionField;
+    private final JLabel[] statLabels = new JLabel[6];
+    private final JTextField[] expressionFields = new JTextField[6];
+    private final JTextField[] resultFields = new JTextField[6];
     private StandardModeGenerator generator = null;
 
     public StandardModePanel()
     {
-        this.expressionField = new JTextField();
-        this.rollDropSpinner = new JSpinner();
-        this.minimumSpinner = new JSpinner();
-        this.textArea = new JTextArea();
+        this.assignableBox = new JCheckBox();
+        this.mainExpressionField = new JTextField();
         initComponents();
     }
 
     private void initComponents()
     {
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = GridBagConstraints.EAST;
-        gridBagConstraints.insets = new Insets(2, 2, 2, 2);
-        add(new JLabel(ResourceManager.getText("diceExp") + ":"),
-            gridBagConstraints);
-
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        add(expressionField, gridBagConstraints);
-
         ActionHandler handler = new ActionHandler();
-        gridBagConstraints.gridwidth = 1;
-        initButton("roll", handler, gridBagConstraints);
-        initButton("clear", handler, gridBagConstraints);
 
-        gridBagConstraints.fill = GridBagConstraints.NONE;
-        gridBagConstraints.weightx = 1.0;
-        add(new JLabel(ResourceManager.getText("dropLowCount") + ":"),
-            gridBagConstraints);
-
-        gridBagConstraints.ipadx = 10;
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.anchor = GridBagConstraints.WEST;
-        add(rollDropSpinner, gridBagConstraints);
-
-        gridBagConstraints.ipadx = 0;
-        gridBagConstraints.anchor = GridBagConstraints.EAST;
-        add(new JLabel(ResourceManager.getText("rerollMinimum") + ":"),
-            gridBagConstraints);
-
-        gridBagConstraints.ipadx = 10;
-        gridBagConstraints.anchor = GridBagConstraints.WEST;
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        add(minimumSpinner, gridBagConstraints);
-
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 1.0;
+        {
+            assignableBox.setText(ResourceManager.getText("assignable"));
+            assignableBox.setActionCommand("assignable");
+            assignableBox.addActionListener(handler);
+        }
+        add(assignableBox, gridBagConstraints);
+        {
+            mainExpressionField.getDocument().addDocumentListener(handler);
+        }
+        gridBagConstraints.anchor = GridBagConstraints.CENTER;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new Insets(2, 2, 2, 2);
-        add(new JScrollPane(textArea), gridBagConstraints);
+        add(mainExpressionField, gridBagConstraints);
+
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        initButton("rollAll", handler, gridBagConstraints);
+        for (int x = 0; x < 6; x++)
+        {
+            statLabels[x] = new JLabel();
+            expressionFields[x] = new JTextField();
+            resultFields[x] = new JTextField();
+
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.anchor = GridBagConstraints.WEST;
+            add(statLabels[x], gridBagConstraints2);
+            {
+                expressionFields[x].getDocument().addDocumentListener(handler);
+            }
+            gridBagConstraints.gridwidth = GridBagConstraints.RELATIVE;
+            add(expressionFields[x], gridBagConstraints);
+            initButton("roll", String.valueOf(x), handler, gridBagConstraints);
+            {
+                resultFields[x].setEditable(false);
+            }
+            gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+            add(resultFields[x], gridBagConstraints);
+        }
+    }
+
+    private void initButton(String prop, String command,
+                             ActionListener listener,
+                             GridBagConstraints gridBagConstraints)
+    {
+        JButton button = new JButton(ResourceManager.getText(prop));
+        button.setActionCommand(command);
+        button.addActionListener(listener);
+        add(button, gridBagConstraints);
     }
 
     private void initButton(String prop, ActionListener listener,
                              GridBagConstraints gridBagConstraints)
     {
-        JButton button = new JButton(ResourceManager.getText(prop));
-        button.setActionCommand(prop);
-        button.addActionListener(listener);
-        add(button, gridBagConstraints);
+        initButton(prop, prop, listener, gridBagConstraints);
     }
 
     public void setGenerator(StandardModeGenerator generator)
     {
         this.generator = generator;
-
-        expressionField.setText(generator.getDiceExpression());
-        rollDropSpinner.setValue(generator.getDropCount());
-        minimumSpinner.setValue(generator.getRerollMinimum());
-        textArea.setText(null);
-
         boolean editable = generator instanceof MutableStandardModeGenerator;
-        expressionField.setEnabled(editable);
-        rollDropSpinner.setEnabled(editable);
-        minimumSpinner.setEnabled(editable);
+        assignableBox.setSelected(generator.isAssignable());
+        assignableBox.setEnabled(editable);
+        List<String> expressions = generator.getDiceExpressions();
+        if (Collections.frequency(expressions, expressions.get(0)) == 6)
+        {
+            mainExpressionField.setText(expressions.get(0));
+        }
+        else
+        {
+            mainExpressionField.setText(null);
+        }
+        mainExpressionField.setEnabled(editable);
+        for (int x = 0; x < 6; x++)
+        {
+            expressionFields[x].setText(expressions.get(x));
+            expressionFields[x].setEnabled(editable);
+            resultFields[x].setText(null);
+        }
     }
 
     public void saveGeneratorData()
@@ -128,25 +148,78 @@ class StandardModePanel extends StatModePanel<StandardModeGenerator>
         if (generator instanceof MutableStandardModeGenerator)
         {
             MutableStandardModeGenerator gen = (MutableStandardModeGenerator) generator;
-            gen.setDiceExpression(expressionField.getText());
-            gen.setDropCount((Integer) rollDropSpinner.getValue());
-            gen.setRerollMinimum((Integer) minimumSpinner.getValue());
+            gen.setAssignable(assignableBox.isSelected());
+            List<String> expressions = new ArrayList<String>();
+            for (int x = 0; x < 6; x++)
+            {
+                expressions.add(expressionFields[x].getText());
+            }
+            gen.setDiceExpressions(expressions);
         }
     }
+    //TODO internationalize
+    private void setupStatLabels()
+    {
 
-    private class ActionHandler implements ActionListener
+        if (assignableBox.isSelected())
+        {
+            for (int x = 0; x < 6; x++)
+            {
+                statLabels[x].setText("Stat " + (x + 1) + ":");
+            }
+        }
+        else
+        {
+            statLabels[0].setText("Strength:");
+            statLabels[1].setText("Dexterity:");
+            statLabels[2].setText("Constitution:");
+            statLabels[3].setText("Intelligence:");
+            statLabels[4].setText("Wisdom:");
+            statLabels[5].setText("Charisma:");
+        }
+    }
+    private void roll(int index)
+    {
+        String expression = expressionFields[index].getText();
+        resultFields[index].setText(String.valueOf(RollingMethods.roll(expression)));
+    }
+
+    private class ActionHandler extends DocumentChangeAdapter implements ActionListener
     {
 
         public void actionPerformed(ActionEvent e)
         {
-            if (e.getActionCommand().equals("roll"))
+            String command = e.getActionCommand();
+            if (command.equals("rollALL"))
             {
-                saveGeneratorData();
-                textArea.append(generator.getNext() + "\n");
+                for (int x = 0; x < 6; x++)
+                {
+                    roll(x);
+                }
+            }
+            else if (command.equals("assignable"))
+            {
+                setupStatLabels();
             }
             else
             {
-                textArea.setText(null);
+                roll(NumberUtils.toInt(command));
+            }
+        }
+
+        @Override
+        public void documentChanged(DocumentEvent e)
+        {
+            if (e.getDocument() == mainExpressionField.getDocument())
+            {
+                for (int x = 0; x < 6; x++)
+                {
+                    expressionFields[x].setText(mainExpressionField.getText());
+                }
+            }
+            else
+            {
+                mainExpressionField.setText(null);
             }
         }
 

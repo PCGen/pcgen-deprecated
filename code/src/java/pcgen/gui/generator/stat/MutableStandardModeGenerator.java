@@ -20,6 +20,8 @@
  */
 package pcgen.gui.generator.stat;
 
+import java.util.List;
+
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
@@ -27,10 +29,8 @@ package pcgen.gui.generator.stat;
 public interface MutableStandardModeGenerator extends StandardModeGenerator
 {
 
-    public void setDiceExpression(String expression);
+    public void setDiceExpressions(List<String> expressions);
 
-    public void setRerollMinimum(int min);
-
-    public void setDropCount(int count);
+    public void setAssignable(boolean assign);
 
 }

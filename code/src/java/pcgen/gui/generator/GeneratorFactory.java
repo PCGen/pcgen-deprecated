@@ -34,6 +34,9 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
+import org.jdom.DocType;
+import org.jdom.Document;
+import org.jdom.Element;
 import pcgen.base.util.RandomUtil;
 import pcgen.base.util.WeightedCollection;
 import pcgen.gui.facade.InfoFacade;
@@ -51,6 +54,50 @@ public final class GeneratorFactory
     {
     }
 
+    private static List<? extends StandardModeGenerator> buildStandardModeGeneratorList(Document document)
+    {
+        DocType type = document.getDocType();
+        if (type.getSystemID().equals("StandardModeGenerator.dtd") &&
+                type.getElementName().equals("GENERATORSET"))
+        {
+            Element root = document.getRootElement();
+            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+            List<StandardModeGenerator> generators = new ArrayList<StandardModeGenerator>();
+            for (Object element : root.getChildren())
+            {
+                generators.add(buildStandardModeGenerator((Element) element,
+                                                          mutable));
+            }
+            return generators;
+        }
+        return null;
+    }
+
+    private static StandardModeGenerator buildStandardModeGenerator(Element element,
+                                                                      boolean mutable)
+    {
+        String name = element.getAttributeValue("name");
+        boolean assignable = Boolean.parseBoolean(element.getAttributeValue("assignable"));
+        @SuppressWarnings("unchecked")
+        List<Element> children = element.getChildren();
+        List<String> stats = new ArrayList<String>();
+        for ( Element child : children)
+        {
+            stats.add(child.getText());
+        }
+        StandardModeGenerator generator = new DefaultStandardModeGenerator(name,
+                                                                           assignable,
+                                                                           stats);
+        if (mutable)
+        {
+            return createMutableStandardModeGenerator(name, generator);
+        }
+        else
+        {
+            return generator;
+        }
+    }
+
     public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(String name,
                                                                                                   FacadeGenerator<T> template)
     {
@@ -61,18 +108,6 @@ public final class GeneratorFactory
             {
                 generator.add(obj);
             }
-        }
-        return generator;
-    }
-
-    public static MutableAssignmentModeGenerator createMutableAssignmentModeGenerator(String name,
-                                                                                        AssignmentModeGenerator template)
-    {
-        MutableAssignmentModeGenerator generator = new DefaultMutableAssignmentModeGenerator(name);
-        if (template != null)
-        {
-            generator.setAssignable(template.isAssignable());
-            generator.setScores(template.getAll());
         }
         return generator;
     }
@@ -102,9 +137,8 @@ public final class GeneratorFactory
         MutableStandardModeGenerator generator = new DefaultMutableStandardModeGenerator(name);
         if (template != null)
         {
-            generator.setDiceExpression(template.getDiceExpression());
-            generator.setDropCount(template.getDropCount());
-            generator.setRerollMinimum(template.getRerollMinimum());
+            generator.setAssignable(template.isAssignable());
+            generator.setDiceExpressions(template.getDiceExpressions());
         }
         return generator;
     }
@@ -233,49 +267,6 @@ public final class GeneratorFactory
 
     }
 
-    private static class DefaultAssignmentModeGenerator extends DefaultOrderedGenerator<Integer>
-            implements AssignmentModeGenerator
-    {
-
-        protected boolean assignable;
-
-        public DefaultAssignmentModeGenerator(String name, List<Integer> scores,
-                                               boolean assignable)
-        {
-            super(name, scores, true);
-            this.assignable = assignable;
-        }
-
-        public boolean isAssignable()
-        {
-            return assignable;
-        }
-
-    }
-
-    private static class DefaultMutableAssignmentModeGenerator extends DefaultAssignmentModeGenerator
-            implements MutableAssignmentModeGenerator
-    {
-
-        @SuppressWarnings("unchecked")
-        public DefaultMutableAssignmentModeGenerator(String name)
-        {
-            super(name, Collections.EMPTY_LIST, true);
-        }
-
-        public void setScores(List<Integer> scores)
-        {
-            this.items = scores;
-            reset();
-        }
-
-        public void setAssignable(boolean assignable)
-        {
-            this.assignable = assignable;
-        }
-
-    }
-
     private static class DefaultPurchaseModeGenerator extends AbstractGenerator<Integer>
             implements PurchaseModeGenerator
     {
@@ -364,18 +355,15 @@ public final class GeneratorFactory
             implements StandardModeGenerator
     {
 
-        protected String diceExpression;
-        protected int dropCount;
-        protected int rerollMinimum;
+        protected boolean assignable;
+        protected List<String> diceExpressions;
 
-        public DefaultStandardModeGenerator(String name, String diceExpression,
-                                             int dropCount,
-                                             int rerollMinimum)
+        public DefaultStandardModeGenerator(String name, boolean assignable,
+                                             List<String> diceExpressions)
         {
             super(name);
-            this.diceExpression = diceExpression;
-            this.dropCount = dropCount;
-            this.rerollMinimum = rerollMinimum;
+            this.assignable = assignable;
+            this.diceExpressions = diceExpressions;
         }
 
         public Integer getNext()
@@ -383,19 +371,14 @@ public final class GeneratorFactory
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public String getDiceExpression()
+        public List<String> getDiceExpressions()
         {
-            return diceExpression;
+            return diceExpressions;
         }
 
-        public int getRerollMinimum()
+        public boolean isAssignable()
         {
-            return rerollMinimum;
-        }
-
-        public int getDropCount()
-        {
-            return dropCount;
+            return assignable;
         }
 
     }
@@ -404,24 +387,20 @@ public final class GeneratorFactory
             implements MutableStandardModeGenerator
     {
 
+        @SuppressWarnings("unchecked")
         public DefaultMutableStandardModeGenerator(String name)
         {
-            super(name, null, 0, 0);
+            super(name, false, Collections.EMPTY_LIST);
         }
 
-        public void setDiceExpression(String expression)
+        public void setDiceExpressions(List<String> expressions)
         {
-            this.diceExpression = expression;
+            diceExpressions = expressions;
         }
 
-        public void setRerollMinimum(int min)
+        public void setAssignable(boolean assign)
         {
-            this.rerollMinimum = min;
-        }
-
-        public void setDropCount(int count)
-        {
-            this.dropCount = count;
+            assignable = assign;
         }
 
     }

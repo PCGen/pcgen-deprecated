@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT BUILD (GENERATOR)+>
+<!ELEMENT GENERATOR EMPTY>
+<!ATTLIST BUILD 
+name CDATA #REQUIRED
+mutable (true | false) "false">
+<!ATTLIST GENERATOR
+target ID #REQUIRED>
