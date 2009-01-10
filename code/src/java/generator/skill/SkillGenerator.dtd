@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT GENERATOR (SOURCE*,SKILL+)>
+<!ELEMENT GENERATORSET (SOURCE*,GENERATOR)+>
+<!ELEMENT GENERATOR (SKILL+)>
 <!ELEMENT SOURCE (#PCDATA)>
-<!ELEMENT SKILL (SOURCE?, #PCDATA)>
+<!ELEMENT SKILL (#PCDATA)>
+<!ATTLIST GENERATORSET
+mutable (true | false) "false">
 <!ATTLIST GENERATOR 
 name CDATA #REQUIRED
-mutable (true | false) "false"
-ordered (true | false) "false"
->
+random (true | false) "false">
 <!ATTLIST SKILL
-weight CDATA "1"
->
+weight CDATA "1">

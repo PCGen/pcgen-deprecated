@@ -36,6 +36,8 @@ public interface DataSetFacade
 
     public GenericListModel<SkillFacade> getSkills();
 
+    public SkillFacade getSkill(String skill);
+    
     public GenericListModel<RaceFacade> getRaces();
 
     public GenericListModel<ClassFacade> getClasses();

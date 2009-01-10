@@ -21,8 +21,7 @@
 package pcgen.gui.generator;
 
 import java.util.ArrayList;
-import pcgen.gui.facade.SkillFacade;
-import pcgen.gui.generator.stat.*;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -33,15 +32,23 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.Vector;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
 import pcgen.base.util.RandomUtil;
 import pcgen.base.util.WeightedCollection;
+import pcgen.gui.facade.DataSetFacade;
 import pcgen.gui.facade.InfoFacade;
+import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.generator.skill.MutableSkillGenerator;
 import pcgen.gui.generator.skill.SkillGenerator;
+import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
+import pcgen.gui.generator.stat.MutableStandardModeGenerator;
+import pcgen.gui.generator.stat.PurchaseModeGenerator;
+import pcgen.gui.generator.stat.StandardModeGenerator;
+import pcgen.util.Logging;
 
 /**
  *
@@ -54,7 +61,7 @@ public final class GeneratorFactory
     {
     }
 
-    private static List<? extends StandardModeGenerator> buildStandardModeGeneratorList(Document document)
+    private static List<StandardModeGenerator> buildStandardModeGeneratorList(Document document)
     {
         DocType type = document.getDocType();
         if (type.getSystemID().equals("StandardModeGenerator.dtd") &&
@@ -65,12 +72,114 @@ public final class GeneratorFactory
             List<StandardModeGenerator> generators = new ArrayList<StandardModeGenerator>();
             for (Object element : root.getChildren())
             {
-                generators.add(buildStandardModeGenerator((Element) element,
-                                                          mutable));
+                try
+                {
+                    generators.add(buildStandardModeGenerator((Element) element,
+                                                              mutable));
+                }
+                catch (NumberFormatException e)
+                {
+                    Logging.errorPrint(e.getMessage(), e);
+                }
             }
             return generators;
         }
+
         return null;
+    }
+
+    private static List<PurchaseModeGenerator> buildPurchaseModeGeneratorList(Document document)
+    {
+        DocType type = document.getDocType();
+        if (type.getSystemID().equals("PurchaseModeGenerator.dtd") &&
+                type.getElementName().equals("GENERATORSET"))
+        {
+            Element root = document.getRootElement();
+            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+            List<PurchaseModeGenerator> generators = new ArrayList<PurchaseModeGenerator>();
+            for (Object element : root.getChildren())
+            {
+                try
+                {
+                    generators.add(buildPurchaseModeGenerator((Element) element,
+                                                              mutable));
+                }
+                catch (NumberFormatException e)
+                {
+                    Logging.errorPrint(e.getMessage(), e);
+                }
+            }
+            return generators;
+        }
+
+        return null;
+    }
+
+    private static List<SkillGenerator> buildSkillGeneratorList(Document document,
+                                                                  DataSetFacade data)
+    {
+        DocType type = document.getDocType();
+        if (type.getSystemID().equals("SkillGenerator.dtd") &&
+                type.getElementName().equals("GENERATORSET"))
+        {
+            Element root = document.getRootElement();
+            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+            @SuppressWarnings("unchecked")
+            List<Element> sourceElements = root.getChildren("SOURCE");
+            Set<String> sources = data.getSources();
+            for ( Element source : sourceElements)
+            {
+                if (!sources.contains(source.getText()))
+                {
+                    Logging.errorPrint("DataSet does not contain " +
+                                       source.getText());
+                    return null;
+                }
+            }
+            List<SkillGenerator> generators = new ArrayList<SkillGenerator>();
+            for ( Object element : root.getChildren("GENERATOR"))
+            {
+                try
+                {
+                    generators.add(buildSkillGenerator((Element) element,
+                                                       mutable, data));
+                }
+                catch ( NumberFormatException e)
+                {
+                    Logging.errorPrint(e.getMessage(), e);
+                }
+            }
+            return generators;
+        }
+
+        return null;
+    }
+
+    private static SkillGenerator buildSkillGenerator(Element element,
+                                                        boolean mutable,
+                                                        DataSetFacade data)
+    {
+        String name = element.getAttributeValue("name");
+        boolean random = Boolean.parseBoolean(element.getAttributeValue("random"));
+        @SuppressWarnings("unchecked")
+        List<Element> children = element.getChildren();
+        Map<SkillFacade, Integer> priorityMap = new HashMap<SkillFacade, Integer>();
+        for ( Element child : children)
+        {
+            String skill = child.getText();
+            Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
+            priorityMap.put(data.getSkill(skill), weight);
+        }
+        SkillGenerator generator = new DefaultSkillGenerator(name, priorityMap,
+                                                             random);
+        if (mutable)
+        {
+            return createMutableSkillGenerator(name, generator);
+        }
+        else
+        {
+            return generator;
+        }
     }
 
     private static StandardModeGenerator buildStandardModeGenerator(Element element,
@@ -91,6 +200,34 @@ public final class GeneratorFactory
         if (mutable)
         {
             return createMutableStandardModeGenerator(name, generator);
+        }
+        else
+        {
+            return generator;
+        }
+    }
+
+    private static PurchaseModeGenerator buildPurchaseModeGenerator(Element element,
+                                                                      boolean mutable)
+    {
+        String name = element.getAttributeValue("name");
+        int points = Integer.parseInt(element.getAttributeValue("points"));
+        TreeMap<Integer, Integer> costs = new TreeMap<Integer, Integer>();
+        @SuppressWarnings("unchecked")
+        List<Element> children = element.getChildren();
+        for ( Element child : children)
+        {
+            Integer score = Integer.valueOf(child.getAttributeValue("score"));
+            Integer cost = Integer.valueOf(child.getText());
+            costs.put(score, cost);
+        }
+        PurchaseModeGenerator generator = new DefaultPurchaseModeGenerator(name,
+                                                                           points,
+                                                                           costs.firstKey(),
+                                                                           costs.values());
+        if (mutable)
+        {
+            return createMutablePurchaseModeGenerator(name, generator);
         }
         else
         {
@@ -285,7 +422,7 @@ public final class GeneratorFactory
         }
 
         public DefaultPurchaseModeGenerator(String name, int points, int min,
-                                             List<Integer> costs)
+                                             Collection<Integer> costs)
         {
             super(name);
             this.points = points;

@@ -52,7 +52,6 @@ public class SingletonGenerator<E extends InfoFacade> extends AbstractGenerator<
         return Collections.singletonList(item);
     }
 
-    @Override
     public boolean isSingleton()
     {
         return true;
