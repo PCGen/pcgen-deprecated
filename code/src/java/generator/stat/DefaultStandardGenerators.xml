@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE GENERATORSET SYSTEM 'StandardModeGenerator.dtd'>
+<!DOCTYPE GENERATORSET PUBLIC "PCGEN-GENERATORS" 'StandardModeGenerator.dtd'>
 <GENERATORSET>
     <GENERATOR name="3d6" assignable="true">
         <STAT>3d6</STAT>
