@@ -27,6 +27,7 @@ import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.StatFacade;
 import pcgen.gui.generator.Generator;
+import pcgen.gui.util.GenericComboBoxModel;
 
 /**
  *
@@ -53,24 +54,22 @@ public interface CharacterCreationManager
 
     public boolean isCharacterValid();
 
-    public boolean isCharacterNameValid();
-
     public void setValidity(String prop, boolean valid);
 
-    public List<Generator<Integer>> getAlignmentGenerators();
+    public GenericComboBoxModel<Generator<Integer>> getAlignmentGenerators();
 
-    public List<Generator<Gender>> getGenderGenerators();
+    public GenericComboBoxModel<Generator<Gender>> getGenderGenerators();
 
-    public List<Generator<RaceFacade>> getRaceGenerators();
+    public GenericComboBoxModel<Generator<RaceFacade>> getRaceGenerators();
 
-    public List<Generator<ClassFacade>> getClassGenerators();
+    public GenericComboBoxModel<Generator<ClassFacade>> getClassGenerators();
 
-    public List<Generator<Integer>> getStatGenerators();
+    public GenericComboBoxModel<Generator<Integer>> getStatGenerators();
 
     public List<StatFacade> getStats();
 
     public int getModForScore(int score);
 
-    public List<Generator<Integer>> getClassLevelGenerators();
+    public GenericComboBoxModel<Generator<Integer>> getClassLevelGenerators();
 
 }

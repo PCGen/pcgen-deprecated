@@ -1,6 +1,6 @@
 /*
- * DataSetFacade.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * SettingsHandler.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,39 +16,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 19, 2008, 3:31:30 PM
+ * Created on Jan 10, 2009, 7:04:57 PM
  */
-package pcgen.gui.facade;
+package pcgen.core;
 
 import java.io.File;
-import java.util.Set;
-import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface DataSetFacade
+public final class SettingsHandler
 {
 
-    public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
-
-    public GenericListModel<AbilityCatagoryFacade> getAbilityCatagories();
-
-    public GenericListModel<SkillFacade> getSkills();
-
-    public SkillFacade getSkill(String skill);
-
-    public GenericListModel<RaceFacade> getRaces();
-
-    public GenericListModel<ClassFacade> getClasses();
-
-    public GenericListModel<TempBonusFacade> getTempBonuses();
-
-    public GenericListModel<TemplateFacade> getTemplates();
-
-    public Set<String> getSources();
-
-    public Set<File> getGeneratorFiles();
+    public static File getPcgenSystemDir()
+    {
+        return null;
+    }
 
 }
