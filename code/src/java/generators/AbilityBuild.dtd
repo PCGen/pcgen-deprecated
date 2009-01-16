@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT BUILDSET (BUILD)+>
+<!ELEMENT BUILD (SOURCE*, GENERATOR+)>
+<!ELEMENT GENERATOR (ABILITY)+>
+<!ELEMENT SOURCE (#PCDATA)>
+<!ELEMENT ABILITY (#PCDATA)>
+<!ATTLIST BUILDSET
+mutable (true | false) "false">
+<!ATTLIST BUILD
+name CDATA #REQUIRED>
+<!ATTLIST GENERATOR
+ordered (true | false) "true"
+catagory CDATA #REQUIRED>
+<!ATTLIST ABILITY
+weight CDATA "1">

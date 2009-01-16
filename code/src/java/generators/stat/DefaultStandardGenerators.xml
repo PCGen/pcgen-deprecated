@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE GENERATORSET PUBLIC "PCGEN-GENERATORS" 'StandardModeGenerator.dtd'>
+<GENERATORSET>
+    <GENERATOR name="3d6" assignable="true">
+        <STAT>3d6</STAT>
+        <STAT>3d6</STAT>
+        <STAT>3d6</STAT>
+        <STAT>3d6</STAT>
+        <STAT>3d6</STAT>
+        <STAT>3d6</STAT>
+    </GENERATOR>
+    <GENERATOR name="4d4" assignable="true">
+        <STAT>4d4</STAT>
+        <STAT>4d4</STAT>
+        <STAT>4d4</STAT>
+        <STAT>4d4</STAT>
+        <STAT>4d4</STAT>
+        <STAT>4d4</STAT>
+    </GENERATOR>
+    <GENERATOR name="4d6 drop lowest" assignable="true">
+        <STAT>roll(4,6,top(3))</STAT>
+        <STAT>roll(4,6,top(3))</STAT>
+        <STAT>roll(4,6,top(3))</STAT>
+        <STAT>roll(4,6,top(3))</STAT>
+        <STAT>roll(4,6,top(3))</STAT>
+        <STAT>roll(4,6,top(3))</STAT>
+    </GENERATOR>
+    <GENERATOR name="4d6, reroll 1's" assignable="true">
+        <STAT>roll(4,6,reroll(1))</STAT>
+        <STAT>roll(4,6,reroll(1))</STAT>
+        <STAT>roll(4,6,reroll(1))</STAT>
+        <STAT>roll(4,6,reroll(1))</STAT>
+        <STAT>roll(4,6,reroll(1))</STAT>
+        <STAT>roll(4,6,reroll(1))</STAT>
+    </GENERATOR>
+    <GENERATOR name="4d6, reroll 1's, drop the lowest" assignable="true">
+        <STAT>roll(4,6,top(3),reroll(1))</STAT>
+        <STAT>roll(4,6,top(3),reroll(1))</STAT>
+        <STAT>roll(4,6,top(3),reroll(1))</STAT>
+        <STAT>roll(4,6,top(3),reroll(1))</STAT>
+        <STAT>roll(4,6,top(3),reroll(1))</STAT>
+        <STAT>roll(4,6,top(3),reroll(1))</STAT>
+    </GENERATOR>
+    <GENERATOR name="5d6 drop 2 lowest" assignable="true">
+        <STAT>roll(5,6,top(3))</STAT>
+        <STAT>roll(5,6,top(3))</STAT>
+        <STAT>roll(5,6,top(3))</STAT>
+        <STAT>roll(5,6,top(3))</STAT>
+        <STAT>roll(5,6,top(3))</STAT>
+        <STAT>roll(5,6,top(3))</STAT>
+    </GENERATOR>
+</GENERATORSET>
