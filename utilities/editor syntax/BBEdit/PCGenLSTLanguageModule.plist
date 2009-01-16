@@ -573,6 +573,7 @@
 <string>PREVARNEQ</string>
 <string>PREVIEWDIR</string>
 <string>PREVIEWSHEET</string>
+<string>PREVISION</string>
 <string>PREWEAPONPROF</string>
 <string>PRIMARY</string>
 <string>PROF</string>
@@ -684,6 +685,7 @@
 <string>SPELLLEVEL</string>
 <string>SPELLLIST</string>
 <string>SPELLNAME</string>
+<string>SPELLPOINTCOST</string>
 <string>SPELLRANGE</string>
 <string>SPELLRES</string>
 <string>SPELLS</string>
