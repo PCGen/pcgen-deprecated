@@ -31,7 +31,7 @@ public final class SettingsHandler
 
     public static File getPcgenSystemDir()
     {
-        return null;
+        return new File("build/classes").getAbsoluteFile();
     }
 
 }

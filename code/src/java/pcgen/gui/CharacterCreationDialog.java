@@ -473,25 +473,25 @@ public class CharacterCreationDialog extends JDialog
 
     private void initModels()
     {
-        nameField.setText(PCGenUIManager.getDefaultCharacterName());
-        alignmentComboBox.setModel(createComboBoxModel(creationManager.getAlignmentGenerators()));
-        genderComboBox.setModel(createComboBoxModel(creationManager.getGenderGenerators()));
-        //raceSelectionBox.setModel(createComboBoxModel(creationManager.getRaceGenerators()));
-
-        statTablePane.setModel(new StatTableModel(creationManager));
-        //statSelectionBox.setModel(createComboBoxModel(creationManager.getStatGenerators()));
-
-        DefaultComboBoxModel classComboBoxModel = new DefaultComboBoxModel(creationManager.getClassGenerators().toArray());
-        classSelectionBox1.setModel(classComboBoxModel);
-        classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
-        classSelectionBox2.setModel(classComboBoxModel);
-        classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
-        classSelectionBox3.setModel(classComboBoxModel);
-
-        List<Generator<Integer>> levelGenerators = creationManager.getClassLevelGenerators();
-        levelComboBox1.setModel(createComboBoxModel(levelGenerators));
-        levelComboBox2.setModel(createComboBoxModel(levelGenerators));
-        levelComboBox3.setModel(createComboBoxModel(levelGenerators));
+//        nameField.setText(PCGenUIManager.getDefaultCharacterName());
+//        alignmentComboBox.setModel(createComboBoxModel(creationManager.getAlignmentGenerators()));
+//        genderComboBox.setModel(createComboBoxModel(creationManager.getGenderGenerators()));
+//        //raceSelectionBox.setModel(createComboBoxModel(creationManager.getRaceGenerators()));
+//
+//        statTablePane.setModel(new StatTableModel(creationManager));
+//        //statSelectionBox.setModel(createComboBoxModel(creationManager.getStatGenerators()));
+//
+//        DefaultComboBoxModel classComboBoxModel = new DefaultComboBoxModel(creationManager.getClassGenerators().toArray());
+//        classSelectionBox1.setModel(classComboBoxModel);
+//        classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
+//        classSelectionBox2.setModel(classComboBoxModel);
+//        classComboBoxModel = new ExclusiveComboBoxModel(classComboBoxModel);
+//        classSelectionBox3.setModel(classComboBoxModel);
+//
+//        List<Generator<Integer>> levelGenerators = creationManager.getClassLevelGenerators();
+//        levelComboBox1.setModel(createComboBoxModel(levelGenerators));
+//        levelComboBox2.setModel(createComboBoxModel(levelGenerators));
+//        levelComboBox3.setModel(createComboBoxModel(levelGenerators));
     }
 
     private static boolean anyValid(Generator<Integer> alignmentGenerator,

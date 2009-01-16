@@ -24,7 +24,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,10 +41,15 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -73,25 +80,88 @@ import pcgen.util.Logging;
 public final class GeneratorFactory implements EntityResolver
 {
 
+    private static class GeneratorFactoryHolder
+    {
+
+        private static final GeneratorFactory INSTANCE = new GeneratorFactory();
+    }
+
+    private static GeneratorFactory getInstance()
+    {
+        return GeneratorFactoryHolder.INSTANCE;
+    }
+
     private final SAXBuilder builder;
+    private final XMLOutputter outputter;
 
     private GeneratorFactory()
     {
         builder = new SAXBuilder();
         builder.setEntityResolver(this);
+        outputter = new XMLOutputter();
+        outputter.setFormat(Format.getPrettyFormat());
     }
 
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
     {
-        if (publicId.equals("PCGEN-GENERATORS"))
+        if (publicId != null && publicId.equals("PCGEN-GENERATORS"))
         {
-            File file = new File(SettingsHandler.getPcgenSystemDir(),
-                                 "generators" + File.pathSeparator + systemId);
-            return new InputSource(new FileInputStream(file));
+            String fileName = SettingsHandler.getPcgenSystemDir() +
+                    File.separator +
+                    "generators" +
+                    File.separator +
+                    new File(systemId).getName();
+            return new InputSource(new FileInputStream(fileName));
         }
         else
         {
             return new InputSource(systemId);
+        }
+    }
+
+    private static void outputDocument(Document document)
+    {
+        FileOutputStream output = null;
+        try
+        {
+            output = new FileOutputStream(URI.create(document.getBaseURI()).getPath());
+            getInstance().outputter.output(document, output);
+        }
+        catch (IOException ex)
+        {
+            Logging.errorPrint("Error occured while outputting document", ex);
+        }
+        finally
+        {
+            try
+            {
+                output.close();
+            }
+            catch (IOException ex)
+            {
+                Logging.errorPrint("Unable to close output stream", ex);
+            }
+        }
+    }
+
+    public static final void main(String[] arg)
+    {
+        try
+        {
+            File file = new File("build/classes/generators/stat/DefaultStandardGenerators.xml");
+            GeneratorFactory factory = new GeneratorFactory();
+            Document doc = factory.builder.build(file);
+
+        }
+        catch (JDOMException ex)
+        {
+            Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
+                                                                   null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
+                                                                   null, ex);
         }
     }
 
@@ -119,15 +189,16 @@ public final class GeneratorFactory implements EntityResolver
                         String systemid = type.getSystemID();
                         if (systemid.equals("StandardModeGenerator.dtd"))
                         {
-                            statGenerators.addAll(buildStandardModeGeneratorList(document));
+                           // statGenerators.addAll(buildStandardModeGeneratorList(document));
                         }
-                        else if(systemid.equals("PurchaseModeGenerator.dtd"))
+                        else if (systemid.equals("PurchaseModeGenerator.dtd"))
                         {
-                            statGenerators.addAll(buildPurchaseModeGeneratorList(document));
+                           // statGenerators.addAll(buildPurchaseModeGeneratorList(document));
                         }
-                        else if(systemid.equals("SkillGenerator.dtd"))
+                        else if (systemid.equals("SkillGenerator.dtd"))
                         {
-                            skillGenerators.addAll(buildSkillGeneratorList(document, data));
+                           // skillGenerators.addAll(buildSkillGeneratorList(document,
+                           //                                                data));
                         }
                     }
                 }
@@ -218,255 +289,316 @@ public final class GeneratorFactory implements EntityResolver
         }
 
     }
+//
+//    private static List<StandardModeGenerator> buildStandardModeGeneratorList(Document document)
+//    {
+//        DocType type = document.getDocType();
+//        if (type.getSystemID().equals("StandardModeGenerator.dtd") &&
+//                type.getElementName().equals("GENERATORSET"))
+//        {
+//            Element root = document.getRootElement();
+//            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+//            List<StandardModeGenerator> generators = new ArrayList<StandardModeGenerator>();
+//            for (Object element : root.getChildren())
+//            {
+//                try
+//                {
+//                    generators.add(buildStandardModeGenerator((Element) element,
+//                                                              mutable));
+//                }
+//                catch (NumberFormatException e)
+//                {
+//                    Logging.errorPrint(e.getMessage(), e);
+//                }
+//            }
+//            return generators;
+//        }
+//
+//        return null;
+//    }
+//
+//    private static List<PurchaseModeGenerator> buildPurchaseModeGeneratorList(Document document)
+//    {
+//        DocType type = document.getDocType();
+//        if (type.getSystemID().equals("PurchaseModeGenerator.dtd") &&
+//                type.getElementName().equals("GENERATORSET"))
+//        {
+//            Element root = document.getRootElement();
+//            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+//            List<PurchaseModeGenerator> generators = new ArrayList<PurchaseModeGenerator>();
+//            for (Object element : root.getChildren())
+//            {
+//                try
+//                {
+//                    generators.add(buildPurchaseModeGenerator((Element) element,
+//                                                              mutable));
+//                }
+//                catch (NumberFormatException e)
+//                {
+//                    Logging.errorPrint(e.getMessage(), e);
+//                }
+//            }
+//            return generators;
+//        }
+//
+//        return null;
+//    }
+//
+//    private static List<SkillGenerator> buildSkillGeneratorList(Document document,
+//                                                                  DataSetFacade data)
+//    {
+//        DocType type = document.getDocType();
+//        if (type.getSystemID().equals("SkillGenerator.dtd") &&
+//                type.getElementName().equals("GENERATORSET"))
+//        {
+//            Element root = document.getRootElement();
+//            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+//            @SuppressWarnings("unchecked")
+//            List<Element> sourceElements = root.getChildren("SOURCE");
+//            Set<String> sources = data.getSources();
+//            for ( Element source : sourceElements)
+//            {
+//                if (!sources.contains(source.getText()))
+//                {
+//                    Logging.errorPrint("DataSet does not contain " +
+//                                       source.getText());
+//                    return null;
+//                }
+//            }
+//            List<SkillGenerator> generators = new ArrayList<SkillGenerator>();
+//            for ( Object element : root.getChildren("GENERATOR"))
+//            {
+//                try
+//                {
+//                    generators.add(buildSkillGenerator((Element) element,
+//                                                       mutable, data));
+//                }
+//                catch ( NumberFormatException e)
+//                {
+//                    Logging.errorPrint(e.getMessage(), e);
+//                }
+//            }
+//            return generators;
+//        }
+//
+//        return null;
+//    }
+//
+//    private static SkillGenerator buildSkillGenerator(Element element,
+//                                                        boolean mutable,
+//                                                        DataSetFacade data)
+//    {
+//        String name = element.getAttributeValue("name");
+//        boolean random = Boolean.parseBoolean(element.getAttributeValue("random"));
+//        @SuppressWarnings("unchecked")
+//        List<Element> children = element.getChildren();
+//        Map<SkillFacade, Integer> priorityMap = new HashMap<SkillFacade, Integer>();
+//        for ( Element child : children)
+//        {
+//            String skill = child.getText();
+//            Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
+//            priorityMap.put(data.getSkill(skill), weight);
+//        }
+//        SkillGenerator generator = new DefaultSkillGenerator(name, priorityMap,
+//                                                             random);
+//        if (mutable)
+//        {
+//            return createMutableSkillGenerator(name, generator);
+//        }
+//        else
+//        {
+//            return generator;
+//        }
+//    }
+//
+//    private static StandardModeGenerator buildStandardModeGenerator(Element element,
+//                                                                      boolean mutable)
+//    {
+//        String name = element.getAttributeValue("name");
+//        boolean assignable = Boolean.parseBoolean(element.getAttributeValue("assignable"));
+//        @SuppressWarnings("unchecked")
+//        List<Element> children = element.getChildren();
+//        List<String> stats = new ArrayList<String>();
+//        for ( Element child : children)
+//        {
+//            stats.add(child.getText());
+//        }
+//        StandardModeGenerator generator = new DefaultStandardModeGenerator(name,
+//                                                                           assignable,
+//                                                                           stats);
+//        if (mutable)
+//        {
+//            return createMutableStandardModeGenerator(name, generator);
+//        }
+//        else
+//        {
+//            return generator;
+//        }
+//    }
+//
+//    private static PurchaseModeGenerator buildPurchaseModeGenerator(Element element,
+//                                                                      boolean mutable)
+//    {
+//        String name = element.getAttributeValue("name");
+//        int points = Integer.parseInt(element.getAttributeValue("points"));
+//        TreeMap<Integer, Integer> costs = new TreeMap<Integer, Integer>();
+//        @SuppressWarnings("unchecked")
+//        List<Element> children = element.getChildren();
+//        for ( Element child : children)
+//        {
+//            Integer score = Integer.valueOf(child.getAttributeValue("score"));
+//            Integer cost = Integer.valueOf(child.getText());
+//            costs.put(score, cost);
+//        }
+//        PurchaseModeGenerator generator = new DefaultPurchaseModeGenerator(name,
+//                                                                           points,
+//                                                                           costs.firstKey(),
+//                                                                           costs.values());
+//        if (mutable)
+//        {
+//            return createMutablePurchaseModeGenerator(name, generator);
+//        }
+//        else
+//        {
+//            return generator;
+//        }
+//    }
+//
+//    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(String name,
+//                                                                                                  FacadeGenerator<T> template)
+//    {
+//        MutableFacadeGenerator<T> generator = new DefaultMutableFacadeGenerator<T>(name);
+//        if (template != null)
+//        {
+//            for (T obj : template.getAll())
+//            {
+//                generator.add(obj);
+//            }
+//        }
+//        return generator;
+//    }
+//
+//    public static MutablePurchaseModeGenerator createMutablePurchaseModeGenerator(String name,
+//                                                                                    PurchaseModeGenerator template)
+//    {
+//        MutablePurchaseModeGenerator generator = new DefaultMutablePurchaseModeGenerator(name);
+//        if (template != null)
+//        {
+//            int min = template.getMinScore();
+//            int max = template.getMaxScore();
+//            generator.setMinScore(min);
+//            generator.setMaxScore(max);
+//            generator.setPoints(template.getPoints());
+//            for (int i = min; i <= max; i++)
+//            {
+//                generator.setScoreCost(i, template.getScoreCost(i));
+//            }
+//        }
+//        return generator;
+//    }
+//
+//    public static MutableStandardModeGenerator createMutableStandardModeGenerator(String name,
+//                                                                                    StandardModeGenerator template)
+//    {
+//        MutableStandardModeGenerator generator = new DefaultMutableStandardModeGenerator(name);
+//        if (template != null)
+//        {
+//            generator.setAssignable(template.isAssignable());
+//            generator.setDiceExpressions(template.getDiceExpressions());
+//        }
+//        return generator;
+//    }
+//
+//    public static MutableSkillGenerator createMutableSkillGenerator(String name,
+//                                                                      SkillGenerator template)
+//    {
+//        MutableSkillGenerator generator = new DefaultMutableSkillGenerator(name);
+//        if (template != null)
+//        {
+//            generator.setRandomOrder(template.isRandomOrder());
+//            for (SkillFacade skill : template.getAll())
+//            {
+//                generator.setSkillPriority(skill,
+//                                           template.getSkillPriority(skill));
+//            }
+//        }
+//        return generator;
+//    }
 
-    private static List<StandardModeGenerator> buildStandardModeGeneratorList(Document document)
+    private abstract static class AbstractGenerator<E> implements Generator<E>
     {
-        DocType type = document.getDocType();
-        if (type.getSystemID().equals("StandardModeGenerator.dtd") &&
-                type.getElementName().equals("GENERATORSET"))
+
+        private String name;
+
+        public AbstractGenerator(Element element)
         {
-            Element root = document.getRootElement();
-            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-            List<StandardModeGenerator> generators = new ArrayList<StandardModeGenerator>();
-            for (Object element : root.getChildren())
+            this.name = element.getAttributeValue("name");
+        }
+
+        public List<E> getAll()
+        {
+            return Collections.emptyList();
+        }
+
+        public void reset()
+        {
+
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+
+    }
+
+    private abstract static class AbstractFacadeGenerator<E extends InfoFacade>
+            extends AbstractGenerator<E>
+            implements FacadeGenerator<E>
+    {
+
+        public AbstractFacadeGenerator(Element element)
+        {
+            super(element);
+        }
+
+        public boolean isSingleton()
+        {
+            return false;
+        }
+
+        public Set<String> getSources()
+        {
+            Set<String> sources = new HashSet<String>();
+            for (E facade : getAll())
             {
-                try
-                {
-                    generators.add(buildStandardModeGenerator((Element) element,
-                                                              mutable));
-                }
-                catch (NumberFormatException e)
-                {
-                    Logging.errorPrint(e.getMessage(), e);
-                }
+                sources.add(facade.getSource());
             }
-            return generators;
+            return sources;
         }
 
-        return null;
     }
 
-    private static List<PurchaseModeGenerator> buildPurchaseModeGeneratorList(Document document)
-    {
-        DocType type = document.getDocType();
-        if (type.getSystemID().equals("PurchaseModeGenerator.dtd") &&
-                type.getElementName().equals("GENERATORSET"))
-        {
-            Element root = document.getRootElement();
-            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-            List<PurchaseModeGenerator> generators = new ArrayList<PurchaseModeGenerator>();
-            for (Object element : root.getChildren())
-            {
-                try
-                {
-                    generators.add(buildPurchaseModeGenerator((Element) element,
-                                                              mutable));
-                }
-                catch (NumberFormatException e)
-                {
-                    Logging.errorPrint(e.getMessage(), e);
-                }
-            }
-            return generators;
-        }
-
-        return null;
-    }
-
-    private static List<SkillGenerator> buildSkillGeneratorList(Document document,
-                                                                  DataSetFacade data)
-    {
-        DocType type = document.getDocType();
-        if (type.getSystemID().equals("SkillGenerator.dtd") &&
-                type.getElementName().equals("GENERATORSET"))
-        {
-            Element root = document.getRootElement();
-            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-            @SuppressWarnings("unchecked")
-            List<Element> sourceElements = root.getChildren("SOURCE");
-            Set<String> sources = data.getSources();
-            for ( Element source : sourceElements)
-            {
-                if (!sources.contains(source.getText()))
-                {
-                    Logging.errorPrint("DataSet does not contain " +
-                                       source.getText());
-                    return null;
-                }
-            }
-            List<SkillGenerator> generators = new ArrayList<SkillGenerator>();
-            for ( Object element : root.getChildren("GENERATOR"))
-            {
-                try
-                {
-                    generators.add(buildSkillGenerator((Element) element,
-                                                       mutable, data));
-                }
-                catch ( NumberFormatException e)
-                {
-                    Logging.errorPrint(e.getMessage(), e);
-                }
-            }
-            return generators;
-        }
-
-        return null;
-    }
-
-    private static SkillGenerator buildSkillGenerator(Element element,
-                                                        boolean mutable,
-                                                        DataSetFacade data)
-    {
-        String name = element.getAttributeValue("name");
-        boolean random = Boolean.parseBoolean(element.getAttributeValue("random"));
-        @SuppressWarnings("unchecked")
-        List<Element> children = element.getChildren();
-        Map<SkillFacade, Integer> priorityMap = new HashMap<SkillFacade, Integer>();
-        for ( Element child : children)
-        {
-            String skill = child.getText();
-            Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
-            priorityMap.put(data.getSkill(skill), weight);
-        }
-        SkillGenerator generator = new DefaultSkillGenerator(name, priorityMap,
-                                                             random);
-        if (mutable)
-        {
-            return createMutableSkillGenerator(name, generator);
-        }
-        else
-        {
-            return generator;
-        }
-    }
-
-    private static StandardModeGenerator buildStandardModeGenerator(Element element,
-                                                                      boolean mutable)
-    {
-        String name = element.getAttributeValue("name");
-        boolean assignable = Boolean.parseBoolean(element.getAttributeValue("assignable"));
-        @SuppressWarnings("unchecked")
-        List<Element> children = element.getChildren();
-        List<String> stats = new ArrayList<String>();
-        for ( Element child : children)
-        {
-            stats.add(child.getText());
-        }
-        StandardModeGenerator generator = new DefaultStandardModeGenerator(name,
-                                                                           assignable,
-                                                                           stats);
-        if (mutable)
-        {
-            return createMutableStandardModeGenerator(name, generator);
-        }
-        else
-        {
-            return generator;
-        }
-    }
-
-    private static PurchaseModeGenerator buildPurchaseModeGenerator(Element element,
-                                                                      boolean mutable)
-    {
-        String name = element.getAttributeValue("name");
-        int points = Integer.parseInt(element.getAttributeValue("points"));
-        TreeMap<Integer, Integer> costs = new TreeMap<Integer, Integer>();
-        @SuppressWarnings("unchecked")
-        List<Element> children = element.getChildren();
-        for ( Element child : children)
-        {
-            Integer score = Integer.valueOf(child.getAttributeValue("score"));
-            Integer cost = Integer.valueOf(child.getText());
-            costs.put(score, cost);
-        }
-        PurchaseModeGenerator generator = new DefaultPurchaseModeGenerator(name,
-                                                                           points,
-                                                                           costs.firstKey(),
-                                                                           costs.values());
-        if (mutable)
-        {
-            return createMutablePurchaseModeGenerator(name, generator);
-        }
-        else
-        {
-            return generator;
-        }
-    }
-
-    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(String name,
-                                                                                                  FacadeGenerator<T> template)
-    {
-        MutableFacadeGenerator<T> generator = new DefaultMutableFacadeGenerator<T>(name);
-        if (template != null)
-        {
-            for (T obj : template.getAll())
-            {
-                generator.add(obj);
-            }
-        }
-        return generator;
-    }
-
-    public static MutablePurchaseModeGenerator createMutablePurchaseModeGenerator(String name,
-                                                                                    PurchaseModeGenerator template)
-    {
-        MutablePurchaseModeGenerator generator = new DefaultMutablePurchaseModeGenerator(name);
-        if (template != null)
-        {
-            int min = template.getMinScore();
-            int max = template.getMaxScore();
-            generator.setMinScore(min);
-            generator.setMaxScore(max);
-            generator.setPoints(template.getPoints());
-            for (int i = min; i <= max; i++)
-            {
-                generator.setScoreCost(i, template.getScoreCost(i));
-            }
-        }
-        return generator;
-    }
-
-    public static MutableStandardModeGenerator createMutableStandardModeGenerator(String name,
-                                                                                    StandardModeGenerator template)
-    {
-        MutableStandardModeGenerator generator = new DefaultMutableStandardModeGenerator(name);
-        if (template != null)
-        {
-            generator.setAssignable(template.isAssignable());
-            generator.setDiceExpressions(template.getDiceExpressions());
-        }
-        return generator;
-    }
-
-    public static MutableSkillGenerator createMutableSkillGenerator(String name,
-                                                                      SkillGenerator template)
-    {
-        MutableSkillGenerator generator = new DefaultMutableSkillGenerator(name);
-        if (template != null)
-        {
-            generator.setRandomOrder(template.isRandomOrder());
-            for (SkillFacade skill : template.getAll())
-            {
-                generator.setSkillPriority(skill,
-                                           template.getSkillPriority(skill));
-            }
-        }
-        return generator;
-    }
-
-    private static class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
+    private abstract static class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
+            implements OrderedGenerator<E>
     {
 
         protected List<E> items;
         private Queue<E> queue = null;
         protected boolean randomOrder;
 
-        public DefaultOrderedGenerator(String name, List<E> items,
-                                        boolean randomOrder)
+        @SuppressWarnings("unchecked")
+        protected DefaultOrderedGenerator(Element element)
         {
-            super(name);
+            this(element, Collections.EMPTY_LIST);
+        }
+
+        public DefaultOrderedGenerator(Element element, List<E> items)
+        {
+            super(element);
+            this.randomOrder = element.getAttribute("type").equals("random");
             this.items = items;
-            this.randomOrder = randomOrder;
             reset();
         }
 
@@ -511,56 +643,67 @@ public final class GeneratorFactory implements EntityResolver
         }
 
     }
-
-    private static class DefaultFacadeGenerator<E extends InfoFacade> extends AbstractFacadeGenerator<E>
-    {
-
-        protected List<E> list;
-
-        public DefaultFacadeGenerator(String name, List<E> items)
-        {
-            super(name);
-            list = new Vector<E>(items);
-        }
-
-        public E getNext()
-        {
-            if (list.isEmpty())
-            {
-                return null;
-            }
-            return list.get(RandomUtil.getRandomInt(list.size()));
-        }
-
-        @Override
-        public List<E> getAll()
-        {
-            return Collections.unmodifiableList(list);
-        }
-
-    }
-
-    private static class DefaultMutableFacadeGenerator<E extends InfoFacade>
-            extends DefaultFacadeGenerator<E> implements MutableFacadeGenerator<E>
-    {
-
-        @SuppressWarnings("unchecked")
-        public DefaultMutableFacadeGenerator(String name)
-        {
-            super(name, Collections.EMPTY_LIST);
-        }
-
-        public void add(E element)
-        {
-            list.add(element);
-        }
-
-        public void remove(E element)
-        {
-            list.remove(element);
-        }
-
-    }
+//
+//    private static class DefaultFacadeGenerator<E extends InfoFacade> extends AbstractFacadeGenerator<E>
+//    {
+//
+//        protected List<E> list;
+//
+//        @SuppressWarnings("unchecked")
+//        public DefaultFacadeGenerator(Element element)
+//        {
+//            super(element);
+//            List<Element> children = element.getChildren();
+//            for(Element child : children)
+//            {
+//                
+//            }
+//            list = new Vector<E>(items);
+//        }
+//
+//        public E getNext()
+//        {
+//            if (list.isEmpty())
+//            {
+//                return null;
+//            }
+//            return list.get(RandomUtil.getRandomInt(list.size()));
+//        }
+//
+//        @Override
+//        public List<E> getAll()
+//        {
+//            return Collections.unmodifiableList(list);
+//        }
+//
+//    }
+//
+//    private static class DefaultMutableFacadeGenerator<E extends InfoFacade>
+//            extends DefaultFacadeGenerator<E> implements MutableFacadeGenerator<E>
+//    {
+//
+//        @SuppressWarnings("unchecked")
+//        public DefaultMutableFacadeGenerator(String name)
+//        {
+//            super(name, Collections.EMPTY_LIST);
+//        }
+//
+//        public void add(E element)
+//        {
+//            list.add(element);
+//        }
+//
+//        public void remove(E element)
+//        {
+//            list.remove(element);
+//        }
+//
+//        public void saveChanges()
+//        {
+//            throw new UnsupportedOperationException("Not supported yet.");
+//        }
+//
+//    }
 
     private static class DefaultPurchaseModeGenerator extends AbstractGenerator<Integer>
             implements PurchaseModeGenerator
@@ -570,24 +713,37 @@ public final class GeneratorFactory implements EntityResolver
         protected int points;
         protected int min;
 
-        protected DefaultPurchaseModeGenerator(String name)
+        public DefaultPurchaseModeGenerator(Element element)
         {
-            super(name);
-            this.points = 0;
-            this.min = 0;
-            this.costs = new Vector<Integer>();
-            costs.add(0);
+            super(element);
+            String name = element.getAttributeValue("name");
+            this.points = Integer.parseInt(element.getAttributeValue("points"));
+
+            TreeMap<Integer, Integer> costs = new TreeMap<Integer, Integer>();
+            @SuppressWarnings("unchecked")
+            List<Element> children = element.getChildren();
+            for ( Element child : children)
+            {
+                Integer score = Integer.valueOf(child.getAttributeValue("score"));
+                Integer cost = Integer.valueOf(child.getText());
+                costs.put(score, cost);
+            }
+            this.min = costs.firstKey();
+            this.costs = new Vector<Integer>(costs.values());
+//            this.points = 0;
+//            this.min = 0;
+//            this.costs = new Vector<Integer>();
+//            costs.add(0);
         }
 
-        public DefaultPurchaseModeGenerator(String name, int points, int min,
-                                             Collection<Integer> costs)
-        {
-            super(name);
-            this.points = points;
-            this.min = min;
-            this.costs = new Vector<Integer>(costs);
-        }
-
+//        public DefaultPurchaseModeGenerator(String name, int points, int min,
+//                                             Collection<Integer> costs)
+//        {
+//            super(name);
+//            this.points = points;
+//            this.min = min;
+//            this.costs = new Vector<Integer>(costs);
+//        }
         public Integer getNext()
         {
             return null;
@@ -619,9 +775,12 @@ public final class GeneratorFactory implements EntityResolver
             implements MutablePurchaseModeGenerator
     {
 
-        public DefaultMutablePurchaseModeGenerator(String name)
+        private Element element;
+
+        public DefaultMutablePurchaseModeGenerator(Element element)
         {
-            super(name);
+            super(element);
+            this.element = element;
         }
 
         public void setMaxScore(int score)
@@ -644,6 +803,11 @@ public final class GeneratorFactory implements EntityResolver
             costs.set(score - min, cost);
         }
 
+        public void saveChanges()
+        {
+        //element.
+        }
+
     }
 
     private static class DefaultStandardModeGenerator extends AbstractGenerator<Integer>
@@ -653,14 +817,26 @@ public final class GeneratorFactory implements EntityResolver
         protected boolean assignable;
         protected List<String> diceExpressions;
 
-        public DefaultStandardModeGenerator(String name, boolean assignable,
-                                             List<String> diceExpressions)
+        public DefaultStandardModeGenerator(Element element)
         {
-            super(name);
-            this.assignable = assignable;
-            this.diceExpressions = diceExpressions;
+            super(element);
+            this.assignable = Boolean.parseBoolean(element.getAttributeValue("assignable"));
+            this.diceExpressions = new ArrayList<String>();
+            @SuppressWarnings("unchecked")
+            List<Element> children = element.getChildren();
+            for ( Element child : children)
+            {
+                diceExpressions.add(child.getText());
+            }
         }
 
+//        public DefaultStandardModeGenerator(String name, boolean assignable,
+//                                             List<String> diceExpressions)
+//        {
+//            super(name);
+//            this.assignable = assignable;
+//            this.diceExpressions = diceExpressions;
+//        }
         public Integer getNext()
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -682,12 +858,19 @@ public final class GeneratorFactory implements EntityResolver
             implements MutableStandardModeGenerator
     {
 
-        @SuppressWarnings("unchecked")
-        public DefaultMutableStandardModeGenerator(String name)
+        private Element element;
+
+        public DefaultMutableStandardModeGenerator(Element element)
         {
-            super(name, false, Collections.EMPTY_LIST);
+            super(element);
+            this.element = element;
         }
 
+//        @SuppressWarnings("unchecked")
+//        public DefaultMutableStandardModeGenerator(String name)
+//        {
+//            super(name, false, Collections.EMPTY_LIST);
+//        }
         public void setDiceExpressions(List<String> expressions)
         {
             diceExpressions = expressions;
@@ -698,6 +881,11 @@ public final class GeneratorFactory implements EntityResolver
             assignable = assign;
         }
 
+        public void saveChanges()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
     }
 
     private static class DefaultSkillGenerator extends DefaultOrderedGenerator<SkillFacade>
@@ -706,15 +894,30 @@ public final class GeneratorFactory implements EntityResolver
 
         protected Map<SkillFacade, Integer> priorityMap;
 
-        public DefaultSkillGenerator(String name,
-                                      Map<SkillFacade, Integer> priorityMap,
-                                      boolean randomOrder)
+        @SuppressWarnings("unchecked")
+        public DefaultSkillGenerator(Element element, DataSetFacade data)
         {
-            super(name, new ArrayList<SkillFacade>(priorityMap.keySet()),
-                  randomOrder);
-            this.priorityMap = priorityMap;
+            super(element);
+            List<Element> children = element.getChildren();
+            this.priorityMap = new HashMap<SkillFacade, Integer>();
+            for (Element child : children)
+            {
+                String skill = child.getText();
+                Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
+                priorityMap.put(data.getSkill(skill), weight);
+            }
+            this.items = new ArrayList<SkillFacade>(priorityMap.keySet());
+            reset();
         }
 
+//        public DefaultSkillGenerator(String name,
+//                                      Map<SkillFacade, Integer> priorityMap,
+//                                      boolean randomOrder)
+//        {
+//            super(name, new ArrayList<SkillFacade>(priorityMap.keySet()),
+//                  randomOrder);
+//            this.priorityMap = priorityMap;
+//        }
         public int getSkillPriority(SkillFacade skill)
         {
             return priorityMap.get(skill);
@@ -821,13 +1024,20 @@ public final class GeneratorFactory implements EntityResolver
             implements MutableSkillGenerator
     {
 
-        public DefaultMutableSkillGenerator(String name)
+        private Element element;
+
+        public DefaultMutableSkillGenerator(Element element, DataSetFacade data)
         {
-            super(name, new HashMap<SkillFacade, Integer>(), false);
-            // This makes getNext() work correctly
-            this.items = Collections.singletonList(null);
+            super(element, data);
+            this.element = element;
         }
 
+//        public DefaultMutableSkillGenerator(String name)
+//        {
+//            super(name, new HashMap<SkillFacade, Integer>(), false);
+//            // This makes getNext() work correctly
+//            this.items = Collections.singletonList(null);
+//        }
         @Override
         public List<SkillFacade> getAll()
         {
@@ -842,6 +1052,12 @@ public final class GeneratorFactory implements EntityResolver
         public void setRandomOrder(boolean randomOrder)
         {
             this.randomOrder = randomOrder;
+        }
+
+        public void saveChanges()
+        {
+            Document document = element.getDocument();
+
         }
 
     }
