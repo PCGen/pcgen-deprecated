@@ -30,7 +30,4 @@ import pcgen.gui.generator.OrderedGenerator;
  */
 public interface SkillGenerator extends OrderedGenerator<SkillFacade>, FacadeGenerator<SkillFacade>
 {
-
-    public int getSkillPriority(SkillFacade skill);
-
 }

@@ -33,7 +33,12 @@ public interface DataSetFacade
 
     public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
 
+    public AbilityFacade getAbility(AbilityCatagoryFacade catagory,
+                                     String ability);
+
     public GenericListModel<AbilityCatagoryFacade> getAbilityCatagories();
+
+    public AbilityCatagoryFacade getAbilityCatagory(String catagory);
 
     public GenericListModel<SkillFacade> getSkills();
 
@@ -41,7 +46,11 @@ public interface DataSetFacade
 
     public GenericListModel<RaceFacade> getRaces();
 
+    public RaceFacade getRace(String race);
+
     public GenericListModel<ClassFacade> getClasses();
+
+    public ClassFacade getClass(String className);
 
     public GenericListModel<TempBonusFacade> getTempBonuses();
 

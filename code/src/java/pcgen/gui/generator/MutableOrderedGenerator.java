@@ -1,6 +1,6 @@
 /*
- * AbstractGenerator.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * MutableOrderedGenerator.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,41 +16,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 10, 2008, 5:50:55 PM
+ * Created on Jan 16, 2009, 7:52:07 PM
  */
-package pcgen.gui.generator;
 
-import java.util.Collections;
-import java.util.List;
+package pcgen.gui.generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractGenerator<E> implements Generator<E>
-{
+public interface MutableOrderedGenerator<E> extends OrderedGenerator<E>, MutableGenerator<E>{
 
-    private String name;
-
-    public AbstractGenerator(String name)
-    {
-        this.name = name;
-    }
-
-    public List<E> getAll()
-    {
-        return Collections.emptyList();
-    }
-
-    public void reset()
-    {
-
-    }
-
-    @Override
-    public String toString()
-    {
-        return name;
-    }
+    public void setRandomOrder(boolean randomOrder);
 
 }

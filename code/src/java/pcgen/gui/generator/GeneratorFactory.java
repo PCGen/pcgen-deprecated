@@ -20,19 +20,19 @@
  */
 package pcgen.gui.generator;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.AbstractCollection;
+import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -55,21 +55,17 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import pcgen.base.util.RandomUtil;
 import pcgen.base.util.WeightedCollection;
-import pcgen.cdom.enumeration.Gender;
 import pcgen.core.SettingsHandler;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.DataSetFacade;
 import pcgen.gui.facade.InfoFacade;
-import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.SkillFacade;
-import pcgen.gui.facade.StatFacade;
 import pcgen.gui.generator.skill.MutableSkillGenerator;
 import pcgen.gui.generator.skill.SkillGenerator;
 import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
 import pcgen.gui.generator.stat.MutableStandardModeGenerator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.generator.stat.StandardModeGenerator;
-import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.util.Logging;
 
 /**
@@ -90,7 +86,6 @@ public final class GeneratorFactory implements EntityResolver
         return GeneratorFactoryHolder.INSTANCE;
     }
 
-    private final Map<Document, List<Generator<?>>> documentMap;
     private final SAXBuilder builder;
     private final XMLOutputter outputter;
 
@@ -100,7 +95,6 @@ public final class GeneratorFactory implements EntityResolver
         builder.setEntityResolver(this);
         outputter = new XMLOutputter();
         outputter.setFormat(Format.getPrettyFormat());
-        documentMap = new HashMap<Document, List<Generator<?>>>();
     }
 
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
@@ -120,7 +114,7 @@ public final class GeneratorFactory implements EntityResolver
         }
     }
 
-    private static Document buildDocument(File file)
+    static Document buildDocument(File file)
     {
         try
         {
@@ -174,8 +168,7 @@ public final class GeneratorFactory implements EntityResolver
             File file = new File("build/classes/generators/stat/DefaultStandardGenerators.xml");
             GeneratorFactory factory = new GeneratorFactory();
             Document doc = factory.builder.build(file);
-            file = new File("build/classes/generators/stat/DefaultStandardGenerators2.xml");
-            outputDocument(doc, file);
+            System.out.println(doc.getDocType().getSystemID());
         }
         catch (JDOMException ex)
         {
@@ -189,132 +182,7 @@ public final class GeneratorFactory implements EntityResolver
         }
     }
 
-    private final class DefaultCharacterCreationManager implements CharacterCreationManager
-    {
-
-        private final PropertyChangeSupport support;
-        private final Map<String, Boolean> validityMap;
-
-        public DefaultCharacterCreationManager(DataSetFacade data)
-        {
-            support = new PropertyChangeSupport(this);
-            validityMap = new HashMap<String, Boolean>();
-            List<Generator<Integer>> statGenerators = new ArrayList<Generator<Integer>>();
-            List<Generator<SkillFacade>> skillGenerators = new ArrayList<Generator<SkillFacade>>();
-            Set<File> files = data.getGeneratorFiles();
-            for (File file : files)
-            {
-                try
-                {
-                    Document document = builder.build(file);
-                    DocType type = document.getDocType();
-                    if (type.getElementName().equals("GENERATORSET"))
-                    {
-                        String systemid = type.getSystemID();
-                        if (systemid.equals("StandardModeGenerator.dtd"))
-                        {
-                        // statGenerators.addAll(buildStandardModeGeneratorList(document));
-                        }
-                        else if (systemid.equals("PurchaseModeGenerator.dtd"))
-                        {
-                        // statGenerators.addAll(buildPurchaseModeGeneratorList(document));
-                        }
-                        else if (systemid.equals("SkillGenerator.dtd"))
-                        {
-                        // skillGenerators.addAll(buildSkillGeneratorList(document,
-                        //                                                data));
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.errorPrint(ex.getMessage(), ex);
-                }
-            }
-        }
-
-        public void addPropertyChangeListener(PropertyChangeListener l)
-        {
-            support.addPropertyChangeListener(l);
-        }
-
-        public void addPropertyChangeListener(String prop,
-                                               PropertyChangeListener l)
-        {
-            support.addPropertyChangeListener(prop, l);
-        }
-
-        public void removePropertyChangeListener(PropertyChangeListener l)
-        {
-            support.removePropertyChangeListener(l);
-        }
-
-        public void removePropertyChangeListener(String prop,
-                                                  PropertyChangeListener l)
-        {
-            support.removePropertyChangeListener(prop, l);
-        }
-
-        public boolean isCharacterValid()
-        {
-            return !validityMap.values().contains(Boolean.FALSE);
-        }
-
-        public boolean isCharacterNameValid()
-        {
-            return validityMap.get(NAME_VALIDITY);
-        }
-
-        public void setValidity(String prop, boolean valid)
-        {
-            boolean oldvalue = validityMap.get(prop);
-            validityMap.put(prop, valid);
-            support.firePropertyChange(prop, oldvalue, valid);
-        }
-
-        public GenericComboBoxModel<Generator<Integer>> getAlignmentGenerators()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public GenericComboBoxModel<Generator<Gender>> getGenderGenerators()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public GenericComboBoxModel<Generator<RaceFacade>> getRaceGenerators()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public GenericComboBoxModel<Generator<ClassFacade>> getClassGenerators()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public GenericComboBoxModel<Generator<Integer>> getStatGenerators()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public List<StatFacade> getStats()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public int getModForScore(int score)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public GenericComboBoxModel<Generator<Integer>> getClassLevelGenerators()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-    }
-
-    private static List<StandardModeGenerator> buildStandardModeGeneratorList(Document document)
+    static List<StandardModeGenerator> buildStandardModeGeneratorList(Document document)
     {
         Element root = document.getRootElement();
         boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
@@ -340,7 +208,7 @@ public final class GeneratorFactory implements EntityResolver
         return generators;
     }
 
-    private static List<PurchaseModeGenerator> buildPurchaseModeGeneratorList(Document document)
+    static List<PurchaseModeGenerator> buildPurchaseModeGeneratorList(Document document)
     {
         Element root = document.getRootElement();
         boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
@@ -367,8 +235,8 @@ public final class GeneratorFactory implements EntityResolver
     }
 
     @SuppressWarnings("unchecked")
-    private static List<SkillGenerator> buildSkillGeneratorList(Document document,
-                                                                  DataSetFacade data)
+    static List<SkillGenerator> buildSkillGeneratorList(Document document,
+                                                         DataSetFacade data)
     {
         Element root = document.getRootElement();
         boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
@@ -421,6 +289,11 @@ public final class GeneratorFactory implements EntityResolver
 //        }
 //        return generatorElement;
 //    }
+    public static <T extends InfoFacade> FacadeGenerator<T> createSingletonGenerator(T item)
+    {
+        return new SingletonGenerator<T>(item);
+    }
+
     private static Document getCustomGeneratorDocument(DataSetFacade data,
                                                          String generatorType)
     {
@@ -529,8 +402,8 @@ public final class GeneratorFactory implements EntityResolver
                     generator.setRandomOrder(template.isRandomOrder());
                     for (SkillFacade skillName : template.getAll())
                     {
-                        generator.setSkillPriority(skillName,
-                                                   template.getSkillPriority(skillName));
+                        generator.setWeight(skillName,
+                                            template.getWeight(skillName));
                     }
                 }
                 return generator;
@@ -549,6 +422,11 @@ public final class GeneratorFactory implements EntityResolver
     {
 
         private String name;
+
+        public AbstractGenerator(String name)
+        {
+            this.name = name;
+        }
 
         public AbstractGenerator(Element element)
         {
@@ -574,13 +452,43 @@ public final class GeneratorFactory implements EntityResolver
     }
 
     private abstract static class AbstractFacadeGenerator<E extends InfoFacade>
-            extends AbstractGenerator<E>
+            extends DefaultOrderedGenerator<E>
             implements FacadeGenerator<E>
     {
 
-        public AbstractFacadeGenerator(Element element)
+        protected Map<E, Integer> priorityMap;
+
+        @SuppressWarnings("unchecked")
+        public AbstractFacadeGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
         {
             super(element);
+            this.priorityMap = new HashMap<E, Integer>();
+
+            this.items = new ArrayList<E>(priorityMap.keySet());
+
+            List<Element> children = element.getChildren(getValueName());
+            for (Element child : children)
+            {
+                String elementName = child.getText();
+                Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
+                E facade = getFacade(data, elementName);
+                if (facade == null)
+                {
+                    throw new GeneratorParsingException(elementName +
+                                                        " not found in DataSetFacade");
+                }
+                priorityMap.put(facade, weight);
+            }
+            reset();
+        }
+
+        protected abstract E getFacade(DataSetFacade data, String name);
+
+        protected abstract String getValueName();
+
+        public int getWeight(E item)
+        {
+            return priorityMap.get(item);
         }
 
         public boolean isSingleton()
@@ -596,6 +504,133 @@ public final class GeneratorFactory implements EntityResolver
                 sources.add(facade.getSource());
             }
             return sources;
+        }
+
+        @Override
+        protected Queue<E> createQueue()
+        {
+            if (!randomOrder)
+            {
+                Comparator<E> comparator = new Comparator<E>()
+                {
+
+                    public int compare(E o1,
+                                        E o2)
+                    {
+                        // compare the numbers in reverse in order for the highest priority
+                        // Skills to be used first
+                        return priorityMap.get(o2).compareTo(priorityMap.get(o1));
+                    }
+
+                };
+                Queue<E> queue = new PriorityQueue<E>(priorityMap.size(),
+                                                      comparator);
+                queue.addAll(priorityMap.keySet());
+                return queue;
+            }
+            return new RandomWeightedQueue();
+        }
+
+        private class RandomWeightedQueue extends WeightedCollection<E>
+                implements Queue<E>
+        {
+
+            private E element = null;
+
+            public RandomWeightedQueue()
+            {
+                for (E skill : priorityMap.keySet())
+                {
+                    add(skill, priorityMap.get(skill));
+                }
+            }
+
+            public boolean offer(E o)
+            {
+                return false;
+            }
+
+            public E poll()
+            {
+                if (isEmpty())
+                {
+                    return null;
+                }
+                return remove();
+            }
+
+            public E remove()
+            {
+                E skill = element();
+                remove(skill);
+                element = null;
+                return skill;
+            }
+
+            public E peek()
+            {
+                if (isEmpty())
+                {
+                    return null;
+                }
+                return element();
+            }
+
+            public E element()
+            {
+                if (element == null)
+                {
+                    element = getRandomValue();
+                }
+                return element;
+            }
+
+        }
+    }
+
+    private static class SingletonGenerator<E extends InfoFacade> extends AbstractGenerator<E>
+            implements FacadeGenerator<E>
+    {
+
+        private E item;
+
+        public SingletonGenerator(E item)
+        {
+            super(item.toString());
+            this.item = item;
+        }
+
+        public E getNext()
+        {
+            return item;
+        }
+
+        @Override
+        public List<E> getAll()
+        {
+            return Collections.singletonList(item);
+        }
+
+        public boolean isSingleton()
+        {
+            return true;
+        }
+
+        public Set<String> getSources()
+        {
+            return Collections.singleton(item.getSource());
+        }
+
+        public int getWeight(E item)
+        {
+            if (item.equals(this.item))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
     }
@@ -810,7 +845,17 @@ public final class GeneratorFactory implements EntityResolver
 
         public void saveChanges()
         {
-        //element.
+            element.removeContent();
+            element.setAttribute("points", Integer.toString(points));
+            int max = getMaxScore();
+            for (int x = min; x <= max; x++)
+            {
+                Element costElement = new Element("COST");
+                costElement.setAttribute("score", Integer.toString(x));
+                costElement.setText(Integer.toString(getScoreCost(x)));
+                element.addContent(costElement);
+            }
+            outputDocument(element.getDocument());
         }
 
     }
@@ -835,13 +880,6 @@ public final class GeneratorFactory implements EntityResolver
             }
         }
 
-//        public DefaultStandardModeGenerator(String name, boolean assignable,
-//                                             List<String> diceExpressions)
-//        {
-//            super(name);
-//            this.assignable = assignable;
-//            this.diceExpressions = diceExpressions;
-//        }
         public Integer getNext()
         {
             throw new UnsupportedOperationException("Not supported yet.");
@@ -871,11 +909,6 @@ public final class GeneratorFactory implements EntityResolver
             this.element = element;
         }
 
-//        @SuppressWarnings("unchecked")
-//        public DefaultMutableStandardModeGenerator(String name)
-//        {
-//            super(name, false, Collections.EMPTY_LIST);
-//        }
         public void setDiceExpressions(List<String> expressions)
         {
             diceExpressions = expressions;
@@ -888,147 +921,61 @@ public final class GeneratorFactory implements EntityResolver
 
         public void saveChanges()
         {
-            throw new UnsupportedOperationException("Not supported yet.");
+            element.removeContent();
+            element.setAttribute("assignable", Boolean.toString(assignable));
+            for (String expression : diceExpressions)
+            {
+                element.addContent(new Element("STAT").setText(expression));
+            }
+            outputDocument(element.getDocument());
         }
 
     }
 
-    private static class DefaultSkillGenerator extends DefaultOrderedGenerator<SkillFacade>
-            implements SkillGenerator
+    private static class DefaultClassGenerator extends AbstractFacadeGenerator<ClassFacade>
     {
 
-        protected Map<SkillFacade, Integer> priorityMap;
+        public DefaultClassGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        {
+            super(element, data);
+        }
+
+        @Override
+        protected ClassFacade getFacade(DataSetFacade data, String name)
+        {
+            return data.getClass(name);
+        }
+
+        @Override
+        protected String getValueName()
+        {
+            return "CLASS";
+        }
+
+    }
+
+    private static class DefaultSkillGenerator extends AbstractFacadeGenerator<SkillFacade>
+            implements SkillGenerator
+    {
 
         @SuppressWarnings("unchecked")
         public DefaultSkillGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
         {
-            super(element);
-            this.priorityMap = new HashMap<SkillFacade, Integer>();
-            List<Element> children = element.getChildren("SKILL");
-            for (Element child : children)
-            {
-                String skillName = child.getText();
-                Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
-                SkillFacade skill = data.getSkill(skillName);
-                if (skill == null)
-                {
-                    throw new GeneratorParsingException(skillName +
-                                                        " skill not found in DataSetFacade");
-                }
-                priorityMap.put(skill, weight);
-            }
-            this.items = new ArrayList<SkillFacade>(priorityMap.keySet());
-            reset();
-        }
-
-//        public DefaultSkillGenerator(String name,
-//                                      Map<SkillFacade, Integer> priorityMap,
-//                                      boolean randomOrder)
-//        {
-//            super(name, new ArrayList<SkillFacade>(priorityMap.keySet()),
-//                  randomOrder);
-//            this.priorityMap = priorityMap;
-//        }
-        public int getSkillPriority(SkillFacade skill)
-        {
-            return priorityMap.get(skill);
-        }
-
-        public boolean isSingleton()
-        {
-            return false;
-        }
-
-        public Set<String> getSources()
-        {
-            Set<String> sources = new HashSet<String>();
-            for (SkillFacade skill : priorityMap.keySet())
-            {
-                sources.add(skill.getSource());
-            }
-            return sources;
+            super(element, data);
         }
 
         @Override
-        protected Queue<SkillFacade> createQueue()
+        protected SkillFacade getFacade(DataSetFacade data, String name)
         {
-            if (!randomOrder)
-            {
-                Comparator<SkillFacade> comparator = new Comparator<SkillFacade>()
-                {
-
-                    public int compare(SkillFacade o1,
-                                        SkillFacade o2)
-                    {
-                        // compare the numbers in reverse in order for the highest priority
-                        // Skills to be used first
-                        return priorityMap.get(o2).compareTo(priorityMap.get(o1));
-                    }
-
-                };
-                Queue<SkillFacade> queue = new PriorityQueue<SkillFacade>(priorityMap.size(),
-                                                                          comparator);
-                queue.addAll(priorityMap.keySet());
-                return queue;
-            }
-            return new RandomWeightedQueue();
+            return data.getSkill(name);
         }
 
-        private class RandomWeightedQueue extends WeightedCollection<SkillFacade>
-                implements Queue<SkillFacade>
+        @Override
+        protected String getValueName()
         {
-
-            private SkillFacade element = null;
-
-            public RandomWeightedQueue()
-            {
-                for (SkillFacade skill : priorityMap.keySet())
-                {
-                    add(skill, priorityMap.get(skill));
-                }
-            }
-
-            public boolean offer(SkillFacade o)
-            {
-                return false;
-            }
-
-            public SkillFacade poll()
-            {
-                if (isEmpty())
-                {
-                    return null;
-                }
-                return remove();
-            }
-
-            public SkillFacade remove()
-            {
-                SkillFacade skill = element();
-                remove(skill);
-                element = null;
-                return skill;
-            }
-
-            public SkillFacade peek()
-            {
-                if (isEmpty())
-                {
-                    return null;
-                }
-                return element();
-            }
-
-            public SkillFacade element()
-            {
-                if (element == null)
-                {
-                    element = getRandomValue();
-                }
-                return element;
-            }
-
+            return "SKILL";
         }
+
     }
 
     private static class DefaultMutableSkillGenerator extends DefaultSkillGenerator
@@ -1055,11 +1002,6 @@ public final class GeneratorFactory implements EntityResolver
             return new ArrayList<SkillFacade>(priorityMap.keySet());
         }
 
-        public void setSkillPriority(SkillFacade skill, int priority)
-        {
-            priorityMap.put(skill, priority);
-        }
-
         public void setRandomOrder(boolean randomOrder)
         {
             this.randomOrder = randomOrder;
@@ -1067,14 +1009,26 @@ public final class GeneratorFactory implements EntityResolver
 
         public void saveChanges()
         {
-            List<Element> sources = new ArrayList<Element>();
+            element.removeContent();
+            element.setAttribute("type", randomOrder ? "random" : "ordered");
             for (String source : getSources())
             {
-                sources.add(new Element("SOURCE").setText(source));
+                element.addContent(new Element("SOURCE").setText(source));
             }
-            element.removeChildren("SOURCE");
-            element.addContent(0, sources);
+            for (SkillFacade skill : priorityMap.keySet())
+            {
+                Element skillElement = new Element("SKILL");
+                skillElement.setAttribute("weight",
+                                          priorityMap.get(skill).toString());
+                skillElement.setText(skill.toString());
+                element.addContent(skillElement);
+            }
             outputDocument(element.getDocument());
+        }
+
+        public void setWeight(SkillFacade item, int weight)
+        {
+            priorityMap.put(item, weight);
         }
 
     }

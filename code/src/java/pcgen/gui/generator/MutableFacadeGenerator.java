@@ -26,11 +26,10 @@ import pcgen.gui.facade.InfoFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableFacadeGenerator<E extends InfoFacade> extends FacadeGenerator<E>, MutableGenerator<E>
+public interface MutableFacadeGenerator<E extends InfoFacade> extends FacadeGenerator<E>,
+                                                                       MutableGenerator<E>
 {
 
-    public void add(E element);
-
-    public void remove(E element);
+    public void setWeight(E item, int weight);
 
 }

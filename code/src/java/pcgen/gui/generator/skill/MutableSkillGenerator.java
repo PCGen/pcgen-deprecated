@@ -21,17 +21,14 @@
 package pcgen.gui.generator.skill;
 
 import pcgen.gui.facade.SkillFacade;
+import pcgen.gui.generator.MutableFacadeGenerator;
 import pcgen.gui.generator.MutableGenerator;
+import pcgen.gui.generator.MutableOrderedGenerator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableSkillGenerator extends SkillGenerator, MutableGenerator<SkillFacade>
+public interface MutableSkillGenerator extends SkillGenerator, MutableFacadeGenerator<SkillFacade>, MutableOrderedGenerator<SkillFacade>
 {
-
-    public void setSkillPriority(SkillFacade skill, int priority);
-
-    public void setRandomOrder(boolean randomOrder);
-
 }
