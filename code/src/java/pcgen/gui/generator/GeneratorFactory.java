@@ -25,14 +25,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.util.AbstractCollection;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +50,6 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import pcgen.base.util.RandomUtil;
 import pcgen.base.util.WeightedCollection;
 import pcgen.core.SettingsHandler;
 import pcgen.gui.facade.ClassFacade;
@@ -451,6 +447,70 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
+    private abstract static class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
+            implements OrderedGenerator<E>
+    {
+
+        protected List<E> items;
+        private Queue<E> queue = null;
+        protected boolean randomOrder;
+
+        @SuppressWarnings("unchecked")
+        protected DefaultOrderedGenerator(Element element)
+        {
+            this(element, Collections.EMPTY_LIST);
+        }
+
+        public DefaultOrderedGenerator(Element element, List<E> items)
+        {
+            super(element);
+            this.randomOrder = element.getAttribute("type").equals("random");
+            this.items = items;
+            reset();
+        }
+
+        public E getNext()
+        {
+            if (items.isEmpty())
+            {
+                return null;
+            }
+            if (queue.isEmpty())
+            {
+                reset();
+            }
+            return queue.poll();
+        }
+
+        public boolean isRandomOrder()
+        {
+            return randomOrder;
+        }
+
+        @Override
+        public List<E> getAll()
+        {
+            return items;
+        }
+
+        protected Queue<E> createQueue()
+        {
+            LinkedList<E> temp = new LinkedList<E>(items);
+            if (randomOrder)
+            {
+                Collections.shuffle(temp);
+            }
+            return temp;
+        }
+
+        @Override
+        public void reset()
+        {
+            queue = createQueue();
+        }
+
+    }
+
     private abstract static class AbstractFacadeGenerator<E extends InfoFacade>
             extends DefaultOrderedGenerator<E>
             implements FacadeGenerator<E>
@@ -507,8 +567,18 @@ public final class GeneratorFactory implements EntityResolver
         }
 
         @Override
+        public List<E> getAll()
+        {
+            return new ArrayList<E>(priorityMap.keySet());
+        }
+
+        @Override
         protected Queue<E> createQueue()
         {
+            if (priorityMap == null)
+            {
+                return super.createQueue();
+            }
             if (!randomOrder)
             {
                 Comparator<E> comparator = new Comparator<E>()
@@ -588,6 +658,45 @@ public final class GeneratorFactory implements EntityResolver
         }
     }
 
+    private abstract static class AbstractMutableFacadeGenerator<E extends InfoFacade>
+            extends AbstractFacadeGenerator<E> implements MutableFacadeGenerator<E>
+    {
+
+        protected Element element;
+
+        public AbstractMutableFacadeGenerator(Element element,
+                                               DataSetFacade data) throws GeneratorParsingException
+        {
+            super(element, data);
+            this.element = element;
+        }
+
+        public void setWeight(E item, int weight)
+        {
+            priorityMap.put(item, weight);
+        }
+
+        public void saveChanges()
+        {
+            element.removeContent();
+            element.setAttribute("type", randomOrder ? "random" : "ordered");
+            for (String source : getSources())
+            {
+                element.addContent(new Element("SOURCE").setText(source));
+            }
+            for (E skill : priorityMap.keySet())
+            {
+                Element skillElement = new Element(getValueName());
+                skillElement.setAttribute("weight",
+                                          priorityMap.get(skill).toString());
+                skillElement.setText(skill.toString());
+                element.addContent(skillElement);
+            }
+            outputDocument(element.getDocument());
+        }
+
+    }
+
     private static class SingletonGenerator<E extends InfoFacade> extends AbstractGenerator<E>
             implements FacadeGenerator<E>
     {
@@ -635,130 +744,6 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private abstract static class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
-            implements OrderedGenerator<E>
-    {
-
-        protected List<E> items;
-        private Queue<E> queue = null;
-        protected boolean randomOrder;
-
-        @SuppressWarnings("unchecked")
-        protected DefaultOrderedGenerator(Element element)
-        {
-            this(element, Collections.EMPTY_LIST);
-        }
-
-        public DefaultOrderedGenerator(Element element, List<E> items)
-        {
-            super(element);
-            this.randomOrder = element.getAttribute("type").equals("random");
-            this.items = items;
-            reset();
-        }
-
-        public E getNext()
-        {
-            if (items.isEmpty())
-            {
-                return null;
-            }
-            if (queue.isEmpty())
-            {
-                reset();
-            }
-            return queue.poll();
-        }
-
-        public boolean isRandomOrder()
-        {
-            return randomOrder;
-        }
-
-        @Override
-        public List<E> getAll()
-        {
-            return items;
-        }
-
-        protected Queue<E> createQueue()
-        {
-            LinkedList<E> temp = new LinkedList<E>(items);
-            if (randomOrder)
-            {
-                Collections.shuffle(temp);
-            }
-            return temp;
-        }
-
-        @Override
-        public void reset()
-        {
-            queue = createQueue();
-        }
-
-    }
-//
-//    private static class DefaultFacadeGenerator<E extends InfoFacade> extends AbstractFacadeGenerator<E>
-//    {
-//
-//        protected List<E> list;
-//
-//        @SuppressWarnings("unchecked")
-//        public DefaultFacadeGenerator(Element element)
-//        {
-//            super(element);
-//            List<Element> children = element.getChildren();
-//            for(Element child : children)
-//            {
-//                
-//            }
-//            list = new Vector<E>(items);
-//        }
-//
-//        public E getNext()
-//        {
-//            if (list.isEmpty())
-//            {
-//                return null;
-//            }
-//            return list.get(RandomUtil.getRandomInt(list.size()));
-//        }
-//
-//        @Override
-//        public List<E> getAll()
-//        {
-//            return Collections.unmodifiableList(list);
-//        }
-//
-//    }
-//
-//    private static class DefaultMutableFacadeGenerator<E extends InfoFacade>
-//            extends DefaultFacadeGenerator<E> implements MutableFacadeGenerator<E>
-//    {
-//
-//        @SuppressWarnings("unchecked")
-//        public DefaultMutableFacadeGenerator(String name)
-//        {
-//            super(name, Collections.EMPTY_LIST);
-//        }
-//
-//        public void add(E element)
-//        {
-//            list.add(element);
-//        }
-//
-//        public void remove(E element)
-//        {
-//            list.remove(element);
-//        }
-//
-//        public void saveChanges()
-//        {
-//            throw new UnsupportedOperationException("Not supported yet.");
-//        }
-//
-//    }
     private static class DefaultPurchaseModeGenerator extends AbstractGenerator<Integer>
             implements PurchaseModeGenerator
     {
@@ -954,6 +939,28 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
+    private static class DefaultMutableClassGenerator extends AbstractMutableFacadeGenerator<ClassFacade>
+    {
+
+        public DefaultMutableClassGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        {
+            super(element, data);
+        }
+
+        @Override
+        protected ClassFacade getFacade(DataSetFacade data, String name)
+        {
+            return data.getClass(name);
+        }
+
+        @Override
+        protected String getValueName()
+        {
+            return "CLASS";
+        }
+
+    }
+
     private static class DefaultSkillGenerator extends AbstractFacadeGenerator<SkillFacade>
             implements SkillGenerator
     {
@@ -978,28 +985,13 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultMutableSkillGenerator extends DefaultSkillGenerator
+    private static class DefaultMutableSkillGenerator extends AbstractMutableFacadeGenerator<SkillFacade>
             implements MutableSkillGenerator
     {
-
-        private Element element;
 
         public DefaultMutableSkillGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
         {
             super(element, data);
-            this.element = element;
-        }
-
-//        public DefaultMutableSkillGenerator(String name)
-//        {
-//            super(name, new HashMap<SkillFacade, Integer>(), false);
-//            // This makes getNext() work correctly
-//            this.items = Collections.singletonList(null);
-//        }
-        @Override
-        public List<SkillFacade> getAll()
-        {
-            return new ArrayList<SkillFacade>(priorityMap.keySet());
         }
 
         public void setRandomOrder(boolean randomOrder)
@@ -1007,28 +999,16 @@ public final class GeneratorFactory implements EntityResolver
             this.randomOrder = randomOrder;
         }
 
-        public void saveChanges()
+        @Override
+        protected SkillFacade getFacade(DataSetFacade data, String name)
         {
-            element.removeContent();
-            element.setAttribute("type", randomOrder ? "random" : "ordered");
-            for (String source : getSources())
-            {
-                element.addContent(new Element("SOURCE").setText(source));
-            }
-            for (SkillFacade skill : priorityMap.keySet())
-            {
-                Element skillElement = new Element("SKILL");
-                skillElement.setAttribute("weight",
-                                          priorityMap.get(skill).toString());
-                skillElement.setText(skill.toString());
-                element.addContent(skillElement);
-            }
-            outputDocument(element.getDocument());
+            return data.getSkill(name);
         }
 
-        public void setWeight(SkillFacade item, int weight)
+        @Override
+        protected String getValueName()
         {
-            priorityMap.put(item, weight);
+            return "SKILL";
         }
 
     }
