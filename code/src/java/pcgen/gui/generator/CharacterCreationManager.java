@@ -18,7 +18,7 @@
  * 
  * Created on Aug 8, 2008, 3:18:20 PM
  */
-package pcgen.gui;
+package pcgen.gui.generator;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;

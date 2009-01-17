@@ -1,5 +1,5 @@
 /*
- * SettingsHandler.java
+ * GeneratorParsingException.java
  * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,27 +16,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jan 10, 2009, 7:04:57 PM
+ * Created on Jan 15, 2009, 7:15:02 PM
  */
-package pcgen.core;
 
-import java.io.File;
+package pcgen.gui.generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public final class SettingsHandler
-{
+public class GeneratorParsingException extends Exception {
 
-    public static File getPcgenSystemDir()
-    {
-        return new File("build/classes").getAbsoluteFile();
+    /**
+     * Creates a new instance of <code>GeneratorParsingException</code> without detail message.
+     */
+    public GeneratorParsingException() {
     }
 
-    public static File getPcgenCustomDir()
-    {
-        return null;
-    }
 
+    /**
+     * Constructs an instance of <code>GeneratorParsingException</code> with the specified detail message.
+     * @param msg the detail message.
+     */
+    public GeneratorParsingException(String msg) {
+        super(msg);
+    }
 }
