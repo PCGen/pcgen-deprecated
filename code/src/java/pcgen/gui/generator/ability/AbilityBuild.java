@@ -1,5 +1,5 @@
 /*
- * MutableAbilityBuild.java
+ * AbilityBuild.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,10 +16,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 12, 2008, 2:13:36 PM
+ * Created on Sep 12, 2008, 1:23:00 PM
  */
-package pcgen.gui.generator;
+package pcgen.gui.generator.ability;
 
+import pcgen.gui.generator.*;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
 
@@ -27,10 +28,9 @@ import pcgen.gui.facade.AbilityFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableAbilityBuild extends AbilityBuild
+public interface AbilityBuild
 {
 
-    public void putGenerator(AbilityCatagoryFacade catagory,
-                              FacadeGenerator<AbilityFacade> generator);
+    public FacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
 
 }
