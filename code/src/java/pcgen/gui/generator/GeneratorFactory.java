@@ -51,11 +51,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import pcgen.base.util.WeightedCollection;
 import pcgen.core.SettingsHandler;
+import pcgen.gui.facade.AbilityCatagoryFacade;
+import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.DataSetFacade;
 import pcgen.gui.facade.InfoFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.SkillFacade;
+import pcgen.gui.generator.ability.AbilityBuild;
+import pcgen.gui.generator.ability.MutableAbilityBuild;
 import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
 import pcgen.gui.generator.stat.MutableStandardModeGenerator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
@@ -460,7 +464,7 @@ public final class GeneratorFactory implements EntityResolver
         private Queue<E> queue = null;
 
         @SuppressWarnings("unchecked")
-        public AbstractFacadeGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        public AbstractFacadeGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element);
             this.priorityMap = new HashMap<E, Integer>();
@@ -473,8 +477,8 @@ public final class GeneratorFactory implements EntityResolver
                 E facade = getFacade(data, elementName);
                 if (facade == null)
                 {
-                    throw new GeneratorParsingException(elementName +
-                                                        " not found in DataSetFacade");
+                    throw new MissingDataException(elementName +
+                                                   " not found in DataSetFacade");
                 }
                 priorityMap.put(facade, weight);
             }
@@ -619,7 +623,7 @@ public final class GeneratorFactory implements EntityResolver
         protected Element element;
 
         public AbstractMutableFacadeGenerator(Element element,
-                                               DataSetFacade data) throws GeneratorParsingException
+                                               DataSetFacade data) throws MissingDataException
         {
             super(element, data);
             this.element = element;
@@ -884,7 +888,7 @@ public final class GeneratorFactory implements EntityResolver
     private static class DefaultRaceGenerator extends AbstractFacadeGenerator<RaceFacade>
     {
 
-        public DefaultRaceGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        public DefaultRaceGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element, data);
         }
@@ -906,7 +910,7 @@ public final class GeneratorFactory implements EntityResolver
     private static class DefaultMutableRaceGenerator extends AbstractMutableFacadeGenerator<RaceFacade>
     {
 
-        public DefaultMutableRaceGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        public DefaultMutableRaceGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element, data);
         }
@@ -928,7 +932,7 @@ public final class GeneratorFactory implements EntityResolver
     private static class DefaultClassGenerator extends AbstractFacadeGenerator<ClassFacade>
     {
 
-        public DefaultClassGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        public DefaultClassGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element, data);
         }
@@ -950,7 +954,7 @@ public final class GeneratorFactory implements EntityResolver
     private static class DefaultMutableClassGenerator extends AbstractMutableFacadeGenerator<ClassFacade>
     {
 
-        public DefaultMutableClassGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        public DefaultMutableClassGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element, data);
         }
@@ -972,7 +976,7 @@ public final class GeneratorFactory implements EntityResolver
     private static class DefaultSkillGenerator extends AbstractFacadeGenerator<SkillFacade>
     {
 
-        public DefaultSkillGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        public DefaultSkillGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element, data);
         }
@@ -994,7 +998,7 @@ public final class GeneratorFactory implements EntityResolver
     private static class DefaultMutableSkillGenerator extends AbstractMutableFacadeGenerator<SkillFacade>
     {
 
-        public DefaultMutableSkillGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        public DefaultMutableSkillGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element, data);
         }
@@ -1009,6 +1013,129 @@ public final class GeneratorFactory implements EntityResolver
         protected String getValueName()
         {
             return "SKILL";
+        }
+
+    }
+
+    private static class DefaultAbilityBuild implements AbilityBuild
+    {
+
+        private String name;
+        protected Map<AbilityCatagoryFacade, DefaultMutableAbilityGenerator> generatorMap;
+
+        public DefaultAbilityBuild(Element element, DataSetFacade data) throws MissingDataException
+        {
+            this.name = element.getAttributeValue("name");
+            this.generatorMap = new HashMap<AbilityCatagoryFacade, DefaultMutableAbilityGenerator>();
+            @SuppressWarnings("unchecked")
+            List<Element> children = element.getChildren("GENERATOR");
+            for ( Element element1 : children)
+            {
+                DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(element1,
+                                                                                                     data);
+                AbilityCatagoryFacade catagory = data.getAbilityCatagory(generator.toString());
+                generatorMap.put(catagory, generator);
+            }
+
+        }
+
+        public FacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory)
+        {
+            return generatorMap.get(catagory);
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+
+    }
+
+    private static class DefaultMutableAbilityBuild extends DefaultAbilityBuild
+            implements MutableAbilityBuild
+    {
+
+        private Element element;
+        private DataSetFacade data;
+
+        public DefaultMutableAbilityBuild(Element element, DataSetFacade data) throws MissingDataException
+        {
+            super(element, data);
+            this.element = element;
+            this.data = data;
+        }
+
+        @Override
+        public MutableFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory)
+        {
+            DefaultMutableAbilityGenerator generator = generatorMap.get(catagory);
+            if (generator == null)
+            {
+                try
+                {
+                    Element generatorElement = new Element("GENERATOR");
+                    generatorElement.setAttribute("catagory",
+                                                  catagory.toString());
+                    generator = new DefaultMutableAbilityGenerator(generatorElement,
+                                                                   data);
+                    generatorMap.put(catagory, generator);
+                }
+                catch (MissingDataException ex)
+                {
+                    Logging.errorPrint("Failed to create a blank MutableAbilityGenerator",
+                                       ex);
+                }
+            }
+            return generator;
+        }
+
+        public void saveChanges()
+        {
+            
+        }
+
+    }
+
+    private static class DefaultMutableAbilityGenerator extends AbstractMutableFacadeGenerator<AbilityFacade>
+    {
+
+        public DefaultMutableAbilityGenerator(Element element,
+                                               DataSetFacade data) throws MissingDataException
+        {
+            super(element.setAttribute("name",
+                                       element.getAttributeValue("catagory")),
+                  data);
+        }
+
+        @Override
+        protected AbilityFacade getFacade(DataSetFacade data, String name)
+        {
+
+            return data.getAbility(data.getAbilityCatagory(this.toString()),
+                                   name);
+        }
+
+        @Override
+        protected String getValueName()
+        {
+            return "ABILITY";
+        }
+
+        @Override
+        public void saveChanges()
+        {
+            element.removeContent();
+            element.removeAttribute("name");
+            element.setAttribute("type", randomOrder ? "random" : "ordered");
+            for (AbilityFacade ability : priorityMap.keySet())
+            {
+                Element skillElement = new Element(getValueName());
+                skillElement.setAttribute("weight",
+                                          priorityMap.get(ability).toString());
+                skillElement.setText(ability.toString());
+                element.addContent(skillElement);
+            }
         }
 
     }

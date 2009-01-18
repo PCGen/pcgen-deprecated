@@ -32,7 +32,8 @@ import pcgen.gui.facade.AbilityFacade;
 public interface MutableAbilityBuild extends AbilityBuild
 {
 
-    public void putGenerator(AbilityCatagoryFacade catagory,
-                              FacadeGenerator<AbilityFacade> generator);
+    public MutableFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
+
+    public void saveChanges();
 
 }

@@ -1,5 +1,5 @@
 /*
- * GeneratorParsingException.java
+ * MissingDataException.java
  * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -25,20 +25,20 @@ package pcgen.gui.generator;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class GeneratorParsingException extends Exception {
+public class MissingDataException extends Exception {
 
     /**
-     * Creates a new instance of <code>GeneratorParsingException</code> without detail message.
+     * Creates a new instance of <code>MissingDataException</code> without detail message.
      */
-    public GeneratorParsingException() {
+    public MissingDataException() {
     }
 
 
     /**
-     * Constructs an instance of <code>GeneratorParsingException</code> with the specified detail message.
+     * Constructs an instance of <code>MissingDataException</code> with the specified detail message.
      * @param msg the detail message.
      */
-    public GeneratorParsingException(String msg) {
+    public MissingDataException(String msg) {
         super(msg);
     }
 }
