@@ -31,6 +31,6 @@ import pcgen.gui.generator.OrderedGenerator;
 public interface AbilityBuild
 {
 
-    public OrderedGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
+    public FacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
 
 }

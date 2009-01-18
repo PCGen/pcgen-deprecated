@@ -22,7 +22,6 @@ package pcgen.gui.generator;
 
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
-import pcgen.gui.generator.OrderedGenerator;
 
 /**
  *
@@ -32,6 +31,6 @@ public interface MutableAbilityBuild extends AbilityBuild
 {
 
     public void putGenerator(AbilityCatagoryFacade catagory,
-                              OrderedGenerator<AbilityFacade> generator);
+                              FacadeGenerator<AbilityFacade> generator);
 
 }
