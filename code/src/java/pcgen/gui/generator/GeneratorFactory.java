@@ -54,6 +54,7 @@ import pcgen.core.SettingsHandler;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.DataSetFacade;
 import pcgen.gui.facade.InfoFacade;
+import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
 import pcgen.gui.generator.stat.MutableStandardModeGenerator;
@@ -80,6 +81,9 @@ public final class GeneratorFactory implements EntityResolver
         public static final GeneratorType<Integer> PURCHASEMODE = new GeneratorType<Integer>("PurchaseModeGenerator",
                                                                                                 DefaultPurchaseModeGenerator.class,
                                                                                                 DefaultMutablePurchaseModeGenerator.class);
+        public static final GeneratorType<RaceFacade> RACE = new GeneratorType<RaceFacade>("RaceGenerator",
+                                                                                              DefaultRaceGenerator.class,
+                                                                                              DefaultMutableRaceGenerator.class);
         public static final GeneratorType<ClassFacade> CLASS = new GeneratorType<ClassFacade>("ClassGenerator",
                                                                                                  DefaultClassGenerator.class,
                                                                                                  DefaultMutableClassGenerator.class);
@@ -873,6 +877,50 @@ public final class GeneratorFactory implements EntityResolver
                 element.addContent(new Element("STAT").setText(expression));
             }
             outputDocument(element.getDocument());
+        }
+
+    }
+
+    private static class DefaultRaceGenerator extends AbstractFacadeGenerator<RaceFacade>
+    {
+
+        public DefaultRaceGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        {
+            super(element, data);
+        }
+
+        @Override
+        protected RaceFacade getFacade(DataSetFacade data, String name)
+        {
+            return data.getRace(name);
+        }
+
+        @Override
+        protected String getValueName()
+        {
+            return "RACE";
+        }
+
+    }
+
+    private static class DefaultMutableRaceGenerator extends AbstractMutableFacadeGenerator<RaceFacade>
+    {
+
+        public DefaultMutableRaceGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
+        {
+            super(element, data);
+        }
+
+        @Override
+        protected RaceFacade getFacade(DataSetFacade data, String name)
+        {
+            return data.getRace(name);
+        }
+
+        @Override
+        protected String getValueName()
+        {
+            return "RACE";
         }
 
     }

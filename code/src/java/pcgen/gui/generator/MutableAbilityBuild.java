@@ -18,7 +18,7 @@
  * 
  * Created on Sep 12, 2008, 2:13:36 PM
  */
-package pcgen.gui.generator.ability;
+package pcgen.gui.generator;
 
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;

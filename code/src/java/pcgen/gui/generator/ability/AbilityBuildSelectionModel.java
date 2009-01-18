@@ -20,6 +20,8 @@
  */
 package pcgen.gui.generator.ability;
 
+import pcgen.gui.generator.AbilityBuild;
+import pcgen.gui.generator.MutableAbilityBuild;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Properties;

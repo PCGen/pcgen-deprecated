@@ -1,5 +1,5 @@
 /*
- * AbilityGenerator.java
+ * AbilityBuild.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,19 +16,21 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 16, 2008, 4:47:23 PM
+ * Created on Sep 12, 2008, 1:23:00 PM
  */
-package pcgen.gui.generator.ability;
+package pcgen.gui.generator;
 
+import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
-import pcgen.gui.generator.FacadeGenerator;
 import pcgen.gui.generator.OrderedGenerator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface AbilityGenerator extends OrderedGenerator<AbilityFacade>,
-                                           FacadeGenerator<AbilityFacade>
+public interface AbilityBuild
 {
+
+    public OrderedGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
+
 }
