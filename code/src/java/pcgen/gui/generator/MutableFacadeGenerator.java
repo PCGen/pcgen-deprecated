@@ -30,6 +30,8 @@ public interface MutableFacadeGenerator<E extends InfoFacade> extends FacadeGene
                                                                        MutableGenerator<E>
 {
 
+    public void setRandomOrder(boolean randomOrder);
+
     public void setWeight(E item, int weight);
 
 }

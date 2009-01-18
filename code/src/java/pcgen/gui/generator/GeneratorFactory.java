@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -56,8 +55,6 @@ import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.DataSetFacade;
 import pcgen.gui.facade.InfoFacade;
 import pcgen.gui.facade.SkillFacade;
-import pcgen.gui.generator.skill.MutableSkillGenerator;
-import pcgen.gui.generator.skill.SkillGenerator;
 import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
 import pcgen.gui.generator.stat.MutableStandardModeGenerator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
@@ -70,6 +67,36 @@ import pcgen.util.Logging;
  */
 public final class GeneratorFactory implements EntityResolver
 {
+
+    public static final class GeneratorType<E>
+    {
+
+        public static final GeneratorType<SkillFacade> SKILL = new GeneratorType<SkillFacade>("SkillGenerator",
+                                                                                                 DefaultSkillGenerator.class,
+                                                                                                 DefaultMutableSkillGenerator.class);
+        public static final GeneratorType<Integer> STANDARDMODE = new GeneratorType<Integer>("StandardModeGenerator",
+                                                                                                DefaultStandardModeGenerator.class,
+                                                                                                DefaultMutableStandardModeGenerator.class);
+        public static final GeneratorType<Integer> PURCHASEMODE = new GeneratorType<Integer>("PurchaseModeGenerator",
+                                                                                                DefaultPurchaseModeGenerator.class,
+                                                                                                DefaultMutablePurchaseModeGenerator.class);
+        public static final GeneratorType<ClassFacade> CLASS = new GeneratorType<ClassFacade>("ClassGenerator",
+                                                                                                 DefaultClassGenerator.class,
+                                                                                                 DefaultMutableClassGenerator.class);
+        private Class<? extends Generator<E>> baseClass;
+        private Class<? extends MutableGenerator<E>> mutableClass;
+        private String name;
+
+        private GeneratorType(String name,
+                               Class<? extends Generator<E>> baseClass,
+                               Class<? extends MutableGenerator<E>> mutableClass)
+        {
+            this.name = name;
+            this.baseClass = baseClass;
+            this.mutableClass = mutableClass;
+        }
+
+    }
 
     private static class GeneratorFactoryHolder
     {
@@ -178,73 +205,52 @@ public final class GeneratorFactory implements EntityResolver
         }
     }
 
-    static List<StandardModeGenerator> buildStandardModeGeneratorList(Document document)
+    static List<Generator<Integer>> buildStatGeneratorList(GeneratorType<Integer> type,
+                                                            Document document)
     {
         Element root = document.getRootElement();
         boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-        List<StandardModeGenerator> generators = new ArrayList<StandardModeGenerator>();
+        List<Generator<Integer>> generators = new ArrayList<Generator<Integer>>();
         for (Object element : root.getChildren())
         {
             try
             {
+                Class<? extends Generator<Integer>> c;
                 if (mutable)
                 {
-                    generators.add(new DefaultMutableStandardModeGenerator((Element) element));
+                    c = type.mutableClass;
                 }
                 else
                 {
-                    generators.add(new DefaultStandardModeGenerator((Element) element));
+                    c = type.baseClass;
                 }
+                Generator<Integer> generator = (Generator<Integer>) c.getConstructor(Element.class).newInstance(element);
+                generators.add(generator);
             }
-            catch (NumberFormatException e)
+            catch (Exception ex)
             {
-                Logging.errorPrint(e.getMessage(), e);
+                Logging.errorPrint("Unable to create stat generator",
+                                   ex);
             }
         }
         return generators;
     }
 
-    static List<PurchaseModeGenerator> buildPurchaseModeGeneratorList(Document document)
-    {
-        Element root = document.getRootElement();
-        boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-        List<PurchaseModeGenerator> generators = new ArrayList<PurchaseModeGenerator>();
-        for (Object element : root.getChildren())
-        {
-            try
-            {
-                if (mutable)
-                {
-                    generators.add(new DefaultMutablePurchaseModeGenerator((Element) element));
-                }
-                else
-                {
-                    generators.add(new DefaultPurchaseModeGenerator((Element) element));
-                }
-            }
-            catch (NumberFormatException e)
-            {
-                Logging.errorPrint(e.getMessage(), e);
-            }
-        }
-        return generators;
-    }
-
-    @SuppressWarnings("unchecked")
-    static List<SkillGenerator> buildSkillGeneratorList(Document document,
-                                                         DataSetFacade data)
+    static <T extends InfoFacade> List<FacadeGenerator<T>> buildFacadeGeneratorList(GeneratorType<T> type,
+                                                                                     Document document,
+                                                                                     DataSetFacade data)
     {
         Element root = document.getRootElement();
         boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
 
-        List<SkillGenerator> generators = new ArrayList<SkillGenerator>();
+        List<FacadeGenerator<T>> generators = new ArrayList<FacadeGenerator<T>>();
         Set<String> sources = data.getSources();
-        List<Element> children = root.getChildren();
         generatorLoop:
-            for (Element child : children)
+            for (Object element : root.getChildren())
             {
+                @SuppressWarnings("unchecked")
                 List<Element> sourceElements = root.getChildren("SOURCE");
-                for (Element source : sourceElements)
+                for ( Element source : sourceElements)
                 {
                     if (!sources.contains(source.getText()))
                     {
@@ -253,38 +259,29 @@ public final class GeneratorFactory implements EntityResolver
                 }
                 try
                 {
+                    Class<? extends Generator<T>> c;
                     if (mutable)
                     {
-                        generators.add(new DefaultMutableSkillGenerator(child,
-                                                                        data));
+                        c = type.mutableClass;
                     }
                     else
                     {
-                        generators.add(new DefaultSkillGenerator(child, data));
+                        c = type.baseClass;
                     }
+                    FacadeGenerator<T> generator = (FacadeGenerator<T>) c.getConstructor(Element.class,
+                                                                                         DataSetFacade.class).newInstance(element,
+                                                                                                                          data);
+                    generators.add(generator);
                 }
-                catch (GeneratorParsingException ex)
+                catch ( Exception ex)
                 {
-                    Logging.errorPrint("Unable to create Skill generator",
+                    Logging.errorPrint("Unable to create Facade generator",
                                        ex);
                 }
             }
         return generators;
     }
 
-//    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(String name,
-//                                                                                                  FacadeGenerator<T> template)
-//    {
-//        MutableFacadeGenerator<T> generatorElement = new DefaultMutableFacadeGenerator<T>(name);
-//        if (template != null)
-//        {
-//            for (T obj : template.getAll())
-//            {
-//                generatorElement.add(obj);
-//            }
-//        }
-//        return generatorElement;
-//    }
     public static <T extends InfoFacade> FacadeGenerator<T> createSingletonGenerator(T item)
     {
         return new SingletonGenerator<T>(item);
@@ -377,34 +374,37 @@ public final class GeneratorFactory implements EntityResolver
         return null;
     }
 
-    public static MutableSkillGenerator createMutableSkillGenerator(String name,
-                                                                      DataSetFacade data,
-                                                                      SkillGenerator template)
+    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(GeneratorType<T> type,
+                                                                                                  String name,
+                                                                                                  DataSetFacade data,
+                                                                                                  MutableFacadeGenerator<T> template)
     {
         Document document = getCustomGeneratorDocument(data,
-                                                       "SkillGenerator");
+                                                       type.name);
         if (document != null)
         {
+
+            Element generatorElement = new Element("GENERATOR");
+            generatorElement.setAttribute("name", name).
+                    setAttribute("type", "random");
+            document.getRootElement().addContent(generatorElement);
             try
             {
-                Element generatorElement = new Element("GENERATOR");
-                generatorElement.setAttribute("name", name).
-                        setAttribute("type", "random");
-                document.getRootElement().addContent(generatorElement);
-                MutableSkillGenerator generator = new DefaultMutableSkillGenerator(generatorElement,
-                                                                                   data);
+                MutableFacadeGenerator<T> generator = (MutableFacadeGenerator<T>) type.mutableClass.getConstructor(Element.class,
+                                                                                                                   DataSetFacade.class).newInstance(generatorElement,
+                                                                                                                                                    data);
                 if (template != null)
                 {
                     generator.setRandomOrder(template.isRandomOrder());
-                    for (SkillFacade skillName : template.getAll())
+                    for (T facade : template.getAll())
                     {
-                        generator.setWeight(skillName,
-                                            template.getWeight(skillName));
+                        generator.setWeight(facade,
+                                            template.getWeight(facade));
                     }
                 }
                 return generator;
             }
-            catch (GeneratorParsingException ex)
+            catch (Exception ex)
             {
                 Logging.errorPrint("Unable to parse " + document.getBaseURI(),
                                    ex);
@@ -447,84 +447,19 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private abstract static class DefaultOrderedGenerator<E> extends AbstractGenerator<E>
-            implements OrderedGenerator<E>
-    {
-
-        protected List<E> items;
-        private Queue<E> queue = null;
-        protected boolean randomOrder;
-
-        @SuppressWarnings("unchecked")
-        protected DefaultOrderedGenerator(Element element)
-        {
-            this(element, Collections.EMPTY_LIST);
-        }
-
-        public DefaultOrderedGenerator(Element element, List<E> items)
-        {
-            super(element);
-            this.randomOrder = element.getAttribute("type").equals("random");
-            this.items = items;
-            reset();
-        }
-
-        public E getNext()
-        {
-            if (items.isEmpty())
-            {
-                return null;
-            }
-            if (queue.isEmpty())
-            {
-                reset();
-            }
-            return queue.poll();
-        }
-
-        public boolean isRandomOrder()
-        {
-            return randomOrder;
-        }
-
-        @Override
-        public List<E> getAll()
-        {
-            return items;
-        }
-
-        protected Queue<E> createQueue()
-        {
-            LinkedList<E> temp = new LinkedList<E>(items);
-            if (randomOrder)
-            {
-                Collections.shuffle(temp);
-            }
-            return temp;
-        }
-
-        @Override
-        public void reset()
-        {
-            queue = createQueue();
-        }
-
-    }
-
     private abstract static class AbstractFacadeGenerator<E extends InfoFacade>
-            extends DefaultOrderedGenerator<E>
-            implements FacadeGenerator<E>
+            extends AbstractGenerator<E> implements FacadeGenerator<E>
     {
 
         protected Map<E, Integer> priorityMap;
+        protected boolean randomOrder;
+        private Queue<E> queue = null;
 
         @SuppressWarnings("unchecked")
         public AbstractFacadeGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
         {
             super(element);
             this.priorityMap = new HashMap<E, Integer>();
-
-            this.items = new ArrayList<E>(priorityMap.keySet());
 
             List<Element> children = element.getChildren(getValueName());
             for (Element child : children)
@@ -545,6 +480,24 @@ public final class GeneratorFactory implements EntityResolver
         protected abstract E getFacade(DataSetFacade data, String name);
 
         protected abstract String getValueName();
+
+        public boolean isRandomOrder()
+        {
+            return randomOrder;
+        }
+
+        public E getNext()
+        {
+            if (priorityMap.isEmpty())
+            {
+                return null;
+            }
+            if (queue.isEmpty())
+            {
+                reset();
+            }
+            return queue.poll();
+        }
 
         public int getWeight(E item)
         {
@@ -573,13 +526,13 @@ public final class GeneratorFactory implements EntityResolver
         }
 
         @Override
-        protected Queue<E> createQueue()
+        public void reset()
         {
-            if (priorityMap == null)
+            if (randomOrder)
             {
-                return super.createQueue();
+                queue = new RandomWeightedQueue();
             }
-            if (!randomOrder)
+            else
             {
                 Comparator<E> comparator = new Comparator<E>()
                 {
@@ -593,12 +546,9 @@ public final class GeneratorFactory implements EntityResolver
                     }
 
                 };
-                Queue<E> queue = new PriorityQueue<E>(priorityMap.size(),
-                                                      comparator);
+                queue = new PriorityQueue<E>(priorityMap.size(), comparator);
                 queue.addAll(priorityMap.keySet());
-                return queue;
             }
-            return new RandomWeightedQueue();
         }
 
         private class RandomWeightedQueue extends WeightedCollection<E>
@@ -671,6 +621,11 @@ public final class GeneratorFactory implements EntityResolver
             this.element = element;
         }
 
+        public void setRandomOrder(boolean randomOrder)
+        {
+            this.randomOrder = randomOrder;
+        }
+
         public void setWeight(E item, int weight)
         {
             priorityMap.put(item, weight);
@@ -740,6 +695,11 @@ public final class GeneratorFactory implements EntityResolver
             {
                 return 0;
             }
+        }
+
+        public boolean isRandomOrder()
+        {
+            return false;
         }
 
     }
@@ -962,10 +922,8 @@ public final class GeneratorFactory implements EntityResolver
     }
 
     private static class DefaultSkillGenerator extends AbstractFacadeGenerator<SkillFacade>
-            implements SkillGenerator
     {
 
-        @SuppressWarnings("unchecked")
         public DefaultSkillGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
         {
             super(element, data);
@@ -986,17 +944,11 @@ public final class GeneratorFactory implements EntityResolver
     }
 
     private static class DefaultMutableSkillGenerator extends AbstractMutableFacadeGenerator<SkillFacade>
-            implements MutableSkillGenerator
     {
 
         public DefaultMutableSkillGenerator(Element element, DataSetFacade data) throws GeneratorParsingException
         {
             super(element, data);
-        }
-
-        public void setRandomOrder(boolean randomOrder)
-        {
-            this.randomOrder = randomOrder;
         }
 
         @Override

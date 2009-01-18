@@ -30,6 +30,8 @@ import pcgen.gui.facade.InfoFacade;
 public interface FacadeGenerator<E extends InfoFacade> extends Generator<E>
 {
 
+    public boolean isRandomOrder();
+
     public int getWeight(E item);
 
     public Set<String> getSources();
