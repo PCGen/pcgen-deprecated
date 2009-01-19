@@ -63,7 +63,7 @@ import javax.swing.table.TableColumnModel;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.StatFacade;
-import pcgen.gui.generator.FacadeGenerator;
+import pcgen.gui.generator.InfoFacadeGenerator;
 import pcgen.gui.generator.Generator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.util.ComboSelectionBox;
@@ -234,7 +234,7 @@ public class CharacterCreationDialog extends JDialog
                                 if (e.getStateChange() == ItemEvent.SELECTED)
                                 {
                                     @SuppressWarnings("unchecked")
-                                    FacadeGenerator<RaceFacade> raceGenerator = (FacadeGenerator<RaceFacade>) e.getItem();
+                                    InfoFacadeGenerator<RaceFacade> raceGenerator = (InfoFacadeGenerator<RaceFacade>) e.getItem();
                                     StatTableModel model = statTablePane.getModel();
                                     if (raceGenerator.isSingleton())
                                     {
@@ -529,7 +529,7 @@ public class CharacterCreationDialog extends JDialog
         if (box.isEnabled())
         {
             @SuppressWarnings("unchecked")
-            FacadeGenerator<ClassFacade> classGenerator = (FacadeGenerator<ClassFacade>) box.getSelectedItem();
+            InfoFacadeGenerator<ClassFacade> classGenerator = (InfoFacadeGenerator<ClassFacade>) box.getSelectedItem();
             if (classGenerator.isSingleton())
             {
                 ClassFacade c = classGenerator.getNext();
@@ -548,7 +548,7 @@ public class CharacterCreationDialog extends JDialog
     private void checkSelectionValidity()
     {
         Generator<Integer> alignmentGenerator = (Generator<Integer>) alignmentComboBox.getSelectedItem();
-        FacadeGenerator<RaceFacade> raceGenerator = (FacadeGenerator<RaceFacade>) raceSelectionBox.getSelectedItem();
+        InfoFacadeGenerator<RaceFacade> raceGenerator = (InfoFacadeGenerator<RaceFacade>) raceSelectionBox.getSelectedItem();
         RaceFacade race = null;
         if (raceGenerator.isSingleton())
         {

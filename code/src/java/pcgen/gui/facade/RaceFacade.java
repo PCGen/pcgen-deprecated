@@ -27,7 +27,7 @@ package pcgen.gui.facade;
 public interface RaceFacade extends InfoFacade
 {
 
-    public boolean isAcceptableAlignment(int alignment);
+    public boolean isAcceptableAlignment(AlignmentFacade alignment);
 
     public int getRacialAdj(StatFacade stat);
 

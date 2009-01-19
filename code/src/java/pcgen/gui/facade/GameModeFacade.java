@@ -1,6 +1,6 @@
 /*
- * MutableFacadeGenerator.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * GameModeFacade.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,22 +16,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 25, 2008, 2:34:36 AM
+ * Created on Jan 18, 2009, 8:42:23 PM
  */
-package pcgen.gui.generator;
+package pcgen.gui.facade;
 
-import pcgen.gui.facade.InfoFacade;
+import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableFacadeGenerator<E extends InfoFacade> extends FacadeGenerator<E>,
-                                                                       MutableGenerator<E>
+public interface GameModeFacade
 {
 
-    public void setRandomOrder(boolean randomOrder);
+    public GenericListModel<AlignmentFacade> getAlignments();
 
-    public void setWeight(E item, int weight);
+    public GenericListModel<StatFacade> getStats();
+
+    @Override
+    public String toString();
 
 }

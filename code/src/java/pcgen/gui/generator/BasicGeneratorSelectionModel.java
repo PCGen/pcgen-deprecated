@@ -128,7 +128,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
         addAsAction.setSelectionDialog(selectionDialog);
         if (mutable)
         {
-            addAsAction.setGenerator((MutableFacadeGenerator<E>) selectedItem);
+            addAsAction.setGenerator((MutableInfoFacadeGenerator<E>) selectedItem);
         }
         return selectionPanel;
     }
@@ -144,7 +144,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
 
     public boolean isMutable(FacadeGenerator<E> item)
     {
-        return item instanceof MutableFacadeGenerator;
+        return item instanceof MutableInfoFacadeGenerator;
     }
 
     public boolean isAddable(FacadeGenerator<E> item)
@@ -178,7 +178,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
     {
 
         private SelectionDialog<FacadeGenerator<E>> selectionDialog;
-        private MutableFacadeGenerator<E> generator;
+        private MutableInfoFacadeGenerator<E> generator;
 
         public AddAsAction()
         {
@@ -191,7 +191,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
             this.selectionDialog = selectionDialog;
         }
 
-        public void setGenerator(MutableFacadeGenerator<E> generator)
+        public void setGenerator(MutableInfoFacadeGenerator<E> generator)
         {
             this.generator = generator;
         }

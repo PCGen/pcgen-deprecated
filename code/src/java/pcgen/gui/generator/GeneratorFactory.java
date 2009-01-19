@@ -52,9 +52,11 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import pcgen.base.util.WeightedCollection;
+import pcgen.cdom.enumeration.Gender;
 import pcgen.core.SettingsHandler;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.AbilityFacade;
+import pcgen.gui.facade.AlignmentFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.DataSetFacade;
 import pcgen.gui.facade.InfoFacade;
@@ -78,21 +80,21 @@ public final class GeneratorFactory implements EntityResolver
     public static final class GeneratorType<E>
     {
 
-        public static final GeneratorType<FacadeGenerator<SkillFacade>> SKILL = new GeneratorType<FacadeGenerator<SkillFacade>>("SkillGenerator",
-                                                                                                                                   DefaultSkillGenerator.class,
-                                                                                                                                   DefaultMutableSkillGenerator.class);
+        public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>("SkillGenerator",
+                                                                                                                                           DefaultSkillGenerator.class,
+                                                                                                                                           DefaultMutableSkillGenerator.class);
         public static final GeneratorType<StandardModeGenerator> STANDARDMODE = new GeneratorType<StandardModeGenerator>("StandardModeGenerator",
                                                                                                                             DefaultStandardModeGenerator.class,
                                                                                                                             DefaultMutableStandardModeGenerator.class);
         public static final GeneratorType<PurchaseModeGenerator> PURCHASEMODE = new GeneratorType<PurchaseModeGenerator>("PurchaseModeGenerator",
                                                                                                                             DefaultPurchaseModeGenerator.class,
                                                                                                                             DefaultMutablePurchaseModeGenerator.class);
-        public static final GeneratorType<FacadeGenerator<RaceFacade>> RACE = new GeneratorType<FacadeGenerator<RaceFacade>>("RaceGenerator",
-                                                                                                                                DefaultRaceGenerator.class,
-                                                                                                                                DefaultMutableRaceGenerator.class);
-        public static final GeneratorType<FacadeGenerator<ClassFacade>> CLASS = new GeneratorType<FacadeGenerator<ClassFacade>>("ClassGenerator",
-                                                                                                                                   DefaultClassGenerator.class,
-                                                                                                                                   DefaultMutableClassGenerator.class);
+        public static final GeneratorType<InfoFacadeGenerator<RaceFacade>> RACE = new GeneratorType<InfoFacadeGenerator<RaceFacade>>("RaceGenerator",
+                                                                                                                                        DefaultRaceGenerator.class,
+                                                                                                                                        DefaultMutableRaceGenerator.class);
+        public static final GeneratorType<InfoFacadeGenerator<ClassFacade>> CLASS = new GeneratorType<InfoFacadeGenerator<ClassFacade>>("ClassGenerator",
+                                                                                                                                           DefaultClassGenerator.class,
+                                                                                                                                           DefaultMutableClassGenerator.class);
         public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>("AbilityBuild",
                                                                                                           DefaultAbilityBuild.class,
                                                                                                           DefaultMutableAbilityBuild.class);
@@ -279,7 +281,7 @@ public final class GeneratorFactory implements EntityResolver
         return generators;
     }
 
-    public static <T extends InfoFacade> FacadeGenerator<T> createSingletonGenerator(T item)
+    public static <T extends InfoFacade> InfoFacadeGenerator<T> createSingletonGenerator(T item)
     {
         return new SingletonGenerator<T>(item);
     }
@@ -371,10 +373,10 @@ public final class GeneratorFactory implements EntityResolver
         return null;
     }
 
-    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(GeneratorType<FacadeGenerator<T>> type,
-                                                                                                  String name,
-                                                                                                  DataSetFacade data,
-                                                                                                  MutableFacadeGenerator<T> template)
+    public static <T extends InfoFacade> MutableInfoFacadeGenerator<T> createMutableFacadeGenerator(GeneratorType<InfoFacadeGenerator<T>> type,
+                                                                                                      String name,
+                                                                                                      DataSetFacade data,
+                                                                                                      MutableInfoFacadeGenerator<T> template)
     {
         Document document = getCustomGeneratorDocument(data,
                                                        type.name);
@@ -387,9 +389,9 @@ public final class GeneratorFactory implements EntityResolver
             document.getRootElement().addContent(generatorElement);
             try
             {
-                MutableFacadeGenerator<T> generator = (MutableFacadeGenerator<T>) type.mutableClass.getConstructor(Element.class,
-                                                                                                                   DataSetFacade.class).newInstance(generatorElement,
-                                                                                                                                                    data);
+                MutableInfoFacadeGenerator<T> generator = (MutableInfoFacadeGenerator<T>) type.mutableClass.getConstructor(Element.class,
+                                                                                                                           DataSetFacade.class).newInstance(generatorElement,
+                                                                                                                                                            data);
                 if (template != null)
                 {
                     generator.setRandomOrder(template.isRandomOrder());
@@ -409,6 +411,82 @@ public final class GeneratorFactory implements EntityResolver
         }
 
         return null;
+    }
+
+    private static class DefaultCharacterBuilder implements CharacterBuilder
+    {
+
+        public DefaultCharacterBuilder(Element element, DataSetFacade data)
+        {
+            element.removeChildren("SOURCE");
+            Element alignmentElement = (Element) element.getContent(0);
+
+        }
+
+        public Generator<AlignmentFacade> getAlignmentGenerator()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public Generator<Gender> getGenderGenerator()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public Generator<Integer> getStatGenerator()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public InfoFacadeGenerator<RaceFacade> getRaceGenerator()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public InfoFacadeGenerator<ClassFacade> getClassGenerator()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public InfoFacadeGenerator<SkillFacade> getSkillGenerator()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public AbilityBuild getAbilityBuild()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private static class DefaultAlignmentGenerator extends AbstractGenerator<AlignmentFacade>
+    {
+
+        //private Queue<E> queue = null;
+        public DefaultAlignmentGenerator(Element element, DataSetFacade data)
+        {
+            super(element);
+
+        }
+
+        public AlignmentFacade getNext()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public List<AlignmentFacade> getAll()
+        {
+            return super.getAll();
+        }
+
+        @Override
+        public void reset()
+        {
+            super.reset();
+        }
+
     }
 
     private abstract static class AbstractGenerator<E> implements Generator<E>
@@ -444,8 +522,18 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
+    private abstract static class AbstractWeightedGenerator<E> extends AbstractGenerator<E>
+    {
+
+        public AbstractWeightedGenerator(Element element, DataSetFacade data)
+        {
+            super(element);
+        }
+
+    }
+
     private abstract static class AbstractFacadeGenerator<E extends InfoFacade>
-            extends AbstractGenerator<E> implements FacadeGenerator<E>
+            extends AbstractGenerator<E> implements InfoFacadeGenerator<E>
     {
 
         protected Map<E, Integer> priorityMap;
@@ -606,7 +694,7 @@ public final class GeneratorFactory implements EntityResolver
     }
 
     private abstract static class AbstractMutableFacadeGenerator<E extends InfoFacade>
-            extends AbstractFacadeGenerator<E> implements MutableFacadeGenerator<E>
+            extends AbstractFacadeGenerator<E> implements MutableInfoFacadeGenerator<E>
     {
 
         protected Element element;
@@ -650,7 +738,7 @@ public final class GeneratorFactory implements EntityResolver
     }
 
     private static class SingletonGenerator<E extends InfoFacade> extends AbstractGenerator<E>
-            implements FacadeGenerator<E>
+            implements InfoFacadeGenerator<E>
     {
 
         private E item;
@@ -1028,7 +1116,7 @@ public final class GeneratorFactory implements EntityResolver
 
         }
 
-        public FacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory)
+        public InfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory)
         {
             return generatorMap.get(catagory);
         }
@@ -1056,7 +1144,7 @@ public final class GeneratorFactory implements EntityResolver
         }
 
         @Override
-        public MutableFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory)
+        public MutableInfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory)
         {
             DefaultMutableAbilityGenerator generator = generatorMap.get(catagory);
             if (generator == null)

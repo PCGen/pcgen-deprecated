@@ -27,9 +27,9 @@ package pcgen.gui.facade;
 public interface StatFacade
 {
 
-    public int getBaseScore();
+    public String getName();
 
-    public void setBaseScore(int score);
+    public String getAbbreviation();
 
     @Override
     public String toString();

@@ -1,6 +1,6 @@
 /*
- * MutableAbilityBuild.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * CharacterBuilder.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,24 +16,37 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 12, 2008, 2:13:36 PM
+ * Created on Jan 18, 2009, 8:13:08 PM
  */
-package pcgen.gui.generator.ability;
+package pcgen.gui.generator;
 
-import pcgen.gui.generator.*;
+import pcgen.cdom.enumeration.Gender;
+import pcgen.gui.facade.AlignmentFacade;
+import pcgen.gui.facade.ClassFacade;
+import pcgen.gui.facade.RaceFacade;
+import pcgen.gui.facade.SkillFacade;
+import pcgen.gui.facade.StatFacade;
 import pcgen.gui.generator.ability.AbilityBuild;
-import pcgen.gui.facade.AbilityCatagoryFacade;
-import pcgen.gui.facade.AbilityFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableAbilityBuild extends AbilityBuild
+public interface CharacterBuilder
 {
 
-    public MutableInfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
+    public Generator<AlignmentFacade> getAlignmentGenerator();
 
-    public void saveChanges();
+    public Generator<Gender> getGenderGenerator();
+
+    public Generator<Integer> getStatGenerator();
+
+    public InfoFacadeGenerator<RaceFacade> getRaceGenerator();
+
+    public InfoFacadeGenerator<ClassFacade> getClassGenerator();
+
+    public InfoFacadeGenerator<SkillFacade> getSkillGenerator();
+
+    public AbilityBuild getAbilityBuild();
 
 }

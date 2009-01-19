@@ -20,6 +20,7 @@
  */
 package pcgen.gui.facade;
 
+import pcgen.cdom.enumeration.Gender;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.GenericListModel;
 
@@ -29,6 +30,14 @@ import pcgen.gui.util.GenericListModel;
  */
 public interface CharacterFacade
 {
+
+    public Gender getGender();
+
+    public int getScore(StatFacade stat);
+
+    public int getMod(StatFacade stat);
+
+    public void setScore(StatFacade stat, int score);
 
     public void addAbility(AbilityCatagoryFacade catagory,
                             AbilityFacade ability);

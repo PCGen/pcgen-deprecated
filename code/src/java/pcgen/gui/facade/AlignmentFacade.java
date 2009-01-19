@@ -1,6 +1,6 @@
 /*
- * MutableAbilityBuild.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * AlignmentFacade.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,24 +16,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 12, 2008, 2:13:36 PM
+ * Created on Jan 18, 2009, 8:42:46 PM
  */
-package pcgen.gui.generator.ability;
-
-import pcgen.gui.generator.*;
-import pcgen.gui.generator.ability.AbilityBuild;
-import pcgen.gui.facade.AbilityCatagoryFacade;
-import pcgen.gui.facade.AbilityFacade;
+package pcgen.gui.facade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableAbilityBuild extends AbilityBuild
+public interface AlignmentFacade
 {
 
-    public MutableInfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
+    public String getName();
 
-    public void saveChanges();
+    public String getAbbreviation();
+
+    @Override
+    public String toString();
 
 }

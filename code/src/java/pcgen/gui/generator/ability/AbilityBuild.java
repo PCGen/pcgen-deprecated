@@ -31,6 +31,6 @@ import pcgen.gui.facade.AbilityFacade;
 public interface AbilityBuild
 {
 
-    public FacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
+    public InfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
 
 }

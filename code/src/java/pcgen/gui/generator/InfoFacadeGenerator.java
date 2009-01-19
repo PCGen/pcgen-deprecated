@@ -1,5 +1,5 @@
 /*
- * FacadeGenerator.java
+ * InfoFacadeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@ import pcgen.gui.facade.InfoFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface FacadeGenerator<E extends InfoFacade> extends Generator<E>
+public interface InfoFacadeGenerator<E extends InfoFacade> extends Generator<E>
 {
 
     public boolean isRandomOrder();

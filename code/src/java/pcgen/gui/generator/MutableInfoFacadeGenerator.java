@@ -1,5 +1,5 @@
 /*
- * MutableAbilityBuild.java
+ * MutableInfoFacadeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,24 +16,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 12, 2008, 2:13:36 PM
+ * Created on Aug 25, 2008, 2:34:36 AM
  */
-package pcgen.gui.generator.ability;
+package pcgen.gui.generator;
 
-import pcgen.gui.generator.*;
-import pcgen.gui.generator.ability.AbilityBuild;
-import pcgen.gui.facade.AbilityCatagoryFacade;
-import pcgen.gui.facade.AbilityFacade;
+import pcgen.gui.facade.InfoFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableAbilityBuild extends AbilityBuild
+public interface MutableInfoFacadeGenerator<E extends InfoFacade> extends InfoFacadeGenerator<E>,
+                                                                       MutableGenerator<E>
 {
 
-    public MutableInfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
+    public void setRandomOrder(boolean randomOrder);
 
-    public void saveChanges();
+    public void setWeight(E item, int weight);
 
 }

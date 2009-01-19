@@ -60,6 +60,6 @@ public interface DataSetFacade
 
     public Set<File> getGeneratorFiles();
 
-    public String getGameMode();
+    public GameModeFacade getGameMode();
 
 }
