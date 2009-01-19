@@ -26,10 +26,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -76,28 +78,31 @@ public final class GeneratorFactory implements EntityResolver
     public static final class GeneratorType<E>
     {
 
-        public static final GeneratorType<SkillFacade> SKILL = new GeneratorType<SkillFacade>("SkillGenerator",
-                                                                                                 DefaultSkillGenerator.class,
-                                                                                                 DefaultMutableSkillGenerator.class);
-        public static final GeneratorType<Integer> STANDARDMODE = new GeneratorType<Integer>("StandardModeGenerator",
-                                                                                                DefaultStandardModeGenerator.class,
-                                                                                                DefaultMutableStandardModeGenerator.class);
-        public static final GeneratorType<Integer> PURCHASEMODE = new GeneratorType<Integer>("PurchaseModeGenerator",
-                                                                                                DefaultPurchaseModeGenerator.class,
-                                                                                                DefaultMutablePurchaseModeGenerator.class);
-        public static final GeneratorType<RaceFacade> RACE = new GeneratorType<RaceFacade>("RaceGenerator",
-                                                                                              DefaultRaceGenerator.class,
-                                                                                              DefaultMutableRaceGenerator.class);
-        public static final GeneratorType<ClassFacade> CLASS = new GeneratorType<ClassFacade>("ClassGenerator",
-                                                                                                 DefaultClassGenerator.class,
-                                                                                                 DefaultMutableClassGenerator.class);
-        private Class<? extends Generator<E>> baseClass;
-        private Class<? extends MutableGenerator<E>> mutableClass;
+        public static final GeneratorType<FacadeGenerator<SkillFacade>> SKILL = new GeneratorType<FacadeGenerator<SkillFacade>>("SkillGenerator",
+                                                                                                                                   DefaultSkillGenerator.class,
+                                                                                                                                   DefaultMutableSkillGenerator.class);
+        public static final GeneratorType<StandardModeGenerator> STANDARDMODE = new GeneratorType<StandardModeGenerator>("StandardModeGenerator",
+                                                                                                                            DefaultStandardModeGenerator.class,
+                                                                                                                            DefaultMutableStandardModeGenerator.class);
+        public static final GeneratorType<PurchaseModeGenerator> PURCHASEMODE = new GeneratorType<PurchaseModeGenerator>("PurchaseModeGenerator",
+                                                                                                                            DefaultPurchaseModeGenerator.class,
+                                                                                                                            DefaultMutablePurchaseModeGenerator.class);
+        public static final GeneratorType<FacadeGenerator<RaceFacade>> RACE = new GeneratorType<FacadeGenerator<RaceFacade>>("RaceGenerator",
+                                                                                                                                DefaultRaceGenerator.class,
+                                                                                                                                DefaultMutableRaceGenerator.class);
+        public static final GeneratorType<FacadeGenerator<ClassFacade>> CLASS = new GeneratorType<FacadeGenerator<ClassFacade>>("ClassGenerator",
+                                                                                                                                   DefaultClassGenerator.class,
+                                                                                                                                   DefaultMutableClassGenerator.class);
+        public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>("AbilityBuild",
+                                                                                                          DefaultAbilityBuild.class,
+                                                                                                          DefaultMutableAbilityBuild.class);
+        private Class<? extends E> baseClass;
+        private Class<? extends E> mutableClass;
         private String name;
 
         private GeneratorType(String name,
-                               Class<? extends Generator<E>> baseClass,
-                               Class<? extends MutableGenerator<E>> mutableClass)
+                               Class<? extends E> baseClass,
+                               Class<? extends E> mutableClass)
         {
             this.name = name;
             this.baseClass = baseClass;
@@ -213,61 +218,37 @@ public final class GeneratorFactory implements EntityResolver
         }
     }
 
-    static List<Generator<Integer>> buildStatGeneratorList(GeneratorType<Integer> type,
-                                                            Document document)
+    static <T> List<T> buildGeneratorList(GeneratorType<? extends T> type,
+                                           Document document,
+                                           DataSetFacade data)
     {
         Element root = document.getRootElement();
         boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-        List<Generator<Integer>> generators = new ArrayList<Generator<Integer>>();
-        for (Object element : root.getChildren())
+
+        List<T> generators = new ArrayList<T>();
+        Set<String> sources = null;
+        if (data != null)
         {
-            try
-            {
-                Class<? extends Generator<Integer>> c;
-                if (mutable)
-                {
-                    c = type.mutableClass;
-                }
-                else
-                {
-                    c = type.baseClass;
-                }
-                Generator<Integer> generator = (Generator<Integer>) c.getConstructor(Element.class).newInstance(element);
-                generators.add(generator);
-            }
-            catch (Exception ex)
-            {
-                Logging.errorPrint("Unable to create stat generator",
-                                   ex);
-            }
+            sources = data.getSources();
         }
-        return generators;
-    }
-
-    static <T extends InfoFacade> List<FacadeGenerator<T>> buildFacadeGeneratorList(GeneratorType<T> type,
-                                                                                     Document document,
-                                                                                     DataSetFacade data)
-    {
-        Element root = document.getRootElement();
-        boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-
-        List<FacadeGenerator<T>> generators = new ArrayList<FacadeGenerator<T>>();
-        Set<String> sources = data.getSources();
         generatorLoop:
             for (Object element : root.getChildren())
             {
                 @SuppressWarnings("unchecked")
                 List<Element> sourceElements = root.getChildren("SOURCE");
-                for ( Element source : sourceElements)
+                if (sourceElements != null)
                 {
-                    if (!sources.contains(source.getText()))
+                    for ( Element source : sourceElements)
                     {
-                        continue generatorLoop;
+                        if (!sources.contains(source.getText()))
+                        {
+                            continue generatorLoop;
+                        }
                     }
                 }
                 try
                 {
-                    Class<? extends Generator<T>> c;
+                    Class<? extends T> c;
                     if (mutable)
                     {
                         c = type.mutableClass;
@@ -276,14 +257,22 @@ public final class GeneratorFactory implements EntityResolver
                     {
                         c = type.baseClass;
                     }
-                    FacadeGenerator<T> generator = (FacadeGenerator<T>) c.getConstructor(Element.class,
-                                                                                         DataSetFacade.class).newInstance(element,
-                                                                                                                          data);
+                    T generator;
+                    if (data != null)
+                    {
+                        generator = (T) c.getConstructor(Element.class,
+                                                         DataSetFacade.class).newInstance(element,
+                                                                                          data);
+                    }
+                    else
+                    {
+                        generator = (T) c.getConstructor(Element.class).newInstance(element);
+                    }
                     generators.add(generator);
                 }
                 catch ( Exception ex)
                 {
-                    Logging.errorPrint("Unable to create Facade generator",
+                    Logging.errorPrint("Unable to create generator",
                                        ex);
                 }
             }
@@ -382,7 +371,7 @@ public final class GeneratorFactory implements EntityResolver
         return null;
     }
 
-    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(GeneratorType<T> type,
+    public static <T extends InfoFacade> MutableFacadeGenerator<T> createMutableFacadeGenerator(GeneratorType<FacadeGenerator<T>> type,
                                                                                                   String name,
                                                                                                   DataSetFacade data,
                                                                                                   MutableFacadeGenerator<T> template)
@@ -1032,7 +1021,7 @@ public final class GeneratorFactory implements EntityResolver
             for ( Element element1 : children)
             {
                 DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(element1,
-                                                                                                     data);
+                                                                                              data);
                 AbilityCatagoryFacade catagory = data.getAbilityCatagory(generator.toString());
                 generatorMap.put(catagory, generator);
             }
@@ -1092,7 +1081,35 @@ public final class GeneratorFactory implements EntityResolver
 
         public void saveChanges()
         {
-            
+            @SuppressWarnings("unchecked")
+            List<Element> children = new ArrayList<Element>(element.getChildren());
+            for ( Element child : children)
+            {
+                child.detach();
+            }
+            Set<String> sources = new HashSet<String>();
+            Collection<DefaultMutableAbilityGenerator> generators = generatorMap.values();
+            for ( Iterator<DefaultMutableAbilityGenerator> it = generators.iterator(); it.hasNext();)
+            {
+                DefaultMutableAbilityGenerator generator = it.next();
+                if (!generator.priorityMap.isEmpty())
+                {
+                    sources.addAll(generator.getSources());
+                    generator.saveChanges();
+                    element.addContent(generator.element);
+                }
+                else
+                {
+                    it.remove();
+                }
+            }
+            for ( String string : sources)
+            {
+                Element sourceElement = new Element("SOURCE");
+                sourceElement.setText(string);
+                element.addContent(0, sourceElement);
+            }
+            outputDocument(element.getDocument());
         }
 
     }
@@ -1130,11 +1147,11 @@ public final class GeneratorFactory implements EntityResolver
             element.setAttribute("type", randomOrder ? "random" : "ordered");
             for (AbilityFacade ability : priorityMap.keySet())
             {
-                Element skillElement = new Element(getValueName());
-                skillElement.setAttribute("weight",
-                                          priorityMap.get(ability).toString());
-                skillElement.setText(ability.toString());
-                element.addContent(skillElement);
+                Element abilityElement = new Element(getValueName());
+                abilityElement.setAttribute("weight",
+                                            priorityMap.get(ability).toString());
+                abilityElement.setText(ability.toString());
+                element.addContent(abilityElement);
             }
         }
 

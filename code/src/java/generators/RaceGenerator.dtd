@@ -7,7 +7,7 @@
 mutable (true | false) "false">
 <!ATTLIST GENERATOR 
 name CDATA #REQUIRED
-type CDATA #FIXED "random">
+type (random | ordered) #REQUIRED>
 <!ATTLIST RACE
 weight CDATA "1">
 
