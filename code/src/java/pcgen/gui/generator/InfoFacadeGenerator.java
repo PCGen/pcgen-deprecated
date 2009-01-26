@@ -27,15 +27,11 @@ import pcgen.gui.facade.InfoFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface InfoFacadeGenerator<E extends InfoFacade> extends Generator<E>
+public interface InfoFacadeGenerator<E extends InfoFacade> extends WeightedGenerator<E>
 {
 
     public boolean isRandomOrder();
 
-    public int getWeight(E item);
-
     public Set<String> getSources();
-
-    public boolean isSingleton();
 
 }

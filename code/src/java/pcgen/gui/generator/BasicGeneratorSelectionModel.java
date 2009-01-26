@@ -47,7 +47,7 @@ import pcgen.gui.util.JTreeViewSelectionPane.SelectionType;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class BasicGeneratorSelectionModel<E extends InfoFacade> implements SelectionModel<FacadeGenerator<E>>
+public class BasicGeneratorSelectionModel<E extends InfoFacade> implements SelectionModel<InfoFacadeGenerator<E>>
 {
 
     private static final Properties props = new Properties();
@@ -87,31 +87,31 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public GenericListModel<FacadeGenerator<E>> getAvailableList()
+    public GenericListModel<InfoFacadeGenerator<E>> getAvailableList()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public GenericListModel<FacadeGenerator<E>> getSelectedList()
+    public GenericListModel<InfoFacadeGenerator<E>> getSelectedList()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setAvailableList(GenericListModel<FacadeGenerator<E>> list)
+    public void setAvailableList(GenericListModel<InfoFacadeGenerator<E>> list)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setSelectedList(GenericListModel<FacadeGenerator<E>> list)
+    public void setSelectedList(GenericListModel<InfoFacadeGenerator<E>> list)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Component getItemPanel(SelectionDialog<FacadeGenerator<E>> selectionDialog,
+    public Component getItemPanel(SelectionDialog<InfoFacadeGenerator<E>> selectionDialog,
                                    Component currentItemPanel,
-                                   FacadeGenerator<E> selectedItem)
+                                   InfoFacadeGenerator<E> selectedItem)
     {
-        DefaultGenericListModel<FacadeGenerator<E>> model = selectionDialog.getAvailableModel();
+        DefaultGenericListModel<InfoFacadeGenerator<E>> model = selectionDialog.getAvailableModel();
         boolean mutable = isMutable(selectedItem);
         if (model.contains(selectedItem))
         {
@@ -128,31 +128,31 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
         addAsAction.setSelectionDialog(selectionDialog);
         if (mutable)
         {
-            addAsAction.setGenerator((MutableInfoFacadeGenerator<E>) selectedItem);
+            //addAsAction.setGenerator((MutableInfoInfoFacadeGenerator<E>) selectedItem);
         }
         return selectionPanel;
     }
 
-    public FacadeGenerator<E> createMutableItem(SelectionDialog<FacadeGenerator<E>> selectionDialog,
-                                                 FacadeGenerator<E> templateItem)
+    public InfoFacadeGenerator<E> createMutableItem(SelectionDialog<InfoFacadeGenerator<E>> selectionDialog,
+                                                 InfoFacadeGenerator<E> templateItem)
     {
-        return GeneratorFactory.createMutableFacadeGenerator(JOptionPane.showInputDialog(selectionDialog,
-                                                                                         ResourceManager.getText("createGen")),
-                                                             templateItem);
+        return null; //GeneratorFactory.createMutableInfoFacadeGenerator(JOptionPane.showInputDialog(selectionDialog,
+                  //                                                                       ResourceManager.getText("createGen")),
+                  //                                           templateItem);
 
     }
 
-    public boolean isMutable(FacadeGenerator<E> item)
+    public boolean isMutable(InfoFacadeGenerator<E> item)
     {
         return item instanceof MutableInfoFacadeGenerator;
     }
 
-    public boolean isAddable(FacadeGenerator<E> item)
+    public boolean isAddable(InfoFacadeGenerator<E> item)
     {
         return getCharacter().getDataSet().getSources().containsAll(item.getSources());
     }
 
-    public Color getItemColor(FacadeGenerator<E> item)
+    public Color getItemColor(InfoFacadeGenerator<E> item)
     {
         if (!isAddable(item))
         {
@@ -177,7 +177,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
                                                                  ItemListener
     {
 
-        private SelectionDialog<FacadeGenerator<E>> selectionDialog;
+        private SelectionDialog<InfoFacadeGenerator<E>> selectionDialog;
         private MutableInfoFacadeGenerator<E> generator;
 
         public AddAsAction()
@@ -186,7 +186,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
             setEnabled(false);
         }
 
-        public void setSelectionDialog(SelectionDialog<FacadeGenerator<E>> selectionDialog)
+        public void setSelectionDialog(SelectionDialog<InfoFacadeGenerator<E>> selectionDialog)
         {
             this.selectionDialog = selectionDialog;
         }
@@ -217,11 +217,11 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
             E item = (E) e.getItem();
             if (e.getStateChange() == ItemEvent.SELECTED)
             {
-                generator.add(item);
+                //generator.add(item);
             }
             else
             {
-                generator.remove(item);
+                //generator.remove(item);
             }
         }
 

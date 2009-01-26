@@ -1,6 +1,6 @@
 /*
- * MutableInfoFacadeGenerator.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * WeightedGenerator.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,20 +16,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 25, 2008, 2:34:36 AM
+ * Created on Jan 19, 2009, 3:34:28 PM
  */
 package pcgen.gui.generator;
-
-import pcgen.gui.facade.InfoFacade;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableInfoFacadeGenerator<E extends InfoFacade> extends InfoFacadeGenerator<E>,
-                                                                           MutableWeightedGenerator<E>
+public interface WeightedGenerator<E> extends Generator<E>
 {
 
-    public void setRandomOrder(boolean randomOrder);
+    public int getWeight(E item);
+
+    public boolean isSingleton();
 
 }

@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -113,6 +115,12 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
+    private static <T> List<T> getGeneratorList(Document document,
+                                                  GeneratorType<T> type)
+    {
+        return null;
+    }
+
     private static class GeneratorFactoryHolder
     {
 
@@ -131,12 +139,40 @@ public final class GeneratorFactory implements EntityResolver
     {
         builder = new SAXBuilder();
         builder.setEntityResolver(this);
+        builder.setReuseParser(false);
         outputter = new XMLOutputter();
         outputter.setFormat(Format.getPrettyFormat());
     }
 
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
     {
+        if (publicId != null)
+        {
+            if (publicId.equals("PCGEN-GENERATORS"))
+            {
+                String fileName = SettingsHandler.getPcgenSystemDir() +
+                        File.separator +
+                        "generators" +
+                        File.separator +
+                        new File(systemId).getName();
+                return new InputSource(new FileInputStream(fileName));
+            }
+            else if(systemId.endsWith(".xml"))
+            {
+                try
+                {
+                    Document document = builder.build(systemId);
+                    return new InputSource(new StringReader(outputter.outputString(document.getRootElement())));
+                }
+                catch (JDOMException ex)
+                {
+                    Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
+                                                                           null,
+                                                                           ex);
+                }
+            }
+                
+        }
         if (publicId != null && publicId.equals("PCGEN-GENERATORS"))
         {
             String fileName = SettingsHandler.getPcgenSystemDir() +
@@ -203,10 +239,10 @@ public final class GeneratorFactory implements EntityResolver
     {
         try
         {
-            File file = new File("build/classes/generators/stat/DefaultStandardGenerators.xml");
+            File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
             GeneratorFactory factory = new GeneratorFactory();
             Document doc = factory.builder.build(file);
-            System.out.println(doc.getDocType().getSystemID());
+            System.out.println(factory.outputter.outputString(doc));
         }
         catch (JDOMException ex)
         {
@@ -416,11 +452,21 @@ public final class GeneratorFactory implements EntityResolver
     private static class DefaultCharacterBuilder implements CharacterBuilder
     {
 
-        public DefaultCharacterBuilder(Element element, DataSetFacade data)
+        private WeightedGenerator<AlignmentFacade> alignmentGenerator;
+
+        public DefaultCharacterBuilder(Element element, DataSetFacade data) throws MissingDataException
         {
             element.removeChildren("SOURCE");
             Element alignmentElement = (Element) element.getContent(0);
+            if (alignmentElement.getName().equals("ALIGNMENT_GENERATOR"))
+            {
+                alignmentGenerator = new DefaultAlignmentGenerator(alignmentElement,
+                                                                   data);
+            }
+            else
+            {
 
+            }
         }
 
         public Generator<AlignmentFacade> getAlignmentGenerator()
@@ -460,31 +506,20 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultAlignmentGenerator extends AbstractGenerator<AlignmentFacade>
+    private static class DefaultAlignmentGenerator extends AbstractWeightedGenerator<AlignmentFacade>
     {
 
         //private Queue<E> queue = null;
-        public DefaultAlignmentGenerator(Element element, DataSetFacade data)
+        public DefaultAlignmentGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
-            super(element);
+            super(element, data);
 
-        }
-
-        public AlignmentFacade getNext()
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        public List<AlignmentFacade> getAll()
+        protected AlignmentFacade getFacade(DataSetFacade data, String name)
         {
-            return super.getAll();
-        }
-
-        @Override
-        public void reset()
-        {
-            super.reset();
+            return data.getGameMode().getAlignment(name);
         }
 
     }
@@ -522,32 +557,21 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private abstract static class AbstractWeightedGenerator<E> extends AbstractGenerator<E>
-    {
-
-        public AbstractWeightedGenerator(Element element, DataSetFacade data)
-        {
-            super(element);
-        }
-
-    }
-
-    private abstract static class AbstractFacadeGenerator<E extends InfoFacade>
-            extends AbstractGenerator<E> implements InfoFacadeGenerator<E>
+    private static abstract class AbstractWeightedGenerator<E> extends AbstractGenerator<E>
+            implements WeightedGenerator<E>
     {
 
         protected Map<E, Integer> priorityMap;
-        protected boolean randomOrder;
         private Queue<E> queue = null;
 
-        @SuppressWarnings("unchecked")
-        public AbstractFacadeGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public AbstractWeightedGenerator(Element element, DataSetFacade data) throws MissingDataException
         {
             super(element);
-            this.priorityMap = new HashMap<E, Integer>();
 
-            List<Element> children = element.getChildren(getValueName());
-            for (Element child : children)
+            element.removeChildren("SOURCE");
+            @SuppressWarnings("unchecked")
+            List<Element> children = element.getChildren();
+            for ( Element child : children)
             {
                 String elementName = child.getText();
                 Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
@@ -559,16 +583,15 @@ public final class GeneratorFactory implements EntityResolver
                 }
                 priorityMap.put(facade, weight);
             }
-            reset();
+            queue = new LinkedList<E>();
         }
 
         protected abstract E getFacade(DataSetFacade data, String name);
 
-        protected abstract String getValueName();
-
-        public boolean isRandomOrder()
+        @Override
+        public final List<E> getAll()
         {
-            return randomOrder;
+            return new ArrayList<E>(priorityMap.keySet());
         }
 
         public E getNext()
@@ -584,7 +607,7 @@ public final class GeneratorFactory implements EntityResolver
             return queue.poll();
         }
 
-        public int getWeight(E item)
+        public final int getWeight(E item)
         {
             return priorityMap.get(item);
         }
@@ -594,46 +617,15 @@ public final class GeneratorFactory implements EntityResolver
             return false;
         }
 
-        public Set<String> getSources()
+        @Override
+        public final void reset()
         {
-            Set<String> sources = new HashSet<String>();
-            for (E facade : getAll())
-            {
-                sources.add(facade.getSource());
-            }
-            return sources;
+            queue = createQueue();
         }
 
-        @Override
-        public List<E> getAll()
+        protected Queue<E> createQueue()
         {
-            return new ArrayList<E>(priorityMap.keySet());
-        }
-
-        @Override
-        public void reset()
-        {
-            if (randomOrder)
-            {
-                queue = new RandomWeightedQueue();
-            }
-            else
-            {
-                Comparator<E> comparator = new Comparator<E>()
-                {
-
-                    public int compare(E o1,
-                                        E o2)
-                    {
-                        // compare the numbers in reverse in order for the highest priority
-                        // Skills to be used first
-                        return priorityMap.get(o2).compareTo(priorityMap.get(o1));
-                    }
-
-                };
-                queue = new PriorityQueue<E>(priorityMap.size(), comparator);
-                queue.addAll(priorityMap.keySet());
-            }
+            return new RandomWeightedQueue();
         }
 
         private class RandomWeightedQueue extends WeightedCollection<E>
@@ -693,18 +685,80 @@ public final class GeneratorFactory implements EntityResolver
         }
     }
 
-    private abstract static class AbstractMutableFacadeGenerator<E extends InfoFacade>
-            extends AbstractFacadeGenerator<E> implements MutableInfoFacadeGenerator<E>
+    private abstract static class AbstractInfoFacadeGenerator<E extends InfoFacade>
+            extends AbstractWeightedGenerator<E> implements InfoFacadeGenerator<E>
+    {
+
+        protected boolean randomOrder;
+
+        @SuppressWarnings("unchecked")
+        public AbstractInfoFacadeGenerator(Element element, DataSetFacade data) throws MissingDataException
+        {
+            super(element, data);
+            this.randomOrder = element.getAttributeValue("type").equals("random");
+        }
+
+        protected abstract E getFacade(DataSetFacade data, String name);
+
+        public boolean isRandomOrder()
+        {
+            return randomOrder;
+        }
+
+        public Set<String> getSources()
+        {
+            Set<String> sources = new HashSet<String>();
+            for (E facade : getAll())
+            {
+                sources.add(facade.getSource());
+            }
+            return sources;
+        }
+
+        @Override
+        protected Queue<E> createQueue()
+        {
+            if (randomOrder)
+            {
+                return super.createQueue();
+            }
+            else
+            {
+                Comparator<E> comparator = new Comparator<E>()
+                {
+
+                    public int compare(E o1,
+                                        E o2)
+                    {
+                        // compare the numbers in reverse in order for the highest priority
+                        // Skills to be used first
+                        return priorityMap.get(o2).compareTo(priorityMap.get(o1));
+                    }
+
+                };
+                Queue<E> queue = new PriorityQueue<E>(priorityMap.size(),
+                                                      comparator);
+                queue.addAll(priorityMap.keySet());
+                return queue;
+            }
+        }
+
+    }
+
+    private abstract static class AbstractMutableInfoFacadeGenerator<E extends InfoFacade>
+            extends AbstractInfoFacadeGenerator<E> implements MutableInfoFacadeGenerator<E>
     {
 
         protected Element element;
 
-        public AbstractMutableFacadeGenerator(Element element,
-                                               DataSetFacade data) throws MissingDataException
+        public AbstractMutableInfoFacadeGenerator(Element element,
+                                                   DataSetFacade data) throws MissingDataException
         {
             super(element, data);
             this.element = element;
         }
+
+        protected abstract String getValueName();
 
         public void setRandomOrder(boolean randomOrder)
         {
@@ -962,7 +1016,7 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultRaceGenerator extends AbstractFacadeGenerator<RaceFacade>
+    private static class DefaultRaceGenerator extends AbstractInfoFacadeGenerator<RaceFacade>
     {
 
         public DefaultRaceGenerator(Element element, DataSetFacade data) throws MissingDataException
@@ -976,15 +1030,9 @@ public final class GeneratorFactory implements EntityResolver
             return data.getRace(name);
         }
 
-        @Override
-        protected String getValueName()
-        {
-            return "RACE";
-        }
-
     }
 
-    private static class DefaultMutableRaceGenerator extends AbstractMutableFacadeGenerator<RaceFacade>
+    private static class DefaultMutableRaceGenerator extends AbstractMutableInfoFacadeGenerator<RaceFacade>
     {
 
         public DefaultMutableRaceGenerator(Element element, DataSetFacade data) throws MissingDataException
@@ -1006,7 +1054,7 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultClassGenerator extends AbstractFacadeGenerator<ClassFacade>
+    private static class DefaultClassGenerator extends AbstractInfoFacadeGenerator<ClassFacade>
     {
 
         public DefaultClassGenerator(Element element, DataSetFacade data) throws MissingDataException
@@ -1020,15 +1068,9 @@ public final class GeneratorFactory implements EntityResolver
             return data.getClass(name);
         }
 
-        @Override
-        protected String getValueName()
-        {
-            return "CLASS";
-        }
-
     }
 
-    private static class DefaultMutableClassGenerator extends AbstractMutableFacadeGenerator<ClassFacade>
+    private static class DefaultMutableClassGenerator extends AbstractMutableInfoFacadeGenerator<ClassFacade>
     {
 
         public DefaultMutableClassGenerator(Element element, DataSetFacade data) throws MissingDataException
@@ -1050,7 +1092,7 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultSkillGenerator extends AbstractFacadeGenerator<SkillFacade>
+    private static class DefaultSkillGenerator extends AbstractInfoFacadeGenerator<SkillFacade>
     {
 
         public DefaultSkillGenerator(Element element, DataSetFacade data) throws MissingDataException
@@ -1064,15 +1106,9 @@ public final class GeneratorFactory implements EntityResolver
             return data.getSkill(name);
         }
 
-        @Override
-        protected String getValueName()
-        {
-            return "SKILL";
-        }
-
     }
 
-    private static class DefaultMutableSkillGenerator extends AbstractMutableFacadeGenerator<SkillFacade>
+    private static class DefaultMutableSkillGenerator extends AbstractMutableInfoFacadeGenerator<SkillFacade>
     {
 
         public DefaultMutableSkillGenerator(Element element, DataSetFacade data) throws MissingDataException
@@ -1202,7 +1238,7 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultMutableAbilityGenerator extends AbstractMutableFacadeGenerator<AbilityFacade>
+    private static class DefaultMutableAbilityGenerator extends AbstractMutableInfoFacadeGenerator<AbilityFacade>
     {
 
         public DefaultMutableAbilityGenerator(Element element,

@@ -500,7 +500,7 @@ public class CharacterCreationDialog extends JDialog
     {
         for (Integer alignment : alignmentGenerator.getAll())
         {
-            if (race.isAcceptableAlignment(alignment))
+            //if (race.isAcceptableAlignment(alignment))
             {
                 return true;
             }
@@ -994,7 +994,7 @@ public class CharacterCreationDialog extends JDialog
             {
                 for (StatFacade stat : stats)
                 {
-                    stat.setBaseScore(purchaseMode.getMinScore());
+                    //stat.setBaseScore(purchaseMode.getMinScore());
                 }
             }
             this.purchaseMode = purchaseMode;
@@ -1042,7 +1042,7 @@ public class CharacterCreationDialog extends JDialog
             {
                 return stat;
             }
-            int score = stat.getBaseScore();
+            int score = 0;//stat.getBaseScore();
             if (columnIndex == 1)
             {
                 return score;
@@ -1076,7 +1076,7 @@ public class CharacterCreationDialog extends JDialog
         @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex)
         {
-            stats.get(rowIndex).setBaseScore((Integer) aValue);
+            //stats.get(rowIndex).setBaseScore((Integer) aValue);
             fireTableRowsUpdated(rowIndex, rowIndex);
         }
 

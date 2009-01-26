@@ -26,7 +26,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.filter.FilteredTreeViewPanel;
-import pcgen.gui.generator.OrderedGenerator;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.ResourceManager.Icons;
 import pcgen.gui.util.table.ListTableModel;
@@ -162,13 +161,13 @@ class AbilityBuildPanel extends JPanel
         panel.add(button, gridBagConstraints);
     }
 
-    private void setGenerator(OrderedGenerator<AbilityFacade> generator)
-    {
-        boolean ordered = !generator.isRandomOrder();
-        orderBox.setSelected(ordered);
-        model.removeAllElements();
-        model.addAll(generator.getAll());
-    }
+//    private void setGenerator(OrderedGenerator<AbilityFacade> generator)
+//    {
+//        boolean ordered = !generator.isRandomOrder();
+//        orderBox.setSelected(ordered);
+//        model.removeAllElements();
+//        model.addAll(generator.getAll());
+//    }
 
     private class AbilityTableModel extends ListTableModel<AbilityFacade>
             implements ActionListener, ItemListener, ListSelectionListener
@@ -272,7 +271,7 @@ class AbilityBuildPanel extends JPanel
             }
             else if (source == generatorBox)
             {
-                setGenerator((OrderedGenerator<AbilityFacade>) e.getItem());
+//                setGenerator((OrderedGenerator<AbilityFacade>) e.getItem());
             }
         }
 

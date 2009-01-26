@@ -150,16 +150,16 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
         }
         if (name != null)
         {
-            if (mode == STANDARD_MODE)
-            {
-                generator = GeneratorFactory.createMutableStandardModeGenerator(name,
-                                                                                (StandardModeGenerator) templateItem);
-            }
-            else
-            {
-                generator = GeneratorFactory.createMutablePurchaseModeGenerator(name,
-                                                                                (PurchaseModeGenerator) templateItem);
-            }
+//            if (mode == STANDARD_MODE)
+//            {
+//                generator = GeneratorFactory.createMutableStandardModeGenerator(name,
+//                                                                                (StandardModeGenerator) templateItem);
+//            }
+//            else
+//            {
+//                generator = GeneratorFactory.createMutablePurchaseModeGenerator(name,
+//                                                                                (PurchaseModeGenerator) templateItem);
+//            }
         }
         return generator;
     }

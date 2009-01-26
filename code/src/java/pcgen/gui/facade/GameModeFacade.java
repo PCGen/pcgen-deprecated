@@ -31,7 +31,11 @@ public interface GameModeFacade
 
     public GenericListModel<AlignmentFacade> getAlignments();
 
+    public AlignmentFacade getAlignment(String alignment);
+
     public GenericListModel<StatFacade> getStats();
+
+    public StatFacade getStat(String stat);
 
     @Override
     public String toString();

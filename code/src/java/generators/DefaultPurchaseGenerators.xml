@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE PURCHASEMODE_GENERATOR PUBLIC "PCGEN-GENERATORS" 'Generator.dtd'>
+
+
+<PURCHASEMODE_GENERATOR name="High" points="36">
+    <COST score="10">3</COST>
+</PURCHASEMODE_GENERATOR>

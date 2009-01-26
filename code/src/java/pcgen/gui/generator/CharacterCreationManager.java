@@ -74,16 +74,16 @@ public class CharacterCreationManager
                     String systemid = type.getSystemID();
                     if (systemid.equals("StandardModeGenerator.dtd"))
                     {
-                        statGenerators.addAll(GeneratorFactory.buildStandardModeGeneratorList(document));
+                        //statGenerators.addAll(GeneratorFactory.buildStandardModeGeneratorList(document));
                     }
                     else if (systemid.equals("PurchaseModeGenerator.dtd"))
                     {
-                        statGenerators.addAll(GeneratorFactory.buildPurchaseModeGeneratorList(document));
+                        //statGenerators.addAll(GeneratorFactory.buildPurchaseModeGeneratorList(document));
                     }
                     else if (systemid.equals("SkillGenerator.dtd"))
                     {
-                        skillGenerators.addAll(GeneratorFactory.buildSkillGeneratorList(document,
-                                                                                        data));
+                        //skillGenerators.addAll(GeneratorFactory.buildSkillGeneratorList(document,
+                       //                                                                 data));
                     }
                 }
             }
