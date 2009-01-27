@@ -1,5 +1,5 @@
 /*
- * CharacterCreationDialog.java
+ * CharacterBuildCustomizer.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -75,7 +75,7 @@ import pcgen.gui.util.table.TableCellUtilities.SpinnerRenderer;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class CharacterCreationDialog extends JDialog
+public class CharacterBuildCustomizer extends JDialog
 {
 
     private final TitledPanel namePanel;
@@ -107,7 +107,7 @@ public class CharacterCreationDialog extends JDialog
     private final Action cancelAction;
     private CharacterCreationManager creationManager;
 
-    public CharacterCreationDialog()
+    public CharacterBuildCustomizer()
     {
         this.namePanel = new TitledPanel("Name");
         this.nameField = new JTextField();

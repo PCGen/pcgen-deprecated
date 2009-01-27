@@ -1,5 +1,5 @@
 /*
- * GeneratorFactory.java
+ * GeneratorManager.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ import pcgen.util.Logging;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public final class GeneratorFactory
+public final class GeneratorManager
 {
 
     public static final class GeneratorType<E>
@@ -131,7 +131,7 @@ public final class GeneratorFactory
 
     private final DataSetFacade data;
 
-    public GeneratorFactory(DataSetFacade data)
+    public GeneratorManager(DataSetFacade data)
     {
         this.data = data;
     }
@@ -146,7 +146,7 @@ public final class GeneratorFactory
         }
         catch (IntrospectionException ex)
         {
-            Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(GeneratorManager.class.getName()).log(Level.SEVERE,
                                                                    null, ex);
         }
     }
@@ -354,7 +354,7 @@ public final class GeneratorFactory
         @Override
         public Component getCustomEditor()
         {
-            DefaultCharacterBuild build = (GeneratorFactory.DefaultCharacterBuild) this.getValue();
+            DefaultCharacterBuild build = (GeneratorManager.DefaultCharacterBuild) this.getValue();
             
             return super.getCustomEditor();
         }

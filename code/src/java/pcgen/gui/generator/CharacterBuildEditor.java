@@ -30,9 +30,9 @@ import java.beans.PropertyEditorSupport;
 public class CharacterBuildEditor extends PropertyEditorSupport
 {
 
-    private GeneratorFactory generatorFactory;
+    private GeneratorManager generatorFactory;
 
-    public void setGeneratorFactory(GeneratorFactory factory)
+    public void setGeneratorFactory(GeneratorManager factory)
     {
         this.generatorFactory = factory;
     }

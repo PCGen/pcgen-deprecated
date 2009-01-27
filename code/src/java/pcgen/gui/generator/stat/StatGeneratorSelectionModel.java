@@ -40,7 +40,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import pcgen.gui.generator.Generator;
-import pcgen.gui.generator.GeneratorFactory;
+import pcgen.gui.generator.GeneratorManager;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.SelectionDialog;
 import pcgen.gui.tools.SelectionModel;
@@ -152,12 +152,12 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
         {
 //            if (mode == STANDARD_MODE)
 //            {
-//                generator = GeneratorFactory.createMutableStandardModeGenerator(name,
+//                generator = GeneratorManager.createMutableStandardModeGenerator(name,
 //                                                                                (StandardModeGenerator) templateItem);
 //            }
 //            else
 //            {
-//                generator = GeneratorFactory.createMutablePurchaseModeGenerator(name,
+//                generator = GeneratorManager.createMutablePurchaseModeGenerator(name,
 //                                                                                (PurchaseModeGenerator) templateItem);
 //            }
         }
