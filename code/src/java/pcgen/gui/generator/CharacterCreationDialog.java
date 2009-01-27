@@ -18,9 +18,8 @@
  * 
  * Created on Aug 7, 2008, 6:58:58 PM
  */
-package pcgen.gui;
+package pcgen.gui.generator;
 
-import pcgen.gui.generator.CharacterCreationManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -60,11 +59,10 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.StatFacade;
-import pcgen.gui.generator.InfoFacadeGenerator;
-import pcgen.gui.generator.Generator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.util.ComboSelectionBox;
 import pcgen.gui.util.DefaultGenericComboBoxModel;

@@ -20,6 +20,14 @@
  */
 package pcgen.gui.generator;
 
+import java.awt.Component;
+import java.beans.BeanDescriptor;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorSupport;
+import java.beans.SimpleBeanInfo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -130,8 +138,17 @@ public final class GeneratorFactory
 
     public static final void main(String[] arg)
     {
-        File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
-
+        try
+        {
+            File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
+            BeanInfo info = Introspector.getBeanInfo(MutableInfoFacadeGenerator.class);
+            System.out.println(info.getBeanDescriptor().getBeanClass());
+        }
+        catch (IntrospectionException ex)
+        {
+            Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
+                                                                   null, ex);
+        }
     }
 
     static <T> List<T> buildGeneratorList(GeneratorType<? extends T> type,
@@ -325,6 +342,23 @@ public final class GeneratorFactory
         }
 
         return null;
+    }
+
+    private class DefaultCharacterBuild
+    {
+    }
+
+    public static class DefaultCharacterBuildEditor extends PropertyEditorSupport
+    {
+
+        @Override
+        public Component getCustomEditor()
+        {
+            DefaultCharacterBuild build = (GeneratorFactory.DefaultCharacterBuild) this.getValue();
+            
+            return super.getCustomEditor();
+        }
+        
     }
 
     private class DefaultCharacterBuilder implements CharacterBuilder
@@ -1006,6 +1040,22 @@ public final class GeneratorFactory
             return "CLASS";
         }
 
+    }
+
+    public static class DefaultMutableClassGeneratorBeanInfo extends SimpleBeanInfo
+    {
+
+        @Override
+        public BeanDescriptor getBeanDescriptor()
+        {
+            return new BeanDescriptor(DefaultMutableClassGenerator.class,
+                                      BasicGeneratorSelectionModel.class);
+        }
+
+    }
+
+    public static class DefaultMutableClassGeneratorEditor extends PropertyEditorSupport
+    {
     }
 
     private class DefaultSkillGenerator extends AbstractInfoFacadeGenerator<SkillFacade>
