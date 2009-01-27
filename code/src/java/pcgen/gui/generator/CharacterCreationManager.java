@@ -36,7 +36,6 @@ import pcgen.gui.facade.DataSetFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.facade.StatFacade;
-import pcgen.gui.generator.Generator;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.util.Logging;
 
@@ -67,7 +66,7 @@ public class CharacterCreationManager
         {
             try
             {
-                Document document = GeneratorFactory.buildDocument(file);
+                Document document = null;//GeneratorFactory.buildDocument(file);
                 DocType type = document.getDocType();
                 if (type.getElementName().equals("GENERATORSET"))
                 {

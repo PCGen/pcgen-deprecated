@@ -29,11 +29,10 @@ import pcgen.gui.facade.AbilityFacade;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableAbilityBuild extends AbilityBuild
+public interface MutableAbilityBuild extends AbilityBuild, Mutable
 {
 
-    public MutableInfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory);
-
-    public void saveChanges();
+    public void setGenerator(AbilityCatagoryFacade catagory,
+                              InfoFacadeGenerator<AbilityFacade> generator);
 
 }

@@ -18,14 +18,14 @@
  * 
  * Created on Jan 19, 2009, 3:39:04 PM
  */
-
 package pcgen.gui.generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableWeightedGenerator<E> extends MutableGenerator<E>{
+public interface MutableWeightedGenerator<E> extends Generator<E>, Mutable
+{
 
     public void setWeight(E item, int weight);
 

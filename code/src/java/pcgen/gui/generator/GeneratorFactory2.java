@@ -68,26 +68,6 @@ public final class GeneratorFactory2
         this.data = data;
     }
 
-    public static void main(String[] args)
-    {
-        StandardModeGenerator generator = new DefaultStandardModeGenerator("Test");
-        generator.setAssignable(false);
-        List<String> expressions = Arrays.asList("3d1", "3d2", "3d3", "3d4",
-                                                 "3d5", "3d6");
-//        expressions.add("3d1");
-//        expressions.add("3d2");
-//        expressions.add("3d3");
-//        expressions.add("3d4");
-//        expressions.add("3d5");
-//        expressions.add("3d6");
-        generator.setDiceExpressions(expressions);
-        XMLEncoder encoder = new XMLEncoder(System.out);
-        encoder.setPersistenceDelegate(DefaultStandardModeGenerator.class,
-                                       new DefaultPersistenceDelegate(new String[]{"name"}));
-        encoder.writeObject(generator);
-        encoder.close();
-    }
-
     private class CharacterBuild
     {
 

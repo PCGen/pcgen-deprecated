@@ -76,7 +76,7 @@ import pcgen.util.Logging;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public final class GeneratorFactory implements EntityResolver
+public final class GeneratorFactory
 {
 
     public static final class GeneratorType<E>
@@ -121,139 +121,17 @@ public final class GeneratorFactory implements EntityResolver
         return null;
     }
 
-    private static class GeneratorFactoryHolder
+    private final DataSetFacade data;
+
+    public GeneratorFactory(DataSetFacade data)
     {
-
-        private static final GeneratorFactory INSTANCE = new GeneratorFactory();
-    }
-
-    private static GeneratorFactory getInstance()
-    {
-        return GeneratorFactoryHolder.INSTANCE;
-    }
-
-    private final SAXBuilder builder;
-    private final XMLOutputter outputter;
-
-    private GeneratorFactory()
-    {
-        builder = new SAXBuilder();
-        builder.setEntityResolver(this);
-        builder.setReuseParser(false);
-        outputter = new XMLOutputter();
-        outputter.setFormat(Format.getPrettyFormat());
-    }
-
-    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
-    {
-        if (publicId != null)
-        {
-            if (publicId.equals("PCGEN-GENERATORS"))
-            {
-                String fileName = SettingsHandler.getPcgenSystemDir() +
-                        File.separator +
-                        "generators" +
-                        File.separator +
-                        new File(systemId).getName();
-                return new InputSource(new FileInputStream(fileName));
-            }
-            else if(systemId.endsWith(".xml"))
-            {
-                try
-                {
-                    Document document = builder.build(systemId);
-                    return new InputSource(new StringReader(outputter.outputString(document.getRootElement())));
-                }
-                catch (JDOMException ex)
-                {
-                    Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
-                                                                           null,
-                                                                           ex);
-                }
-            }
-                
-        }
-        if (publicId != null && publicId.equals("PCGEN-GENERATORS"))
-        {
-            String fileName = SettingsHandler.getPcgenSystemDir() +
-                    File.separator +
-                    "generators" +
-                    File.separator +
-                    new File(systemId).getName();
-            return new InputSource(new FileInputStream(fileName));
-        }
-        else
-        {
-            return new InputSource(systemId);
-        }
-    }
-
-    static Document buildDocument(File file)
-    {
-        try
-        {
-            return getInstance().builder.build(file);
-        }
-        catch (JDOMException ex)
-        {
-            Logging.errorPrint("Unable to parse XML file: " + file.getPath(), ex);
-        }
-        catch (IOException ex)
-        {
-            Logging.errorPrint("Unable to access file: " + file.getPath(), ex);
-        }
-        return null;
-    }
-
-    private static void outputDocument(Document document)
-    {
-        outputDocument(document, new File(URI.create(document.getBaseURI())));
-    }
-
-    private static void outputDocument(Document document, File outputFile)
-    {
-        FileOutputStream output = null;
-        try
-        {
-            output = new FileOutputStream(outputFile);
-            getInstance().outputter.output(document, output);
-        }
-        catch (IOException ex)
-        {
-            Logging.errorPrint("Error occured while outputting document", ex);
-        }
-        finally
-        {
-            try
-            {
-                output.close();
-            }
-            catch (IOException ex)
-            {
-                Logging.errorPrint("Unable to close output stream", ex);
-            }
-        }
+        this.data = data;
     }
 
     public static final void main(String[] arg)
     {
-        try
-        {
-            File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
-            GeneratorFactory factory = new GeneratorFactory();
-            Document doc = factory.builder.build(file);
-            System.out.println(factory.outputter.outputString(doc));
-        }
-        catch (JDOMException ex)
-        {
-            Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
-                                                                   null, ex);
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(GeneratorFactory.class.getName()).log(Level.SEVERE,
-                                                                   null, ex);
-        }
+        File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
+
     }
 
     static <T> List<T> buildGeneratorList(GeneratorType<? extends T> type,
@@ -319,7 +197,7 @@ public final class GeneratorFactory implements EntityResolver
 
     public static <T extends InfoFacade> InfoFacadeGenerator<T> createSingletonGenerator(T item)
     {
-        return new SingletonGenerator<T>(item);
+        return new SingletonInfoFacadeGenerator<T>(item);
     }
 
     private static Document getCustomGeneratorDocument(DataSetFacade data,
@@ -339,7 +217,7 @@ public final class GeneratorFactory implements EntityResolver
         }
         else
         {
-            document = buildDocument(file);
+        // document = buildDocument(file);
         }
         return document;
     }
@@ -449,19 +327,18 @@ public final class GeneratorFactory implements EntityResolver
         return null;
     }
 
-    private static class DefaultCharacterBuilder implements CharacterBuilder
+    private class DefaultCharacterBuilder implements CharacterBuilder
     {
 
         private WeightedGenerator<AlignmentFacade> alignmentGenerator;
 
-        public DefaultCharacterBuilder(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultCharacterBuilder(Element element) throws MissingDataException
         {
             element.removeChildren("SOURCE");
             Element alignmentElement = (Element) element.getContent(0);
             if (alignmentElement.getName().equals("ALIGNMENT_GENERATOR"))
             {
-                alignmentGenerator = new DefaultAlignmentGenerator(alignmentElement,
-                                                                   data);
+                alignmentGenerator = new DefaultAlignmentGenerator(alignmentElement);
             }
             else
             {
@@ -506,18 +383,18 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultAlignmentGenerator extends AbstractWeightedGenerator<AlignmentFacade>
+    private class DefaultAlignmentGenerator extends AbstractWeightedGenerator<AlignmentFacade>
     {
 
         //private Queue<E> queue = null;
-        public DefaultAlignmentGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultAlignmentGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
 
         }
 
         @Override
-        protected AlignmentFacade getFacade(DataSetFacade data, String name)
+        protected AlignmentFacade getFacade(String name)
         {
             return data.getGameMode().getAlignment(name);
         }
@@ -528,6 +405,7 @@ public final class GeneratorFactory implements EntityResolver
     {
 
         private String name;
+        protected Element element;
 
         public AbstractGenerator(String name)
         {
@@ -537,6 +415,7 @@ public final class GeneratorFactory implements EntityResolver
         public AbstractGenerator(Element element)
         {
             this.name = element.getAttributeValue("name");
+            this.element = element;
         }
 
         public List<E> getAll()
@@ -564,7 +443,7 @@ public final class GeneratorFactory implements EntityResolver
         protected Map<E, Integer> priorityMap;
         private Queue<E> queue = null;
 
-        public AbstractWeightedGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public AbstractWeightedGenerator(Element element) throws MissingDataException
         {
             super(element);
 
@@ -575,7 +454,7 @@ public final class GeneratorFactory implements EntityResolver
             {
                 String elementName = child.getText();
                 Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
-                E facade = getFacade(data, elementName);
+                E facade = getFacade(elementName);
                 if (facade == null)
                 {
                     throw new MissingDataException(elementName +
@@ -586,7 +465,7 @@ public final class GeneratorFactory implements EntityResolver
             queue = new LinkedList<E>();
         }
 
-        protected abstract E getFacade(DataSetFacade data, String name);
+        protected abstract E getFacade(String name);
 
         @Override
         public final List<E> getAll()
@@ -692,13 +571,11 @@ public final class GeneratorFactory implements EntityResolver
         protected boolean randomOrder;
 
         @SuppressWarnings("unchecked")
-        public AbstractInfoFacadeGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public AbstractInfoFacadeGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
             this.randomOrder = element.getAttributeValue("type").equals("random");
         }
-
-        protected abstract E getFacade(DataSetFacade data, String name);
 
         public boolean isRandomOrder()
         {
@@ -749,13 +626,17 @@ public final class GeneratorFactory implements EntityResolver
             extends AbstractInfoFacadeGenerator<E> implements MutableInfoFacadeGenerator<E>
     {
 
-        protected Element element;
+        private AbstractInfoFacadeGenerator<E> generator = null;
 
-        public AbstractMutableInfoFacadeGenerator(Element element,
-                                                   DataSetFacade data) throws MissingDataException
+        public AbstractMutableInfoFacadeGenerator(AbstractInfoFacadeGenerator<E> generator) throws MissingDataException
         {
-            super(element, data);
-            this.element = element;
+            super(generator.element);
+            this.generator = generator;
+        }
+
+        public AbstractMutableInfoFacadeGenerator(Element element) throws MissingDataException
+        {
+            super(element);
         }
 
         protected abstract String getValueName();
@@ -774,10 +655,6 @@ public final class GeneratorFactory implements EntityResolver
         {
             element.removeContent();
             element.setAttribute("type", randomOrder ? "random" : "ordered");
-            for (String source : getSources())
-            {
-                element.addContent(new Element("SOURCE").setText(source));
-            }
             for (E skill : priorityMap.keySet())
             {
                 Element skillElement = new Element(getValueName());
@@ -786,18 +663,26 @@ public final class GeneratorFactory implements EntityResolver
                 skillElement.setText(skill.toString());
                 element.addContent(skillElement);
             }
-            outputDocument(element.getDocument());
+            for (String source : getSources())
+            {
+                element.addContent(new Element("SOURCE").setText(source));
+            }
+            if (generator != null)
+            {
+                generator.priorityMap = priorityMap;
+                generator.randomOrder = randomOrder;
+            }
         }
 
     }
 
-    private static class SingletonGenerator<E extends InfoFacade> extends AbstractGenerator<E>
-            implements InfoFacadeGenerator<E>
+    private static class SingletonWeightedGenerator<E> extends AbstractGenerator<E>
+            implements WeightedGenerator<E>
     {
 
-        private E item;
+        protected E item;
 
-        public SingletonGenerator(E item)
+        public SingletonWeightedGenerator(E item)
         {
             super(item.toString());
             this.item = item;
@@ -814,16 +699,6 @@ public final class GeneratorFactory implements EntityResolver
             return Collections.singletonList(item);
         }
 
-        public boolean isSingleton()
-        {
-            return true;
-        }
-
-        public Set<String> getSources()
-        {
-            return Collections.singleton(item.getSource());
-        }
-
         public int getWeight(E item)
         {
             if (item.equals(this.item))
@@ -834,6 +709,28 @@ public final class GeneratorFactory implements EntityResolver
             {
                 return 0;
             }
+        }
+
+        public boolean isSingleton()
+        {
+            return true;
+        }
+
+    }
+
+    private static class SingletonInfoFacadeGenerator<E extends InfoFacade>
+            extends SingletonWeightedGenerator<E>
+            implements InfoFacadeGenerator<E>
+    {
+
+        public SingletonInfoFacadeGenerator(E item)
+        {
+            super(item);
+        }
+
+        public Set<String> getSources()
+        {
+            return Collections.singleton(item.getSource());
         }
 
         public boolean isRandomOrder()
@@ -899,12 +796,17 @@ public final class GeneratorFactory implements EntityResolver
             implements MutablePurchaseModeGenerator
     {
 
-        private Element element;
+        private DefaultPurchaseModeGenerator generator = null;
+
+        public DefaultMutablePurchaseModeGenerator(DefaultPurchaseModeGenerator generator)
+        {
+            super(generator.element);
+            this.generator = generator;
+        }
 
         public DefaultMutablePurchaseModeGenerator(Element element)
         {
             super(element);
-            this.element = element;
         }
 
         public void setMaxScore(int score)
@@ -939,7 +841,12 @@ public final class GeneratorFactory implements EntityResolver
                 costElement.setText(Integer.toString(getScoreCost(x)));
                 element.addContent(costElement);
             }
-            outputDocument(element.getDocument());
+            if (generator != null)
+            {
+                generator.costs = costs;
+                generator.min = min;
+                generator.points = points;
+            }
         }
 
     }
@@ -985,12 +892,17 @@ public final class GeneratorFactory implements EntityResolver
             implements MutableStandardModeGenerator
     {
 
-        private Element element;
+        private DefaultStandardModeGenerator generator = null;
+
+        public DefaultMutableStandardModeGenerator(DefaultStandardModeGenerator generator)
+        {
+            super(generator.element);
+            this.generator = generator;
+        }
 
         public DefaultMutableStandardModeGenerator(Element element)
         {
             super(element);
-            this.element = element;
         }
 
         public void setDiceExpressions(List<String> expressions)
@@ -1011,37 +923,41 @@ public final class GeneratorFactory implements EntityResolver
             {
                 element.addContent(new Element("STAT").setText(expression));
             }
-            outputDocument(element.getDocument());
+            if (generator != null)
+            {
+                generator.assignable = assignable;
+                generator.diceExpressions = diceExpressions;
+            }
         }
 
     }
 
-    private static class DefaultRaceGenerator extends AbstractInfoFacadeGenerator<RaceFacade>
+    private class DefaultRaceGenerator extends AbstractInfoFacadeGenerator<RaceFacade>
     {
 
-        public DefaultRaceGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultRaceGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
         }
 
         @Override
-        protected RaceFacade getFacade(DataSetFacade data, String name)
+        protected RaceFacade getFacade(String name)
         {
             return data.getRace(name);
         }
 
     }
 
-    private static class DefaultMutableRaceGenerator extends AbstractMutableInfoFacadeGenerator<RaceFacade>
+    private class DefaultMutableRaceGenerator extends AbstractMutableInfoFacadeGenerator<RaceFacade>
     {
 
-        public DefaultMutableRaceGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultMutableRaceGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
         }
 
         @Override
-        protected RaceFacade getFacade(DataSetFacade data, String name)
+        protected RaceFacade getFacade(String name)
         {
             return data.getRace(name);
         }
@@ -1054,32 +970,32 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultClassGenerator extends AbstractInfoFacadeGenerator<ClassFacade>
+    private class DefaultClassGenerator extends AbstractInfoFacadeGenerator<ClassFacade>
     {
 
-        public DefaultClassGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultClassGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
         }
 
         @Override
-        protected ClassFacade getFacade(DataSetFacade data, String name)
+        protected ClassFacade getFacade(String name)
         {
             return data.getClass(name);
         }
 
     }
 
-    private static class DefaultMutableClassGenerator extends AbstractMutableInfoFacadeGenerator<ClassFacade>
+    private class DefaultMutableClassGenerator extends AbstractMutableInfoFacadeGenerator<ClassFacade>
     {
 
-        public DefaultMutableClassGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultMutableClassGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
         }
 
         @Override
-        protected ClassFacade getFacade(DataSetFacade data, String name)
+        protected ClassFacade getFacade(String name)
         {
             return data.getClass(name);
         }
@@ -1092,32 +1008,32 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultSkillGenerator extends AbstractInfoFacadeGenerator<SkillFacade>
+    private class DefaultSkillGenerator extends AbstractInfoFacadeGenerator<SkillFacade>
     {
 
-        public DefaultSkillGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultSkillGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
         }
 
         @Override
-        protected SkillFacade getFacade(DataSetFacade data, String name)
+        protected SkillFacade getFacade(String name)
         {
             return data.getSkill(name);
         }
 
     }
 
-    private static class DefaultMutableSkillGenerator extends AbstractMutableInfoFacadeGenerator<SkillFacade>
+    private class DefaultMutableSkillGenerator extends AbstractMutableInfoFacadeGenerator<SkillFacade>
     {
 
-        public DefaultMutableSkillGenerator(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultMutableSkillGenerator(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
         }
 
         @Override
-        protected SkillFacade getFacade(DataSetFacade data, String name)
+        protected SkillFacade getFacade(String name)
         {
             return data.getSkill(name);
         }
@@ -1130,22 +1046,21 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultAbilityBuild implements AbilityBuild
+    private class DefaultAbilityBuild implements AbilityBuild
     {
 
         private String name;
-        protected Map<AbilityCatagoryFacade, DefaultMutableAbilityGenerator> generatorMap;
+        protected Map<AbilityCatagoryFacade, InfoFacadeGenerator<AbilityFacade>> generatorMap;
 
-        public DefaultAbilityBuild(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultAbilityBuild(Element element) throws MissingDataException
         {
             this.name = element.getAttributeValue("name");
-            this.generatorMap = new HashMap<AbilityCatagoryFacade, DefaultMutableAbilityGenerator>();
+            this.generatorMap = new HashMap<AbilityCatagoryFacade, InfoFacadeGenerator<AbilityFacade>>();
             @SuppressWarnings("unchecked")
             List<Element> children = element.getChildren("GENERATOR");
             for ( Element element1 : children)
             {
-                DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(element1,
-                                                                                              data);
+                DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(element1);
                 AbilityCatagoryFacade catagory = data.getAbilityCatagory(generator.toString());
                 generatorMap.put(catagory, generator);
             }
@@ -1165,42 +1080,16 @@ public final class GeneratorFactory implements EntityResolver
 
     }
 
-    private static class DefaultMutableAbilityBuild extends DefaultAbilityBuild
+    private class DefaultMutableAbilityBuild extends DefaultAbilityBuild
             implements MutableAbilityBuild
     {
 
         private Element element;
-        private DataSetFacade data;
 
-        public DefaultMutableAbilityBuild(Element element, DataSetFacade data) throws MissingDataException
+        public DefaultMutableAbilityBuild(Element element) throws MissingDataException
         {
-            super(element, data);
+            super(element);
             this.element = element;
-            this.data = data;
-        }
-
-        @Override
-        public MutableInfoFacadeGenerator<AbilityFacade> getGenerator(AbilityCatagoryFacade catagory)
-        {
-            DefaultMutableAbilityGenerator generator = generatorMap.get(catagory);
-            if (generator == null)
-            {
-                try
-                {
-                    Element generatorElement = new Element("GENERATOR");
-                    generatorElement.setAttribute("catagory",
-                                                  catagory.toString());
-                    generator = new DefaultMutableAbilityGenerator(generatorElement,
-                                                                   data);
-                    generatorMap.put(catagory, generator);
-                }
-                catch (MissingDataException ex)
-                {
-                    Logging.errorPrint("Failed to create a blank MutableAbilityGenerator",
-                                       ex);
-                }
-            }
-            return generator;
         }
 
         public void saveChanges()
@@ -1212,45 +1101,48 @@ public final class GeneratorFactory implements EntityResolver
                 child.detach();
             }
             Set<String> sources = new HashSet<String>();
-            Collection<DefaultMutableAbilityGenerator> generators = generatorMap.values();
-            for ( Iterator<DefaultMutableAbilityGenerator> it = generators.iterator(); it.hasNext();)
-            {
-                DefaultMutableAbilityGenerator generator = it.next();
-                if (!generator.priorityMap.isEmpty())
-                {
-                    sources.addAll(generator.getSources());
-                    generator.saveChanges();
-                    element.addContent(generator.element);
-                }
-                else
-                {
-                    it.remove();
-                }
-            }
+//            Collection<DefaultMutableAbilityGenerator> generators = generatorMap.values();
+//            for ( Iterator<DefaultMutableAbilityGenerator> it = generators.iterator(); it.hasNext();)
+//            {
+//                DefaultMutableAbilityGenerator generator = it.next();
+//                if (!generator.priorityMap.isEmpty())
+//                {
+//                    sources.addAll(generator.getSources());
+//                    generator.saveChanges();
+//                    element.addContent(generator.element);
+//                }
+//                else
+//                {
+//                    it.remove();
+//                }
+//            }
             for ( String string : sources)
             {
                 Element sourceElement = new Element("SOURCE");
                 sourceElement.setText(string);
-                element.addContent(0, sourceElement);
+                element.addContent(sourceElement);
             }
-            outputDocument(element.getDocument());
+        //outputDocument(element.getDocument());
+        }
+
+        public void setGenerator(AbilityCatagoryFacade catagory,
+                                  InfoFacadeGenerator<AbilityFacade> generator)
+        {
+            generatorMap.put(catagory, generator);
         }
 
     }
 
-    private static class DefaultMutableAbilityGenerator extends AbstractMutableInfoFacadeGenerator<AbilityFacade>
+    private class DefaultMutableAbilityGenerator extends AbstractMutableInfoFacadeGenerator<AbilityFacade>
     {
 
-        public DefaultMutableAbilityGenerator(Element element,
-                                               DataSetFacade data) throws MissingDataException
+        public DefaultMutableAbilityGenerator(Element element) throws MissingDataException
         {
-            super(element.setAttribute("name",
-                                       element.getAttributeValue("catagory")),
-                  data);
+            super(element);
         }
 
         @Override
-        protected AbilityFacade getFacade(DataSetFacade data, String name)
+        protected AbilityFacade getFacade(String name)
         {
 
             return data.getAbility(data.getAbilityCatagory(this.toString()),
@@ -1261,6 +1153,12 @@ public final class GeneratorFactory implements EntityResolver
         protected String getValueName()
         {
             return "ABILITY";
+        }
+
+        @Override
+        public String toString()
+        {
+            return element.getAttributeValue("catagory");
         }
 
         @Override

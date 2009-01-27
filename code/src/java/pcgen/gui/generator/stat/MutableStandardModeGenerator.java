@@ -21,13 +21,14 @@
 package pcgen.gui.generator.stat;
 
 import java.util.List;
-import pcgen.gui.generator.MutableGenerator;
+import pcgen.gui.generator.Mutable;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableStandardModeGenerator extends StandardModeGenerator, MutableGenerator<Integer>
+public interface MutableStandardModeGenerator extends StandardModeGenerator,
+                                                       Mutable
 {
 
     public void setDiceExpressions(List<String> expressions);

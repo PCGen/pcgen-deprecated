@@ -20,13 +20,14 @@
  */
 package pcgen.gui.generator.stat;
 
-import pcgen.gui.generator.MutableGenerator;
+import pcgen.gui.generator.Mutable;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutablePurchaseModeGenerator extends PurchaseModeGenerator, MutableGenerator<Integer>
+public interface MutablePurchaseModeGenerator extends PurchaseModeGenerator,
+                                                       Mutable
 {
 
     public void setMaxScore(int score);
