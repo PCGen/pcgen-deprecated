@@ -35,7 +35,7 @@ my @SVN_array = split ' ', $SVN_id;
 my $SVN_build = $SVN_array[2];
 my $SVN_date = $SVN_array[3];
 $SVN_date =~ tr{-}{.};
-my $VERSION		= "1.38 (build $SVN_build)";
+my $VERSION		= "1.39 (build $SVN_build)";
 my $VERSION_DATE	= $SVN_date;
 my ($SCRIPTNAME)	= ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG	= "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
@@ -1858,6 +1858,8 @@ my %master_order = (
 		'NATURALATTACKS',
 		'BENEFIT',
 		'TEMPDESC',
+		'SPELLKNOWN:CLASS:*',
+		'SPELLKNOWN:DOMAIN:*',
 		'SPELLLEVEL:CLASS:*',
 		'SPELLLEVEL:DOMAIN:*',
 		'UNENCUMBEREDMOVE',
@@ -1996,6 +1998,8 @@ my %master_order = (
 		'CCSKILL',
 		'MONSKILL',
 		'MONNONSKILLHD:*',
+		'SPELLKNOWN:CLASS:*',
+		'SPELLKNOWN:DOMAIN:*',
 		'SPELLLEVEL:CLASS',
 		'SPELLLEVEL:DOMAIN',
 		'UNENCUMBEREDMOVE',
@@ -2076,6 +2080,8 @@ my %master_order = (
 		'FEATAUTO:.CLEAR',
 		'FEATAUTO:*',
 		'SUBCLASS',
+		'SPELLKNOWN:CLASS:*',
+		'SPELLKNOWN:DOMAIN:*',
 		'SPELLLEVEL:CLASS',
 		'SPELLLEVEL:DOMAIN',
 		'SPELLLIST',
@@ -2206,6 +2212,7 @@ my %master_order = (
 		'DESCISPI',
 		'DESC:.CLEAR',
 		'DESC:*',
+		'SPELLKNOWN:DOMAIN:*',
 		'SPELLLEVEL:DOMAIN',
 		'UNENCUMBEREDMOVE',
 	],
@@ -2434,6 +2441,8 @@ my %master_order = (
 		'NATURALATTACKS',
 		'BENEFIT',
 		'TEMPDESC',
+		'SPELLKNOWN:CLASS:*',
+		'SPELLKNOWN:DOMAIN:*',
 		'SPELLLEVEL:CLASS:*',
 		'SPELLLEVEL:DOMAIN:*',
 		'UNENCUMBEREDMOVE',
@@ -2777,6 +2786,9 @@ my %master_order = (
 		'ADD:VFEAT:*',
 		'REGION',
 		'SUBREGION',
+		'SPELLKNOWN:CLASS:*',
+		'SPELLKNOWN:DOMAIN:*',
+		'SPELLLEVEL:CLASS:*',
 		'SPELLLEVEL:DOMAIN:*',
 		'KIT',
 	],
@@ -3044,6 +3056,7 @@ my %master_order = (
 		'UDAM',
 		'UMULT',
 		'ADD:SPELLCASTER:*',
+		'SPELLKNOWN:CLASS:*',
 		'SPELLLEVEL:CLASS:*',
 		'CAST',
 		'KNOWN',
@@ -3115,6 +3128,7 @@ my %master_order = (
 		'UDAM',
 		'UMULT',
 		'ADD:SPELLCASTER',
+		'SPELLKNOWN:CLASS:*',
 		'SPELLLEVEL:CLASS:*',
 		'CAST',
 		'KNOWN',
@@ -3269,7 +3283,10 @@ my %master_order = (
 		'GENDERLOCK',
 		'SPELL:*',		# Deprecated 5.x.x - Remove 6.0 - use SPELLS
 		'SPELLS:*',
+		'SPELLKNOWN:CLASS:*',
+		'SPELLKNOWN:DOMAIN:*',
 		'SPELLLEVEL:CLASS:*',
+		'SPELLLEVEL:DOMAIN:*',
 		'ADD:SPELLCASTER',
 		'NATURALATTACKS:*',
 		'UNENCUMBEREDMOVE',
@@ -4062,6 +4079,8 @@ my %tagheader = (
 		'SPELLBOOK'			=> 'Spellbook',
 		'SPELLFAILURE'		=> '% of Spell Failure',
 		'SPELLLIST'			=> 'Use Spell List',
+		'SPELLKNOWN:CLASS'	=> 'List of Known Class Spells by Level',
+		'SPELLKNOWN:DOMAIN'	=> 'List of Known Domain Spells by Level',
 		'SPELLLEVEL:CLASS'	=> 'List of Class Spells by Level',
 		'SPELLLEVEL:DOMAIN'	=> 'List of Domain Spells by Level',
 		'SPELLRES'			=> 'Spell Resistance',
@@ -6742,6 +6761,41 @@ sub parse_tag {
 		}
 	}
 
+	# [ 2544134 ] New Token - SPELLKNOWN
+
+	if ( $tag eq 'SPELLKNOWN' ) {
+		if ( $value =~ s/^CLASS(?=\|)// ) {
+			# It's a SPELLKNOWN:CLASS tag
+			$tag = "SPELLKNOWN:CLASS";
+		}
+		elsif ( $value =~ s/^DOMAIN(?=\|)// ) {
+			# It's a SPELLKNOWN:DOMAIN tag
+			$tag = "SPELLKNOWN:DOMAIN";
+		}
+		else {
+			# No valid SPELLKNOWN subtag was found
+			if ( $value =~ /^([^=:|]+)/ ) {
+				$count_tags{"Invalid"}{"Total"}{"$tag:$1"}++;
+				$count_tags{"Invalid"}{$linetype}{"$tag:$1"}++;
+				$logging->ewarn( NOTICE,
+					qq{Invalid SPELLKNOWN:$1 tag "$tag_text" found in $linetype.},
+					$file_for_error,
+					$line_for_error
+				);
+			}
+			else {
+				$count_tags{"Invalid"}{"Total"}{"SPELLKNOWN"}++;
+				$count_tags{"Invalid"}{$linetype}{"SPELLKNOWN"}++;
+				$logging->ewarn( NOTICE,
+					qq{Invalid SPELLKNOWN tag "$tag_text" found in $linetype},
+					$file_for_error,
+					$line_for_error
+				);
+			}
+			$no_more_error = 1;
+		}
+	}
+
 	# All the .CLEAR must be separated tags to help with the
 	# tag ordering. That is, we need to make sure the .CLEAR
 	# is ordered before the normal tag.
@@ -8085,17 +8139,24 @@ BEGIN {
 			}
 		}
 		}
-		elsif ( index( $tag_name, 'SPELLLEVEL:' ) == 0 ) {
+		elsif ( index( $tag_name, 'SPELLLEVEL:' ) == 0 
+			|| index( $tag_name, 'SPELLKNOWN:' ) == 0
+		) {
 
 		# [ 813504 ] SPELLLEVEL:DOMAIN in domains.lst
+		# [ 2544134 ] New Token - SPELLKNOWN
 		# -------------------------------------------
 		# There are two different SPELLLEVEL tags that must
 		# be x-check. SPELLLEVEL:CLASS and SPELLLEVEL:DOMAIN.
 		#
 		# The CLASS type have CLASSes and SPELLs to check and
 		# the DOMAIN type have DOMAINs and SPELLs to check.
+		#
+		# SPELLKNOWN has exact same syntax as SPELLLEVEL, so doing both checks at once.
 
-		if ( $tag_name eq "SPELLLEVEL:CLASS" ) {
+		if ( $tag_name eq "SPELLLEVEL:CLASS" 
+			|| $tag_name eq "SPELLKNOWN:CLASS"
+		) {
 
 			# The syntax for SPELLLEVEL:CLASS is
 			# SPELLLEVEL:CLASS|<class-list of spells>
@@ -8169,7 +8230,9 @@ BEGIN {
 				);
 			}
 		}
-		if ( $tag_name eq "SPELLLEVEL:DOMAIN" ) {
+		if ( $tag_name eq "SPELLLEVEL:DOMAIN" 
+			|| $tag_name eq "SPELLKNOWN:DOMAIN"
+		) {
 
 			# The syntax for SPELLLEVEL:DOMAIN is
 			# SPELLLEVEL:CLASS|<domain-list of spells>
@@ -12920,6 +12983,7 @@ BEGIN {
 				HASSPELLFORMULA			=> 1, # [ 1893279 ] HASSPELLFORMULA Class Line tag
 				PROHIBITED				=> 1,
 				SPELLBOOK				=> 1,
+				SPELLKNOWN				=> 1,
 				SPELLLEVEL				=> 1,
 				SPELLLIST				=> 1,
 				SPELLSTAT				=> 1,
@@ -14946,7 +15010,11 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 =head1 VERSION HISTORY
 
-=head2 v1.39 -- -- NOT YET RELEASED
+=head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2544134 ] New Token - SPELLKNOWN
+
+=head2 v1.39 -- 2008.10.22
 
 [ 2022217 ] UMULT is valid in Abillities
 
