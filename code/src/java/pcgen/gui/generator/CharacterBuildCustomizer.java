@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.Customizer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -75,7 +76,7 @@ import pcgen.gui.util.table.TableCellUtilities.SpinnerRenderer;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class CharacterBuildCustomizer extends JDialog
+public class CharacterBuildCustomizer extends JDialog implements Customizer
 {
 
     private final TitledPanel namePanel;
@@ -1202,5 +1203,10 @@ public class CharacterBuildCustomizer extends JDialog
             }
         }
 
+    }
+
+    public void setObject(Object bean)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
