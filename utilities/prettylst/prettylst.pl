@@ -15014,7 +15014,7 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 
 [ 2544134 ] New Token - SPELLKNOWN
 
-=head2 v1.39 -- 2008.10.22
+=head2 v1.39 -- 2000.01.28
 
 [ 2022217 ] UMULT is valid in Abillities
 
