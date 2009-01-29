@@ -35,15 +35,15 @@ import java.awt.event.ItemListener;
 import java.beans.Customizer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractSpinnerModel;
-import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -76,9 +76,15 @@ import pcgen.gui.util.table.TableCellUtilities.SpinnerRenderer;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class CharacterBuildCustomizer extends JDialog implements Customizer
+public class CharacterBuildCustomizer extends JPanel implements Customizer
 {
 
+    public static final String NAME_VALIDITY = "Name";
+    public static final String ALIGNMENT_VALIDITY = "Alignment";
+    public static final String GENDER_VALIDITY = "Gender";
+    public static final String RACE_VALIDITY = "Race";
+    public static final String STATS_VALIDITY = "Stats";
+    public static final String CLASSES_VALIDITY = "Classes";
     private final TitledPanel namePanel;
     private final JTextField nameField;
     private final JComboBox namesetComboBox;
@@ -104,9 +110,8 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
     private final JComboBox levelComboBox1;
     private final JComboBox levelComboBox2;
     private final JComboBox levelComboBox3;
-    private final OKAction okAction;
-    private final Action cancelAction;
-    private CharacterCreationManager creationManager;
+    private final Map<String, Boolean> validityMap;
+    private MutableCharacterBuild build;
 
     public CharacterBuildCustomizer()
     {
@@ -135,14 +140,25 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         this.levelComboBox1 = new JComboBox();
         this.levelComboBox2 = new JComboBox();
         this.levelComboBox3 = new JComboBox();
-        this.okAction = new OKAction();
-        this.cancelAction = new CancelAction();
+        this.validityMap = new HashMap<String, Boolean>();
         initComponents();
+    }
+
+    public void setValidity(String prop, boolean valid)
+    {
+        boolean oldvalue = validityMap.get(prop);
+        validityMap.put(prop, valid);
+        firePropertyChange(prop, oldvalue, valid);
+    }
+
+    public boolean isCharacterValid()
+    {
+        return !validityMap.values().contains(Boolean.FALSE);
     }
 
     private void initComponents()
     {
-        getContentPane().setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         {//Initialize namePanel
             namePanel.setLayout(new GridBagLayout());
@@ -155,9 +171,8 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
                             public void documentChanged(DocumentEvent e)
                             {
                                 String text = nameField.getText();
-                                creationManager.setValidity(creationManager.NAME_VALIDITY,
-                                                            text != null &&
-                                                            text.length() > 0);
+                                setValidity(NAME_VALIDITY, text != null &&
+                                            text.length() > 0);
                             }
 
                         });
@@ -189,7 +204,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new Insets(4, 4, 4, 4);
-        getContentPane().add(namePanel, gridBagConstraints);
+        add(namePanel, gridBagConstraints);
         {//Initialize alignmentPanel
             alignmentPanel.setLayout(new BorderLayout());
             {//Initialize alignmentComboBox
@@ -211,7 +226,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.insets = new Insets(4, 4, 0, 4);
-        getContentPane().add(alignmentPanel, gridBagConstraints);
+        add(alignmentPanel, gridBagConstraints);
         {//Initialize genderPanel
             genderPanel.setLayout(new BorderLayout());
             {//Initialize genderComboBox
@@ -220,7 +235,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
             genderPanel.add(genderComboBox, BorderLayout.CENTER);
         }
         gridBagConstraints.insets = new Insets(0, 4, 4, 4);
-        getContentPane().add(genderPanel, gridBagConstraints);
+        add(genderPanel, gridBagConstraints);
         {//Initialize racePanel
             racePanel.setLayout(new BorderLayout());
             {//Initialize raceSelectionBox
@@ -254,7 +269,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
             racePanel.add(raceSelectionBox, BorderLayout.CENTER);
         }
         gridBagConstraints.insets = new Insets(4, 4, 4, 4);
-        getContentPane().add(racePanel, gridBagConstraints);
+        add(racePanel, gridBagConstraints);
         {//Initialize statPanel
             statPanel.setLayout(new GridBagLayout());
             {//Initialize statSelectionBox
@@ -305,7 +320,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         }
         gridBagConstraints.weightx = 0.0;
         gridBagConstraints.insets = new Insets(4, 4, 4, 4);
-        getContentPane().add(statPanel, gridBagConstraints);
+        add(statPanel, gridBagConstraints);
         {//Initialize classPanel
             classPanel.setLayout(new GridBagLayout());
 
@@ -384,17 +399,9 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.insets = new Insets(4, 4, 4, 4);
-        getContentPane().add(classPanel, gridBagConstraints);
+        add(classPanel, gridBagConstraints);
 
-        gridBagConstraints = new GridBagConstraints();
-        getContentPane().add(new JLabel(), gridBagConstraints);
-
-        Dimension buttonSize = new Dimension(75, 23);
-        gridBagConstraints.insets = new Insets(4, 4, 4, 4);
-        initControlButton(okAction, buttonSize, gridBagConstraints);
-        initControlButton(cancelAction, buttonSize, gridBagConstraints);
-
-        pack();
+        initListeners();
     }
 
     private void initClassSelectionRow(JCheckBox classGenerationBox,
@@ -418,57 +425,29 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         classPanel.add(levelComboBox, gridBagConstraints);
     }
 
-    private void initControlButton(Action action, Dimension buttonSize,
-                                    GridBagConstraints gridBagConstraints)
-    {
-        JButton button = new JButton(action);
-        button.setMinimumSize(buttonSize);
-        button.setPreferredSize(buttonSize);
-        button.setMaximumSize(buttonSize);
-        getContentPane().add(button, gridBagConstraints);
-    }
-
     private <T> GenericComboBoxModel<T> createComboBoxModel(List<T> data)
     {
         return new DefaultGenericComboBoxModel<T>(data);
     }
 
-    public void setCharacterCreationManager(CharacterCreationManager manager)
+    private void initListeners()
     {
-        if (creationManager != null)
-        {
-            creationManager.removePropertyChangeListener(okAction);
-            creationManager.removePropertyChangeListener(CharacterCreationManager.NAME_VALIDITY,
-                                                         namePanel);
-            creationManager.removePropertyChangeListener(CharacterCreationManager.ALIGNMENT_VALIDITY,
-                                                         alignmentPanel);
-            creationManager.removePropertyChangeListener(CharacterCreationManager.GENDER_VALIDITY,
-                                                         genderPanel);
-            creationManager.removePropertyChangeListener(CharacterCreationManager.RACE_VALIDITY,
-                                                         racePanel);
-            creationManager.removePropertyChangeListener(CharacterCreationManager.STATS_VALIDITY,
-                                                         statPanel);
-            creationManager.removePropertyChangeListener(CharacterCreationManager.CLASSES_VALIDITY,
-                                                         classPanel);
-        }
-        creationManager = manager;
-        if (creationManager != null)
-        {
-            creationManager.addPropertyChangeListener(okAction);
-            creationManager.addPropertyChangeListener(CharacterCreationManager.NAME_VALIDITY,
-                                                      namePanel);
-            creationManager.addPropertyChangeListener(CharacterCreationManager.ALIGNMENT_VALIDITY,
-                                                      alignmentPanel);
-            creationManager.addPropertyChangeListener(CharacterCreationManager.GENDER_VALIDITY,
-                                                      genderPanel);
-            creationManager.addPropertyChangeListener(CharacterCreationManager.RACE_VALIDITY,
-                                                      racePanel);
-            creationManager.addPropertyChangeListener(CharacterCreationManager.STATS_VALIDITY,
-                                                      statPanel);
-            creationManager.addPropertyChangeListener(CharacterCreationManager.CLASSES_VALIDITY,
-                                                      classPanel);
-            initModels();
-        }
+        addPropertyChangeListener(CharacterCreationManager.NAME_VALIDITY,
+                                  namePanel);
+        addPropertyChangeListener(CharacterCreationManager.ALIGNMENT_VALIDITY,
+                                  alignmentPanel);
+        addPropertyChangeListener(CharacterCreationManager.GENDER_VALIDITY,
+                                  genderPanel);
+        addPropertyChangeListener(CharacterCreationManager.RACE_VALIDITY,
+                                  racePanel);
+        addPropertyChangeListener(CharacterCreationManager.CLASSES_VALIDITY,
+                                  classPanel);
+    }
+
+    public void setObject(Object bean)
+    {
+        CharacterBuild build = (CharacterBuild) bean;
+        this.build = (MutableCharacterBuild) build;
     }
 
     private void initModels()
@@ -555,12 +534,11 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         }
         if (race != null)
         {
-            creationManager.setValidity(creationManager.RACE_VALIDITY,
-                                        anyValid(alignmentGenerator, race));
+            setValidity(RACE_VALIDITY, anyValid(alignmentGenerator, race));
         }
         else
         {
-            creationManager.setValidity(creationManager.RACE_VALIDITY, true);
+            setValidity(RACE_VALIDITY, true);
         }
         boolean accept = isClassSelectionValid(classSelectionBox1,
                                                alignmentGenerator, race);
@@ -568,42 +546,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
                                         alignmentGenerator, race);
         accept &= isClassSelectionValid(classSelectionBox3,
                                         alignmentGenerator, race);
-        creationManager.setValidity(creationManager.CLASSES_VALIDITY, accept);
-    }
-
-    private class OKAction extends AbstractAction implements PropertyChangeListener
-    {
-
-        public OKAction()
-        {
-            super("OK");
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public void propertyChange(PropertyChangeEvent evt)
-        {
-            setEnabled(creationManager.isCharacterValid());
-        }
-
-    }
-
-    private class CancelAction extends AbstractAction
-    {
-
-        public CancelAction()
-        {
-            super("Cancel");
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
+        setValidity(CLASSES_VALIDITY, accept);
     }
 
     private class GenerateNameAction extends AbstractAction
@@ -817,8 +760,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
         public void setPoints(int points)
         {
             this.points = points;
-            creationManager.setValidity(creationManager.STATS_VALIDITY,
-                                        points == 0);
+            setValidity(STATS_VALIDITY, points == 0);
             repaint();
         }
 
@@ -993,7 +935,7 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
             {
                 for (StatFacade stat : stats)
                 {
-                    //stat.setBaseScore(purchaseMode.getMinScore());
+                //stat.setBaseScore(purchaseMode.getMinScore());
                 }
             }
             this.purchaseMode = purchaseMode;
@@ -1203,10 +1145,5 @@ public class CharacterBuildCustomizer extends JDialog implements Customizer
             }
         }
 
-    }
-
-    public void setObject(Object bean)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

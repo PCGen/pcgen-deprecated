@@ -1,5 +1,5 @@
 /*
- * CharacterBuilder.java
+ * CharacterBuild.java
  * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ import pcgen.gui.generator.ability.AbilityBuild;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface CharacterBuilder
+public interface CharacterBuild
 {
 
     public Generator<AlignmentFacade> getAlignmentGenerator();
@@ -48,5 +48,7 @@ public interface CharacterBuilder
     public InfoFacadeGenerator<SkillFacade> getSkillGenerator();
 
     public AbilityBuild getAbilityBuild();
+
+    public GeneratorManager getGeneratorManager();
 
 }

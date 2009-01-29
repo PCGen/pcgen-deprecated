@@ -1,5 +1,5 @@
 /*
- * GameModeFacade.java
+ * CharacterBuildBeanInfo.java
  * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,31 +16,25 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Jan 18, 2009, 8:42:23 PM
+ * Created on Jan 27, 2009, 4:45:42 PM
  */
-package pcgen.gui.facade;
+package pcgen.gui.generator;
 
-import java.io.File;
-import pcgen.gui.util.GenericListModel;
+import java.beans.BeanDescriptor;
+import java.beans.SimpleBeanInfo;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface GameModeFacade
+public class CharacterBuildBeanInfo extends SimpleBeanInfo
 {
 
-    public GenericListModel<AlignmentFacade> getAlignments();
-
-    public AlignmentFacade getAlignment(String alignment);
-
-    public GenericListModel<StatFacade> getStats();
-
-    public StatFacade getStat(String stat);
-
-    public File getGeneratorFile();
-    
     @Override
-    public String toString();
+    public BeanDescriptor getBeanDescriptor()
+    {
+        return new BeanDescriptor(CharacterBuild.class,
+                                  CharacterBuildCustomizer.class);
+    }
 
 }

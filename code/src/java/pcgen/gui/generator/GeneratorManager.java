@@ -25,17 +25,11 @@ import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
-import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.beans.SimpleBeanInfo;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -54,13 +48,7 @@ import java.util.logging.Logger;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.jdom.filter.ElementFilter;
 import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.core.SettingsHandler;
@@ -69,6 +57,7 @@ import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.AlignmentFacade;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.DataSetFacade;
+import pcgen.gui.facade.GameModeFacade;
 import pcgen.gui.facade.InfoFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.SkillFacade;
@@ -78,6 +67,7 @@ import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
 import pcgen.gui.generator.stat.MutableStandardModeGenerator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.generator.stat.StandardModeGenerator;
+import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.util.Logging;
 
 /**
@@ -90,33 +80,45 @@ public final class GeneratorManager
     public static final class GeneratorType<E>
     {
 
+        public static final GeneratorType<WeightedGenerator<AlignmentFacade>> ALIGNMENT = new GeneratorType<WeightedGenerator<AlignmentFacade>>("AlignmentGenerator",
+                                                                                                                                                   "ALIGNMENT_GENERATOR",
+                                                                                                                                                   DefaultAlignmentGenerator.class,
+                                                                                                                                                   null);
         public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>("SkillGenerator",
+                                                                                                                                           "SKILL_GENERATOR",
                                                                                                                                            DefaultSkillGenerator.class,
                                                                                                                                            DefaultMutableSkillGenerator.class);
         public static final GeneratorType<StandardModeGenerator> STANDARDMODE = new GeneratorType<StandardModeGenerator>("StandardModeGenerator",
+                                                                                                                            "STANDARDMODE_GENERATOR",
                                                                                                                             DefaultStandardModeGenerator.class,
                                                                                                                             DefaultMutableStandardModeGenerator.class);
         public static final GeneratorType<PurchaseModeGenerator> PURCHASEMODE = new GeneratorType<PurchaseModeGenerator>("PurchaseModeGenerator",
+                                                                                                                            "PURCHASEMODE_GENERATOR",
                                                                                                                             DefaultPurchaseModeGenerator.class,
                                                                                                                             DefaultMutablePurchaseModeGenerator.class);
         public static final GeneratorType<InfoFacadeGenerator<RaceFacade>> RACE = new GeneratorType<InfoFacadeGenerator<RaceFacade>>("RaceGenerator",
+                                                                                                                                        "RACE_GENERATOR",
                                                                                                                                         DefaultRaceGenerator.class,
                                                                                                                                         DefaultMutableRaceGenerator.class);
         public static final GeneratorType<InfoFacadeGenerator<ClassFacade>> CLASS = new GeneratorType<InfoFacadeGenerator<ClassFacade>>("ClassGenerator",
+                                                                                                                                           "CLASS_GENERATOR",
                                                                                                                                            DefaultClassGenerator.class,
                                                                                                                                            DefaultMutableClassGenerator.class);
         public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>("AbilityBuild",
+                                                                                                          "ABILITY_BUILD",
                                                                                                           DefaultAbilityBuild.class,
                                                                                                           DefaultMutableAbilityBuild.class);
         private Class<? extends E> baseClass;
         private Class<? extends E> mutableClass;
         private String name;
+        private String element;
 
-        private GeneratorType(String name,
+        private GeneratorType(String name, String element,
                                Class<? extends E> baseClass,
                                Class<? extends E> mutableClass)
         {
             this.name = name;
+            this.element = element;
             this.baseClass = baseClass;
             this.mutableClass = mutableClass;
         }
@@ -130,10 +132,31 @@ public final class GeneratorManager
     }
 
     private final DataSetFacade data;
+    private final List<WeightedGenerator<AlignmentFacade>> alignmentGenerators;
+    private final List<InfoFacadeGenerator<RaceFacade>> raceGenerators;
 
     public GeneratorManager(DataSetFacade data)
     {
         this.data = data;
+        this.alignmentGenerators = new ArrayList<WeightedGenerator<AlignmentFacade>>();
+        this.raceGenerators = new ArrayList<InfoFacadeGenerator<RaceFacade>>();
+        GameModeFacade gameMode = data.getGameMode();
+        try
+        {
+            Document document = DocumentManager.getInstance().getDocument(gameMode.getGeneratorFile().toURI());
+            alignmentGenerators.addAll(buildGeneratorList(GeneratorType.ALIGNMENT,
+                                                          document));
+        }
+        catch (Exception ex)
+        {
+            Logging.errorPrint("Error occured while parsing " +
+                               gameMode.getGeneratorFile(), ex);
+        }
+        GenericListModelWrapper<AlignmentFacade> alignments = new GenericListModelWrapper<AlignmentFacade>(gameMode.getAlignments());
+        for (AlignmentFacade alignmentFacade : alignments)
+        {
+            alignmentGenerators.add(new SingletonWeightedGenerator<AlignmentFacade>(alignmentFacade));
+        }
     }
 
     public static final void main(String[] arg)
@@ -141,8 +164,9 @@ public final class GeneratorManager
         try
         {
             File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
-            BeanInfo info = Introspector.getBeanInfo(MutableInfoFacadeGenerator.class);
-            System.out.println(info.getBeanDescriptor().getBeanClass());
+            BeanInfo info = Introspector.getBeanInfo(CharacterBuild.class);
+            System.out.println(Arrays.toString(info.getAdditionalBeanInfo()));
+            System.out.println(info.getBeanDescriptor().getCustomizerClass());
         }
         catch (IntrospectionException ex)
         {
@@ -151,24 +175,28 @@ public final class GeneratorManager
         }
     }
 
-    static <T> List<T> buildGeneratorList(GeneratorType<? extends T> type,
-                                           Document document,
-                                           DataSetFacade data)
+    private <T> List<T> buildGeneratorList(GeneratorType<? extends T> type,
+                                            Document document)
     {
         Element root = document.getRootElement();
-        boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-
-        List<T> generators = new ArrayList<T>();
-        Set<String> sources = null;
-        if (data != null)
+        boolean mutable;
+        if (root.getName().equals("BUILDSET"))
         {
-            sources = data.getSources();
+            mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
         }
+        else
+        {
+            mutable = false;
+        }
+        List<T> generators = new ArrayList<T>();
+        Set<String> sources = data.getSources();
+        Iterator it = document.getDescendants(new ElementFilter(type.element));
         generatorLoop:
-            for (Object element : root.getChildren())
+            while (it.hasNext())
             {
+                Object element = it.next();
                 @SuppressWarnings("unchecked")
-                List<Element> sourceElements = root.getChildren("SOURCE");
+                List<Element> sourceElements = ((Element) element).getChildren("SOURCE");
                 if (sourceElements != null)
                 {
                     for ( Element source : sourceElements)
@@ -190,17 +218,7 @@ public final class GeneratorManager
                     {
                         c = type.baseClass;
                     }
-                    T generator;
-                    if (data != null)
-                    {
-                        generator = (T) c.getConstructor(Element.class,
-                                                         DataSetFacade.class).newInstance(element,
-                                                                                          data);
-                    }
-                    else
-                    {
-                        generator = (T) c.getConstructor(Element.class).newInstance(element);
-                    }
+                    T generator = (T) c.getConstructor(Element.class).newInstance(element);
                     generators.add(generator);
                 }
                 catch ( Exception ex)
@@ -355,20 +373,19 @@ public final class GeneratorManager
         public Component getCustomEditor()
         {
             DefaultCharacterBuild build = (GeneratorManager.DefaultCharacterBuild) this.getValue();
-            
+
             return super.getCustomEditor();
         }
-        
+
     }
 
-    private class DefaultCharacterBuilder implements CharacterBuilder
+    private class DefaultCharacterBuilder implements CharacterBuild
     {
 
         private WeightedGenerator<AlignmentFacade> alignmentGenerator;
 
         public DefaultCharacterBuilder(Element element) throws MissingDataException
         {
-            element.removeChildren("SOURCE");
             Element alignmentElement = (Element) element.getContent(0);
             if (alignmentElement.getName().equals("ALIGNMENT_GENERATOR"))
             {
@@ -411,6 +428,11 @@ public final class GeneratorManager
         }
 
         public AbilityBuild getAbilityBuild()
+        {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        public GeneratorManager getGeneratorManager()
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }

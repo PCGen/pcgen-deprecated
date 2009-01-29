@@ -25,9 +25,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -41,6 +41,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import pcgen.core.SettingsHandler;
+import pcgen.util.Logging;
 
 /**
  *
@@ -48,6 +49,24 @@ import pcgen.core.SettingsHandler;
  */
 public class DocumentManager implements EntityResolver
 {
+
+    private static Filter refFilter = new Filter()
+    {
+
+        public boolean matches(Object obj)
+        {
+            if (obj instanceof Element)
+            {
+                Element element = (Element) obj;
+                if (element.getName().endsWith("_REF"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    };
 
     private static class SingletonHolder
     {
@@ -92,7 +111,7 @@ public class DocumentManager implements EntityResolver
         return null;
     }
 
-    public Document getDocument(URI uri) throws JDOMException, IOException, IllegalReferenceException
+    public Document getDocument(URI uri) throws JDOMException, IOException
     {
         String systemId = uri.toString();
         Document document = documentMap.get(systemId);
@@ -106,173 +125,104 @@ public class DocumentManager implements EntityResolver
 
     public void outputDocument(Document document) throws IOException
     {
-        document = (Document) document.clone();
-        unresoveReferences(document);
         outputter.output(document,
                          new FileOutputStream(new File(URI.create(document.getBaseURI()))));
     }
 
-    private Document createDocument(String systemId) throws JDOMException, IOException, IllegalReferenceException
+    private Document createDocument(String systemId) throws JDOMException, IOException
     {
         Document document = builder.build(systemId);
-        resolveReferences(document);
-        validate(document);
+        checkReferences(document);
         return document;
     }
 
-    private void unresoveReferences(Document document)
+    private void checkReferences(Document document)
     {
-        Iterator it = document.getDescendants(new ElementFilter("EXT_GENERATOR"));
-        while (it.hasNext())
+        Element root = document.getRootElement();
+        String name = root.getName();
+        if (name.equals("BUILDSET"))
         {
-            Element element = (Element) it.next();
-            element.removeContent();
+            pruneInvalidReferences(document,
+                                   root.getContent(new ElementFilter("CHARACTER_BUILD")));
+            pruneInvalidReferences(document,
+                                   root.getContent(new ElementFilter("ABILITY_BUILD")));
+        }
+        else if (name.equals("CHARACTER_BUILD") || name.equals("ABILITY_BUILD"))
+        {
+            pruneInvalidReferences(document,
+                                   Collections.singletonList(root));
         }
     }
 
-    private void resolveReferences(Document document) throws IllegalReferenceException, JDOMException, IOException
+    private void pruneInvalidReferences(Document document, List elements)
     {
-        Iterator it = document.getDescendants(new ElementFilter("EXT_GENERATOR"));
-        while (it.hasNext())
+        loop:
+            for (Object element : elements)
+            {
+                Element buildElement = (Element) element;
+                List children = buildElement.getContent(refFilter);
+                for (Object object : children)
+                {
+                    if (!isValidReference(document, (Element) object))
+                    {
+                        Logging.errorPrint("Invalid Reference in " +
+                                           document.getBaseURI() + ", ignoring " +
+                                           buildElement);
+                        buildElement.detach();
+                        continue loop;
+                    }
+                }
+            }
+    }
+
+    private boolean isValidReference(Document document, Element refElement)
+    {
+        String generatorUri = refElement.getAttributeValue("uri");
+        if (generatorUri != null)
         {
-            Element ext = (Element) it.next();
             try
             {
-                final String generatorName = ext.getAttributeValue("name");
-                URI uri = new URI(ext.getAttributeValue("uri"));
+                URI uri = new URI(generatorUri);
                 URI baseuri = URI.create(document.getBaseURI());
                 uri = baseuri.resolve(uri);
-                Document extdocument = getDocument(uri);
-                Filter filter = new Filter()
-                {
-
-                    public boolean matches(Object obj)
-                    {
-                        if (obj instanceof Element)
-                        {
-                            Element element = (Element) obj;
-                            if (!element.getName().equals("EXT_GENERATOR"))
-                            {
-                                String value = element.getAttributeValue("name");
-                                if (value != null && value.equals(generatorName))
-                                {
-                                    return true;
-                                }
-                                value = element.getAttributeValue("catagory");
-                                if (value != null && value.equals(generatorName))
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                        return false;
-                    }
-
-                };
-                Iterator extit = extdocument.getDescendants(filter);
-                if (extit.hasNext())
-                {
-                    Element element = (Element) extit.next();
-                    ext.addContent((Element) element.clone());
-                }
-                else
-                {
-                    throw new IllegalReferenceException("Generator not found in " +
-                                                        document.getBaseURI());
-                }
+                document = getDocument(uri);
             }
-            catch (URISyntaxException ex)
+            catch (Exception ex)
             {
-                throw new IllegalReferenceException("Malformed uri:" +
-                                                    ex.getInput() + "in " +
-                                                    document.getBaseURI(), ex);
+                Logging.errorPrint("Error occured while checking references in " +
+                                   document.getBaseURI(), ex);
+                return false;
             }
         }
+        return hasElement(document, refElement);
     }
 
-    private void validate(Document document) throws IllegalReferenceException
+    private boolean hasElement(Document document, Element refElement)
     {
-        Iterator buildIterator = document.getDescendants(new ElementFilter("CHARACTER_BUILD"));
-        while (buildIterator.hasNext())
+        final String elementName = refElement.getName().replaceFirst("_REF", "");
+        final String generatorName = refElement.getAttributeValue("name");
+        final String generatorCatagory = refElement.getAttributeValue("catagory");
+        Filter filter = new Filter()
         {
-            Element element = (Element) buildIterator.next();
-            @SuppressWarnings("unchecked")
-            Iterator<Element> childIterator = element.getChildren().iterator();
-            childIterator.next(); // The gender generator does not matter
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("ALIGNMENT_GENERATOR") == null)
+
+            public boolean matches(Object obj)
             {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a ALIGNMENT_GENERATOR : " +
-                                                    document.getBaseURI());
+                if (obj instanceof Element)
+                {
+                    Element element = (Element) obj;
+                    if (elementName.equals(element.getName()) &&
+                            generatorName.equals(element.getAttributeValue("name")) &&
+                            (generatorCatagory == null ||
+                            generatorCatagory.equals(element.getAttributeValue("catagory"))))
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("RACE_GENERATOR") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a RACE_GENERATOR : " +
-                                                    document.getBaseURI());
-            }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("CLASS_GENERATOR") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a CLASS_GENERATOR : " +
-                                                    document.getBaseURI());
-            }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("STANDARDMODE_GENERATOR") == null &&
-                    element.getChild("PURCHASEMODE_GENERATOR") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a stat generator : " +
-                                                    document.getBaseURI());
-            }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("SKILL_GENERATOR") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a SKILL_GENERATOR : " +
-                                                    document.getBaseURI());
-            }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("ABILITY_BUILD") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a ABILITY_BUILD : " +
-                                                    document.getBaseURI());
-            }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("EQUIPMENT_GENERATOR") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a EQUIPMENT_GENERATOR : " +
-                                                    document.getBaseURI());
-            }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("SPELL_GENERATOR") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a SPELL_GENERATOR : " +
-                                                    document.getBaseURI());
-            }
-            element = childIterator.next();
-            if (element.getName().equals("EXT_GENERATOR") &&
-                    element.getChild("TEMPLATE_GENERATOR") == null)
-            {
-                throw new IllegalReferenceException("EXT_GENERATOR does not contain" +
-                                                    " a reference to a TEMPLATE_GENERATOR : " +
-                                                    document.getBaseURI());
-            }
-        }
+
+        };
+        return document.getDescendants(filter).hasNext();
     }
 
 }
