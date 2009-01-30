@@ -22,14 +22,10 @@ package pcgen.gui.generator;
 
 import java.awt.Component;
 import java.beans.BeanDescriptor;
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
 import java.beans.PropertyEditorSupport;
 import java.beans.SimpleBeanInfo;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -43,8 +39,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -67,6 +61,7 @@ import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
 import pcgen.gui.generator.stat.MutableStandardModeGenerator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.generator.stat.StandardModeGenerator;
+import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.util.Logging;
 
@@ -125,8 +120,8 @@ public final class GeneratorManager
 
     }
 
-    private static <T> List<T> getGeneratorList(Document document,
-                                                  GeneratorType<T> type)
+    private <T> List<T> getGeneratorList(Document document,
+                                          GeneratorType<T> type)
     {
         return null;
     }
@@ -134,45 +129,58 @@ public final class GeneratorManager
     private final DataSetFacade data;
     private final List<WeightedGenerator<AlignmentFacade>> alignmentGenerators;
     private final List<InfoFacadeGenerator<RaceFacade>> raceGenerators;
+    private final List<InfoFacadeGenerator<ClassFacade>> classGenerators;
+    private final List<InfoFacadeGenerator<SkillFacade>> skillGenerators;
 
     public GeneratorManager(DataSetFacade data)
     {
         this.data = data;
         this.alignmentGenerators = new ArrayList<WeightedGenerator<AlignmentFacade>>();
         this.raceGenerators = new ArrayList<InfoFacadeGenerator<RaceFacade>>();
+        this.classGenerators = new ArrayList<InfoFacadeGenerator<ClassFacade>>();
+        this.skillGenerators = new ArrayList<InfoFacadeGenerator<SkillFacade>>();
         GameModeFacade gameMode = data.getGameMode();
-        try
+
+        Document document = DocumentManager.getDocument(gameMode.getGeneratorFile().toURI());
+        if (document != null)
         {
-            Document document = DocumentManager.getInstance().getDocument(gameMode.getGeneratorFile().toURI());
             alignmentGenerators.addAll(buildGeneratorList(GeneratorType.ALIGNMENT,
-                                                          document));
+                                                      document));
         }
-        catch (Exception ex)
-        {
-            Logging.errorPrint("Error occured while parsing " +
-                               gameMode.getGeneratorFile(), ex);
-        }
+
         GenericListModelWrapper<AlignmentFacade> alignments = new GenericListModelWrapper<AlignmentFacade>(gameMode.getAlignments());
         for (AlignmentFacade alignmentFacade : alignments)
         {
             alignmentGenerators.add(new SingletonWeightedGenerator<AlignmentFacade>(alignmentFacade));
         }
+        addSingletonInfoFacadeGenerators(data.getRaces(), raceGenerators);
+        addSingletonInfoFacadeGenerators(data.getClasses(), classGenerators);
+        addSingletonInfoFacadeGenerators(data.getSkills(), skillGenerators);
+    }
+
+    private <T extends InfoFacade> void addSingletonInfoFacadeGenerators(GenericListModel<T> model,
+                                                                          List<InfoFacadeGenerator<T>> generators)
+    {
+        GenericListModelWrapper<T> list = new GenericListModelWrapper<T>(model);
+        for (T infoFacade : list)
+        {
+            generators.add(new SingletonInfoFacadeGenerator<T>(infoFacade));
+        }
     }
 
     public static final void main(String[] arg)
     {
+
+        File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
         try
         {
-            File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
-            BeanInfo info = Introspector.getBeanInfo(CharacterBuild.class);
-            System.out.println(Arrays.toString(info.getAdditionalBeanInfo()));
-            System.out.println(info.getBeanDescriptor().getCustomizerClass());
+            Integer.parseInt(null);
         }
-        catch (IntrospectionException ex)
+        catch (NumberFormatException e)
         {
-            Logger.getLogger(GeneratorManager.class.getName()).log(Level.SEVERE,
-                                                                   null, ex);
+            System.out.println("failed");
         }
+
     }
 
     private <T> List<T> buildGeneratorList(GeneratorType<? extends T> type,

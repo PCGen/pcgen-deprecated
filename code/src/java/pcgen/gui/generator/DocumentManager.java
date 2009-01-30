@@ -25,8 +25,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.jdom.Document;
@@ -74,7 +76,7 @@ public class DocumentManager implements EntityResolver
         private static DocumentManager INSTANCE = new DocumentManager();
     }
 
-    public static DocumentManager getInstance()
+    private static DocumentManager getInstance()
     {
         return SingletonHolder.INSTANCE;
     }
@@ -88,7 +90,6 @@ public class DocumentManager implements EntityResolver
         documentMap = new HashMap<String, Document>();
         builder = new SAXBuilder();
         builder.setEntityResolver(this);
-        builder.setReuseParser(false);
         outputter = new XMLOutputter();
         outputter.setFormat(Format.getPrettyFormat());
     }
@@ -111,29 +112,95 @@ public class DocumentManager implements EntityResolver
         return null;
     }
 
-    public Document getDocument(URI uri) throws JDOMException, IOException
+    public static Document getDocument(URI uri)
     {
+        DocumentManager instance = getInstance();
         String systemId = uri.toString();
-        Document document = documentMap.get(systemId);
+        Document document = instance.documentMap.get(systemId);
         if (document == null)
         {
-            document = createDocument(systemId);
-            documentMap.put(systemId, document);
+            document = instance.createDocument(systemId);
+            instance.documentMap.put(systemId, document);
         }
         return document;
     }
 
-    public void outputDocument(Document document) throws IOException
+    public static void outputDocument(Document document) throws IOException
     {
-        outputter.output(document,
-                         new FileOutputStream(new File(URI.create(document.getBaseURI()))));
+        getInstance().outputter.output(document,
+                                       new FileOutputStream(new File(URI.create(document.getBaseURI()))));
     }
 
-    private Document createDocument(String systemId) throws JDOMException, IOException
+    private Document createDocument(String systemId)
     {
-        Document document = builder.build(systemId);
-        checkReferences(document);
+        Document document = null;
+        try
+        {
+            document = builder.build(systemId);
+            checkValidity(document);
+            checkReferences(document);
+        }
+        catch (JDOMException ex)
+        {
+            Logging.log(Logging.XML_ERROR, "Failed to created document", ex);
+        }
+        catch (IOException ex)
+        {
+            Logging.log(Logging.XML_ERROR, "Error occured while accessing file",
+                        ex);
+        }
         return document;
+    }
+
+    private void checkValidity(Document document)
+    {
+        @SuppressWarnings("unchecked")
+        Iterator<Element> elementIterator = document.getDescendants(new ElementFilter());
+        while (elementIterator.hasNext())
+        {
+            Element element = elementIterator.next();
+            String value = element.getAttributeValue("score");
+            if (value != null && !isValidInteger(document, element,
+                                                 element.getText()))
+            {
+                //This must be a COST element for this to be true
+                elementIterator.remove();
+                continue;
+            }
+            if (value == null)
+            {
+                value = element.getAttributeValue("points");
+            }
+            if (value == null)
+            {
+                value = element.getAttributeValue("weight");
+            }
+            if (value != null && !isValidInteger(document, element, value))
+            {
+                elementIterator.remove();
+                continue;
+            }
+        }
+
+
+    }
+
+    private boolean isValidInteger(Document document, Element element,
+                                    String att)
+    {
+        try
+        {
+            Integer.parseInt(att);
+        }
+        catch (NumberFormatException e)
+        {
+            Logging.log(Logging.XML_ERROR,
+                        "Invalid integer value in " +
+                        document.getBaseURI() + ", ignoring " + element,
+                        e);
+            return false;
+        }
+        return true;
     }
 
     private void checkReferences(Document document)
@@ -143,32 +210,32 @@ public class DocumentManager implements EntityResolver
         if (name.equals("BUILDSET"))
         {
             pruneInvalidReferences(document,
-                                   root.getContent(new ElementFilter("CHARACTER_BUILD")));
+                                   root.getContent(new ElementFilter("CHARACTER_BUILD")).iterator());
             pruneInvalidReferences(document,
-                                   root.getContent(new ElementFilter("ABILITY_BUILD")));
+                                   root.getContent(new ElementFilter("ABILITY_BUILD")).iterator());
         }
         else if (name.equals("CHARACTER_BUILD") || name.equals("ABILITY_BUILD"))
         {
             pruneInvalidReferences(document,
-                                   Collections.singletonList(root));
+                                   Collections.singletonList(root).iterator());
         }
     }
 
-    private void pruneInvalidReferences(Document document, List elements)
+    private void pruneInvalidReferences(Document document, Iterator elements)
     {
         loop:
-            for (Object element : elements)
+            while (elements.hasNext())
             {
-                Element buildElement = (Element) element;
+                Element buildElement = (Element) elements.next();
                 List children = buildElement.getContent(refFilter);
                 for (Object object : children)
                 {
                     if (!isValidReference(document, (Element) object))
                     {
-                        Logging.errorPrint("Invalid Reference in " +
-                                           document.getBaseURI() + ", ignoring " +
-                                           buildElement);
-                        buildElement.detach();
+                        Logging.log(Logging.XML_ERROR, "Invalid Reference in " +
+                                    document.getBaseURI() + ", ignoring " +
+                                    buildElement);
+                        elements.remove();
                         continue loop;
                     }
                 }
@@ -180,17 +247,26 @@ public class DocumentManager implements EntityResolver
         String generatorUri = refElement.getAttributeValue("uri");
         if (generatorUri != null)
         {
+            URI uri = null;
             try
             {
-                URI uri = new URI(generatorUri);
+                uri = new URI(generatorUri);
                 URI baseuri = URI.create(document.getBaseURI());
                 uri = baseuri.resolve(uri);
                 document = getDocument(uri);
             }
-            catch (Exception ex)
+            catch (URISyntaxException ex)
             {
-                Logging.errorPrint("Error occured while checking references in " +
-                                   document.getBaseURI(), ex);
+                Logging.log(Logging.XML_ERROR,
+                            "Invalid URI specified in:\n" +
+                            outputter.outputString(refElement) + "\nlocated in " +
+                            document.getBaseURI(), ex);
+                return false;
+            }
+            if (document == null)
+            {
+                Logging.log(Logging.XML_ERROR,
+                            "Unable to resolve reference to " + uri);
                 return false;
             }
         }
