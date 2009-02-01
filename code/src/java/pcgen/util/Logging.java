@@ -61,6 +61,9 @@ public class Logging
 	/** Logging level for LST information such as references to missing items in PRE or CHOOSE tags. */
 	public static final Level LST_INFO = PCGenLogLevel.LST_INFO;
 
+    /** Logging level for XML parsing errors */
+    public static final Level XML_ERROR = PCGenLogLevel.XML_ERROR;
+    
 	/** Log level for application debug output. */
 	public static final Level DEBUG = Level.FINER;
 

@@ -46,6 +46,9 @@ public class PCGenLogLevel extends Level
 	public static final PCGenLogLevel LST_INFO =
 			new PCGenLogLevel("LSTINFO", 750);
 
+    public static final PCGenLogLevel XML_ERROR = 
+            new PCGenLogLevel("XMLERROR", 925);
+    
 	protected PCGenLogLevel(String arg0, int arg1)
 	{
 		super(arg0, arg1);

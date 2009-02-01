@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -51,24 +52,6 @@ import pcgen.util.Logging;
  */
 public class DocumentManager implements EntityResolver
 {
-
-    private static Filter refFilter = new Filter()
-    {
-
-        public boolean matches(Object obj)
-        {
-            if (obj instanceof Element)
-            {
-                Element element = (Element) obj;
-                if (element.getName().endsWith("_REF"))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-    };
 
     private static class SingletonHolder
     {
@@ -137,8 +120,8 @@ public class DocumentManager implements EntityResolver
         try
         {
             document = builder.build(systemId);
-            checkValidity(document);
-            checkReferences(document);
+            pruneElements(document);
+            pruneReferences(document);
         }
         catch (JDOMException ex)
         {
@@ -152,37 +135,61 @@ public class DocumentManager implements EntityResolver
         return document;
     }
 
-    private void checkValidity(Document document)
+    @SuppressWarnings("unchecked")
+    private void pruneElements(Document document)
     {
-        @SuppressWarnings("unchecked")
-        Iterator<Element> elementIterator = document.getDescendants(new ElementFilter());
-        while (elementIterator.hasNext())
+        Stack<Element> elementStack = new Stack<Element>();
+        elementStack.push(document.getRootElement());
+        while (!elementStack.empty())
         {
-            Element element = elementIterator.next();
-            String value = element.getAttributeValue("score");
-            if (value != null && !isValidInteger(document, element,
-                                                 element.getText()))
+            Element element = elementStack.pop();
+            Boolean valid = isElementValid(document, element);
+            if (valid == null)
             {
-                //This must be a COST element for this to be true
-                elementIterator.remove();
-                continue;
+                List<Element> children = element.getChildren();
+                elementStack.addAll(children);
             }
-            if (value == null)
+            else if (!valid)
             {
-                value = element.getAttributeValue("points");
-            }
-            if (value == null)
-            {
-                value = element.getAttributeValue("weight");
-            }
-            if (value != null && !isValidInteger(document, element, value))
-            {
-                elementIterator.remove();
-                continue;
+                element.detach();
             }
         }
+    }
 
-
+    @SuppressWarnings("unchecked")
+    private Boolean isElementValid(Document document, Element element)
+    {
+        String name = element.getName();
+        if (name.equals("STANDARDMODE_GENERATOR"))
+        {
+            return Boolean.TRUE;
+        }
+        else if (name.equals("PURCHASEMODE_GENERATOR"))
+        {
+            String value = element.getAttributeValue("points");
+            if (!isValidInteger(document, element, value))
+            {
+                return Boolean.FALSE;
+            }
+            List<Element> children = element.getChildren();
+            for (Element child : children)
+            {
+                value = child.getAttributeValue("score");
+                if (!isValidInteger(document, element, value) ||
+                        !isValidInteger(document, element,
+                                        child.getText()))
+                {
+                    return Boolean.FALSE;
+                }
+            }
+            return Boolean.TRUE;
+        }
+        String value = element.getAttributeValue("weight");
+        if (value != null)
+        {
+            return isValidInteger(document, element, value);
+        }
+        return null;
     }
 
     private boolean isValidInteger(Document document, Element element,
@@ -191,19 +198,21 @@ public class DocumentManager implements EntityResolver
         try
         {
             Integer.parseInt(att);
+            return true;
         }
         catch (NumberFormatException e)
         {
+            element.removeContent();
             Logging.log(Logging.XML_ERROR,
                         "Invalid integer value in " +
-                        document.getBaseURI() + ", ignoring " + element,
+                        document.getBaseURI() + ", ignoring " +
+                        outputter.outputString(element),
                         e);
             return false;
         }
-        return true;
     }
 
-    private void checkReferences(Document document)
+    private void pruneReferences(Document document)
     {
         Element root = document.getRootElement();
         String name = root.getName();
@@ -227,7 +236,7 @@ public class DocumentManager implements EntityResolver
             while (elements.hasNext())
             {
                 Element buildElement = (Element) elements.next();
-                List children = buildElement.getContent(refFilter);
+                List children = buildElement.getContent(ElementFilters.getReferenceFilter());
                 for (Object object : children)
                 {
                     if (!isValidReference(document, (Element) object))

@@ -25,12 +25,12 @@ import java.beans.BeanDescriptor;
 import java.beans.PropertyEditorSupport;
 import java.beans.SimpleBeanInfo;
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ import java.util.Vector;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.filter.ElementFilter;
+import pcgen.base.util.DoubleKeyMap;
 import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.core.SettingsHandler;
@@ -75,6 +75,7 @@ public final class GeneratorManager
     public static final class GeneratorType<E>
     {
 
+        private static final Map<String, GeneratorType<?>> typeMap = new HashMap<String, GeneratorType<?>>();
         public static final GeneratorType<WeightedGenerator<AlignmentFacade>> ALIGNMENT = new GeneratorType<WeightedGenerator<AlignmentFacade>>("AlignmentGenerator",
                                                                                                                                                    "ALIGNMENT_GENERATOR",
                                                                                                                                                    DefaultAlignmentGenerator.class,
@@ -116,6 +117,12 @@ public final class GeneratorManager
             this.element = element;
             this.baseClass = baseClass;
             this.mutableClass = mutableClass;
+            typeMap.put(element, this);
+        }
+
+        public static GeneratorType<?> getGeneratorType(String element)
+        {
+            return typeMap.get(element);
         }
 
     }
@@ -127,44 +134,119 @@ public final class GeneratorManager
     }
 
     private final DataSetFacade data;
-    private final List<WeightedGenerator<AlignmentFacade>> alignmentGenerators;
-    private final List<InfoFacadeGenerator<RaceFacade>> raceGenerators;
-    private final List<InfoFacadeGenerator<ClassFacade>> classGenerators;
-    private final List<InfoFacadeGenerator<SkillFacade>> skillGenerators;
+    private final DoubleKeyMap<GeneratorType<?>, String, Object> generatorMap;
 
     public GeneratorManager(DataSetFacade data)
     {
         this.data = data;
-        this.alignmentGenerators = new ArrayList<WeightedGenerator<AlignmentFacade>>();
-        this.raceGenerators = new ArrayList<InfoFacadeGenerator<RaceFacade>>();
-        this.classGenerators = new ArrayList<InfoFacadeGenerator<ClassFacade>>();
-        this.skillGenerators = new ArrayList<InfoFacadeGenerator<SkillFacade>>();
+        this.generatorMap = new DoubleKeyMap<GeneratorType<?>, String, Object>();
+
+        addSingletonInfoFacadeGenerators(GeneratorType.RACE, data.getRaces());
+        addSingletonInfoFacadeGenerators(GeneratorType.CLASS, data.getClasses());
+        addSingletonInfoFacadeGenerators(GeneratorType.SKILL, data.getSkills());
+
         GameModeFacade gameMode = data.getGameMode();
 
         Document document = DocumentManager.getDocument(gameMode.getGeneratorFile().toURI());
         if (document != null)
         {
-            alignmentGenerators.addAll(buildGeneratorList(GeneratorType.ALIGNMENT,
-                                                      document));
+            loadGenerators(document);
         }
+
 
         GenericListModelWrapper<AlignmentFacade> alignments = new GenericListModelWrapper<AlignmentFacade>(gameMode.getAlignments());
         for (AlignmentFacade alignmentFacade : alignments)
         {
-            alignmentGenerators.add(new SingletonWeightedGenerator<AlignmentFacade>(alignmentFacade));
+            generatorMap.put(GeneratorType.ALIGNMENT, null,
+                             new SingletonWeightedGenerator<AlignmentFacade>(alignmentFacade));
         }
-        addSingletonInfoFacadeGenerators(data.getRaces(), raceGenerators);
-        addSingletonInfoFacadeGenerators(data.getClasses(), classGenerators);
-        addSingletonInfoFacadeGenerators(data.getSkills(), skillGenerators);
     }
 
-    private <T extends InfoFacade> void addSingletonInfoFacadeGenerators(GenericListModel<T> model,
-                                                                          List<InfoFacadeGenerator<T>> generators)
+    private <T extends InfoFacade> void addSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
+                                                                          GenericListModel<T> model)
     {
         GenericListModelWrapper<T> list = new GenericListModelWrapper<T>(model);
         for (T infoFacade : list)
         {
-            generators.add(new SingletonInfoFacadeGenerator<T>(infoFacade));
+            SingletonInfoFacadeGenerator<T> generator = new SingletonInfoFacadeGenerator<T>(infoFacade);
+            generatorMap.put(type, generator.toString(), generator);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void loadGenerators(Document document)
+    {
+        Element root = document.getRootElement();
+        String name = root.getName();
+        if (name.equals("BUILDSET"))
+        {
+            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+
+            List<Element> children = root.getContent(ElementFilters.getBuildFilter().negate());
+            for (Element element : children)
+            {
+                loadGenerator(element, mutable);
+            }
+            children = root.getContent(ElementFilters.getBuildFilter());
+            for (Element element : children)
+            {
+                List<Element> references = element.getContent(ElementFilters.getReferenceFilter());
+                for (Element element1 : references)
+                {
+                    name = element1.getAttributeValue("name");
+                    if (!generatorMap.containsKey(GeneratorType.getGeneratorType(element1.getName().replaceFirst("_REF",
+                                                                                                                 "")),
+                                                  name))
+                    {
+                        String uri = element1.getAttributeValue("uri");
+                        if (uri != null)
+                        {
+                            URI base = URI.create(document.getBaseURI());
+                            Document d = DocumentManager.getDocument(base.resolve(URI.create(uri)));
+                            loadGenerators(d);
+                        }
+                    }
+                }
+                loadGenerator(element, mutable);
+            }
+        }
+        loadGenerator(root, false);
+    }
+
+    private void loadGenerator(Element element, boolean mutable)
+    {
+        GeneratorType<?> type = GeneratorType.getGeneratorType(element.getName());
+        Set<String> sources = data.getSources();
+        @SuppressWarnings("unchecked")
+        List<Element> sourceElements = ((Element) element).getChildren("SOURCE");
+        if (sourceElements != null)
+        {
+            for ( Element source : sourceElements)
+            {
+                if (!sources.contains(source.getText()))
+                {
+                    return;
+                }
+            }
+        }
+        try
+        {
+            Class<?> c;
+            if (mutable)
+            {
+                c = type.mutableClass;
+            }
+            else
+            {
+                c = type.baseClass;
+            }
+            Object obj = c.getConstructor(Element.class).newInstance(element);
+            generatorMap.put(type, obj.toString(), obj);
+        }
+        catch ( Exception ex)
+        {
+            Logging.errorPrint("Unable to create generator",
+                               ex);
         }
     }
 
@@ -172,70 +254,7 @@ public final class GeneratorManager
     {
 
         File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
-        try
-        {
-            Integer.parseInt(null);
-        }
-        catch (NumberFormatException e)
-        {
-            System.out.println("failed");
-        }
-
-    }
-
-    private <T> List<T> buildGeneratorList(GeneratorType<? extends T> type,
-                                            Document document)
-    {
-        Element root = document.getRootElement();
-        boolean mutable;
-        if (root.getName().equals("BUILDSET"))
-        {
-            mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
-        }
-        else
-        {
-            mutable = false;
-        }
-        List<T> generators = new ArrayList<T>();
-        Set<String> sources = data.getSources();
-        Iterator it = document.getDescendants(new ElementFilter(type.element));
-        generatorLoop:
-            while (it.hasNext())
-            {
-                Object element = it.next();
-                @SuppressWarnings("unchecked")
-                List<Element> sourceElements = ((Element) element).getChildren("SOURCE");
-                if (sourceElements != null)
-                {
-                    for ( Element source : sourceElements)
-                    {
-                        if (!sources.contains(source.getText()))
-                        {
-                            continue generatorLoop;
-                        }
-                    }
-                }
-                try
-                {
-                    Class<? extends T> c;
-                    if (mutable)
-                    {
-                        c = type.mutableClass;
-                    }
-                    else
-                    {
-                        c = type.baseClass;
-                    }
-                    T generator = (T) c.getConstructor(Element.class).newInstance(element);
-                    generators.add(generator);
-                }
-                catch ( Exception ex)
-                {
-                    Logging.errorPrint("Unable to create generator",
-                                       ex);
-                }
-            }
-        return generators;
+        System.out.println(GeneratorType.getGeneratorType("ABILITY_BUILD").name);
     }
 
     public static <T extends InfoFacade> InfoFacadeGenerator<T> createSingletonGenerator(T item)
@@ -447,6 +466,46 @@ public final class GeneratorManager
 
     }
 
+    private class AnyWeightedGenerator<E> extends AbstractWeightedGenerator<E>
+    {
+
+        public AnyWeightedGenerator(List<E> items)
+        {
+            super("Any");
+            for (E object : items)
+            {
+                priorityMap.put(object, 1);
+            }
+        }
+
+        @Override
+        protected E getFacade(String name)
+        {
+            return null;
+        }
+
+    }
+
+    private class AnyInfoFacadeGenerator<E extends InfoFacade> extends AbstractInfoFacadeGenerator<E>
+    {
+
+        public AnyInfoFacadeGenerator(List<E> items)
+        {
+            super("Any");
+            for (E object : items)
+            {
+                priorityMap.put(object, 1);
+            }
+        }
+
+        @Override
+        protected E getFacade(String name)
+        {
+            return null;
+        }
+
+    }
+
     private class DefaultAlignmentGenerator extends AbstractWeightedGenerator<AlignmentFacade>
     {
 
@@ -504,8 +563,14 @@ public final class GeneratorManager
             implements WeightedGenerator<E>
     {
 
-        protected Map<E, Integer> priorityMap;
+        protected Map<E, Integer> priorityMap = new HashMap<E, Integer>();
         private Queue<E> queue = null;
+
+        public AbstractWeightedGenerator(String name)
+        {
+            super(name);
+            queue = new LinkedList<E>();
+        }
 
         public AbstractWeightedGenerator(Element element) throws MissingDataException
         {
@@ -633,6 +698,12 @@ public final class GeneratorManager
     {
 
         protected boolean randomOrder;
+
+        public AbstractInfoFacadeGenerator(String name)
+        {
+            super(name);
+            this.randomOrder = true;
+        }
 
         @SuppressWarnings("unchecked")
         public AbstractInfoFacadeGenerator(Element element) throws MissingDataException
