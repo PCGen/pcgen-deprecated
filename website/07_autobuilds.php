@@ -17,8 +17,8 @@ require_once('include/header.php.inc');
         <p>These are regular scheduled builds from the development branch of PCGen. Every night, 
         the project is checked for changes and if any have been made a new build is generated.</p>
         <ul>
-          <li><a href="http://pcgen.sourceforge.net/autobuilds/">Autobuild report</a>
-          <li><a href="http://pcgen.sourceforge.net/autobuilds/download.html">Download Autobuild</a>
+          <li><a href="http://pcgen-test.org/autobuilds">Autobuild report</a>
+          <li><a href="http://pcgen-test.org/autobuilds/download.html">Download Autobuild</a>
         </ul>
 
 	<!--
