@@ -25,12 +25,16 @@ import java.beans.BeanDescriptor;
 import java.beans.PropertyEditorSupport;
 import java.beans.SimpleBeanInfo;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +43,20 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
+import org.jdom.DefaultJDOMFactory;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
-import pcgen.base.util.DoubleKeyMap;
+import org.jdom.JDOMException;
+import org.jdom.filter.AbstractFilter;
+import org.jdom.filter.Filter;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import pcgen.base.util.TripleKeyMap;
 import pcgen.base.util.WeightedCollection;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.core.SettingsHandler;
@@ -127,101 +141,167 @@ public final class GeneratorManager
 
     }
 
-    private <T> List<T> getGeneratorList(Document document,
-                                          GeneratorType<T> type)
+    private static class DocumentHandler extends DefaultJDOMFactory implements EntityResolver
     {
-        return null;
-    }
 
-    private final DataSetFacade data;
-    private final DoubleKeyMap<GeneratorType<?>, String, Object> generatorMap;
+        private final Map<String, Document> documentMap;
+        private final SAXBuilder builder;
+        private final XMLOutputter outputter;
 
-    public GeneratorManager(DataSetFacade data)
-    {
-        this.data = data;
-        this.generatorMap = new DoubleKeyMap<GeneratorType<?>, String, Object>();
-
-        addSingletonInfoFacadeGenerators(GeneratorType.RACE, data.getRaces());
-        addSingletonInfoFacadeGenerators(GeneratorType.CLASS, data.getClasses());
-        addSingletonInfoFacadeGenerators(GeneratorType.SKILL, data.getSkills());
-
-        GameModeFacade gameMode = data.getGameMode();
-
-        Document document = DocumentManager.getDocument(gameMode.getGeneratorFile().toURI());
-        if (document != null)
+        public DocumentHandler()
         {
-            loadGenerators(document);
+            documentMap = new HashMap<String, Document>();
+            builder = new SAXBuilder();
+            builder.setEntityResolver(this);
+            outputter = new XMLOutputter();
+            outputter.setFormat(Format.getPrettyFormat());
         }
 
-
-        GenericListModelWrapper<AlignmentFacade> alignments = new GenericListModelWrapper<AlignmentFacade>(gameMode.getAlignments());
-        for (AlignmentFacade alignmentFacade : alignments)
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
         {
-            generatorMap.put(GeneratorType.ALIGNMENT, null,
-                             new SingletonWeightedGenerator<AlignmentFacade>(alignmentFacade));
-        }
-    }
+            if (publicId != null)
+            {
+                if (publicId.equals("PCGEN-GENERATORS"))
+                {
+                    String fileName = SettingsHandler.getPcgenSystemDir() +
+                            File.separator +
+                            "generators" +
+                            File.separator +
+                            new File(systemId).getName();
+                    return new InputSource(new FileInputStream(fileName));
+                }
 
-    private <T extends InfoFacade> void addSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
-                                                                          GenericListModel<T> model)
+            }
+            return null;
+        }
+
+        public Document getDocument(URI uri)
+        {
+            String systemId = uri.toString();
+            Document document = documentMap.get(systemId);
+            if (document == null)
+            {
+                try
+                {
+                    document = builder.build(systemId);
+                }
+                catch (JDOMException ex)
+                {
+                    Logging.log(Logging.XML_ERROR, "Failed to created document",
+                                ex);
+                }
+                catch (IOException ex)
+                {
+                    Logging.log(Logging.XML_ERROR,
+                                "Error occured while accessing file",
+                                ex);
+                }
+                documentMap.put(systemId, document);
+            }
+            return document;
+        }
+
+        @Override
+        public Element element(String name)
+        {
+            return new GeneratorElement(name);
+        }
+
+    }
+    private static DocumentHandler documentHandler = new DocumentHandler();
+    private static AbstractFilter generatorFilter = new AbstractFilter()
     {
-        GenericListModelWrapper<T> list = new GenericListModelWrapper<T>(model);
-        for (T infoFacade : list)
+
+        public boolean matches(Object obj)
         {
-            SingletonInfoFacadeGenerator<T> generator = new SingletonInfoFacadeGenerator<T>(infoFacade);
-            generatorMap.put(type, generator.toString(), generator);
+            if (obj instanceof Element)
+            {
+                Element element = (Element) obj;
+                String name = element.getName();
+                return !name.matches("BUILD") &&
+                        GeneratorType.getGeneratorType(name) != null;
+            }
+            return false;
         }
-    }
+
+    };
+    private static AbstractFilter buildFilter = new AbstractFilter()
+    {
+
+        public boolean matches(Object obj)
+        {
+            if (obj instanceof Element)
+            {
+                Element element = (Element) obj;
+                return element.getName().matches("BUILD");
+            }
+            return false;
+        }
+
+    };
+    private static Filter refFilter = new Filter()
+    {
+
+        public boolean matches(Object obj)
+        {
+            if (obj instanceof Element)
+            {
+                Element element = (Element) obj;
+                if (element.getName().endsWith("_REF"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    };
 
     @SuppressWarnings("unchecked")
     private void loadGenerators(Document document)
     {
-        Element root = document.getRootElement();
-        String name = root.getName();
-        if (name.equals("BUILDSET"))
+        GeneratorElement root = (GeneratorElement) document.getRootElement();
+        boolean mutable;
+        if (root.getName().equals("BUILDSET"))
         {
-            boolean mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+            mutable = Boolean.parseBoolean(root.getAttributeValue("mutable"));
+        }
+        else
+        {
+            mutable = false;
+        }
 
-            List<Element> children = root.getContent(ElementFilters.getBuildFilter().negate());
-            for (Element element : children)
+        Iterator<GeneratorElement> elementIterator = document.getDescendants(generatorFilter);
+        while (elementIterator.hasNext())
+        {
+            GeneratorElement element = elementIterator.next();
+            loadGenerator(element, mutable);
+        }
+
+        elementIterator = document.getDescendants(buildFilter);
+        while (elementIterator.hasNext())
+        {
+            GeneratorElement element = elementIterator.next();
+            List<GeneratorElement> children = element.getContent(refFilter);
+            for (GeneratorElement generatorElement : children)
             {
-                loadGenerator(element, mutable);
-            }
-            children = root.getContent(ElementFilters.getBuildFilter());
-            for (Element element : children)
-            {
-                List<Element> references = element.getContent(ElementFilters.getReferenceFilter());
-                for (Element element1 : references)
-                {
-                    name = element1.getAttributeValue("name");
-                    if (!generatorMap.containsKey(GeneratorType.getGeneratorType(element1.getName().replaceFirst("_REF",
-                                                                                                                 "")),
-                                                  name))
-                    {
-                        String uri = element1.getAttributeValue("uri");
-                        if (uri != null)
-                        {
-                            URI base = URI.create(document.getBaseURI());
-                            Document d = DocumentManager.getDocument(base.resolve(URI.create(uri)));
-                            loadGenerators(d);
-                        }
-                    }
-                }
-                loadGenerator(element, mutable);
+                String name = generatorElement.getAttributeValue("name");
+                GeneratorType<?> type = GeneratorType.getGeneratorType(generatorElement.getName().replaceFirst("_REF",
+                                                                                                               ""));
+
             }
         }
-        loadGenerator(root, false);
     }
 
-    private void loadGenerator(Element element, boolean mutable)
+    @SuppressWarnings("unchecked")
+    private void loadGenerator(GeneratorElement element, boolean mutable)
     {
-        GeneratorType<?> type = GeneratorType.getGeneratorType(element.getName());
-        Set<String> sources = data.getSources();
-        @SuppressWarnings("unchecked")
-        List<Element> sourceElements = ((Element) element).getChildren("SOURCE");
+
+        List<GeneratorElement> sourceElements = element.getChildren("SOURCE");
         if (sourceElements != null)
         {
-            for ( Element source : sourceElements)
+            Set<String> sources = data.getSources();
+            for (Element source : sourceElements)
             {
                 if (!sources.contains(source.getText()))
                 {
@@ -229,6 +309,63 @@ public final class GeneratorManager
                 }
             }
         }
+        List<GeneratorElement> refElements = element.getContent(refFilter);
+        if (refElements != null)
+        {
+            Document basedoc = element.getDocument();
+            for (GeneratorElement refElement : refElements)
+            {
+                String name = refElement.getAttributeValue("name");
+                String catagory = refElement.getAttributeValue("catagory");
+                GeneratorType<?> type = GeneratorType.getGeneratorType(refElement.getName().replaceFirst("_REF",
+                                                                                                         ""));
+                if (!generatorMap.containsKey(type, catagory, name))
+                {
+                    String generatorUri = refElement.getAttributeValue("uri");
+                    if (generatorUri != null)
+                    {
+                        URI uri = null;
+                        Document document = null;
+                        try
+                        {
+                            uri = new URI(generatorUri);
+                            URI baseuri = URI.create(basedoc.getBaseURI());
+                            uri = baseuri.resolve(uri);
+                            document = documentHandler.getDocument(uri);
+                        }
+                        catch (URISyntaxException ex)
+                        {
+                            Logging.log(Logging.XML_ERROR,
+                                        "Invalid URI specified in:\n" +
+                                        documentHandler.outputter.outputString(refElement) +
+                                        "\nlocated in " +
+                                        basedoc.getBaseURI(), ex);
+                            return;
+                        }
+                        if (document == null)
+                        {
+                            Logging.log(Logging.XML_ERROR,
+                                        "Unable to resolve reference to " + uri);
+                            return;
+                        }
+                        else
+                        {
+                            loadGenerators(document);
+                        }
+                    }
+                }
+                if (!generatorMap.containsKey(type, catagory, name))
+                {
+                    Logging.log(Logging.XML_ERROR, "Invalid Reference in " +
+                                basedoc.getBaseURI() + ", ignoring " +
+                                documentHandler.outputter.outputString(element));
+                    return;
+                }
+            }
+        }
+        String name = element.getAttributeValue("name");
+        String catagory = element.getAttributeValue("catagory");
+        GeneratorType<?> type = GeneratorType.getGeneratorType(element.getName());
         try
         {
             Class<?> c;
@@ -240,13 +377,69 @@ public final class GeneratorManager
             {
                 c = type.baseClass;
             }
-            Object obj = c.getConstructor(Element.class).newInstance(element);
-            generatorMap.put(type, obj.toString(), obj);
+            Object obj = c.getConstructor(GeneratorElement.class).newInstance(element);
+            generatorMap.put(type, catagory, name, obj);
         }
-        catch ( Exception ex)
+        catch (Exception ex)
         {
             Logging.errorPrint("Unable to create generator",
                                ex);
+        }
+    }
+
+    private <T> List<T> getGeneratorList(Document document,
+                                          GeneratorType<T> type)
+    {
+        return null;
+    }
+
+    private final DataSetFacade data;
+    // The second and third keys are "catagory" and "name" respectively
+    private final TripleKeyMap<GeneratorType<?>, String, String, Object> generatorMap;
+
+    public GeneratorManager(DataSetFacade data)
+    {
+        this.data = data;
+        this.generatorMap = new TripleKeyMap<GeneratorType<?>, String, String, Object>();
+
+        loadSingletonInfoFacadeGenerators(GeneratorType.RACE, data.getRaces());
+        loadSingletonInfoFacadeGenerators(GeneratorType.CLASS, data.getClasses());
+        loadSingletonInfoFacadeGenerators(GeneratorType.SKILL, data.getSkills());
+
+        GameModeFacade gameMode = data.getGameMode();
+
+        Document document = documentHandler.getDocument(gameMode.getGeneratorFile().toURI());
+        if (document != null)
+        {
+            loadGenerators(document);
+        }
+
+
+        GenericListModelWrapper<AlignmentFacade> alignments = new GenericListModelWrapper<AlignmentFacade>(gameMode.getAlignments());
+        for (AlignmentFacade alignmentFacade : alignments)
+        {
+            SingletonWeightedGenerator<AlignmentFacade> generator = new SingletonWeightedGenerator<AlignmentFacade>(alignmentFacade);
+            generatorMap.put(GeneratorType.ALIGNMENT, null, generator.toString(),
+                             generator);
+        }
+    }
+
+    private <T extends InfoFacade> void loadSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
+                                                                           GenericListModel<T> model)
+    {
+        loadSingletonInfoFacadeGenerators(type, null, model);
+    }
+
+    private <T extends InfoFacade> void loadSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
+                                                                           AbilityCatagoryFacade catagory,
+                                                                           GenericListModel<T> model)
+    {
+        GenericListModelWrapper<T> list = new GenericListModelWrapper<T>(model);
+        for (T infoFacade : list)
+        {
+            SingletonInfoFacadeGenerator<T> generator = new SingletonInfoFacadeGenerator<T>(infoFacade);
+            generatorMap.put(type, catagory.getName(), generator.toString(),
+                             generator);
         }
     }
 
