@@ -20,6 +20,9 @@
  */
 package pcgen.gui.util.event;
 
+import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.GenericListModelWrapper;
+
 /**
  * This class is only effective if the subclass does not call <code>getData()</code>
  * in its implementation of the <code>intervalAdded()</code> method. 
@@ -28,10 +31,37 @@ package pcgen.gui.util.event;
 public abstract class AbstractGenericListDataListener<E> implements GenericListDataListener<E>
 {
 
+    protected GenericListModelWrapper<E> wrapper = null;
+
+    public AbstractGenericListDataListener()
+    {
+    }
+
+    public AbstractGenericListDataListener(GenericListModel<E> model)
+    {
+        setModel(model);
+    }
+
+    public void setModel(GenericListModel<E> model)
+    {
+        if (wrapper != null)
+        {
+            wrapper.getModel().removeGenericListDataListener(this);
+        }
+        wrapper = new GenericListModelWrapper<E>(model);
+        model.addGenericListDataListener(this);
+    }
+
     public void contentsChanged(GenericListDataEvent<E> e)
     {
         intervalRemoved(e);
-        intervalAdded(e);
+        intervalAdded(new GenericListDataEvent<E>(e.getSource(),
+                                                  wrapper.subList(e.getIndex0(),
+                                                                  e.getIndex1() +
+                                                                  1),
+                                                  e.getValueIsAdjusting(),
+                                                  e.getType(), e.getIndex0(),
+                                                  e.getIndex1()));
     }
 
 }

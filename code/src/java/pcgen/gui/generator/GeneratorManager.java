@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -43,6 +44,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.jdom.DefaultJDOMFactory;
 import org.jdom.DocType;
 import org.jdom.Document;
@@ -77,6 +80,8 @@ import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.generator.stat.StandardModeGenerator;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
+import pcgen.gui.util.event.AbstractGenericListDataListener;
+import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.util.Logging;
 
 /**
@@ -153,6 +158,7 @@ public final class GeneratorManager
             documentMap = new HashMap<String, Document>();
             builder = new SAXBuilder();
             builder.setEntityResolver(this);
+            builder.setFactory(this);
             outputter = new XMLOutputter();
             outputter.setFormat(Format.getPrettyFormat());
         }
@@ -282,14 +288,7 @@ public final class GeneratorManager
         while (elementIterator.hasNext())
         {
             GeneratorElement element = elementIterator.next();
-            List<GeneratorElement> children = element.getContent(refFilter);
-            for (GeneratorElement generatorElement : children)
-            {
-                String name = generatorElement.getAttributeValue("name");
-                GeneratorType<?> type = GeneratorType.getGeneratorType(generatorElement.getName().replaceFirst("_REF",
-                                                                                                               ""));
-
-            }
+            loadGenerator(element, mutable);
         }
     }
 
@@ -405,7 +404,6 @@ public final class GeneratorManager
         loadSingletonInfoFacadeGenerators(GeneratorType.RACE, data.getRaces());
         loadSingletonInfoFacadeGenerators(GeneratorType.CLASS, data.getClasses());
         loadSingletonInfoFacadeGenerators(GeneratorType.SKILL, data.getSkills());
-
         GameModeFacade gameMode = data.getGameMode();
 
         Document document = documentHandler.getDocument(gameMode.getGeneratorFile().toURI());
@@ -422,6 +420,61 @@ public final class GeneratorManager
             generatorMap.put(GeneratorType.ALIGNMENT, null, generator.toString(),
                              generator);
         }
+    }
+
+    private class SingletonInfoFacadeGeneratorManager<E extends InfoFacade>
+            extends AbstractGenericListDataListener<E>
+    {
+
+        private final GeneratorType<? extends Generator<E>> type;
+        private final String catagoryName;
+
+        public SingletonInfoFacadeGeneratorManager(GeneratorType<? extends Generator<E>> type,
+                                                    AbilityCatagoryFacade catagory,
+                                                    GenericListModel<E> model)
+        {
+            super(model);
+            this.type = type;
+            if (catagory != null)
+            {
+                catagoryName = catagory.getName();
+            }
+            else
+            {
+                catagoryName = null;
+            }
+            setModel(model);
+            addData(wrapper);
+        }
+
+        private void addData(Collection<? extends E> data)
+        {
+            for (E infoFacade : data)
+            {
+                SingletonInfoFacadeGenerator<E> generator = new SingletonInfoFacadeGenerator<E>(infoFacade);
+                generatorMap.put(type, catagoryName, generator.toString(),
+                                 generator);
+            }
+        }
+
+        private void removeData(Collection<? extends E> data)
+        {
+            for (E e : data)
+            {
+                generatorMap.remove(type, catagoryName, e.toString());
+            }
+        }
+
+        public void intervalAdded(GenericListDataEvent<E> e)
+        {
+            addData(e.getData());
+        }
+
+        public void intervalRemoved(GenericListDataEvent<E> e)
+        {
+            removeData(e.getData());
+        }
+
     }
 
     private <T extends InfoFacade> void loadSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
@@ -485,7 +538,7 @@ public final class GeneratorManager
                                                        "PurchaseModeGenerator");
         if (document != null)
         {
-            Element generatorElement = new Element("GENERATOR");
+            GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
             generatorElement.setAttribute("name", name).
                     setAttribute("points", "0");
             Element cost = new Element("COST");
@@ -518,7 +571,7 @@ public final class GeneratorManager
                                                        "StandardModeGenerator");
         if (document != null)
         {
-            Element generatorElement = new Element("GENERATOR");
+            GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
             generatorElement.setAttribute("name", name).
                     setAttribute("assignable", "true");
             document.getRootElement().addContent(generatorElement);
@@ -606,15 +659,7 @@ public final class GeneratorManager
 
         public DefaultCharacterBuilder(Element element) throws MissingDataException
         {
-            Element alignmentElement = (Element) element.getContent(0);
-            if (alignmentElement.getName().equals("ALIGNMENT_GENERATOR"))
-            {
-                alignmentGenerator = new DefaultAlignmentGenerator(alignmentElement);
-            }
-            else
-            {
 
-            }
         }
 
         public Generator<AlignmentFacade> getAlignmentGenerator()
@@ -703,7 +748,7 @@ public final class GeneratorManager
     {
 
         //private Queue<E> queue = null;
-        public DefaultAlignmentGenerator(Element element) throws MissingDataException
+        public DefaultAlignmentGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
 
@@ -721,14 +766,14 @@ public final class GeneratorManager
     {
 
         private String name;
-        protected Element element;
+        protected GeneratorElement element;
 
         public AbstractGenerator(String name)
         {
             this.name = name;
         }
 
-        public AbstractGenerator(Element element)
+        public AbstractGenerator(GeneratorElement element)
         {
             this.name = element.getAttributeValue("name");
             this.element = element;
@@ -765,14 +810,20 @@ public final class GeneratorManager
             queue = new LinkedList<E>();
         }
 
-        public AbstractWeightedGenerator(Element element) throws MissingDataException
+        public AbstractWeightedGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
+            init(element);
+        }
+
+        @SuppressWarnings("unchecked")
+        protected void init(GeneratorElement element) throws MissingDataException
+        {
 
             element.removeChildren("SOURCE");
-            @SuppressWarnings("unchecked")
+
             List<Element> children = element.getChildren();
-            for ( Element child : children)
+            for (Element child : children)
             {
                 String elementName = child.getText();
                 Integer weight = Integer.valueOf(child.getAttributeValue("weight"));
@@ -899,7 +950,7 @@ public final class GeneratorManager
         }
 
         @SuppressWarnings("unchecked")
-        public AbstractInfoFacadeGenerator(Element element) throws MissingDataException
+        public AbstractInfoFacadeGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
             this.randomOrder = element.getAttributeValue("type").equals("random");
@@ -951,7 +1002,8 @@ public final class GeneratorManager
     }
 
     private abstract static class AbstractMutableInfoFacadeGenerator<E extends InfoFacade>
-            extends AbstractInfoFacadeGenerator<E> implements MutableInfoFacadeGenerator<E>
+            extends AbstractInfoFacadeGenerator<E> implements MutableInfoFacadeGenerator<E>,
+                                                              ChangeListener
     {
 
         private AbstractInfoFacadeGenerator<E> generator = null;
@@ -962,9 +1014,22 @@ public final class GeneratorManager
             this.generator = generator;
         }
 
-        public AbstractMutableInfoFacadeGenerator(Element element) throws MissingDataException
+        public AbstractMutableInfoFacadeGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
+            element.addChangeListener(this);
+        }
+
+        public void stateChanged(ChangeEvent e)
+        {
+            try
+            {
+                init(element);
+            }
+            catch (MissingDataException ex)
+            {
+                Logging.errorPrint("Unable to update " + this + "generator", ex);
+            }
         }
 
         protected abstract String getValueName();
@@ -1076,7 +1141,7 @@ public final class GeneratorManager
         protected int points;
         protected int min;
 
-        public DefaultPurchaseModeGenerator(Element element)
+        public DefaultPurchaseModeGenerator(GeneratorElement element)
         {
             super(element);
             this.points = Integer.parseInt(element.getAttributeValue("points"));
@@ -1132,7 +1197,7 @@ public final class GeneratorManager
             this.generator = generator;
         }
 
-        public DefaultMutablePurchaseModeGenerator(Element element)
+        public DefaultMutablePurchaseModeGenerator(GeneratorElement element)
         {
             super(element);
         }
@@ -1186,7 +1251,7 @@ public final class GeneratorManager
         protected boolean assignable;
         protected List<String> diceExpressions;
 
-        public DefaultStandardModeGenerator(Element element)
+        public DefaultStandardModeGenerator(GeneratorElement element)
         {
             super(element);
             this.assignable = Boolean.parseBoolean(element.getAttributeValue("assignable"));
@@ -1228,7 +1293,7 @@ public final class GeneratorManager
             this.generator = generator;
         }
 
-        public DefaultMutableStandardModeGenerator(Element element)
+        public DefaultMutableStandardModeGenerator(GeneratorElement element)
         {
             super(element);
         }
@@ -1263,7 +1328,7 @@ public final class GeneratorManager
     private class DefaultRaceGenerator extends AbstractInfoFacadeGenerator<RaceFacade>
     {
 
-        public DefaultRaceGenerator(Element element) throws MissingDataException
+        public DefaultRaceGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
         }
@@ -1279,7 +1344,7 @@ public final class GeneratorManager
     private class DefaultMutableRaceGenerator extends AbstractMutableInfoFacadeGenerator<RaceFacade>
     {
 
-        public DefaultMutableRaceGenerator(Element element) throws MissingDataException
+        public DefaultMutableRaceGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
         }
@@ -1301,7 +1366,7 @@ public final class GeneratorManager
     private class DefaultClassGenerator extends AbstractInfoFacadeGenerator<ClassFacade>
     {
 
-        public DefaultClassGenerator(Element element) throws MissingDataException
+        public DefaultClassGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
         }
@@ -1317,7 +1382,7 @@ public final class GeneratorManager
     private class DefaultMutableClassGenerator extends AbstractMutableInfoFacadeGenerator<ClassFacade>
     {
 
-        public DefaultMutableClassGenerator(Element element) throws MissingDataException
+        public DefaultMutableClassGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
         }
@@ -1355,7 +1420,7 @@ public final class GeneratorManager
     private class DefaultSkillGenerator extends AbstractInfoFacadeGenerator<SkillFacade>
     {
 
-        public DefaultSkillGenerator(Element element) throws MissingDataException
+        public DefaultSkillGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
         }
@@ -1371,7 +1436,7 @@ public final class GeneratorManager
     private class DefaultMutableSkillGenerator extends AbstractMutableInfoFacadeGenerator<SkillFacade>
     {
 
-        public DefaultMutableSkillGenerator(Element element) throws MissingDataException
+        public DefaultMutableSkillGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
         }
@@ -1396,13 +1461,13 @@ public final class GeneratorManager
         private String name;
         protected Map<AbilityCatagoryFacade, InfoFacadeGenerator<AbilityFacade>> generatorMap;
 
-        public DefaultAbilityBuild(Element element) throws MissingDataException
+        public DefaultAbilityBuild(GeneratorElement element) throws MissingDataException
         {
             this.name = element.getAttributeValue("name");
             this.generatorMap = new HashMap<AbilityCatagoryFacade, InfoFacadeGenerator<AbilityFacade>>();
             @SuppressWarnings("unchecked")
-            List<Element> children = element.getChildren("GENERATOR");
-            for ( Element element1 : children)
+            List<GeneratorElement> children = element.getChildren("GENERATOR");
+            for ( GeneratorElement element1 : children)
             {
                 DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(element1);
                 AbilityCatagoryFacade catagory = data.getAbilityCatagory(generator.toString());
@@ -1430,7 +1495,7 @@ public final class GeneratorManager
 
         private Element element;
 
-        public DefaultMutableAbilityBuild(Element element) throws MissingDataException
+        public DefaultMutableAbilityBuild(GeneratorElement element) throws MissingDataException
         {
             super(element);
             this.element = element;
@@ -1480,7 +1545,7 @@ public final class GeneratorManager
     private class DefaultMutableAbilityGenerator extends AbstractMutableInfoFacadeGenerator<AbilityFacade>
     {
 
-        public DefaultMutableAbilityGenerator(Element element) throws MissingDataException
+        public DefaultMutableAbilityGenerator(GeneratorElement element) throws MissingDataException
         {
             super(element);
         }

@@ -36,6 +36,11 @@ public class GenericListModelWrapper<E> extends AbstractList<E>
         this.model = model;
     }
 
+    public GenericListModel<E> getModel()
+    {
+        return model;
+    }
+
     @Override
     public E get(int index)
     {

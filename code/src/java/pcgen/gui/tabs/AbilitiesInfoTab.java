@@ -99,19 +99,16 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterStateEdita
                                                   catagoryListMap.get(type)));
         }
         catagories.addGenericListDataListener(
-                new AbstractGenericListDataListener<AbilityCatagoryFacade>()
+                new AbstractGenericListDataListener<AbilityCatagoryFacade>(catagories)
                 {
 
                     public void intervalAdded(GenericListDataEvent<AbilityCatagoryFacade> e)
                     {
-                        List<AbilityCatagoryFacade> subList = catagories.subList(e.getIndex0(),
-                                                                                 e.getIndex1() +
-                                                                                 1);
                         @SuppressWarnings("unchecked")
                         ListMap<String, AbilityCatagoryFacade, ArrayList<AbilityCatagoryFacade>> catagorySubListMap =
                                 CollectionMaps.createListMap(HashMap.class,
                                                              ArrayList.class);
-                        for ( AbilityCatagoryFacade catagory : subList)
+                        for ( AbilityCatagoryFacade catagory : e.getData())
                         {
                             catagorySubListMap.add(catagory.getType(), catagory);
                         }

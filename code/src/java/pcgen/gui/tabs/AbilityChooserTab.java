@@ -243,15 +243,16 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
         public SelectedAbilityTreeViewModel(CharacterFacade character,
                                              DefaultGenericListModel<AbilityCatagoryFacade> catagories)
         {
+            super(catagories);
             this.catagoryMap = new HashMap<AbilityFacade, AbilityCatagoryFacade>();
             this.listenerMap = new HashMap<GenericListModel<AbilityFacade>, GenericListDataListener>();
             this.model = new DefaultGenericListModel<AbilityFacade>();
             this.character = character;
-
+            setModel(catagories);
             addData(catagories);
         }
 
-        private void addData(Collection<AbilityCatagoryFacade> catagories)
+        private void addData(Collection<? extends AbilityCatagoryFacade> catagories)
         {
             AbilityCatagoryFacade[] catagoryArray = catagories.toArray(new AbilityCatagoryFacade[0]);
             for (final AbilityCatagoryFacade catagory : catagoryArray)
@@ -262,19 +263,16 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
                 {
                     catagoryMap.put(ability, catagory);
                 }
-                GenericListDataListener<AbilityFacade> listener = new AbilityModelListener()
+                GenericListDataListener<AbilityFacade> listener = new AbilityModelListener(abilityList)
                 {
 
-                    public void intervalAdded(GenericListDataEvent e)
+                    public void intervalAdded(GenericListDataEvent<AbilityFacade> e)
                     {
-                        List<AbilityFacade> sublist =
-                                listWrapper.subList(e.getIndex0(),
-                                                    e.getIndex1() + 1);
-                        for (AbilityFacade ability : sublist)
+                        for (AbilityFacade ability : e.getData())
                         {
                             catagoryMap.put(ability, catagory);
                         }
-                        model.addAll(sublist);
+                        model.addAll(e.getData());
                     }
 
                 };
@@ -300,15 +298,12 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
 
         public void intervalAdded(GenericListDataEvent<AbilityCatagoryFacade> e)
         {
-            @SuppressWarnings("unchecked")
-            DefaultGenericListModel<AbilityCatagoryFacade> catagories = (DefaultGenericListModel<AbilityCatagoryFacade>) e.getSource();
-            addData(catagories.subList(e.getIndex0(), e.getIndex1() + 1));
+            addData(e.getData());
         }
 
         public void intervalRemoved(GenericListDataEvent<AbilityCatagoryFacade> e)
         {
-            Collection<? extends AbilityCatagoryFacade> catagories = e.getData();
-            removeData(catagories);
+            removeData(e.getData());
         }
 
         public AbilityCatagoryFacade getCatagoryForAbility(AbilityFacade ability)
@@ -338,6 +333,11 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
 
         private abstract class AbilityModelListener extends AbstractGenericListDataListener<AbilityFacade>
         {
+
+            public AbilityModelListener(GenericListModel<AbilityFacade> model)
+            {
+                super(model);
+            }
 
             public void intervalRemoved(GenericListDataEvent<AbilityFacade> e)
             {
@@ -390,21 +390,15 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
 
         public void setAbilityCatagory(AbilityCatagoryFacade catagory)
         {
-            if (this.catagory != null)
-            {
-                PCGenUIManager.getRegisteredAbilities(character,
-                                                      this.catagory).removeGenericListDataListener(this);
-            }
             this.catagory = catagory;
-
             DefaultGenericListModel<AbilityFacade> abilities = PCGenUIManager.getRegisteredAbilities(character,
                                                                                                      catagory);
             dataModel.clear();
             addData(abilities);
-            abilities.addGenericListDataListener(this);
+            setModel(abilities);
         }
 
-        private void addData(Collection<AbilityFacade> abilities)
+        private void addData(Collection<? extends AbilityFacade> abilities)
         {
             HashSet<AbilityFacade> abilitySet = new HashSet<AbilityFacade>(abilities);
             Iterator<AbilityFacade> it = abilitySet.iterator();
@@ -421,9 +415,7 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
 
         public void intervalAdded(GenericListDataEvent<AbilityFacade> e)
         {
-            @SuppressWarnings("unchecked")
-            DefaultGenericListModel<AbilityFacade> source = (DefaultGenericListModel<AbilityFacade>) e.getSource();
-            addData(source.subList(e.getIndex0(), e.getIndex1() + 1));
+            addData(e.getData());
         }
 
         public void intervalRemoved(GenericListDataEvent<AbilityFacade> e)
