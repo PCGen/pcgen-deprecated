@@ -20,6 +20,7 @@
  */
 package pcgen.gui.util.event;
 
+import java.util.Collection;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
 
@@ -47,10 +48,33 @@ public abstract class AbstractGenericListDataListener<E> implements GenericListD
         if (wrapper != null)
         {
             wrapper.getModel().removeGenericListDataListener(this);
+            removeData(wrapper);
         }
-        wrapper = new GenericListModelWrapper<E>(model);
-        model.addGenericListDataListener(this);
+        if (model != null)
+        {
+            wrapper = new GenericListModelWrapper<E>(model);
+            model.addGenericListDataListener(this);
+            addData(wrapper);
+        }
+        else
+        {
+            wrapper = null;
+        }
     }
+
+    public void intervalAdded(GenericListDataEvent<E> e)
+    {
+        addData(e.getData());
+    }
+
+    public void intervalRemoved(GenericListDataEvent<E> e)
+    {
+        removeData(e.getData());
+    }
+
+    protected abstract void addData(Collection<? extends E> data);
+
+    protected abstract void removeData(Collection<? extends E> data);
 
     public void contentsChanged(GenericListDataEvent<E> e)
     {

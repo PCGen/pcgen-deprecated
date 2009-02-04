@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,10 +79,9 @@ import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
 import pcgen.gui.generator.stat.MutableStandardModeGenerator;
 import pcgen.gui.generator.stat.PurchaseModeGenerator;
 import pcgen.gui.generator.stat.StandardModeGenerator;
+import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
-import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.event.AbstractGenericListDataListener;
-import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.util.Logging;
 
 /**
@@ -99,6 +99,10 @@ public final class GeneratorManager
                                                                                                                                                    "ALIGNMENT_GENERATOR",
                                                                                                                                                    DefaultAlignmentGenerator.class,
                                                                                                                                                    null);
+        public static final GeneratorType<WeightedGenerator<Gender>> GENDER = new GeneratorType<WeightedGenerator<Gender>>("GenderGenerator",
+                                                                                                                              "GENDER_GENERATOR",
+                                                                                                                              null,
+                                                                                                                              null);
         public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>("SkillGenerator",
                                                                                                                                            "SKILL_GENERATOR",
                                                                                                                                            DefaultSkillGenerator.class,
@@ -123,6 +127,10 @@ public final class GeneratorManager
                                                                                                           "ABILITY_BUILD",
                                                                                                           DefaultAbilityBuild.class,
                                                                                                           DefaultMutableAbilityBuild.class);
+        public static final GeneratorType<InfoFacadeGenerator<AbilityFacade>> ABILITY = new GeneratorType<InfoFacadeGenerator<AbilityFacade>>("Ability",
+                                                                                                                                                 "ABILITY_GENERATOR",
+                                                                                                                                                 DefaultAbilityGenerator.class,
+                                                                                                                                                 DefaultMutableAbilityGenerator.class);
         private Class<? extends E> baseClass;
         private Class<? extends E> mutableClass;
         private String name;
@@ -266,6 +274,10 @@ public final class GeneratorManager
     @SuppressWarnings("unchecked")
     private void loadGenerators(Document document)
     {
+        if (loadedDocuments.contains(document))
+        {
+            return;
+        }
         GeneratorElement root = (GeneratorElement) document.getRootElement();
         boolean mutable;
         if (root.getName().equals("BUILDSET"))
@@ -290,6 +302,7 @@ public final class GeneratorManager
             GeneratorElement element = elementIterator.next();
             loadGenerator(element, mutable);
         }
+        loadedDocuments.add(document);
     }
 
     @SuppressWarnings("unchecked")
@@ -299,7 +312,7 @@ public final class GeneratorManager
         List<GeneratorElement> sourceElements = element.getChildren("SOURCE");
         if (sourceElements != null)
         {
-            Set<String> sources = data.getSources();
+            Set<String> sources = dataset.getSources();
             for (Element source : sourceElements)
             {
                 if (!sources.contains(source.getText()))
@@ -392,108 +405,175 @@ public final class GeneratorManager
         return null;
     }
 
-    private final DataSetFacade data;
+    private final DataSetFacade dataset;
     // The second and third keys are "catagory" and "name" respectively
     private final TripleKeyMap<GeneratorType<?>, String, String, Object> generatorMap;
+    private final Set<Document> loadedDocuments;
 
-    public GeneratorManager(DataSetFacade data)
+    public GeneratorManager(DataSetFacade dataset)
     {
-        this.data = data;
+        this.dataset = dataset;
         this.generatorMap = new TripleKeyMap<GeneratorType<?>, String, String, Object>();
+        this.loadedDocuments = new HashSet<Document>();
 
-        loadSingletonInfoFacadeGenerators(GeneratorType.RACE, data.getRaces());
-        loadSingletonInfoFacadeGenerators(GeneratorType.CLASS, data.getClasses());
-        loadSingletonInfoFacadeGenerators(GeneratorType.SKILL, data.getSkills());
-        GameModeFacade gameMode = data.getGameMode();
+        loadAnyGenerators();
+        loadSingletonGenerators();
 
+        GameModeFacade gameMode = dataset.getGameMode();
         Document document = documentHandler.getDocument(gameMode.getGeneratorFile().toURI());
         if (document != null)
         {
             loadGenerators(document);
         }
-
-
-        GenericListModelWrapper<AlignmentFacade> alignments = new GenericListModelWrapper<AlignmentFacade>(gameMode.getAlignments());
-        for (AlignmentFacade alignmentFacade : alignments)
+        for (File file : dataset.getGeneratorFiles())
         {
-            SingletonWeightedGenerator<AlignmentFacade> generator = new SingletonWeightedGenerator<AlignmentFacade>(alignmentFacade);
-            generatorMap.put(GeneratorType.ALIGNMENT, null, generator.toString(),
-                             generator);
+            document = documentHandler.getDocument(file.toURI());
+            if (document != null)
+            {
+                loadGenerators(document);
+            }
         }
     }
 
-    private class SingletonInfoFacadeGeneratorManager<E extends InfoFacade>
-            extends AbstractGenericListDataListener<E>
+    private void loadAnyGenerators()
+    {
+        loadAnyWeightedGenerator(GeneratorType.ALIGNMENT,
+                                 dataset.getGameMode().getAlignments());
+        loadAnyWeightedGenerator(GeneratorType.GENDER,
+                                 new DefaultGenericListModel<Gender>(Arrays.asList(Gender.values())));
+        AbilityCatagoryManager catagoryManager = new AbilityCatagoryManager();
+        catagoryManager.setModel(dataset.getAbilityCatagories());
+        loadAnyInfoFacadeGenerator(GeneratorType.RACE, dataset.getRaces());
+        loadAnyInfoFacadeGenerator(GeneratorType.CLASS, dataset.getClasses());
+    }
+
+    private <T> void loadAnyWeightedGenerator(GeneratorType<WeightedGenerator<T>> type,
+                                               GenericListModel<T> model)
+    {
+        AnyWeightedGenerator<T> generator = new AnyWeightedGenerator<T>(model);
+        generatorMap.put(type, null, generator.toString(), generator);
+    }
+
+    private <T extends InfoFacade> void loadAnyInfoFacadeGenerator(GeneratorType<InfoFacadeGenerator<T>> type,
+                                                                    GenericListModel<T> model)
+    {
+        AnyInfoFacadeGenerator<T> generator = new AnyInfoFacadeGenerator<T>(model);
+        generatorMap.put(type, null, generator.toString(), generator);
+    }
+
+    private void loadSingletonGenerators()
+    {
+        loadSingletonWeightedGenerators(GeneratorType.ALIGNMENT,
+                                        dataset.getGameMode().getAlignments());
+        loadSingletonWeightedGenerators(GeneratorType.GENDER,
+                                        new DefaultGenericListModel<Gender>(Arrays.asList(Gender.values())));
+        loadSingletonInfoFacadeGenerators(GeneratorType.RACE, dataset.getRaces());
+        loadSingletonInfoFacadeGenerators(GeneratorType.CLASS,
+                                          dataset.getClasses());
+    }
+
+    private <T> void loadSingletonWeightedGenerators(GeneratorType<WeightedGenerator<T>> type,
+                                                      GenericListModel<T> model)
+    {
+        SingletonWeightedGeneratorManager<T> manager = new SingletonWeightedGeneratorManager<T>(type);
+        manager.setModel(model);
+    }
+
+    private <T extends InfoFacade> void loadSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
+                                                                           GenericListModel<T> model)
+    {
+        SingletonInfoFacadeGeneratorManager<T> manager = new SingletonInfoFacadeGeneratorManager<T>(type);
+        manager.setModel(model);
+    }
+
+    private class AbilityCatagoryManager extends AbstractGenericListDataListener<AbilityCatagoryFacade>
+    {
+
+        private final Map<AbilityCatagoryFacade, AnyInfoFacadeGenerator<AbilityFacade>> catagoryMap;
+
+        public AbilityCatagoryManager()
+        {
+            this.catagoryMap = new HashMap<AbilityCatagoryFacade, AnyInfoFacadeGenerator<AbilityFacade>>();
+        }
+
+        @Override
+        protected void addData(Collection<? extends AbilityCatagoryFacade> data)
+        {
+            for (AbilityCatagoryFacade abilityCatagoryFacade : data)
+            {
+                AnyInfoFacadeGenerator<AbilityFacade> generator = new AnyInfoFacadeGenerator<AbilityFacade>(dataset.getAbilities(abilityCatagoryFacade));
+                generatorMap.put(GeneratorType.ABILITY,
+                                 abilityCatagoryFacade.getName(),
+                                 generator.toString(), generator);
+                catagoryMap.put(abilityCatagoryFacade, generator);
+            }
+        }
+
+        @Override
+        protected void removeData(Collection<? extends AbilityCatagoryFacade> data)
+        {
+            for (AbilityCatagoryFacade abilityCatagoryFacade : data)
+            {
+                generatorMap.remove(GeneratorType.ABILITY,
+                                    abilityCatagoryFacade.getName(),
+                                    catagoryMap.remove(abilityCatagoryFacade).toString());
+            }
+        }
+
+    }
+
+    private class SingletonWeightedGeneratorManager<E> extends AbstractGenericListDataListener<E>
     {
 
         private final GeneratorType<? extends Generator<E>> type;
-        private final String catagoryName;
 
-        public SingletonInfoFacadeGeneratorManager(GeneratorType<? extends Generator<E>> type,
-                                                    AbilityCatagoryFacade catagory,
-                                                    GenericListModel<E> model)
+        public SingletonWeightedGeneratorManager(GeneratorType<? extends Generator<E>> type)
         {
-            super(model);
             this.type = type;
-            if (catagory != null)
-            {
-                catagoryName = catagory.getName();
-            }
-            else
-            {
-                catagoryName = null;
-            }
-            setModel(model);
-            addData(wrapper);
         }
 
-        private void addData(Collection<? extends E> data)
+        @Override
+        protected void addData(Collection<? extends E> data)
         {
-            for (E infoFacade : data)
+            for (E e : data)
             {
-                SingletonInfoFacadeGenerator<E> generator = new SingletonInfoFacadeGenerator<E>(infoFacade);
-                generatorMap.put(type, catagoryName, generator.toString(),
+                SingletonWeightedGenerator<E> generator = createGenerator(e);
+                generatorMap.put(type, null, generator.toString(),
                                  generator);
             }
         }
 
-        private void removeData(Collection<? extends E> data)
+        protected SingletonWeightedGenerator<E> createGenerator(E item)
+        {
+            return new SingletonWeightedGenerator<E>(item);
+        }
+
+        @Override
+        protected void removeData(Collection<? extends E> data)
         {
             for (E e : data)
             {
-                generatorMap.remove(type, catagoryName, e.toString());
+                generatorMap.remove(type, null, e.toString());
             }
         }
 
-        public void intervalAdded(GenericListDataEvent<E> e)
-        {
-            addData(e.getData());
-        }
-
-        public void intervalRemoved(GenericListDataEvent<E> e)
-        {
-            removeData(e.getData());
-        }
-
     }
 
-    private <T extends InfoFacade> void loadSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
-                                                                           GenericListModel<T> model)
+    private class SingletonInfoFacadeGeneratorManager<E extends InfoFacade>
+            extends SingletonWeightedGeneratorManager<E>
     {
-        loadSingletonInfoFacadeGenerators(type, null, model);
-    }
 
-    private <T extends InfoFacade> void loadSingletonInfoFacadeGenerators(GeneratorType<InfoFacadeGenerator<T>> type,
-                                                                           AbilityCatagoryFacade catagory,
-                                                                           GenericListModel<T> model)
-    {
-        GenericListModelWrapper<T> list = new GenericListModelWrapper<T>(model);
-        for (T infoFacade : list)
+        public SingletonInfoFacadeGeneratorManager(GeneratorType<? extends Generator<E>> type)
         {
-            SingletonInfoFacadeGenerator<T> generator = new SingletonInfoFacadeGenerator<T>(infoFacade);
-            generatorMap.put(type, catagory.getName(), generator.toString(),
-                             generator);
+            super(type);
         }
+
+        @Override
+        protected SingletonWeightedGenerator<E> createGenerator(E item)
+        {
+            return new SingletonInfoFacadeGenerator<E>(item);
+        }
+
     }
 
     public static final void main(String[] arg)
@@ -707,13 +787,33 @@ public final class GeneratorManager
     private class AnyWeightedGenerator<E> extends AbstractWeightedGenerator<E>
     {
 
-        public AnyWeightedGenerator(List<E> items)
+        private final AbstractGenericListDataListener<E> listener = new AbstractGenericListDataListener<E>()
+        {
+
+            @Override
+            protected void addData(Collection<? extends E> data)
+            {
+                for (E e : data)
+                {
+                    priorityMap.put(e, 1);
+                }
+            }
+
+            @Override
+            protected void removeData(Collection<? extends E> data)
+            {
+                for (E e : data)
+                {
+                    priorityMap.remove(e);
+                }
+            }
+
+        };
+
+        public AnyWeightedGenerator(GenericListModel<E> model)
         {
             super("Any");
-            for (E object : items)
-            {
-                priorityMap.put(object, 1);
-            }
+            listener.setModel(model);
         }
 
         @Override
@@ -724,20 +824,27 @@ public final class GeneratorManager
 
     }
 
-    private class AnyInfoFacadeGenerator<E extends InfoFacade> extends AbstractInfoFacadeGenerator<E>
+    private class AnyInfoFacadeGenerator<E extends InfoFacade> extends AnyWeightedGenerator<E>
+            implements InfoFacadeGenerator<E>
     {
 
-        public AnyInfoFacadeGenerator(List<E> items)
+        public AnyInfoFacadeGenerator(GenericListModel<E> model)
         {
-            super("Any");
-            for (E object : items)
-            {
-                priorityMap.put(object, 1);
-            }
+            super(model);
         }
 
         @Override
         protected E getFacade(String name)
+        {
+            return null;
+        }
+
+        public boolean isRandomOrder()
+        {
+            return true;
+        }
+
+        public Set<String> getSources()
         {
             return null;
         }
@@ -757,7 +864,7 @@ public final class GeneratorManager
         @Override
         protected AlignmentFacade getFacade(String name)
         {
-            return data.getGameMode().getAlignment(name);
+            return dataset.getGameMode().getAlignment(name);
         }
 
     }
@@ -1336,7 +1443,7 @@ public final class GeneratorManager
         @Override
         protected RaceFacade getFacade(String name)
         {
-            return data.getRace(name);
+            return dataset.getRace(name);
         }
 
     }
@@ -1352,7 +1459,7 @@ public final class GeneratorManager
         @Override
         protected RaceFacade getFacade(String name)
         {
-            return data.getRace(name);
+            return dataset.getRace(name);
         }
 
         @Override
@@ -1374,7 +1481,7 @@ public final class GeneratorManager
         @Override
         protected ClassFacade getFacade(String name)
         {
-            return data.getClass(name);
+            return dataset.getClass(name);
         }
 
     }
@@ -1390,7 +1497,7 @@ public final class GeneratorManager
         @Override
         protected ClassFacade getFacade(String name)
         {
-            return data.getClass(name);
+            return dataset.getClass(name);
         }
 
         @Override
@@ -1428,7 +1535,7 @@ public final class GeneratorManager
         @Override
         protected SkillFacade getFacade(String name)
         {
-            return data.getSkill(name);
+            return dataset.getSkill(name);
         }
 
     }
@@ -1444,7 +1551,7 @@ public final class GeneratorManager
         @Override
         protected SkillFacade getFacade(String name)
         {
-            return data.getSkill(name);
+            return dataset.getSkill(name);
         }
 
         @Override
@@ -1470,7 +1577,7 @@ public final class GeneratorManager
             for ( GeneratorElement element1 : children)
             {
                 DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(element1);
-                AbilityCatagoryFacade catagory = data.getAbilityCatagory(generator.toString());
+                AbilityCatagoryFacade catagory = dataset.getAbilityCatagory(generator.toString());
                 generatorMap.put(catagory, generator);
             }
 
@@ -1542,6 +1649,23 @@ public final class GeneratorManager
 
     }
 
+    private class DefaultAbilityGenerator extends AbstractInfoFacadeGenerator<AbilityFacade>
+    {
+
+        public DefaultAbilityGenerator(GeneratorElement element) throws MissingDataException
+        {
+            super(element);
+        }
+
+        @Override
+        protected AbilityFacade getFacade(String name)
+        {
+            return dataset.getAbility(dataset.getAbilityCatagory(element.getAttributeValue("catagory")),
+                                      name);
+        }
+
+    }
+
     private class DefaultMutableAbilityGenerator extends AbstractMutableInfoFacadeGenerator<AbilityFacade>
     {
 
@@ -1554,20 +1678,14 @@ public final class GeneratorManager
         protected AbilityFacade getFacade(String name)
         {
 
-            return data.getAbility(data.getAbilityCatagory(this.toString()),
-                                   name);
+            return dataset.getAbility(dataset.getAbilityCatagory(element.getAttributeValue("catagory")),
+                                      name);
         }
 
         @Override
         protected String getValueName()
         {
             return "ABILITY";
-        }
-
-        @Override
-        public String toString()
-        {
-            return element.getAttributeValue("catagory");
         }
 
         @Override

@@ -34,8 +34,8 @@ import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.DefaultGenericListModel;
+import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.event.AbstractGenericListDataListener;
-import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.util.CollectionMaps;
 import pcgen.util.ListMap;
 
@@ -83,67 +83,60 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterStateEdita
         final ListMap<String, AbilityCatagoryFacade, DefaultGenericListModel<AbilityCatagoryFacade>> catagoryListMap =
                 CollectionMaps.createListMap(HashMap.class,
                                              DefaultGenericListModel.class);
-
-        final DefaultGenericListModel<AbilityCatagoryFacade> catagories =
-                PCGenUIManager.getRegisteredAbilityCatagories(character);
-
-        for (AbilityCatagoryFacade catagory : catagories)
+        AbstractGenericListDataListener<AbilityCatagoryFacade> listener = new AbstractGenericListDataListener<AbilityCatagoryFacade>()
         {
-            catagoryListMap.add(catagory.getType(), catagory);
-        }
 
-        for (String type : catagoryListMap.keySet())
+            @Override
+            protected void addData(Collection<? extends AbilityCatagoryFacade> data)
+            {
+                @SuppressWarnings("unchecked")
+                ListMap<String, AbilityCatagoryFacade, ArrayList<AbilityCatagoryFacade>> catagorySubListMap =
+                        CollectionMaps.createListMap(HashMap.class,
+                                                     ArrayList.class);
+                for ( AbilityCatagoryFacade catagory : data)
+                {
+                    catagorySubListMap.add(catagory.getType(), catagory);
+                }
+                // Warning: this does not take into acount whether or not a new "type"
+                // has been introduced!!
+                for ( String type : catagorySubListMap.keySet())
+                {
+                    catagoryListMap.addAll(type,
+                                           catagorySubListMap.get(type));
+                }
+            }
+
+            @Override
+            protected void removeData(Collection<? extends AbilityCatagoryFacade> data)
+            {
+                @SuppressWarnings("unchecked")
+                ListMap<String, AbilityCatagoryFacade, ArrayList<AbilityCatagoryFacade>> catagorySubListMap =
+                        CollectionMaps.createListMap(HashMap.class,
+                                                     ArrayList.class);
+                for ( AbilityCatagoryFacade catagory : data)
+                {
+                    catagorySubListMap.add(catagory.getType(), catagory);
+                }
+                // Warning this does not take into acount whether or not a "type"
+                // should be removed from the tabs
+                for ( String type : catagorySubListMap.keySet())
+                {
+                    catagoryListMap.removeAll(type,
+                                              catagorySubListMap.get(type));
+                }
+            }
+
+        };
+        listener.setModel(character.getDataSet().getAbilityCatagories());
+        for ( String type : catagoryListMap.keySet())
         {
             titles.add(type);
             tabs.put(type, abilityTab.createState(character,
                                                   catagoryListMap.get(type)));
         }
-        catagories.addGenericListDataListener(
-                new AbstractGenericListDataListener<AbilityCatagoryFacade>(catagories)
-                {
-
-                    public void intervalAdded(GenericListDataEvent<AbilityCatagoryFacade> e)
-                    {
-                        @SuppressWarnings("unchecked")
-                        ListMap<String, AbilityCatagoryFacade, ArrayList<AbilityCatagoryFacade>> catagorySubListMap =
-                                CollectionMaps.createListMap(HashMap.class,
-                                                             ArrayList.class);
-                        for ( AbilityCatagoryFacade catagory : e.getData())
-                        {
-                            catagorySubListMap.add(catagory.getType(), catagory);
-                        }
-                        // Warning this does not take into acount whether or not a new "type"
-                        // has been introduced!!
-                        for ( String type : catagorySubListMap.keySet())
-                        {
-                            catagoryListMap.addAll(type,
-                                                   catagorySubListMap.get(type));
-                        }
-                    }
-
-                    public void intervalRemoved(GenericListDataEvent<AbilityCatagoryFacade> e)
-                    {
-                        Collection<? extends AbilityCatagoryFacade> data = e.getData();
-                        @SuppressWarnings("unchecked")
-                        ListMap<String, AbilityCatagoryFacade, ArrayList<AbilityCatagoryFacade>> catagorySubListMap =
-                                CollectionMaps.createListMap(HashMap.class,
-                                                             ArrayList.class);
-                        for ( AbilityCatagoryFacade catagory : data)
-                        {
-                            catagorySubListMap.add(catagory.getType(), catagory);
-                        }
-                        // Warning this does not take into acount whether or not a "type"
-                        // should be removed from the tabs
-                        for ( String type : catagorySubListMap.keySet())
-                        {
-                            catagoryListMap.removeAll(type,
-                                                      catagorySubListMap.get(type));
-                        }
-                    }
-
-                });
         Hashtable<Object, Object> state = new Hashtable<Object, Object>();
-        state.put("Titles", titles);
+        state.put("Titles",
+        titles);
         state.put("Tabs", tabs);
         state.put("SelectedTitle", titles.get(0));
         return state;
