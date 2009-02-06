@@ -31,8 +31,8 @@ public interface MutableStandardModeGenerator extends StandardModeGenerator,
                                                        Mutable
 {
 
-    public void setDiceExpressions(List<String> expressions);
-
     public void setAssignable(boolean assign);
+
+    public void setDiceExpression(int index, String expression);
 
 }
