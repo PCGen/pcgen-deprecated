@@ -1781,9 +1781,7 @@ my @Global_BONUS_Tags = (
 #	'BONUS:SPELL:*',			# Not listed in the Docs
 #	'BONUS:TOHIT:*',			# Deprecated
 #	'BONUS:WEAPON:*',			# Equipment and EquipMod files only
-
 );
-
 
 # Order for the tags for each line type.
 my %master_order = (
@@ -2228,7 +2226,9 @@ my %master_order = (
 		'KEY',
 		'NAMEISPI',
 		'OUTPUTNAME',
-		'PROFICIENCY:*',
+		'PROFICIENCY:WEAPON',
+		'PROFICIENCY:ARMOR',
+		'PROFICIENCY:SHIELD',
 		'TYPE:.CLEAR',
 		'TYPE:*',
 		'ALTTYPE',
@@ -4042,7 +4042,9 @@ my %tagheader = (
 		'!PREWEAPONPROF'		=> 'Prohibited Weapond Prof.',
 		'PREWIELD'			=> 'Required Wield Category',
 		'!PREWIELD'			=> 'Prohibited Wield Category',
-		'PROFICIENCY'		=> 'Required Proficiency',
+		'PROFICIENCY:WEAPON'	=> 'Required Weapon Proficiency',
+		'PROFICIENCY:ARMOR'	=> 'Required Armor Proficiency',
+		'PROFICIENCY:SHIELD'	=> 'Required Shield Proficiency',
 		'PROHIBITED'		=> 'Spell Scoll Prohibited',
 		'PROHIBITSPELL'		=> 'Group of Prohibited Spells',
 		'QUALIFY:CLASS'		=> 'Qualify for Class',
@@ -15024,6 +15026,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 1864706 ] PROFICIENCY: requires a subtoken
 
 [ 2577370 ] New Token - ABILITYLIST
 
