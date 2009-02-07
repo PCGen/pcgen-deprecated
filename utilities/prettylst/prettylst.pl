@@ -1879,6 +1879,7 @@ my %master_order = (
 		'POOL',
 		'CATEGORY',
 		'TYPE',
+		'ABILITYLIST',
 		'PLURAL',
 		'DISPLAYNAME',
 		'DISPLAYLOCATION',
@@ -4144,6 +4145,7 @@ my %tagheader = (
 		'PLURAL'			=> 'Plural description for UI',
 		'POOL'			=> 'Base Pool number',
 		'TYPE'			=> 'Type of Object',
+		'ABILITYLIST'		=> 'Specific choices list',
 		'VISIBLE'			=> 'Visible',
 	},
 
@@ -15022,6 +15024,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2577370 ] New Token - ABILITYLIST
 
 [ 2387200 ] New Token - PREPROFWITHARMOR
 
