@@ -1572,6 +1572,10 @@ my @PRE_Tags = (
 	'!PREMULT:*',
 	'PREPCLEVEL',
 	'!PREPCLEVEL',
+	'PREPROFWITHARMOR',
+	'!PREPROFWITHARMOR',
+	'PREPROFWITHSHIELD',
+	'!PREPROFWITHSHIELD',
 	'PRERACE:*',
 	'!PRERACE:*',
 	'PREREACH',
@@ -3972,6 +3976,10 @@ my %tagheader = (
 		'PREMULT',			=> 'Multiple Requirements',
 		'!PREMULT'			=> 'Multiple Prohibitions',
 		'PREPCLEVEL'		=> 'Required Non-Monster Lvl',
+		'PREPROFWITHARMOR'	=> 'Required Armor Proficiencies',
+		'!PREPROFWITHARMOR'	=> 'Prohibited Armor Proficiencies',
+		'PREPROFWITHSHIELD'	=> 'Required Shield Proficiencies',
+		'!PREPROFWITHSHIELD'	=> 'Prohbited Shield Proficiencies',
 		'PRERACE'			=> 'Required Race',
 		'!PRERACE'			=> 'Prohibited Race',
 		'PRERACETYPE'		=> 'Reg. Race Type',
@@ -15014,6 +15022,10 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2387200 ] New Token - PREPROFWITHARMOR
+
+[ 2577310 ] New Token - PREPROFWITHSHIELD
 
 [ 2186450 ] New Ability/Feat Token - ASPECT
 
