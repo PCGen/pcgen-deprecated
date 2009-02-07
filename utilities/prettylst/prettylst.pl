@@ -1856,6 +1856,7 @@ my %master_order = (
 		'KIT',
 		@SOURCE_Tags,
 		'NATURALATTACKS',
+		'ASPECT:*',
 		'BENEFIT',
 		'TEMPDESC',
 		'SPELLKNOWN:CLASS:*',
@@ -2439,6 +2440,7 @@ my %master_order = (
 		'KIT',
 		@SOURCE_Tags,
 		'NATURALATTACKS',
+		'ASPECT:*',
 		'BENEFIT',
 		'TEMPDESC',
 		'SPELLKNOWN:CLASS:*',
@@ -3771,6 +3773,7 @@ my %tagheader = (
 		'ALTEQMOD'			=> 'Alternative Modifier',
 		'ALTTYPE'			=> 'Alternative Type',
 		'ATTACKCYCLE'		=> 'Attack Cycle',
+		'ASPECT'			=> 'Aspects',
 		'AUTO'			=> 'Auto',
 		'AUTO:ARMORPROF'		=> 'Automatically Gained Armor Prof.',
 		'AUTO:EQUIP'		=> 'Automatically Added to Inventory',
@@ -15011,6 +15014,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2186450 ] New Ability/Feat Token - ASPECT
 
 [ 2544134 ] New Token - SPELLKNOWN
 
