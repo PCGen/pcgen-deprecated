@@ -672,7 +672,7 @@ my %tag_fix_value = (
 	STACK			=> { YES => 1, NO => 1 },
 	SPELLBOOK		=> { YES => 1, NO => 1 },
 	SPELLSTAT		=> { map { $_ => 1 } ( @valid_system_stats, 'SPELL', 'NONE', 'OTHER' ) },
-	TIMEUNIT		=> { map { $_ => 1 } qw( Month Week Day Hour Minute Round Encounter Charges ) },
+	TIMEUNIT		=> { map { $_ => 1 } ( 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Round', 'Encounter', 'Charges' ) },
 	USEUNTRAINED	=> { YES => 1, NO => 1 },
 	USEMASTERSKILL	=> { YES => 1, NO => 1 },
 	VISIBLE		=> { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
@@ -7991,41 +7991,52 @@ BEGIN {
 			my $AtWill_Flag		= NO;
 			for my $param (@list_of_param) {
 				if ( $param =~ /^(TIMES)=(.*)/ || $param =~ /^(TIMEUNIT)=(.*)/ || $param =~ /^(CASTERLEVEL)=(.*)/ ) {
-
-				# The formulas need to be validated
-				push @xcheck_to_process,
-					[
-						'DEFINE Variable',
-						qq(@@" in "$tag_name:$tag_value),
-						$file_for_error,
-						$line_for_error,
-						parse_jep(
-							$2,
-							"$tag_name:$tag_value",
-							$file_for_error,
-							$line_for_error
-						)
-					];
-				if ( $1 eq 'TIMES' ) {
-#					$param =~ s/TIMES=-1/TIMES=ATWILL/g;   # SPELLS:xxx|TIMES=-1 to SPELLS:xxx|TIMES=ATWILL conversion
-					$AtWill_Flag = $param =~ /TIMES=ATWILL/;
-					$nb_times++;
-				}
-				elsif ( $1 eq 'TIMEUNIT' ) {
-					$nb_timeunit++;
-					# Is it a valid alignment?
-					if (!exists $tag_fix_value{$1}{$2}) {
-						$logging->ewarn( NOTICE,
-							qq{Invalid value "$2" for tag "$1"},
-							$file_for_error,
-							$line_for_error
-						);
-#						$is_valid = 0;
+					if ( $1 eq 'TIMES' ) {
+#						$param =~ s/TIMES=-1/TIMES=ATWILL/g;   # SPELLS:xxx|TIMES=-1 to SPELLS:xxx|TIMES=ATWILL conversion
+						$AtWill_Flag = $param =~ /TIMES=ATWILL/;
+						$nb_times++;
+						push @xcheck_to_process,
+							[
+								'DEFINE Variable',
+								qq(@@" in "$tag_name:$tag_value),
+								$file_for_error,
+								$line_for_error,
+								parse_jep(
+									$2,
+									"$tag_name:$tag_value",
+									$file_for_error,
+									$line_for_error
+								)
+							];
 					}
-				}
-				else {
-					$nb_casterlevel++;
-				}
+					elsif ( $1 eq 'TIMEUNIT' ) {
+						$nb_timeunit++;
+						# Is it a valid alignment?
+						if (!exists $tag_fix_value{$1}{$2}) {
+							$logging->ewarn( NOTICE,
+								qq{Invalid value "$2" for tag "$1"},
+								$file_for_error,
+								$line_for_error
+							);
+#							$is_valid = 0;
+						}
+					}
+					else {
+						$nb_casterlevel++;
+												push @xcheck_to_process,
+							[
+								'DEFINE Variable',
+								qq(@@" in "$tag_name:$tag_value),
+								$file_for_error,
+								$line_for_error,
+								parse_jep(
+									$2,
+									"$tag_name:$tag_value",
+									$file_for_error,
+									$line_for_error
+								)
+							];
+					}
 				}
 				elsif ( $param =~ /^(PRE[A-Z]+):(.*)/ ) {
 
