@@ -3551,6 +3551,11 @@ my %token_BONUS_tag = map { $_ => 1 } (
 	'WIELDCATEGORY',
 );
 
+my %token_PROFICIENCY_tag = map { $_ => 1 } (
+	'WEAPON',
+	'ARMOR',
+	'SHIELD',
+);
 
 my %token_QUALIFY_tag = map { $_ => 1 } (
 	'ABILITY',
@@ -6664,7 +6669,7 @@ sub parse_tag {
 			);
 			$no_more_error = 1;
 		}
-   	}
+	}
 
 	if ( $tag eq 'BONUS' ) {
 		my ($bonus_type) = ( $value =~ /^([^=:|]+)/ );
@@ -6698,6 +6703,40 @@ sub parse_tag {
 			$no_more_error = 1;
 		}
 	}
+
+	if ( $tag eq 'PROFICIENCY' ) {
+		my ($prof_type) = ( $value =~ /^([^=:|]+)/ );
+
+		if ( $prof_type && exists $token_PROFICIENCY_tag{$prof_type} ) {
+
+			# Is it valid for the curent file type?
+			$tag .= ':' . $prof_type;
+			$value =~ s/^$prof_type(.*)/$1/;
+		}
+		elsif ($prof_type) {
+
+			# No valid bonus type was found
+			$count_tags{"Invalid"}{"Total"}{"$tag:$prof_type"}++;
+			$count_tags{"Invalid"}{$linetype}{"$tag:$prof_type"}++;
+			$logging->ewarn( NOTICE,
+				qq{Invalid PROFICIENCY:$prof_type tag "$tag_text" found in $linetype.},
+				$file_for_error,
+				$line_for_error
+			);
+			$no_more_error = 1;
+		}
+		else {
+			$count_tags{"Invalid"}{"Total"}{"PROFICIENCY"}++;
+			$count_tags{"Invalid"}{$linetype}{"PROFICIENCY"}++;
+			$logging->ewarn( NOTICE,
+				qq{Invalid PROFICIENCY tag "$tag_text" found in $linetype},
+				$file_for_error,
+				$line_for_error
+			);
+			$no_more_error = 1;
+		}
+	}
+
 
 	# [ 832171 ] AUTO:* needs to be separate tags
 	if ( $tag eq 'AUTO' ) {
@@ -7053,6 +7092,9 @@ BEGIN {
 				$file_for_error,
 				$line_for_error
 			);
+		}
+		elsif (index( $tag_name, 'PROFICIENCY' ) == 0 ) {
+			
 		}
 		elsif ( index( $tag_name, 'BONUS' ) == 0 ) {
 
