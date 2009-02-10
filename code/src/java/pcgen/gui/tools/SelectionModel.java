@@ -32,35 +32,34 @@ import pcgen.gui.util.GenericListModel;
 public interface SelectionModel<E>
 {
 
-    public static final String AVAILABLE_TEXT_PROP = "avail";
-    public static final String SELECTION_TEXT_PROP = "sel";
-    public static final String NEW_TOOLTIP_PROP = "new";
-    public static final String COPY_TOOLTIP_PROP = "copy";
-    public static final String DELETE_TOOLTIP_PROP = "delete";
-    public static final String ADD_TOOLTIP_PROP = "add";
-    public static final String REMOVE_TOOLTIP_PROP = "remove";
+	public static final String AVAILABLE_TEXT_PROP = "avail";
+	public static final String SELECTION_TEXT_PROP = "sel";
+	public static final String NEW_TOOLTIP_PROP = "new";
+	public static final String COPY_TOOLTIP_PROP = "copy";
+	public static final String DELETE_TOOLTIP_PROP = "delete";
+	public static final String ADD_TOOLTIP_PROP = "add";
+	public static final String REMOVE_TOOLTIP_PROP = "remove";
 
-    public GenericListModel<E> getAvailableList();
+	public GenericListModel<E> getAvailableList();
 
-    public GenericListModel<E> getSelectedList();
+	public GenericListModel<E> getSelectedList();
 
-    public void setAvailableList(GenericListModel<E> list);
+	public void setAvailableList(GenericListModel<E> list);
 
-    public void setSelectedList(GenericListModel<E> list);
+	public void setSelectedList(GenericListModel<E> list);
 
-    public Component getItemPanel(SelectionDialog<E> selectionDialog,
-                                   Component currentItemPanel,
-                                   E selectedItem);
+	public Component getCustomizer(Component currentItemPanel,
+									E selectedItem);
 
-    public E createMutableItem(SelectionDialog<E> selectionDialog,
-                                E templateItem);
+	public E createMutableItem(SelectionDialog<E> selectionDialog,
+								E templateItem);
 
-    public boolean isMutable(E item);
+	public boolean isMutable(E item);
 
-    public boolean isAddable(E item);
+	public boolean isAddable(E item);
 
-    public Color getItemColor(E item);
+	public Color getItemColor(E item);
 
-    public Properties getDisplayProperties();
+	public Properties getDisplayProperties();
 
 }

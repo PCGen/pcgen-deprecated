@@ -18,7 +18,7 @@
  * 
  * Created on Sep 15, 2008, 3:21:57 PM
  */
-package pcgen.gui.generator.stat;
+package pcgen.gui.generator;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -40,11 +40,12 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-import pcgen.gui.generator.Generator;
+import pcgen.gui.generator.GeneratorManager.GeneratorType;
 import pcgen.gui.tools.ResourceManager;
 import pcgen.gui.tools.SelectionDialog;
 import pcgen.gui.tools.SelectionModel;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.GenericListModelWrapper;
 
 /**
  *
@@ -75,9 +76,11 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 	private final Map<String, Customizer> panelMap;
 	private GenericListModel<Generator<Integer>> availableList;
 	private GenericListModel<Generator<Integer>> selectedList;
+	private GeneratorManager manager;
 
-	public StatGeneratorSelectionModel()
+	public StatGeneratorSelectionModel(GeneratorManager manager)
 	{
+		this.manager = manager;
 		this.modePanel = new ModeSelectionPanel();
 		this.panelMap = new HashMap<String, Customizer>();
 		panelMap.put(STANDARD_MODE, new StandardModePanel());
@@ -96,6 +99,38 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 
 	public void setAvailableList(GenericListModel<Generator<Integer>> availableList)
 	{
+		if (this.availableList != null)
+		{
+			GenericListModelWrapper<Generator<Integer>> oldList = new GenericListModelWrapper<Generator<Integer>>(this.availableList);
+			for (Generator<Integer> generator : oldList)
+			{
+				GeneratorType<?> type;
+				if (generator instanceof StandardModeGenerator)
+				{
+					type = GeneratorType.STANDARDMODE;
+				}
+				else
+				{
+					type = GeneratorType.PURCHASEMODE;
+				}
+				manager.generatorMap.remove(type, null, generator.toString());
+			}
+			GenericListModelWrapper<Generator<Integer>> newList = new GenericListModelWrapper<Generator<Integer>>(availableList);
+			for (Generator<Integer> generator : newList)
+			{
+				GeneratorType<?> type;
+				if (generator instanceof StandardModeGenerator)
+				{
+					type = GeneratorType.STANDARDMODE;
+				}
+				else
+				{
+					type = GeneratorType.PURCHASEMODE;
+				}
+				manager.generatorMap.put(type, null, generator.toString(),
+										 generator);
+			}
+		}
 		this.availableList = availableList;
 	}
 
@@ -105,9 +140,8 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 	}
 
 	@SuppressWarnings("unchecked")
-	public Component getItemPanel(SelectionDialog<Generator<Integer>> selectionDialog,
-								   Component currentItemPanel,
-								   Generator<Integer> selectedItem)
+	public Component getCustomizer(Component currentItemPanel,
+									Generator<Integer> selectedItem)
 	{
 		String mode = getMode(selectedItem);
 		Customizer panel = panelMap.get(mode);
@@ -144,6 +178,10 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 		}
 		if (name != null)
 		{
+			if (mode == STANDARD_MODE)
+			{
+			//generator = GeneratorManager.c
+			}
 //            if (mode == STANDARD_MODE)
 //            {
 //                generator = GeneratorManager.createMutableStandardModeGenerator(name,

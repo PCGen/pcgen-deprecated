@@ -64,7 +64,7 @@ import pcgen.gui.PCGenUIManager;
 import pcgen.gui.facade.ClassFacade;
 import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.StatFacade;
-import pcgen.gui.generator.stat.PurchaseModeGenerator;
+import pcgen.gui.generator.PurchaseModeGenerator;
 import pcgen.gui.util.ComboSelectionBox;
 import pcgen.gui.util.DefaultGenericComboBoxModel;
 import pcgen.gui.util.GenericComboBoxModel;

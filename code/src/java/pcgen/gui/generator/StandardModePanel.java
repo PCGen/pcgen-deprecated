@@ -18,7 +18,7 @@
  * 
  * Created on Sep 8, 2008, 6:49:13 PM
  */
-package pcgen.gui.generator.stat;
+package pcgen.gui.generator;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

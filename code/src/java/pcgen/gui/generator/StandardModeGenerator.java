@@ -1,5 +1,5 @@
 /*
- * PurchaseModeGenerator.java
+ * StandardModeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,38 +16,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 9, 2008, 3:30:17 PM
+ * Created on Aug 31, 2008, 1:39:10 AM
  */
-package pcgen.gui.generator.stat;
+package pcgen.gui.generator;
 
-import pcgen.gui.generator.*;
+import java.util.List;
+import pcgen.gui.generator.Generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface PurchaseModeGenerator extends Generator<Integer>
+public interface StandardModeGenerator extends Generator<Integer>
 {
 
-    public int getMinScore();
+    public List<String> getDiceExpressions();
 
-    public int getMaxScore();
-
-    /**
-     * @return the number of points that can be distrubuted
-     */
-    public int getPoints();
-
-    /**
-     * 
-     * @param score
-     * @return
-     */
-    public int getScoreCost(int score);
-
-    /**
-     * @return null
-     */
-    public Integer getNext();
-
+    public boolean isAssignable();
+    
 }

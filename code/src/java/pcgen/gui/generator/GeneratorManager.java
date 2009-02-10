@@ -47,6 +47,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.jdom.Attribute;
 import org.jdom.DefaultJDOMFactory;
 import org.jdom.DocType;
 import org.jdom.Document;
@@ -75,10 +76,6 @@ import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.generator.ability.AbilityBuild;
 import pcgen.gui.generator.ability.MutableAbilityBuild;
-import pcgen.gui.generator.stat.MutablePurchaseModeGenerator;
-import pcgen.gui.generator.stat.MutableStandardModeGenerator;
-import pcgen.gui.generator.stat.PurchaseModeGenerator;
-import pcgen.gui.generator.stat.StandardModeGenerator;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.event.AbstractGenericListDataListener;
@@ -407,7 +404,7 @@ public final class GeneratorManager
 
 	private final DataSetFacade dataset;
 	// The second and third keys are "catagory" and "name" respectively
-	private final TripleKeyMap<GeneratorType<?>, String, String, Object> generatorMap;
+	final TripleKeyMap<GeneratorType<?>, String, String, Object> generatorMap;
 	private final Set<Document> loadedDocuments;
 
 	public GeneratorManager(DataSetFacade dataset)
@@ -611,64 +608,49 @@ public final class GeneratorManager
 	}
 
 	public static MutablePurchaseModeGenerator createMutablePurchaseModeGenerator(String name,
-																					DataSetFacade data,
 																					PurchaseModeGenerator template)
 	{
-		Document document = getCustomGeneratorDocument(data,
-													   "PurchaseModeGenerator");
-		if (document != null)
-		{
-			GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
-			generatorElement.setAttribute("name", name).
-					setAttribute("points", "0");
-			Element cost = new Element("COST");
-			cost.setAttribute("score", "0").setText("0");
-			document.getRootElement().addContent(generatorElement.addContent(cost));
+		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
+		generatorElement.setAttribute("name", name).
+				setAttribute("points", "0");
+		Element cost = new Element("COST");
+		cost.setAttribute("score", "0").setText("0");
 
-			MutablePurchaseModeGenerator generator = new DefaultMutablePurchaseModeGenerator(generatorElement);
-			if (template != null)
+		MutablePurchaseModeGenerator generator = new DefaultMutablePurchaseModeGenerator(generatorElement);
+		if (template != null)
+		{
+			int min = template.getMinScore();
+			int max = template.getMaxScore();
+			generator.setMinScore(min);
+			generator.setMaxScore(max);
+			generator.setPoints(template.getPoints());
+			for (int i = min; i <= max; i++)
 			{
-				int min = template.getMinScore();
-				int max = template.getMaxScore();
-				generator.setMinScore(min);
-				generator.setMaxScore(max);
-				generator.setPoints(template.getPoints());
-				for (int i = min; i <= max; i++)
-				{
-					generator.setScoreCost(i, template.getScoreCost(i));
-				}
+				generator.setScoreCost(i, template.getScoreCost(i));
 			}
-			return generator;
 		}
-		return null;
+		return generator;
 	}
 
 	public static MutableStandardModeGenerator createMutableStandardModeGenerator(String name,
-																					DataSetFacade data,
 																					StandardModeGenerator template)
 	{
-		Document document = getCustomGeneratorDocument(data,
-													   "StandardModeGenerator");
-		if (document != null)
+		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
+		generatorElement.setAttribute("name", name).setAttribute("assignable",
+																 "true");
+		for (int x = 0; x < 6; x++)
 		{
-			GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
-			generatorElement.setAttribute("name", name).
-					setAttribute("assignable", "true");
-			document.getRootElement().addContent(generatorElement);
-			for (int x = 0; x < 6; x++)
-			{
-				generatorElement.addContent(new Element("STAT"));
-			}
-
-			DefaultMutableStandardModeGenerator generator = new DefaultMutableStandardModeGenerator(generatorElement);
-			if (template != null)
-			{
-				generator.setAssignable(template.isAssignable());
-				Collections.copy(generator.diceExpressions, template.getDiceExpressions());
-			}
-			return generator;
+			generatorElement.addContent(new Element("STAT"));
 		}
-		return null;
+
+		DefaultMutableStandardModeGenerator generator = new DefaultMutableStandardModeGenerator(generatorElement);
+		if (template != null)
+		{
+			generator.setAssignable(template.isAssignable());
+			Collections.copy(generator.diceExpressions,
+							 template.getDiceExpressions());
+		}
+		return generator;
 	}
 
 	public static <T extends InfoFacade> MutableInfoFacadeGenerator<T> createMutableFacadeGenerator(GeneratorType<InfoFacadeGenerator<T>> type,
@@ -715,7 +697,8 @@ public final class GeneratorManager
 	{
 	}
 
-	public static class DefaultCharacterBuildEditor extends PropertyEditorSupport
+	public static class DefaultCharacterBuildEditor
+			extends PropertyEditorSupport
 	{
 
 		@Override
@@ -1562,12 +1545,12 @@ public final class GeneratorManager
 	{
 
 		private String name;
-		protected Map<AbilityCatagoryFacade, InfoFacadeGenerator<AbilityFacade>> generatorMap;
+		protected Map<AbilityCatagoryFacade, AbstractInfoFacadeGenerator<AbilityFacade>> generatorMap;
 
 		public DefaultAbilityBuild(GeneratorElement element) throws MissingDataException
 		{
 			this.name = element.getAttributeValue("name");
-			this.generatorMap = new HashMap<AbilityCatagoryFacade, InfoFacadeGenerator<AbilityFacade>>();
+			this.generatorMap = new HashMap<AbilityCatagoryFacade, AbstractInfoFacadeGenerator<AbilityFacade>>();
 			@SuppressWarnings("unchecked")
 			List<GeneratorElement> children = element.getChildren("GENERATOR");
 			for ( GeneratorElement element1 : children)
@@ -1596,7 +1579,7 @@ public final class GeneratorManager
 			implements MutableAbilityBuild
 	{
 
-		private Element element;
+		private GeneratorElement element;
 
 		public DefaultMutableAbilityBuild(GeneratorElement element) throws MissingDataException
 		{
@@ -1613,34 +1596,35 @@ public final class GeneratorManager
 				child.detach();
 			}
 			Set<String> sources = new HashSet<String>();
-//            Collection<DefaultMutableAbilityGenerator> generators = generatorMap.values();
-//            for ( Iterator<DefaultMutableAbilityGenerator> it = generators.iterator(); it.hasNext();)
-//            {
-//                DefaultMutableAbilityGenerator generator = it.next();
-//                if (!generator.priorityMap.isEmpty())
-//                {
-//                    sources.addAll(generator.getSources());
-//                    generator.saveChanges();
-//                    element.addContent(generator.element);
-//                }
-//                else
-//                {
-//                    it.remove();
-//                }
-//            }
+			Collection<AbstractInfoFacadeGenerator<AbilityFacade>> generators = generatorMap.values();
+			for ( AbstractInfoFacadeGenerator<AbilityFacade> abilityGenerator : generators)
+			{
+				sources.addAll(abilityGenerator.getSources());
+				Element ref = new Element("ABILITY_GENERATOR_REF");
+				Element e = abilityGenerator.element;
+				ref.setAttribute((Attribute) e.getAttribute("name").clone());
+				ref.setAttribute((Attribute) e.getAttribute("catagory").clone());
+				if (element.getDocument() != e.getDocument())
+				{
+					String uri = e.getDocument().getBaseURI();
+					ref.setAttribute("uri", uri);
+				}
+				element.addContent(ref);
+			}
 			for ( String string : sources)
 			{
 				Element sourceElement = new Element("SOURCE");
 				sourceElement.setText(string);
 				element.addContent(sourceElement);
 			}
-		//outputDocument(element.getDocument());
+			element.fireChangeEvent();
 		}
 
 		public void setGenerator(AbilityCatagoryFacade catagory,
 								  InfoFacadeGenerator<AbilityFacade> generator)
 		{
-			generatorMap.put(catagory, generator);
+			generatorMap.put(catagory,
+							 (AbstractInfoFacadeGenerator<AbilityFacade>) generator);
 		}
 
 	}

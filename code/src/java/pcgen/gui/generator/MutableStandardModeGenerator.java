@@ -1,5 +1,5 @@
 /*
- * GeneratorSelectionManager.java
+ * MutableStandardModeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,33 +16,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Sep 15, 2008, 7:24:10 PM
+ * Created on Aug 31, 2008, 1:41:09 AM
  */
 package pcgen.gui.generator;
-
-import pcgen.gui.facade.DataSetFacade;
-import pcgen.gui.util.GenericListModel;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class GeneratorSelectionManager
+public interface MutableStandardModeGenerator extends StandardModeGenerator,
+													   Mutable
 {
 
-    private GeneratorSelectionManager()
-    {
-    }
+	public void setAssignable(boolean assign);
 
-    public static <T> GenericListModel<T> getSelectedGenerators(DataSetFacade dataSet,
-                                                          Class<T> c)
-    {
-        return null;
-    }
-
-    public static <T> GenericListModel<T> getAvailableGenerators(Class<T> c)
-    {
-        return null;
-    }
+	public void setDiceExpression(int index, String expression);
 
 }

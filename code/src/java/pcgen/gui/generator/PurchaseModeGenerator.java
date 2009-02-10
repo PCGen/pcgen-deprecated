@@ -1,5 +1,5 @@
 /*
- * MutablePurchaseModeGenerator.java
+ * PurchaseModeGenerator.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,26 +16,38 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 31, 2008, 1:27:28 AM
+ * Created on Aug 9, 2008, 3:30:17 PM
  */
-package pcgen.gui.generator.stat;
+package pcgen.gui.generator;
 
-import pcgen.gui.generator.Mutable;
+import pcgen.gui.generator.*;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutablePurchaseModeGenerator extends PurchaseModeGenerator,
-                                                       Mutable
+public interface PurchaseModeGenerator extends Generator<Integer>
 {
 
-    public void setMaxScore(int score);
+    public int getMinScore();
 
-    public void setMinScore(int score);
+    public int getMaxScore();
 
-    public void setPoints(int points);
+    /**
+     * @return the number of points that can be distrubuted
+     */
+    public int getPoints();
 
-    public void setScoreCost(int score, int cost);
+    /**
+     * 
+     * @param score
+     * @return
+     */
+    public int getScoreCost(int score);
+
+    /**
+     * @return null
+     */
+    public Integer getNext();
 
 }

@@ -87,8 +87,7 @@ public class FilterSelectionModel implements SelectionModel<DisplayableFilter<?>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Component getItemPanel(SelectionDialog<DisplayableFilter<?>> selectionDialog,
-                                   Component currentItemPanel,
+    public Component getCustomizer(Component currentItemPanel,
                                    DisplayableFilter<?> selectedItem)
     {
         if (currentItemPanel == null)

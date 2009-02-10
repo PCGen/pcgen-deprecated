@@ -107,7 +107,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Component getItemPanel(SelectionDialog<InfoFacadeGenerator<E>> selectionDialog,
+    public Component getCustomizer(SelectionDialog<InfoFacadeGenerator<E>> selectionDialog,
                                    Component currentItemPanel,
                                    InfoFacadeGenerator<E> selectedItem)
     {
@@ -128,7 +128,7 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
         addAsAction.setSelectionDialog(selectionDialog);
         if (mutable)
         {
-            //addAsAction.setGenerator((MutableInfoInfoFacadeGenerator<E>) selectedItem);
+            addAsAction.setGenerator((MutableInfoFacadeGenerator<E>) selectedItem);
         }
         return selectionPanel;
     }
@@ -226,4 +226,10 @@ public class BasicGeneratorSelectionModel<E extends InfoFacade> implements Selec
         }
 
     }
+
+	public Component getCustomizer(Component currentItemPanel,
+								   InfoFacadeGenerator<E> selectedItem)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 }

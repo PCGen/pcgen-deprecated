@@ -39,87 +39,86 @@ import pcgen.gui.util.GenericListModel;
 public class AbilityBuildSelectionModel implements SelectionModel<AbilityBuild>
 {
 
-    private static final Properties props = new Properties();
+	private static final Properties props = new Properties();
 
-    static
-    {
-        props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP,
-                          "availAbilBuild");
-        props.setProperty(SelectionModel.SELECTION_TEXT_PROP,
-                          "selAbilBuild");
-        props.setProperty(SelectionModel.NEW_TOOLTIP_PROP,
-                          "newAbilBuild");
-        props.setProperty(SelectionModel.COPY_TOOLTIP_PROP,
-                          "copyAbilBuild");
-        props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP,
-                          "deleteAbilBuild");
-        props.setProperty(SelectionModel.ADD_TOOLTIP_PROP,
-                          "addAbilBuild");
-        props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP,
-                          "removeAbilBuild");
-    }
+	static
+	{
+		props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP,
+						  "availAbilBuild");
+		props.setProperty(SelectionModel.SELECTION_TEXT_PROP,
+						  "selAbilBuild");
+		props.setProperty(SelectionModel.NEW_TOOLTIP_PROP,
+						  "newAbilBuild");
+		props.setProperty(SelectionModel.COPY_TOOLTIP_PROP,
+						  "copyAbilBuild");
+		props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP,
+						  "deleteAbilBuild");
+		props.setProperty(SelectionModel.ADD_TOOLTIP_PROP,
+						  "addAbilBuild");
+		props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP,
+						  "removeAbilBuild");
+	}
 
-    public CharacterFacade getCharacter()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public CharacterFacade getCharacter()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public FilterableTreeViewModel<AbilityFacade> getTreeViewModel()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public FilterableTreeViewModel<AbilityFacade> getTreeViewModel()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public GenericListModel<AbilityBuild> getAvailableList()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public GenericListModel<AbilityBuild> getAvailableList()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public GenericListModel<AbilityBuild> getSelectedList()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public GenericListModel<AbilityBuild> getSelectedList()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public void setAvailableList(GenericListModel<AbilityBuild> list)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public void setAvailableList(GenericListModel<AbilityBuild> list)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public void setSelectedList(GenericListModel<AbilityBuild> list)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public void setSelectedList(GenericListModel<AbilityBuild> list)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public Component getItemPanel(SelectionDialog<AbilityBuild> selectionDialog,
-                                   Component currentItemPanel,
-                                   AbilityBuild selectedItem)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public Component getCustomizer(Component currentItemPanel,
+									AbilityBuild selectedItem)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public AbilityBuild createMutableItem(SelectionDialog<AbilityBuild> selectionDialog,
-                                           AbilityBuild templateItem)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public AbilityBuild createMutableItem(SelectionDialog<AbilityBuild> selectionDialog,
+										   AbilityBuild templateItem)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public Properties getDisplayProperties()
-    {
-        return props;
-    }
+	public Properties getDisplayProperties()
+	{
+		return props;
+	}
 
-    public boolean isMutable(AbilityBuild item)
-    {
-        return item instanceof MutableAbilityBuild;
-    }
+	public boolean isMutable(AbilityBuild item)
+	{
+		return item instanceof MutableAbilityBuild;
+	}
 
-    public boolean isAddable(AbilityBuild item)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public boolean isAddable(AbilityBuild item)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
-    public Color getItemColor(AbilityBuild item)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	public Color getItemColor(AbilityBuild item)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 }
