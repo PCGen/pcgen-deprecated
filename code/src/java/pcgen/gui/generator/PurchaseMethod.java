@@ -1,5 +1,5 @@
 /*
- * MutableStandardModeGenerator.java
+ * PurchaseMethod.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 31, 2008, 1:41:09 AM
+ * Created on Aug 9, 2008, 3:30:17 PM
  */
 package pcgen.gui.generator;
 
@@ -24,12 +24,28 @@ package pcgen.gui.generator;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutableStandardModeGenerator extends StandardModeGenerator,
-													   Mutable
+public interface PurchaseMethod extends StatGenerationMethod
 {
 
-	public void setAssignable(boolean assign);
+	public int getMinScore();
 
-	public void setDiceExpression(int index, String expression);
+	public int getMaxScore();
+
+	/**
+	 * @return the number of points that can be distrubuted
+	 */
+	public int getPoints();
+
+	/**
+	 * 
+	 * @param score
+	 * @return
+	 */
+	public int getScoreCost(int score);
+
+	/**
+	 * @return null
+	 */
+	public Integer getNext();
 
 }

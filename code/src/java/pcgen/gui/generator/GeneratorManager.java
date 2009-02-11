@@ -78,7 +78,7 @@ import pcgen.gui.generator.ability.AbilityBuild;
 import pcgen.gui.generator.ability.MutableAbilityBuild;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
-import pcgen.gui.util.event.AbstractGenericListDataListener;
+import pcgen.gui.util.event.AbstractGenericListDataWrapper;
 import pcgen.util.Logging;
 
 /**
@@ -95,52 +95,64 @@ public final class GeneratorManager
 		public static final GeneratorType<WeightedGenerator<AlignmentFacade>> ALIGNMENT = new GeneratorType<WeightedGenerator<AlignmentFacade>>("AlignmentGenerator",
 																																				   "ALIGNMENT_GENERATOR",
 																																				   DefaultAlignmentGenerator.class,
-																																				   null);
+																																				   null,
+																																				   SingletonWeightedGenerator.class);
 		public static final GeneratorType<WeightedGenerator<Gender>> GENDER = new GeneratorType<WeightedGenerator<Gender>>("GenderGenerator",
 																															  "GENDER_GENERATOR",
 																															  null,
-																															  null);
+																															  null,
+																															  SingletonWeightedGenerator.class);
 		public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>("SkillGenerator",
 																																		   "SKILL_GENERATOR",
 																																		   DefaultSkillGenerator.class,
-																																		   DefaultMutableSkillGenerator.class);
-		public static final GeneratorType<StandardModeGenerator> STANDARDMODE = new GeneratorType<StandardModeGenerator>("StandardModeGenerator",
+																																		   DefaultMutableSkillGenerator.class,
+																																		   SingletonInfoFacadeGenerator.class);
+		public static final GeneratorType<RollMethod> STANDARDMODE = new GeneratorType<RollMethod>("StandardModeGenerator",
 																															"STANDARDMODE_GENERATOR",
 																															DefaultStandardModeGenerator.class,
-																															DefaultMutableStandardModeGenerator.class);
-		public static final GeneratorType<PurchaseModeGenerator> PURCHASEMODE = new GeneratorType<PurchaseModeGenerator>("PurchaseModeGenerator",
+																															DefaultMutableStandardModeGenerator.class,
+																															null);
+		public static final GeneratorType<PurchaseMethod> PURCHASEMODE = new GeneratorType<PurchaseMethod>("PurchaseModeGenerator",
 																															"PURCHASEMODE_GENERATOR",
 																															DefaultPurchaseModeGenerator.class,
-																															DefaultMutablePurchaseModeGenerator.class);
+																															DefaultMutablePurchaseModeGenerator.class,
+																															null);
 		public static final GeneratorType<InfoFacadeGenerator<RaceFacade>> RACE = new GeneratorType<InfoFacadeGenerator<RaceFacade>>("RaceGenerator",
 																																		"RACE_GENERATOR",
 																																		DefaultRaceGenerator.class,
-																																		DefaultMutableRaceGenerator.class);
+																																		DefaultMutableRaceGenerator.class,
+																																		SingletonInfoFacadeGenerator.class);
 		public static final GeneratorType<InfoFacadeGenerator<ClassFacade>> CLASS = new GeneratorType<InfoFacadeGenerator<ClassFacade>>("ClassGenerator",
 																																		   "CLASS_GENERATOR",
 																																		   DefaultClassGenerator.class,
-																																		   DefaultMutableClassGenerator.class);
+																																		   DefaultMutableClassGenerator.class,
+																																		   SingletonInfoFacadeGenerator.class);
 		public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>("AbilityBuild",
 																										  "ABILITY_BUILD",
 																										  DefaultAbilityBuild.class,
-																										  DefaultMutableAbilityBuild.class);
+																										  DefaultMutableAbilityBuild.class,
+																										  null);
 		public static final GeneratorType<InfoFacadeGenerator<AbilityFacade>> ABILITY = new GeneratorType<InfoFacadeGenerator<AbilityFacade>>("Ability",
 																																				 "ABILITY_GENERATOR",
 																																				 DefaultAbilityGenerator.class,
-																																				 DefaultMutableAbilityGenerator.class);
+																																				 DefaultMutableAbilityGenerator.class,
+																																				 SingletonInfoFacadeGenerator.class);
 		private Class<? extends E> baseClass;
 		private Class<? extends E> mutableClass;
+		private Class<?> singletonClass;
 		private String name;
 		private String element;
 
 		private GeneratorType(String name, String element,
 							   Class<? extends E> baseClass,
-							   Class<? extends E> mutableClass)
+							   Class<? extends E> mutableClass,
+							   Class<?> singletonClass)
 		{
 			this.name = name;
 			this.element = element;
 			this.baseClass = baseClass;
 			this.mutableClass = mutableClass;
+			this.singletonClass = singletonClass;
 			typeMap.put(element, this);
 		}
 
@@ -302,27 +314,32 @@ public final class GeneratorManager
 		loadedDocuments.add(document);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void loadGenerator(GeneratorElement element, boolean mutable)
+	private boolean checkSources(GeneratorElement element)
 	{
-
+		@SuppressWarnings("unchecked")
 		List<GeneratorElement> sourceElements = element.getChildren("SOURCE");
 		if (sourceElements != null)
 		{
 			Set<String> sources = dataset.getSources();
-			for (Element source : sourceElements)
+			for ( Element source : sourceElements)
 			{
 				if (!sources.contains(source.getText()))
 				{
-					return;
+					return false;
 				}
 			}
 		}
+		return true;
+	}
+
+	private boolean checkReferences(GeneratorElement element)
+	{
+		@SuppressWarnings("unchecked")
 		List<GeneratorElement> refElements = element.getContent(refFilter);
 		if (refElements != null)
 		{
 			Document basedoc = element.getDocument();
-			for (GeneratorElement refElement : refElements)
+			for ( GeneratorElement refElement : refElements)
 			{
 				String name = refElement.getAttributeValue("name");
 				String catagory = refElement.getAttributeValue("catagory");
@@ -342,20 +359,20 @@ public final class GeneratorManager
 							uri = baseuri.resolve(uri);
 							document = documentHandler.getDocument(uri);
 						}
-						catch (URISyntaxException ex)
+						catch ( URISyntaxException ex)
 						{
 							Logging.log(Logging.XML_ERROR,
 										"Invalid URI specified in:\n" +
 										documentHandler.outputter.outputString(refElement) +
 										"\nlocated in " +
 										basedoc.getBaseURI(), ex);
-							return;
+							return false;
 						}
 						if (document == null)
 						{
 							Logging.log(Logging.XML_ERROR,
 										"Unable to resolve reference to " + uri);
-							return;
+							return false;
 						}
 						else
 						{
@@ -368,30 +385,51 @@ public final class GeneratorManager
 					Logging.log(Logging.XML_ERROR, "Invalid Reference in " +
 								basedoc.getBaseURI() + ", ignoring " +
 								documentHandler.outputter.outputString(element));
-					return;
+					return false;
 				}
 			}
 		}
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void loadGenerator(GeneratorElement element, boolean mutable)
+	{
 		String name = element.getAttributeValue("name");
 		String catagory = element.getAttributeValue("catagory");
 		GeneratorType<?> type = GeneratorType.getGeneratorType(element.getName());
+		Class<?> c;
+		if (checkSources(element) && checkReferences(element))
+		{
+			try
+			{
+				if (mutable)
+				{
+					c = type.mutableClass;
+				}
+				else
+				{
+					c = type.baseClass;
+				}
+				Object obj = c.getConstructor(GeneratorElement.class).newInstance(element);
+				generatorMap.put(type, catagory, name, obj);
+				return;
+			}
+			catch (Exception ex)
+			{
+				Logging.errorPrint("Unable to create generator",
+								   ex);
+			}
+		}
+		c = type.singletonClass;
 		try
 		{
-			Class<?> c;
-			if (mutable)
-			{
-				c = type.mutableClass;
-			}
-			else
-			{
-				c = type.baseClass;
-			}
-			Object obj = c.getConstructor(GeneratorElement.class).newInstance(element);
+			Object obj = c.getConstructor(String.class).newInstance(name);
 			generatorMap.put(type, catagory, name, obj);
 		}
 		catch (Exception ex)
 		{
-			Logging.errorPrint("Unable to create generator",
+			Logging.errorPrint("Unable to create null-type SingletonGenerator",
 							   ex);
 		}
 	}
@@ -404,7 +442,7 @@ public final class GeneratorManager
 
 	private final DataSetFacade dataset;
 	// The second and third keys are "catagory" and "name" respectively
-	final TripleKeyMap<GeneratorType<?>, String, String, Object> generatorMap;
+	private final TripleKeyMap<GeneratorType<?>, String, String, Object> generatorMap;
 	private final Set<Document> loadedDocuments;
 
 	public GeneratorManager(DataSetFacade dataset)
@@ -430,6 +468,7 @@ public final class GeneratorManager
 				loadGenerators(document);
 			}
 		}
+		
 	}
 
 	private void loadAnyGenerators()
@@ -483,7 +522,7 @@ public final class GeneratorManager
 		manager.setModel(model);
 	}
 
-	private class AbilityCatagoryManager extends AbstractGenericListDataListener<AbilityCatagoryFacade>
+	private class AbilityCatagoryManager extends AbstractGenericListDataWrapper<AbilityCatagoryFacade>
 	{
 
 		private final Map<AbilityCatagoryFacade, AnyInfoFacadeGenerator<AbilityFacade>> catagoryMap;
@@ -519,7 +558,7 @@ public final class GeneratorManager
 
 	}
 
-	private class SingletonWeightedGeneratorManager<E> extends AbstractGenericListDataListener<E>
+	private class SingletonWeightedGeneratorManager<E> extends AbstractGenericListDataWrapper<E>
 	{
 
 		private final GeneratorType<? extends Generator<E>> type;
@@ -607,8 +646,8 @@ public final class GeneratorManager
 		return document;
 	}
 
-	public static MutablePurchaseModeGenerator createMutablePurchaseModeGenerator(String name,
-																					PurchaseModeGenerator template)
+	public static MutablePurchaseMethod createMutablePurchaseModeGenerator(String name,
+																					PurchaseMethod template)
 	{
 		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
 		generatorElement.setAttribute("name", name).
@@ -616,7 +655,7 @@ public final class GeneratorManager
 		Element cost = new Element("COST");
 		cost.setAttribute("score", "0").setText("0");
 
-		MutablePurchaseModeGenerator generator = new DefaultMutablePurchaseModeGenerator(generatorElement);
+		MutablePurchaseMethod generator = new DefaultMutablePurchaseModeGenerator(generatorElement);
 		if (template != null)
 		{
 			int min = template.getMinScore();
@@ -632,8 +671,8 @@ public final class GeneratorManager
 		return generator;
 	}
 
-	public static MutableStandardModeGenerator createMutableStandardModeGenerator(String name,
-																					StandardModeGenerator template)
+	public static MutableRollMethod createMutableStandardModeGenerator(String name,
+																					RollMethod template)
 	{
 		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
 		generatorElement.setAttribute("name", name).setAttribute("assignable",
@@ -766,7 +805,7 @@ public final class GeneratorManager
 	private static class AnyWeightedGenerator<E> extends AbstractWeightedGenerator<E>
 	{
 
-		private final AbstractGenericListDataListener<E> listener = new AbstractGenericListDataListener<E>()
+		private final AbstractGenericListDataWrapper<E> listener = new AbstractGenericListDataWrapper<E>()
 		{
 
 			@Override
@@ -1161,6 +1200,12 @@ public final class GeneratorManager
 
 		protected E item;
 
+		public SingletonWeightedGenerator(String name)
+		{
+			super(name);
+			this.item = null;
+		}
+
 		public SingletonWeightedGenerator(E item)
 		{
 			super(item.toString());
@@ -1175,19 +1220,20 @@ public final class GeneratorManager
 		@Override
 		public List<E> getAll()
 		{
+			if (item == null)
+			{
+				return null;
+			}
 			return Collections.singletonList(item);
 		}
 
 		public int getWeight(E item)
 		{
-			if (item.equals(this.item))
+			if (item != null && item.equals(this.item))
 			{
 				return 1;
 			}
-			else
-			{
-				return 0;
-			}
+			return 0;
 		}
 
 		public boolean isSingleton()
@@ -1202,6 +1248,11 @@ public final class GeneratorManager
 			implements InfoFacadeGenerator<E>
 	{
 
+		public SingletonInfoFacadeGenerator(String name)
+		{
+			super(name);
+		}
+
 		public SingletonInfoFacadeGenerator(E item)
 		{
 			super(item);
@@ -1209,6 +1260,10 @@ public final class GeneratorManager
 
 		public Set<String> getSources()
 		{
+			if (item == null)
+			{
+				return Collections.emptySet();
+			}
 			return Collections.singleton(item.getSource());
 		}
 
@@ -1220,7 +1275,7 @@ public final class GeneratorManager
 	}
 
 	private static class DefaultPurchaseModeGenerator extends AbstractGenerator<Integer>
-			implements PurchaseModeGenerator
+			implements PurchaseMethod
 	{
 
 		protected Vector<Integer> costs;
@@ -1272,7 +1327,7 @@ public final class GeneratorManager
 	}
 
 	private static class DefaultMutablePurchaseModeGenerator extends DefaultPurchaseModeGenerator
-			implements MutablePurchaseModeGenerator
+			implements MutablePurchaseMethod
 	{
 
 		private DefaultPurchaseModeGenerator generator = null;
@@ -1331,7 +1386,7 @@ public final class GeneratorManager
 	}
 
 	private static class DefaultStandardModeGenerator extends AbstractGenerator<Integer>
-			implements StandardModeGenerator
+			implements RollMethod
 	{
 
 		protected boolean assignable;
@@ -1368,7 +1423,7 @@ public final class GeneratorManager
 	}
 
 	private static class DefaultMutableStandardModeGenerator extends DefaultStandardModeGenerator
-			implements MutableStandardModeGenerator
+			implements MutableRollMethod
 	{
 
 		private DefaultStandardModeGenerator generator = null;

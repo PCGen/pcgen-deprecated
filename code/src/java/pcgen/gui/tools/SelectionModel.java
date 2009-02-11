@@ -58,6 +58,8 @@ public interface SelectionModel<E>
 
 	public boolean isAddable(E item);
 
+	public boolean isCopyable(E item);
+
 	public Color getItemColor(E item);
 
 	public Properties getDisplayProperties();

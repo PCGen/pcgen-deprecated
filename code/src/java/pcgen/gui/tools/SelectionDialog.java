@@ -392,7 +392,7 @@ public class SelectionDialog<E> extends JDialog
 			boolean nonNull = value != null;
 			if (list == availableList)
 			{
-				copyAction.setEnabled(nonNull);
+				copyAction.setEnabled(nonNull && model.isCopyable(value));
 				deleteAction.setEnabled(nonNull && model.isMutable(value));
 				if (nonNull)
 				{

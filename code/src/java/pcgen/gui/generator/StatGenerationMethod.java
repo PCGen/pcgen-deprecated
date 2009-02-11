@@ -1,6 +1,6 @@
 /*
- * StandardModeGenerator.java
- * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
+ * StatGenerationMethod.java
+ * Copyright 2009 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,22 +16,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 31, 2008, 1:39:10 AM
+ * Created on Feb 10, 2009, 4:12:15 PM
  */
 package pcgen.gui.generator;
-
-import java.util.List;
-import pcgen.gui.generator.Generator;
 
 /**
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface StandardModeGenerator extends Generator<Integer>
+public interface StatGenerationMethod
 {
 
-    public List<String> getDiceExpressions();
+	@Override
+	public String toString();
 
-    public boolean isAssignable();
-    
 }

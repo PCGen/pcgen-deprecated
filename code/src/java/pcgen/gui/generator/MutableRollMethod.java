@@ -1,5 +1,5 @@
 /*
- * MutablePurchaseModeGenerator.java
+ * MutableRollMethod.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
- * Created on Aug 31, 2008, 1:27:28 AM
+ * Created on Aug 31, 2008, 1:41:09 AM
  */
 package pcgen.gui.generator;
 
@@ -24,16 +24,12 @@ package pcgen.gui.generator;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface MutablePurchaseModeGenerator extends PurchaseModeGenerator,
+public interface MutableRollMethod extends RollMethod,
 													   Mutable
 {
 
-	public void setMaxScore(int score);
+	public void setAssignable(boolean assign);
 
-	public void setMinScore(int score);
-
-	public void setPoints(int points);
-
-	public void setScoreCost(int score, int cost);
+	public void setDiceExpression(int index, String expression);
 
 }

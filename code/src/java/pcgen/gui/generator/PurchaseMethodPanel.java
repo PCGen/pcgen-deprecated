@@ -1,5 +1,5 @@
 /*
- * PurchaseModePanel.java
+ * PurchaseMethodPanel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ import pcgen.gui.tools.ResourceManager;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-class PurchaseModePanel extends JPanel implements Customizer
+class PurchaseMethodPanel extends JPanel implements Customizer
 {
 
 	private final String SCORE = ResourceManager.getText("score");
@@ -53,9 +53,9 @@ class PurchaseModePanel extends JPanel implements Customizer
 	private final JSpinner pointSpinner;
 	private final JSpinner minSpinner;
 	private final JSpinner maxSpinner;
-	private MutablePurchaseModeGenerator generator = null;
+	private MutablePurchaseMethod generator = null;
 
-	public PurchaseModePanel()
+	public PurchaseMethodPanel()
 	{
 		super(new GridBagLayout());
 		this.model = new ScoreCostTableModel();
@@ -190,23 +190,23 @@ class PurchaseModePanel extends JPanel implements Customizer
 
 	public void setObject(Object bean)
 	{
-		if (!(bean instanceof PurchaseModeGenerator))
+		if (!(bean instanceof PurchaseMethod))
 		{
 			throw new IllegalArgumentException();
 		}
-		PurchaseModeGenerator generator = (PurchaseModeGenerator) bean;
+		PurchaseMethod generator = (PurchaseMethod) bean;
 		pointSpinner.setValue(generator.getPoints());
 
 		model.setGenerator(generator);
 		minSpinner.setValue(model.getMin());
 		maxSpinner.setValue(model.getMax());
 
-		boolean editable = generator instanceof MutablePurchaseModeGenerator;
+		boolean editable = generator instanceof MutablePurchaseMethod;
 		pointSpinner.setEnabled(editable);
 		minSpinner.setEnabled(editable);
 		maxSpinner.setEnabled(editable);
 
-		this.generator = editable ? (MutablePurchaseModeGenerator) generator : null;
+		this.generator = editable ? (MutablePurchaseMethod) generator : null;
 	}
 
 	private class ScoreCostTableModel extends AbstractTableModel implements ChangeListener
@@ -221,7 +221,7 @@ class PurchaseModePanel extends JPanel implements Customizer
 			costs.setSize(1);
 		}
 
-		public void setGenerator(PurchaseModeGenerator generator)
+		public void setGenerator(PurchaseMethod generator)
 		{
 			min = generator.getMinScore();
 			max = generator.getMaxScore();

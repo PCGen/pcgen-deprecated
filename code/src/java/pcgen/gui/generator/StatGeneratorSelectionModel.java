@@ -51,7 +51,7 @@ import pcgen.gui.util.GenericListModelWrapper;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public class StatGeneratorSelectionModel implements SelectionModel<Generator<Integer>>
+public class StatGeneratorSelectionModel implements SelectionModel<StatGenerationMethod>
 {
 
 	private static final String STANDARD_MODE = "dieRoll";
@@ -74,8 +74,8 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 
 	private final ModeSelectionPanel modePanel;
 	private final Map<String, Customizer> panelMap;
-	private GenericListModel<Generator<Integer>> availableList;
-	private GenericListModel<Generator<Integer>> selectedList;
+	private GenericListModel<StatGenerationMethod> availableList;
+	private GenericListModel<StatGenerationMethod> selectedList;
 	private GeneratorManager manager;
 
 	public StatGeneratorSelectionModel(GeneratorManager manager)
@@ -83,65 +83,65 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 		this.manager = manager;
 		this.modePanel = new ModeSelectionPanel();
 		this.panelMap = new HashMap<String, Customizer>();
-		panelMap.put(STANDARD_MODE, new StandardModePanel());
-		panelMap.put(PURCHASE_MODE, new PurchaseModePanel());
+		panelMap.put(STANDARD_MODE, new RollMethodPanel());
+		panelMap.put(PURCHASE_MODE, new PurchaseMethodPanel());
 	}
 
-	public GenericListModel<Generator<Integer>> getAvailableList()
+	public GenericListModel<StatGenerationMethod> getAvailableList()
 	{
 		return availableList;
 	}
 
-	public GenericListModel<Generator<Integer>> getSelectedList()
+	public GenericListModel<StatGenerationMethod> getSelectedList()
 	{
 		return selectedList;
 	}
 
-	public void setAvailableList(GenericListModel<Generator<Integer>> availableList)
+	public void setAvailableList(GenericListModel<StatGenerationMethod> availableList)
 	{
-		if (this.availableList != null)
-		{
-			GenericListModelWrapper<Generator<Integer>> oldList = new GenericListModelWrapper<Generator<Integer>>(this.availableList);
-			for (Generator<Integer> generator : oldList)
-			{
-				GeneratorType<?> type;
-				if (generator instanceof StandardModeGenerator)
-				{
-					type = GeneratorType.STANDARDMODE;
-				}
-				else
-				{
-					type = GeneratorType.PURCHASEMODE;
-				}
-				manager.generatorMap.remove(type, null, generator.toString());
-			}
-			GenericListModelWrapper<Generator<Integer>> newList = new GenericListModelWrapper<Generator<Integer>>(availableList);
-			for (Generator<Integer> generator : newList)
-			{
-				GeneratorType<?> type;
-				if (generator instanceof StandardModeGenerator)
-				{
-					type = GeneratorType.STANDARDMODE;
-				}
-				else
-				{
-					type = GeneratorType.PURCHASEMODE;
-				}
-				manager.generatorMap.put(type, null, generator.toString(),
-										 generator);
-			}
-		}
+//		if (this.availableList != null)
+//		{
+//			GenericListModelWrapper<StatGenerationMethod> oldList = new GenericListModelWrapper<StatGenerationMethod>(this.availableList);
+//			for (StatGenerationMethod generator : oldList)
+//			{
+//				GeneratorType<?> type;
+//				if (generator instanceof RollMethod)
+//				{
+//					type = GeneratorType.STANDARDMODE;
+//				}
+//				else
+//				{
+//					type = GeneratorType.PURCHASEMODE;
+//				}
+//				manager.generatorMap.remove(type, null, generator.toString());
+//			}
+//			GenericListModelWrapper<StatGenerationMethod> newList = new GenericListModelWrapper<StatGenerationMethod>(availableList);
+//			for (StatGenerationMethod generator : newList)
+//			{
+//				GeneratorType<?> type;
+//				if (generator instanceof RollMethod)
+//				{
+//					type = GeneratorType.STANDARDMODE;
+//				}
+//				else
+//				{
+//					type = GeneratorType.PURCHASEMODE;
+//				}
+//				manager.generatorMap.put(type, null, generator.toString(),
+//										 generator);
+//			}
+//		}
 		this.availableList = availableList;
 	}
 
-	public void setSelectedList(GenericListModel<Generator<Integer>> selectedList)
+	public void setSelectedList(GenericListModel<StatGenerationMethod> selectedList)
 	{
 		this.selectedList = selectedList;
 	}
 
 	@SuppressWarnings("unchecked")
 	public Component getCustomizer(Component currentItemPanel,
-									Generator<Integer> selectedItem)
+									StatGenerationMethod selectedItem)
 	{
 		String mode = getMode(selectedItem);
 		Customizer panel = panelMap.get(mode);
@@ -149,10 +149,10 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 		return (Component) panel;
 	}
 
-	public Generator<Integer> createMutableItem(SelectionDialog<Generator<Integer>> selectionDialog,
-												 Generator<Integer> templateItem)
+	public StatGenerationMethod createMutableItem(SelectionDialog<StatGenerationMethod> selectionDialog,
+												   StatGenerationMethod templateItem)
 	{
-		Generator<Integer> generator = null;
+		StatGenerationMethod generator = null;
 		String name;
 		String mode;
 		if (templateItem == null)
@@ -185,30 +185,30 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 //            if (mode == STANDARD_MODE)
 //            {
 //                generator = GeneratorManager.createMutableStandardModeGenerator(name,
-//                                                                                (StandardModeGenerator) templateItem);
+//                                                                                (RollMethod) templateItem);
 //            }
 //            else
 //            {
 //                generator = GeneratorManager.createMutablePurchaseModeGenerator(name,
-//                                                                                (PurchaseModeGenerator) templateItem);
+//                                                                                (PurchaseMethod) templateItem);
 //            }
 		}
 		return generator;
 	}
 
-	private static String getMode(Generator<Integer> generator)
+	private static String getMode(StatGenerationMethod generator)
 	{
-		return generator instanceof StandardModeGenerator ? STANDARD_MODE
-				: generator instanceof PurchaseModeGenerator ? PURCHASE_MODE
+		return generator instanceof RollMethod ? STANDARD_MODE
+				: generator instanceof PurchaseMethod ? PURCHASE_MODE
 				: null;
 	}
 
-	public boolean isAddable(Generator<Integer> item)
+	public boolean isAddable(StatGenerationMethod item)
 	{
 		return true;
 	}
 
-	public Color getItemColor(Generator<Integer> item)
+	public Color getItemColor(StatGenerationMethod item)
 	{
 		if (isMutable(item))
 		{
@@ -220,10 +220,15 @@ public class StatGeneratorSelectionModel implements SelectionModel<Generator<Int
 		}
 	}
 
-	public boolean isMutable(Generator<Integer> item)
+	public boolean isCopyable(StatGenerationMethod item)
 	{
-		return item instanceof MutablePurchaseModeGenerator ||
-				item instanceof MutableStandardModeGenerator;
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	public boolean isMutable(StatGenerationMethod item)
+	{
+		return item instanceof MutablePurchaseMethod ||
+				item instanceof MutableRollMethod;
 	}
 
 	public Properties getDisplayProperties()

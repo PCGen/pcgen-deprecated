@@ -20,8 +20,6 @@
  */
 package pcgen.gui.generator.ability;
 
-import pcgen.gui.generator.ability.AbilityBuild;
-import pcgen.gui.generator.ability.MutableAbilityBuild;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Properties;
@@ -117,6 +115,11 @@ public class AbilityBuildSelectionModel implements SelectionModel<AbilityBuild>
 	}
 
 	public Color getItemColor(AbilityBuild item)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	public boolean isCopyable(AbilityBuild item)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

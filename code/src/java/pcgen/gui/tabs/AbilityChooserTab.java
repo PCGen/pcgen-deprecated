@@ -56,7 +56,7 @@ import pcgen.gui.filter.FilteredTreeViewPanel;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
 import pcgen.gui.util.GenericListModelWrapper;
-import pcgen.gui.util.event.AbstractGenericListDataListener;
+import pcgen.gui.util.event.AbstractGenericListDataWrapper;
 import pcgen.gui.util.event.GenericListDataEvent;
 import pcgen.gui.util.event.GenericListDataListener;
 import pcgen.gui.tools.FlippingSplitPane;
@@ -230,7 +230,7 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
         setInfoPaneTitle(catagory.getName() + " Info");
     }
 
-    private static final class SelectedAbilityTreeViewModel extends AbstractGenericListDataListener<AbilityCatagoryFacade>
+    private static final class SelectedAbilityTreeViewModel extends AbstractGenericListDataWrapper<AbilityCatagoryFacade>
             implements FilterableTreeViewModel<AbilityFacade>
     {
 
@@ -314,7 +314,7 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
             return model;
         }
 
-        private abstract class AbilityModelListener extends AbstractGenericListDataListener<AbilityFacade>
+        private abstract class AbilityModelListener extends AbstractGenericListDataWrapper<AbilityFacade>
         {
 
             public AbilityModelListener(GenericListModel<AbilityFacade> model)
@@ -338,7 +338,7 @@ public class AbilityChooserTab extends ChooserPane implements StateEditable
 
     }
 
-    private static final class AvailableAbilityTreeViewModel extends AbstractGenericListDataListener<AbilityFacade>
+    private static final class AvailableAbilityTreeViewModel extends AbstractGenericListDataWrapper<AbilityFacade>
             implements FilterableTreeViewModel<AbilityFacade>
     {
 

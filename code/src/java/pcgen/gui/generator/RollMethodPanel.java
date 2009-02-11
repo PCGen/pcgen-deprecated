@@ -1,5 +1,5 @@
 /*
- * StandardModePanel.java
+ * RollMethodPanel.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ import pcgen.gui.util.event.DocumentChangeAdapter;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-class StandardModePanel extends JPanel implements Customizer
+class RollMethodPanel extends JPanel implements Customizer
 {
 
 	private final JCheckBox assignableBox;
@@ -52,9 +52,9 @@ class StandardModePanel extends JPanel implements Customizer
 	private final JLabel[] statLabels = new JLabel[6];
 	private final JTextField[] expressionFields = new JTextField[6];
 	private final JTextField[] resultFields = new JTextField[6];
-	private MutableStandardModeGenerator generator = null;
+	private MutableRollMethod generator = null;
 
-	public StandardModePanel()
+	public RollMethodPanel()
 	{
 		super(new GridBagLayout());
 		this.assignableBox = new JCheckBox();
@@ -125,12 +125,12 @@ class StandardModePanel extends JPanel implements Customizer
 
 	public void setObject(Object bean)
 	{
-		if (!(bean instanceof StandardModeGenerator))
+		if (!(bean instanceof RollMethod))
 		{
 			throw new IllegalArgumentException();
 		}
-		StandardModeGenerator value = (StandardModeGenerator) bean;
-		boolean editable = value instanceof MutableStandardModeGenerator;
+		RollMethod value = (RollMethod) bean;
+		boolean editable = value instanceof MutableRollMethod;
 		assignableBox.setSelected(value.isAssignable());
 		assignableBox.setEnabled(editable);
 		List<String> expressions = value.getDiceExpressions();
@@ -151,7 +151,7 @@ class StandardModePanel extends JPanel implements Customizer
 		}
 		if (editable)
 		{
-			generator = (MutableStandardModeGenerator) value;
+			generator = (MutableRollMethod) value;
 		}
 	}
 

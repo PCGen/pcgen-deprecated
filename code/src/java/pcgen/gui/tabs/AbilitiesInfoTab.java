@@ -35,7 +35,7 @@ import pcgen.gui.facade.AbilityCatagoryFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
-import pcgen.gui.util.event.AbstractGenericListDataListener;
+import pcgen.gui.util.event.AbstractGenericListDataWrapper;
 import pcgen.util.CollectionMaps;
 import pcgen.util.ListMap;
 
@@ -83,7 +83,7 @@ public class AbilitiesInfoTab extends JTabbedPane implements CharacterStateEdita
         final ListMap<String, AbilityCatagoryFacade, DefaultGenericListModel<AbilityCatagoryFacade>> catagoryListMap =
                 CollectionMaps.createListMap(HashMap.class,
                                              DefaultGenericListModel.class);
-        AbstractGenericListDataListener<AbilityCatagoryFacade> listener = new AbstractGenericListDataListener<AbilityCatagoryFacade>()
+        AbstractGenericListDataWrapper<AbilityCatagoryFacade> listener = new AbstractGenericListDataWrapper<AbilityCatagoryFacade>()
         {
 
             @Override

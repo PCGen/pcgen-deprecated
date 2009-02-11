@@ -1,5 +1,5 @@
 /*
- * AbstractGenericListDataListener.java
+ * AbstractGenericListDataWrapper.java
  * Copyright 2008 Connor Petty <cpmeister@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or
@@ -29,16 +29,16 @@ import pcgen.gui.util.GenericListModelWrapper;
  * in its implementation of the <code>intervalAdded()</code> method. 
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractGenericListDataListener<E> implements GenericListDataListener<E>
+public abstract class AbstractGenericListDataWrapper<E> implements GenericListDataListener<E>
 {
 
     protected GenericListModelWrapper<E> wrapper = null;
 
-    public AbstractGenericListDataListener()
+    public AbstractGenericListDataWrapper()
     {
     }
 
-    public AbstractGenericListDataListener(GenericListModel<E> model)
+    public AbstractGenericListDataWrapper(GenericListModel<E> model)
     {
         setModel(model);
     }
