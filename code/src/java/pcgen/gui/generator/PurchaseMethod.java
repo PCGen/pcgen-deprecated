@@ -43,9 +43,4 @@ public interface PurchaseMethod extends StatGenerationMethod
 	 */
 	public int getScoreCost(int score);
 
-	/**
-	 * @return null
-	 */
-	public Integer getNext();
-
 }

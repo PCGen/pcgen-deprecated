@@ -92,63 +92,52 @@ public final class GeneratorManager
 	{
 
 		private static final Map<String, GeneratorType<?>> typeMap = new HashMap<String, GeneratorType<?>>();
-		public static final GeneratorType<WeightedGenerator<AlignmentFacade>> ALIGNMENT = new GeneratorType<WeightedGenerator<AlignmentFacade>>("AlignmentGenerator",
-																																				   "ALIGNMENT_GENERATOR",
+		public static final GeneratorType<WeightedGenerator<AlignmentFacade>> ALIGNMENT = new GeneratorType<WeightedGenerator<AlignmentFacade>>("ALIGNMENT_GENERATOR",
 																																				   DefaultAlignmentGenerator.class,
 																																				   null,
 																																				   SingletonWeightedGenerator.class);
-		public static final GeneratorType<WeightedGenerator<Gender>> GENDER = new GeneratorType<WeightedGenerator<Gender>>("GenderGenerator",
-																															  "GENDER_GENERATOR",
+		public static final GeneratorType<WeightedGenerator<Gender>> GENDER = new GeneratorType<WeightedGenerator<Gender>>("GENDER_GENERATOR",
 																															  null,
 																															  null,
 																															  SingletonWeightedGenerator.class);
-		public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>("SkillGenerator",
-																																		   "SKILL_GENERATOR",
+		public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>("SKILL_GENERATOR",
 																																		   DefaultSkillGenerator.class,
 																																		   DefaultMutableSkillGenerator.class,
 																																		   SingletonInfoFacadeGenerator.class);
-		public static final GeneratorType<RollMethod> STANDARDMODE = new GeneratorType<RollMethod>("StandardModeGenerator",
-																															"STANDARDMODE_GENERATOR",
-																															DefaultStandardModeGenerator.class,
-																															DefaultMutableStandardModeGenerator.class,
-																															null);
-		public static final GeneratorType<PurchaseMethod> PURCHASEMODE = new GeneratorType<PurchaseMethod>("PurchaseModeGenerator",
-																															"PURCHASEMODE_GENERATOR",
-																															DefaultPurchaseModeGenerator.class,
-																															DefaultMutablePurchaseModeGenerator.class,
-																															null);
-		public static final GeneratorType<InfoFacadeGenerator<RaceFacade>> RACE = new GeneratorType<InfoFacadeGenerator<RaceFacade>>("RaceGenerator",
-																																		"RACE_GENERATOR",
+		public static final GeneratorType<RollMethod> ROLLMETHOD = new GeneratorType<RollMethod>("ROLL_METHOD",
+																									DefaultRollMethod.class,
+																									DefaultMutableRollMethod.class,
+																									DefaultRollMethod.class);
+		public static final GeneratorType<PurchaseMethod> PURCHASEMETHOD = new GeneratorType<PurchaseMethod>("PURCHASE_METHOD",
+																												DefaultPurchaseMethod.class,
+																												DefaultMutablePurchaseMethod.class,
+																												DefaultPurchaseMethod.class);
+		public static final GeneratorType<InfoFacadeGenerator<RaceFacade>> RACE = new GeneratorType<InfoFacadeGenerator<RaceFacade>>("RACE_GENERATOR",
 																																		DefaultRaceGenerator.class,
 																																		DefaultMutableRaceGenerator.class,
 																																		SingletonInfoFacadeGenerator.class);
-		public static final GeneratorType<InfoFacadeGenerator<ClassFacade>> CLASS = new GeneratorType<InfoFacadeGenerator<ClassFacade>>("ClassGenerator",
-																																		   "CLASS_GENERATOR",
+		public static final GeneratorType<InfoFacadeGenerator<ClassFacade>> CLASS = new GeneratorType<InfoFacadeGenerator<ClassFacade>>("CLASS_GENERATOR",
 																																		   DefaultClassGenerator.class,
 																																		   DefaultMutableClassGenerator.class,
 																																		   SingletonInfoFacadeGenerator.class);
-		public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>("AbilityBuild",
-																										  "ABILITY_BUILD",
+		public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>("ABILITY_BUILD",
 																										  DefaultAbilityBuild.class,
 																										  DefaultMutableAbilityBuild.class,
 																										  null);
-		public static final GeneratorType<InfoFacadeGenerator<AbilityFacade>> ABILITY = new GeneratorType<InfoFacadeGenerator<AbilityFacade>>("Ability",
-																																				 "ABILITY_GENERATOR",
+		public static final GeneratorType<InfoFacadeGenerator<AbilityFacade>> ABILITY = new GeneratorType<InfoFacadeGenerator<AbilityFacade>>("ABILITY_GENERATOR",
 																																				 DefaultAbilityGenerator.class,
 																																				 DefaultMutableAbilityGenerator.class,
 																																				 SingletonInfoFacadeGenerator.class);
 		private Class<? extends E> baseClass;
 		private Class<? extends E> mutableClass;
 		private Class<?> singletonClass;
-		private String name;
 		private String element;
 
-		private GeneratorType(String name, String element,
+		private GeneratorType(String element,
 							   Class<? extends E> baseClass,
 							   Class<? extends E> mutableClass,
 							   Class<?> singletonClass)
 		{
-			this.name = name;
 			this.element = element;
 			this.baseClass = baseClass;
 			this.mutableClass = mutableClass;
@@ -468,7 +457,48 @@ public final class GeneratorManager
 				loadGenerators(document);
 			}
 		}
-		
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> GenericListModel<T> getAvailableGenerators(GeneratorType<T> type)
+	{
+		DefaultGenericListModel<T> model = new DefaultGenericListModel<T>();
+		for (Object generator : generatorMap.values(type, null))
+		{
+			model.addElement((T) generator);
+		}
+		return model;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> GenericListModel<T> getSelectedGenerators(GeneratorType<T> type)
+	{
+		DefaultGenericListModel<T> model = new DefaultGenericListModel<T>();
+		String generatorNames = SettingsHandler.getSelectedGenerators(dataset.getGameMode() +
+																	  "." +
+																	  type.element.toLowerCase());
+		for (String name : generatorNames.split("\\|"))
+		{
+			Object generator = generatorMap.get(type, null, name);
+			if (generator == null)
+			{
+				try
+				{
+					generator = type.singletonClass.getConstructor(String.class).newInstance(name);
+				}
+				catch (Exception ex)
+				{
+					Logging.errorPrint("Unable to create null-type SingletonGenerator",
+									   ex);
+				}
+			}
+			if (generator != null)
+			{
+				model.addElement((T) generator);
+			}
+		}
+		return model;
 	}
 
 	private void loadAnyGenerators()
@@ -616,7 +646,7 @@ public final class GeneratorManager
 	{
 
 		File file = new File("build/classes/generators/DefaultStandardGenerators.xml");
-		System.out.println(GeneratorType.getGeneratorType("ABILITY_BUILD").name);
+
 	}
 
 	public static <T extends InfoFacade> InfoFacadeGenerator<T> createSingletonGenerator(T item)
@@ -647,7 +677,7 @@ public final class GeneratorManager
 	}
 
 	public static MutablePurchaseMethod createMutablePurchaseModeGenerator(String name,
-																					PurchaseMethod template)
+																			 PurchaseMethod template)
 	{
 		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
 		generatorElement.setAttribute("name", name).
@@ -655,7 +685,7 @@ public final class GeneratorManager
 		Element cost = new Element("COST");
 		cost.setAttribute("score", "0").setText("0");
 
-		MutablePurchaseMethod generator = new DefaultMutablePurchaseModeGenerator(generatorElement);
+		MutablePurchaseMethod generator = new DefaultMutablePurchaseMethod(generatorElement);
 		if (template != null)
 		{
 			int min = template.getMinScore();
@@ -672,7 +702,7 @@ public final class GeneratorManager
 	}
 
 	public static MutableRollMethod createMutableStandardModeGenerator(String name,
-																					RollMethod template)
+																		 RollMethod template)
 	{
 		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
 		generatorElement.setAttribute("name", name).setAttribute("assignable",
@@ -682,7 +712,7 @@ public final class GeneratorManager
 			generatorElement.addContent(new Element("STAT"));
 		}
 
-		DefaultMutableStandardModeGenerator generator = new DefaultMutableStandardModeGenerator(generatorElement);
+		DefaultMutableRollMethod generator = new DefaultMutableRollMethod(generatorElement);
 		if (template != null)
 		{
 			generator.setAssignable(template.isAssignable());
@@ -697,8 +727,8 @@ public final class GeneratorManager
 																									  DataSetFacade data,
 																									  MutableInfoFacadeGenerator<T> template)
 	{
-		Document document = getCustomGeneratorDocument(data,
-													   type.name);
+		Document document = null;// = getCustomGeneratorDocument(data,
+		//type.name);
 		if (document != null)
 		{
 
@@ -1274,7 +1304,7 @@ public final class GeneratorManager
 
 	}
 
-	private static class DefaultPurchaseModeGenerator extends AbstractGenerator<Integer>
+	private static class DefaultPurchaseMethod extends AbstractGenerator<Integer>
 			implements PurchaseMethod
 	{
 
@@ -1282,7 +1312,16 @@ public final class GeneratorManager
 		protected int points;
 		protected int min;
 
-		public DefaultPurchaseModeGenerator(GeneratorElement element)
+		public DefaultPurchaseMethod(String name)
+		{
+			super(name);
+			this.points = -1;
+			this.min = 0;
+			this.costs = new Vector<Integer>();
+			costs.setSize(1);
+		}
+
+		public DefaultPurchaseMethod(GeneratorElement element)
 		{
 			super(element);
 			this.points = Integer.parseInt(element.getAttributeValue("points"));
@@ -1326,19 +1365,19 @@ public final class GeneratorManager
 
 	}
 
-	private static class DefaultMutablePurchaseModeGenerator extends DefaultPurchaseModeGenerator
+	private static class DefaultMutablePurchaseMethod extends DefaultPurchaseMethod
 			implements MutablePurchaseMethod
 	{
 
-		private DefaultPurchaseModeGenerator generator = null;
+		private DefaultPurchaseMethod generator = null;
 
-		public DefaultMutablePurchaseModeGenerator(DefaultPurchaseModeGenerator generator)
+		public DefaultMutablePurchaseMethod(DefaultPurchaseMethod generator)
 		{
 			super(generator.element);
 			this.generator = generator;
 		}
 
-		public DefaultMutablePurchaseModeGenerator(GeneratorElement element)
+		public DefaultMutablePurchaseMethod(GeneratorElement element)
 		{
 			super(element);
 		}
@@ -1385,14 +1424,21 @@ public final class GeneratorManager
 
 	}
 
-	private static class DefaultStandardModeGenerator extends AbstractGenerator<Integer>
+	private static class DefaultRollMethod extends AbstractGenerator<Integer>
 			implements RollMethod
 	{
 
 		protected boolean assignable;
 		protected List<String> diceExpressions;
 
-		public DefaultStandardModeGenerator(GeneratorElement element)
+		public DefaultRollMethod(String name)
+		{
+			super(name);
+			this.diceExpressions = null;
+			this.assignable = false;
+		}
+
+		public DefaultRollMethod(GeneratorElement element)
 		{
 			super(element);
 			this.assignable = Boolean.parseBoolean(element.getAttributeValue("assignable"));
@@ -1422,19 +1468,19 @@ public final class GeneratorManager
 
 	}
 
-	private static class DefaultMutableStandardModeGenerator extends DefaultStandardModeGenerator
+	private static class DefaultMutableRollMethod extends DefaultRollMethod
 			implements MutableRollMethod
 	{
 
-		private DefaultStandardModeGenerator generator = null;
+		private DefaultRollMethod generator = null;
 
-		public DefaultMutableStandardModeGenerator(DefaultStandardModeGenerator generator)
+		public DefaultMutableRollMethod(DefaultRollMethod generator)
 		{
 			super(generator.element);
 			this.generator = generator;
 		}
 
-		public DefaultMutableStandardModeGenerator(GeneratorElement element)
+		public DefaultMutableRollMethod(GeneratorElement element)
 		{
 			super(element);
 		}

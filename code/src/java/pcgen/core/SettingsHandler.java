@@ -21,6 +21,7 @@
 package pcgen.core;
 
 import java.io.File;
+import pcgen.gui.facade.GameModeFacade;
 
 /**
  *
@@ -29,14 +30,19 @@ import java.io.File;
 public final class SettingsHandler
 {
 
-    public static File getPcgenSystemDir()
-    {
-        return new File("build/classes").getAbsoluteFile();
-    }
+	public static File getPcgenSystemDir()
+	{
+		return new File("build/classes").getAbsoluteFile();
+	}
 
-    public static File getPcgenCustomDir()
-    {
-        return null;
-    }
+	public static File getPcgenCustomDir()
+	{
+		return null;
+	}
+
+	public static String getSelectedGenerators(String generators)
+	{
+		return null;
+	}
 
 }
