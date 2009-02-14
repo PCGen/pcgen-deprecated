@@ -289,7 +289,7 @@ public class CharacterBuildCustomizer extends JPanel implements Customizer
 										PurchaseMethod purchaseMode = (PurchaseMethod) statGenerator;
 										if (model.setPurchaseMode(purchaseMode))
 										{
-											statPointsLabel.setPoints(purchaseMode.getNext());
+											statPointsLabel.setPoints(purchaseMode.getPoints());
 											statSpinnerEditor.setPurchaseMode(purchaseMode);
 										}
 										statTablePane.setUpperLeft(statPointsLabel);

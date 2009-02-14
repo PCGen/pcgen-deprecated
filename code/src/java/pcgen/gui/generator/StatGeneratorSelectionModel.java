@@ -65,11 +65,9 @@ public class StatGeneratorSelectionModel implements SelectionModel<StatGeneratio
 		props.setProperty(SelectionModel.SELECTION_TEXT_PROP, "selStatGen");
 		props.setProperty(SelectionModel.NEW_TOOLTIP_PROP, "newStatGen");
 		props.setProperty(SelectionModel.COPY_TOOLTIP_PROP, "copyStatGen");
-		props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP,
-						  "deleteStatGen");
+		props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP, "deleteStatGen");
 		props.setProperty(SelectionModel.ADD_TOOLTIP_PROP, "addStatGen");
-		props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP,
-						  "removeStatGen");
+		props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP, "removeStatGen");
 	}
 
 	private final ModeSelectionPanel modePanel;

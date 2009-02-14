@@ -20,8 +20,12 @@
  */
 package pcgen.gui.generator;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.beans.BeanDescriptor;
+import java.beans.Customizer;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.beans.PropertyEditorSupport;
 import java.beans.SimpleBeanInfo;
 import java.io.File;
@@ -41,12 +45,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
 import org.jdom.DefaultJDOMFactory;
 import org.jdom.DocType;
@@ -76,8 +82,11 @@ import pcgen.gui.facade.RaceFacade;
 import pcgen.gui.facade.SkillFacade;
 import pcgen.gui.generator.ability.AbilityBuild;
 import pcgen.gui.generator.ability.MutableAbilityBuild;
+import pcgen.gui.tools.SelectionDialog;
+import pcgen.gui.tools.SelectionModel;
 import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
+import pcgen.gui.util.GenericListModelWrapper;
 import pcgen.gui.util.event.AbstractGenericListDataWrapper;
 import pcgen.util.Logging;
 
@@ -400,7 +409,17 @@ public final class GeneratorManager
 				{
 					c = type.baseClass;
 				}
-				Object obj = c.getConstructor(GeneratorElement.class).newInstance(element);
+				Object obj = null;
+				try
+				{
+					obj = c.getConstructor(GeneratorManager.class,
+										   GeneratorElement.class).newInstance(this,
+																			   element);
+				}
+				catch (NoSuchMethodException ex)
+				{
+					obj = c.getConstructor(GeneratorElement.class).newInstance(element);
+				}
 				generatorMap.put(type, catagory, name, obj);
 				return;
 			}
@@ -413,7 +432,16 @@ public final class GeneratorManager
 		c = type.singletonClass;
 		try
 		{
-			Object obj = c.getConstructor(String.class).newInstance(name);
+			Object obj = null;
+			try
+			{
+				obj = c.getConstructor(String.class).newInstance(name);
+			}
+			catch (NoSuchMethodException ex)
+			{
+				obj = c.getConstructor(GeneratorManager.class,
+									   String.class).newInstance(this, name);
+			}
 			generatorMap.put(type, catagory, name, obj);
 		}
 		catch (Exception ex)
@@ -458,47 +486,6 @@ public final class GeneratorManager
 			}
 		}
 
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> GenericListModel<T> getAvailableGenerators(GeneratorType<T> type)
-	{
-		DefaultGenericListModel<T> model = new DefaultGenericListModel<T>();
-		for (Object generator : generatorMap.values(type, null))
-		{
-			model.addElement((T) generator);
-		}
-		return model;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> GenericListModel<T> getSelectedGenerators(GeneratorType<T> type)
-	{
-		DefaultGenericListModel<T> model = new DefaultGenericListModel<T>();
-		String generatorNames = SettingsHandler.getSelectedGenerators(dataset.getGameMode() +
-																	  "." +
-																	  type.element.toLowerCase());
-		for (String name : generatorNames.split("\\|"))
-		{
-			Object generator = generatorMap.get(type, null, name);
-			if (generator == null)
-			{
-				try
-				{
-					generator = type.singletonClass.getConstructor(String.class).newInstance(name);
-				}
-				catch (Exception ex)
-				{
-					Logging.errorPrint("Unable to create null-type SingletonGenerator",
-									   ex);
-				}
-			}
-			if (generator != null)
-			{
-				model.addElement((T) generator);
-			}
-		}
-		return model;
 	}
 
 	private void loadAnyGenerators()
@@ -760,6 +747,194 @@ public final class GeneratorManager
 		}
 
 		return null;
+	}
+
+	private class GeneratorSelectionModel<T> implements SelectionModel<T>
+	{
+
+		private final GeneratorType<T> type;
+		private final Map<T, T> copyMap;
+		private GeneratorBeanInfo info;
+		private Customizer customizer;
+
+		public GeneratorSelectionModel(GeneratorType<T> type)
+		{
+
+			this.type = type;
+			this.copyMap = new HashMap<T, T>();
+
+			try
+			{
+				this.info = (GeneratorBeanInfo) Introspector.getBeanInfo(type.baseClass);
+				this.customizer = (Customizer) info.getBeanDescriptor().getCustomizerClass().newInstance();
+			}
+			catch (IntrospectionException ex)
+			{
+				Logging.errorPrint("GeneratorBeanInfo for " + type.baseClass +
+								   " not found", ex);
+				this.info = null;
+				this.customizer = null;
+			}
+			catch (Exception ex)
+			{
+				Logging.errorPrint("Customizer for " + type.baseClass +
+								   " not found", ex);
+				this.customizer = null;
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		public GenericListModel<T> getAvailableList()
+		{
+			DefaultGenericListModel<T> model = new DefaultGenericListModel<T>();
+			for (Object generator : generatorMap.values(type, null))
+			{
+				model.addElement((T) generator);
+			}
+			return model;
+		}
+
+		@SuppressWarnings("unchecked")
+		public GenericListModel<T> getSelectedList()
+		{
+			DefaultGenericListModel<T> model = new DefaultGenericListModel<T>();
+			String generatorNames = SettingsHandler.getSelectedGenerators(dataset.getGameMode() +
+																		  "." +
+																		  type.element.toLowerCase());
+			for (String name : generatorNames.split("\\|"))
+			{
+				Object generator = generatorMap.get(type, null, name);
+				if (generator == null)
+				{
+					try
+					{
+						generator = type.singletonClass.getConstructor(String.class).newInstance(name);
+					}
+					catch (Exception ex)
+					{
+						Logging.errorPrint("Unable to create null-type SingletonGenerator",
+										   ex);
+					}
+				}
+				if (generator != null)
+				{
+					model.addElement((T) generator);
+				}
+			}
+			return model;
+		}
+
+		public void setAvailableList(GenericListModel<T> list)
+		{
+			for (Object generator : generatorMap.values(type, null))
+			{
+				generatorMap.remove(type, null, generator.toString());
+			}
+			for (int i = 0; i < list.getSize(); i++)
+			{
+				T generator = list.getElementAt(i);
+				generatorMap.put(type, null, generator.toString(), generator);
+			}
+		}
+
+		public void setSelectedList(GenericListModel<T> list)
+		{
+			String prop = dataset.getGameMode() + type.element.toLowerCase();
+			String generators = StringUtils.join(new GenericListModelWrapper<T>(list),
+												 "|");
+			SettingsHandler.setSelectedGenerators(prop, generators);
+		}
+
+		@SuppressWarnings("unchecked")
+		public Component getCustomizer(Component currentItemPanel,
+										T selectedItem)
+		{
+			if (info.isNullType(selectedItem))
+			{
+				return null;
+			}
+			if (isMutable(selectedItem))
+			{
+				if (!copyMap.containsKey(selectedItem))
+				{
+					try
+					{
+						Class<?> c = type.mutableClass;
+						T item = null;
+						try
+						{
+							item = (T) c.getConstructor(type.baseClass).newInstance(selectedItem);
+						}
+						catch (NoSuchMethodException ex)
+						{
+							item = (T) c.getConstructor(GeneratorManager.class,
+														type.baseClass).newInstance(GeneratorManager.this,
+																					selectedItem);
+						}
+						copyMap.put(selectedItem, item);
+					}
+					catch (Exception ex)
+					{
+						Logging.errorPrint("Error while copying generator", ex);
+					}
+				}
+				selectedItem = copyMap.get(selectedItem);
+			}
+			if (customizer != null)
+			{
+				customizer.setObject(selectedItem);
+			}
+			return (Component) customizer;
+		}
+
+		public T createMutableItem(SelectionDialog<T> selectionDialog,
+									T templateItem)
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		public boolean isMutable(T item)
+		{
+			return item instanceof Mutable;
+		}
+
+		public boolean isAddable(T item)
+		{
+			return true;
+		}
+
+		public boolean isCopyable(T item)
+		{
+			return !info.isNullType(item);
+		}
+
+		public Color getItemColor(T item)
+		{
+			if (isMutable(item))
+			{
+				return Color.BLUE;
+			}
+			if (info.isNullType(item))
+			{
+				return Color.GRAY;
+			}
+			return Color.BLACK;
+		}
+
+		public Properties getDisplayProperties()
+		{
+			return info.getDisplayProperties();
+		}
+
+	}
+
+	private abstract static class GeneratorBeanInfo extends SimpleBeanInfo
+	{
+
+		public abstract Properties getDisplayProperties();
+
+		public abstract boolean isNullType(Object bean);
+
 	}
 
 	private class DefaultCharacterBuild

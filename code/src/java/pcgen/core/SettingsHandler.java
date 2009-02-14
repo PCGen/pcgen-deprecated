@@ -40,9 +40,13 @@ public final class SettingsHandler
 		return null;
 	}
 
-	public static String getSelectedGenerators(String generators)
+	public static String getSelectedGenerators(String prop)
 	{
 		return null;
 	}
 
+	public static void setSelectedGenerators(String prop, String generators)
+	{
+		
+	}
 }
