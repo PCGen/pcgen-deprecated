@@ -1074,20 +1074,20 @@ public final class GeneratorManager
 
 	}
 
-	private class DefaultAlignmentGenerator extends AbstractWeightedGenerator<AlignmentFacade>
+	private static class DefaultAlignmentGenerator extends AbstractWeightedGenerator<AlignmentFacade>
 	{
 
 		//private Queue<E> queue = null;
-		public DefaultAlignmentGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultAlignmentGenerator(GeneratorManager manager,
+										  GeneratorElement element) throws MissingDataException
 		{
-			super(element);
-
+			super(manager, element);
 		}
 
 		@Override
 		protected AlignmentFacade getFacade(String name)
 		{
-			return dataset.getGameMode().getAlignment(name);
+			return manager.dataset.getGameMode().getAlignment(name);
 		}
 
 	}
@@ -1133,6 +1133,7 @@ public final class GeneratorManager
 
 		protected Map<E, Integer> priorityMap = new HashMap<E, Integer>();
 		private Queue<E> queue = null;
+		protected GeneratorManager manager;
 
 		public AbstractWeightedGenerator(String name)
 		{
@@ -1140,9 +1141,11 @@ public final class GeneratorManager
 			queue = new LinkedList<E>();
 		}
 
-		public AbstractWeightedGenerator(GeneratorElement element) throws MissingDataException
+		public AbstractWeightedGenerator(GeneratorManager manager,
+										  GeneratorElement element) throws MissingDataException
 		{
 			super(element);
+			this.manager = manager;
 			init(element);
 		}
 
@@ -1280,9 +1283,10 @@ public final class GeneratorManager
 		}
 
 		@SuppressWarnings("unchecked")
-		public AbstractInfoFacadeGenerator(GeneratorElement element) throws MissingDataException
+		public AbstractInfoFacadeGenerator(GeneratorManager manager,
+											GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 			this.randomOrder = element.getAttributeValue("type").equals("random");
 		}
 
@@ -1338,15 +1342,17 @@ public final class GeneratorManager
 
 		private AbstractInfoFacadeGenerator<E> generator = null;
 
-		public AbstractMutableInfoFacadeGenerator(AbstractInfoFacadeGenerator<E> generator) throws MissingDataException
+		public AbstractMutableInfoFacadeGenerator(GeneratorManager manager,
+												   AbstractInfoFacadeGenerator<E> generator) throws MissingDataException
 		{
-			super(generator.element);
+			super(manager, generator.element);
 			this.generator = generator;
 		}
 
-		public AbstractMutableInfoFacadeGenerator(GeneratorElement element) throws MissingDataException
+		public AbstractMutableInfoFacadeGenerator(GeneratorManager manager,
+												   GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 			element.addChangeListener(this);
 		}
 
@@ -1687,34 +1693,36 @@ public final class GeneratorManager
 
 	}
 
-	private class DefaultRaceGenerator extends AbstractInfoFacadeGenerator<RaceFacade>
+	private static class DefaultRaceGenerator extends AbstractInfoFacadeGenerator<RaceFacade>
 	{
 
-		public DefaultRaceGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultRaceGenerator(GeneratorManager manager,
+									 GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected RaceFacade getFacade(String name)
 		{
-			return dataset.getRace(name);
+			return manager.dataset.getRace(name);
 		}
 
 	}
 
-	private class DefaultMutableRaceGenerator extends AbstractMutableInfoFacadeGenerator<RaceFacade>
+	private static class DefaultMutableRaceGenerator extends AbstractMutableInfoFacadeGenerator<RaceFacade>
 	{
 
-		public DefaultMutableRaceGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultMutableRaceGenerator(GeneratorManager manager,
+											GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected RaceFacade getFacade(String name)
 		{
-			return dataset.getRace(name);
+			return manager.dataset.getRace(name);
 		}
 
 		@Override
@@ -1725,34 +1733,36 @@ public final class GeneratorManager
 
 	}
 
-	private class DefaultClassGenerator extends AbstractInfoFacadeGenerator<ClassFacade>
+	private static class DefaultClassGenerator extends AbstractInfoFacadeGenerator<ClassFacade>
 	{
 
-		public DefaultClassGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultClassGenerator(GeneratorManager manager,
+									  GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected ClassFacade getFacade(String name)
 		{
-			return dataset.getClass(name);
+			return manager.dataset.getClass(name);
 		}
 
 	}
 
-	private class DefaultMutableClassGenerator extends AbstractMutableInfoFacadeGenerator<ClassFacade>
+	private static class DefaultMutableClassGenerator extends AbstractMutableInfoFacadeGenerator<ClassFacade>
 	{
 
-		public DefaultMutableClassGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultMutableClassGenerator(GeneratorManager manager,
+											 GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected ClassFacade getFacade(String name)
 		{
-			return dataset.getClass(name);
+			return manager.dataset.getClass(name);
 		}
 
 		@Override
@@ -1775,38 +1785,36 @@ public final class GeneratorManager
 
 	}
 
-	public static class DefaultMutableClassGeneratorEditor extends PropertyEditorSupport
-	{
-	}
-
-	private class DefaultSkillGenerator extends AbstractInfoFacadeGenerator<SkillFacade>
+	private static class DefaultSkillGenerator extends AbstractInfoFacadeGenerator<SkillFacade>
 	{
 
-		public DefaultSkillGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultSkillGenerator(GeneratorManager manager,
+									  GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected SkillFacade getFacade(String name)
 		{
-			return dataset.getSkill(name);
+			return manager.dataset.getSkill(name);
 		}
 
 	}
 
-	private class DefaultMutableSkillGenerator extends AbstractMutableInfoFacadeGenerator<SkillFacade>
+	private static class DefaultMutableSkillGenerator extends AbstractMutableInfoFacadeGenerator<SkillFacade>
 	{
 
-		public DefaultMutableSkillGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultMutableSkillGenerator(GeneratorManager manager,
+											 GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected SkillFacade getFacade(String name)
 		{
-			return dataset.getSkill(name);
+			return manager.dataset.getSkill(name);
 		}
 
 		@Override
@@ -1817,13 +1825,14 @@ public final class GeneratorManager
 
 	}
 
-	private class DefaultAbilityBuild implements AbilityBuild
+	private static class DefaultAbilityBuild implements AbilityBuild
 	{
 
 		private String name;
 		protected Map<AbilityCatagoryFacade, AbstractInfoFacadeGenerator<AbilityFacade>> generatorMap;
 
-		public DefaultAbilityBuild(GeneratorElement element) throws MissingDataException
+		public DefaultAbilityBuild(GeneratorManager manager,
+									GeneratorElement element) throws MissingDataException
 		{
 			this.name = element.getAttributeValue("name");
 			this.generatorMap = new HashMap<AbilityCatagoryFacade, AbstractInfoFacadeGenerator<AbilityFacade>>();
@@ -1831,8 +1840,9 @@ public final class GeneratorManager
 			List<GeneratorElement> children = element.getChildren("GENERATOR");
 			for ( GeneratorElement element1 : children)
 			{
-				DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(element1);
-				AbilityCatagoryFacade catagory = dataset.getAbilityCatagory(generator.toString());
+				DefaultMutableAbilityGenerator generator = new DefaultMutableAbilityGenerator(manager,
+																							  element1);
+				AbilityCatagoryFacade catagory = manager.dataset.getAbilityCatagory(generator.toString());
 				generatorMap.put(catagory, generator);
 			}
 
@@ -1851,15 +1861,16 @@ public final class GeneratorManager
 
 	}
 
-	private class DefaultMutableAbilityBuild extends DefaultAbilityBuild
+	private static class DefaultMutableAbilityBuild extends DefaultAbilityBuild
 			implements MutableAbilityBuild
 	{
 
 		private GeneratorElement element;
 
-		public DefaultMutableAbilityBuild(GeneratorElement element) throws MissingDataException
+		public DefaultMutableAbilityBuild(GeneratorManager manager,
+										   GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 			this.element = element;
 		}
 
@@ -1905,37 +1916,39 @@ public final class GeneratorManager
 
 	}
 
-	private class DefaultAbilityGenerator extends AbstractInfoFacadeGenerator<AbilityFacade>
+	private static class DefaultAbilityGenerator extends AbstractInfoFacadeGenerator<AbilityFacade>
 	{
 
-		public DefaultAbilityGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultAbilityGenerator(GeneratorManager manager,
+										GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected AbilityFacade getFacade(String name)
 		{
-			return dataset.getAbility(dataset.getAbilityCatagory(element.getAttributeValue("catagory")),
-									  name);
+			return manager.dataset.getAbility(manager.dataset.getAbilityCatagory(element.getAttributeValue("catagory")),
+											  name);
 		}
 
 	}
 
-	private class DefaultMutableAbilityGenerator extends AbstractMutableInfoFacadeGenerator<AbilityFacade>
+	private static class DefaultMutableAbilityGenerator extends AbstractMutableInfoFacadeGenerator<AbilityFacade>
 	{
 
-		public DefaultMutableAbilityGenerator(GeneratorElement element) throws MissingDataException
+		public DefaultMutableAbilityGenerator(GeneratorManager manager,
+											   GeneratorElement element) throws MissingDataException
 		{
-			super(element);
+			super(manager, element);
 		}
 
 		@Override
 		protected AbilityFacade getFacade(String name)
 		{
 
-			return dataset.getAbility(dataset.getAbilityCatagory(element.getAttributeValue("catagory")),
-									  name);
+			return manager.dataset.getAbility(manager.dataset.getAbilityCatagory(element.getAttributeValue("catagory")),
+											  name);
 		}
 
 		@Override
