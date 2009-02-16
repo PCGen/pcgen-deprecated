@@ -32,43 +32,50 @@ import org.jdom.Element;
 public class GeneratorElement extends Element
 {
 
-    private final EventListenerList listenerList;
+	private EventListenerList listenerList = new EventListenerList();
 
-    public GeneratorElement(String name)
-    {
-        super(name);
-        listenerList = new EventListenerList();
-    }
+	public GeneratorElement(String name)
+	{
+		super(name);
+	}
 
-    public void addChangeListener(ChangeListener listener)
-    {
-        listenerList.add(ChangeListener.class, listener);
-    }
+	@Override
+	public Object clone()
+	{
+		GeneratorElement element = (GeneratorElement) super.clone();
+		element.listenerList = new EventListenerList();
+		return element;
+	}
 
-    public void removeChangeListener(ChangeListener listener)
-    {
-        listenerList.remove(ChangeListener.class, listener);
-    }
+	public void addChangeListener(ChangeListener listener)
+	{
+		listenerList.add(ChangeListener.class, listener);
+	}
 
-    public void fireChangeEvent()
-    {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        ChangeEvent event = null;
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2)
-        {
-            if (listeners[i] == ChangeListener.class)
-            {
-                // Lazily create the event:
-                if (event == null)
-                {
-                    event = new ChangeEvent(this);
-                }
-                ((ChangeListener) listeners[i + 1]).stateChanged(event);
-            }
-        }
-    }
+	public void removeChangeListener(ChangeListener listener)
+	{
+		listenerList.remove(ChangeListener.class, listener);
+	}
+
+	public void fireChangeEvent()
+	{
+		// Guaranteed to return a non-null array
+		Object[] listeners = listenerList.getListenerList();
+		ChangeEvent event = null;
+		// Process the listeners last to first, notifying
+		// those that are interested in this event
+		for (int i = listeners.length - 2; i >= 0; i -= 2)
+		{
+			if (listeners[i] == ChangeListener.class)
+			{
+				// Lazily create the event:
+				if (event == null)
+				{
+					event = new ChangeEvent(this);
+				}
+				((ChangeListener) listeners[i + 1]).stateChanged(event);
+			}
+		}
+	}
 
 }

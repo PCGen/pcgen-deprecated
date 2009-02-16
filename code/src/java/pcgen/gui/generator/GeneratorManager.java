@@ -24,8 +24,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.beans.BeanDescriptor;
 import java.beans.Customizer;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
 import java.beans.PropertyEditorSupport;
 import java.beans.SimpleBeanInfo;
 import java.io.File;
@@ -101,57 +99,26 @@ public final class GeneratorManager
 	{
 
 		private static final Map<String, GeneratorType<?>> typeMap = new HashMap<String, GeneratorType<?>>();
-		public static final GeneratorType<WeightedGenerator<AlignmentFacade>> ALIGNMENT = new GeneratorType<WeightedGenerator<AlignmentFacade>>("ALIGNMENT_GENERATOR",
-																																				   DefaultAlignmentGenerator.class,
-																																				   null,
-																																				   SingletonWeightedGenerator.class);
-		public static final GeneratorType<WeightedGenerator<Gender>> GENDER = new GeneratorType<WeightedGenerator<Gender>>("GENDER_GENERATOR",
-																															  null,
-																															  null,
-																															  SingletonWeightedGenerator.class);
-		public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>("SKILL_GENERATOR",
-																																		   DefaultSkillGenerator.class,
-																																		   DefaultMutableSkillGenerator.class,
-																																		   SingletonInfoFacadeGenerator.class);
-		public static final GeneratorType<RollMethod> ROLLMETHOD = new GeneratorType<RollMethod>("ROLL_METHOD",
-																									DefaultRollMethod.class,
-																									DefaultMutableRollMethod.class,
-																									DefaultRollMethod.class);
-		public static final GeneratorType<PurchaseMethod> PURCHASEMETHOD = new GeneratorType<PurchaseMethod>("PURCHASE_METHOD",
-																												DefaultPurchaseMethod.class,
-																												DefaultMutablePurchaseMethod.class,
-																												DefaultPurchaseMethod.class);
-		public static final GeneratorType<InfoFacadeGenerator<RaceFacade>> RACE = new GeneratorType<InfoFacadeGenerator<RaceFacade>>("RACE_GENERATOR",
-																																		DefaultRaceGenerator.class,
-																																		DefaultMutableRaceGenerator.class,
-																																		SingletonInfoFacadeGenerator.class);
-		public static final GeneratorType<InfoFacadeGenerator<ClassFacade>> CLASS = new GeneratorType<InfoFacadeGenerator<ClassFacade>>("CLASS_GENERATOR",
-																																		   DefaultClassGenerator.class,
-																																		   DefaultMutableClassGenerator.class,
-																																		   SingletonInfoFacadeGenerator.class);
-		public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>("ABILITY_BUILD",
-																										  DefaultAbilityBuild.class,
-																										  DefaultMutableAbilityBuild.class,
-																										  null);
-		public static final GeneratorType<InfoFacadeGenerator<AbilityFacade>> ABILITY = new GeneratorType<InfoFacadeGenerator<AbilityFacade>>("ABILITY_GENERATOR",
-																																				 DefaultAbilityGenerator.class,
-																																				 DefaultMutableAbilityGenerator.class,
-																																				 SingletonInfoFacadeGenerator.class);
-		private Class<? extends E> baseClass;
-		private Class<? extends E> mutableClass;
-		private Class<?> singletonClass;
-		private String element;
+		public static final GeneratorType<WeightedGenerator<AlignmentFacade>> ALIGNMENT = new GeneratorType<WeightedGenerator<AlignmentFacade>>(new DefaultAlignmentGeneratorBeanInfo());
+		public static final GeneratorType<WeightedGenerator<Gender>> GENDER = new GeneratorType<WeightedGenerator<Gender>>("GENDER_GENERATOR");
+		public static final GeneratorType<InfoFacadeGenerator<SkillFacade>> SKILL = new GeneratorType<InfoFacadeGenerator<SkillFacade>>(new DefaultSkillGeneratorBeanInfo());
+		public static final GeneratorType<RollMethod> ROLLMETHOD = new GeneratorType<RollMethod>(new DefaultRollMethodBeanInfo());
+		public static final GeneratorType<PurchaseMethod> PURCHASEMETHOD = new GeneratorType<PurchaseMethod>(new DefaultPurchaseMethodBeanInfo());
+		public static final GeneratorType<InfoFacadeGenerator<RaceFacade>> RACE = new GeneratorType<InfoFacadeGenerator<RaceFacade>>(new DefaultRaceGeneratorBeanInfo());
+		public static final GeneratorType<InfoFacadeGenerator<ClassFacade>> CLASS = new GeneratorType<InfoFacadeGenerator<ClassFacade>>(new DefaultClassGeneratorBeanInfo());
+		public static final GeneratorType<AbilityBuild> ABILITYBUILD = new GeneratorType<AbilityBuild>(new DefaultAbilityBuildBeanInfo());
+		public static final GeneratorType<InfoFacadeGenerator<AbilityFacade>> ABILITY = new GeneratorType<InfoFacadeGenerator<AbilityFacade>>(new DefaultAbilityGeneratorBeanInfo());
+		private GeneratorBeanInfo<E> beaninfo;
 
-		private GeneratorType(String element,
-							   Class<? extends E> baseClass,
-							   Class<? extends E> mutableClass,
-							   Class<?> singletonClass)
+		private GeneratorType(String key)
 		{
-			this.element = element;
-			this.baseClass = baseClass;
-			this.mutableClass = mutableClass;
-			this.singletonClass = singletonClass;
-			typeMap.put(element, this);
+			typeMap.put(key, this);
+		}
+
+		private GeneratorType(GeneratorBeanInfo<E> beaninfo)
+		{
+			this.beaninfo = beaninfo;
+			typeMap.put(beaninfo.getElementName(), this);
 		}
 
 		public static GeneratorType<?> getGeneratorType(String element)
@@ -396,29 +363,19 @@ public final class GeneratorManager
 		String name = element.getAttributeValue("name");
 		String catagory = element.getAttributeValue("catagory");
 		GeneratorType<?> type = GeneratorType.getGeneratorType(element.getName());
-		Class<?> c;
+		//Class<?> c;
 		if (checkSources(element) && checkReferences(element))
 		{
 			try
 			{
+				Object obj = null;
 				if (mutable)
 				{
-					c = type.mutableClass;
+					obj = type.beaninfo.newMutableInstance(this, element);
 				}
 				else
 				{
-					c = type.baseClass;
-				}
-				Object obj = null;
-				try
-				{
-					obj = c.getConstructor(GeneratorManager.class,
-										   GeneratorElement.class).newInstance(this,
-																			   element);
-				}
-				catch (NoSuchMethodException ex)
-				{
-					obj = c.getConstructor(GeneratorElement.class).newInstance(element);
+					obj = type.beaninfo.newBaseInstance(this, element);
 				}
 				generatorMap.put(type, catagory, name, obj);
 				return;
@@ -429,19 +386,9 @@ public final class GeneratorManager
 								   ex);
 			}
 		}
-		c = type.singletonClass;
 		try
 		{
-			Object obj = null;
-			try
-			{
-				obj = c.getConstructor(String.class).newInstance(name);
-			}
-			catch (NoSuchMethodException ex)
-			{
-				obj = c.getConstructor(GeneratorManager.class,
-									   String.class).newInstance(this, name);
-			}
+			Object obj = type.beaninfo.newInvalidInstance(this, name);
 			generatorMap.put(type, catagory, name, obj);
 		}
 		catch (Exception ex)
@@ -449,6 +396,11 @@ public final class GeneratorManager
 			Logging.errorPrint("Unable to create null-type SingletonGenerator",
 							   ex);
 		}
+	}
+
+	private Document getCustomGeneratorDocument()
+	{
+		return null;
 	}
 
 	private <T> List<T> getGeneratorList(Document document,
@@ -663,121 +615,27 @@ public final class GeneratorManager
 		return document;
 	}
 
-	public static MutablePurchaseMethod createMutablePurchaseModeGenerator(String name,
-																			 PurchaseMethod template)
-	{
-		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
-		generatorElement.setAttribute("name", name).
-				setAttribute("points", "0");
-		Element cost = new Element("COST");
-		cost.setAttribute("score", "0").setText("0");
-
-		MutablePurchaseMethod generator = new DefaultMutablePurchaseMethod(generatorElement);
-		if (template != null)
-		{
-			int min = template.getMinScore();
-			int max = template.getMaxScore();
-			generator.setMinScore(min);
-			generator.setMaxScore(max);
-			generator.setPoints(template.getPoints());
-			for (int i = min; i <= max; i++)
-			{
-				generator.setScoreCost(i, template.getScoreCost(i));
-			}
-		}
-		return generator;
-	}
-
-	public static MutableRollMethod createMutableStandardModeGenerator(String name,
-																		 RollMethod template)
-	{
-		GeneratorElement generatorElement = new GeneratorElement("GENERATOR");
-		generatorElement.setAttribute("name", name).setAttribute("assignable",
-																 "true");
-		for (int x = 0; x < 6; x++)
-		{
-			generatorElement.addContent(new Element("STAT"));
-		}
-
-		DefaultMutableRollMethod generator = new DefaultMutableRollMethod(generatorElement);
-		if (template != null)
-		{
-			generator.setAssignable(template.isAssignable());
-			Collections.copy(generator.diceExpressions,
-							 template.getDiceExpressions());
-		}
-		return generator;
-	}
-
-	public static <T extends InfoFacade> MutableInfoFacadeGenerator<T> createMutableFacadeGenerator(GeneratorType<InfoFacadeGenerator<T>> type,
-																									  String name,
-																									  DataSetFacade data,
-																									  MutableInfoFacadeGenerator<T> template)
-	{
-		Document document = null;// = getCustomGeneratorDocument(data,
-		//type.name);
-		if (document != null)
-		{
-
-			Element generatorElement = new Element("GENERATOR");
-			generatorElement.setAttribute("name", name).
-					setAttribute("type", "random");
-			document.getRootElement().addContent(generatorElement);
-			try
-			{
-				MutableInfoFacadeGenerator<T> generator = (MutableInfoFacadeGenerator<T>) type.mutableClass.getConstructor(Element.class,
-																														   DataSetFacade.class).newInstance(generatorElement,
-																																							data);
-				if (template != null)
-				{
-					generator.setRandomOrder(template.isRandomOrder());
-					for (T facade : template.getAll())
-					{
-						generator.setWeight(facade,
-											template.getWeight(facade));
-					}
-				}
-				return generator;
-			}
-			catch (Exception ex)
-			{
-				Logging.errorPrint("Unable to parse " + document.getBaseURI(),
-								   ex);
-			}
-		}
-
-		return null;
-	}
-
 	private class GeneratorSelectionModel<T> implements SelectionModel<T>
 	{
 
 		private final GeneratorType<T> type;
 		private final Map<T, T> copyMap;
-		private GeneratorBeanInfo info;
 		private Customizer customizer;
 
+		@SuppressWarnings("unchecked")
 		public GeneratorSelectionModel(GeneratorType<T> type)
 		{
 
 			this.type = type;
 			this.copyMap = new HashMap<T, T>();
-
 			try
 			{
-				this.info = (GeneratorBeanInfo) Introspector.getBeanInfo(type.baseClass);
-				this.customizer = (Customizer) info.getBeanDescriptor().getCustomizerClass().newInstance();
-			}
-			catch (IntrospectionException ex)
-			{
-				Logging.errorPrint("GeneratorBeanInfo for " + type.baseClass +
-								   " not found", ex);
-				this.info = null;
-				this.customizer = null;
+				this.customizer = (Customizer) type.beaninfo.getBeanDescriptor().getCustomizerClass().newInstance();
 			}
 			catch (Exception ex)
 			{
-				Logging.errorPrint("Customizer for " + type.baseClass +
+				Logging.errorPrint("Customizer for " +
+								   type.beaninfo.getElementName() +
 								   " not found", ex);
 				this.customizer = null;
 			}
@@ -800,7 +658,7 @@ public final class GeneratorManager
 			DefaultGenericListModel<T> model = new DefaultGenericListModel<T>();
 			String generatorNames = SettingsHandler.getSelectedGenerators(dataset.getGameMode() +
 																		  "." +
-																		  type.element.toLowerCase());
+																		  type.beaninfo.getElementName().toLowerCase());
 			for (String name : generatorNames.split("\\|"))
 			{
 				Object generator = generatorMap.get(type, null, name);
@@ -808,7 +666,8 @@ public final class GeneratorManager
 				{
 					try
 					{
-						generator = type.singletonClass.getConstructor(String.class).newInstance(name);
+						generator = type.beaninfo.newInvalidInstance(GeneratorManager.this,
+																	 name);
 					}
 					catch (Exception ex)
 					{
@@ -839,7 +698,8 @@ public final class GeneratorManager
 
 		public void setSelectedList(GenericListModel<T> list)
 		{
-			String prop = dataset.getGameMode() + type.element.toLowerCase();
+			String prop = dataset.getGameMode() +
+					type.beaninfo.getElementName().toLowerCase();
 			String generators = StringUtils.join(new GenericListModelWrapper<T>(list),
 												 "|");
 			SettingsHandler.setSelectedGenerators(prop, generators);
@@ -849,7 +709,7 @@ public final class GeneratorManager
 		public Component getCustomizer(Component currentItemPanel,
 										T selectedItem)
 		{
-			if (info.isNullType(selectedItem))
+			if (!type.beaninfo.isValidInstance(selectedItem))
 			{
 				return null;
 			}
@@ -859,18 +719,7 @@ public final class GeneratorManager
 				{
 					try
 					{
-						Class<?> c = type.mutableClass;
-						T item = null;
-						try
-						{
-							item = (T) c.getConstructor(type.baseClass).newInstance(selectedItem);
-						}
-						catch (NoSuchMethodException ex)
-						{
-							item = (T) c.getConstructor(GeneratorManager.class,
-														type.baseClass).newInstance(GeneratorManager.this,
-																					selectedItem);
-						}
+						T item = type.beaninfo.newCopyInstance(selectedItem);
 						copyMap.put(selectedItem, item);
 					}
 					catch (Exception ex)
@@ -905,7 +754,7 @@ public final class GeneratorManager
 
 		public boolean isCopyable(T item)
 		{
-			return !info.isNullType(item);
+			return type.beaninfo.isValidInstance(item);
 		}
 
 		public Color getItemColor(T item)
@@ -914,7 +763,7 @@ public final class GeneratorManager
 			{
 				return Color.BLUE;
 			}
-			if (info.isNullType(item))
+			if (!type.beaninfo.isValidInstance(item))
 			{
 				return Color.GRAY;
 			}
@@ -923,17 +772,33 @@ public final class GeneratorManager
 
 		public Properties getDisplayProperties()
 		{
-			return info.getDisplayProperties();
+			return type.beaninfo.getDisplayProperties();
 		}
 
 	}
 
-	private abstract static class GeneratorBeanInfo extends SimpleBeanInfo
+	private abstract static class GeneratorBeanInfo<T> extends SimpleBeanInfo
 	{
+
+		public abstract String getElementName();
 
 		public abstract Properties getDisplayProperties();
 
-		public abstract boolean isNullType(Object bean);
+		public abstract boolean isValidInstance(T bean);
+
+		public abstract T newBaseInstance(GeneratorManager manager,
+											GeneratorElement element) throws MissingDataException;
+
+		public abstract T newInvalidInstance(GeneratorManager manager,
+											   String name);
+
+		public abstract T newMutableInstance(GeneratorManager manager,
+											   GeneratorElement element) throws MissingDataException;
+
+		public abstract T newMutableInstance(GeneratorManager manager,
+											   String name, T template) throws MissingDataException;
+
+		public abstract T newCopyInstance(T original) throws MissingDataException;
 
 	}
 
@@ -1077,7 +942,6 @@ public final class GeneratorManager
 	private static class DefaultAlignmentGenerator extends AbstractWeightedGenerator<AlignmentFacade>
 	{
 
-		//private Queue<E> queue = null;
 		public DefaultAlignmentGenerator(GeneratorManager manager,
 										  GeneratorElement element) throws MissingDataException
 		{
@@ -1092,7 +956,65 @@ public final class GeneratorManager
 
 	}
 
-	private abstract static class AbstractGenerator<E> implements Generator<E>
+	private static class DefaultAlignmentGeneratorBeanInfo extends GeneratorBeanInfo<WeightedGenerator<AlignmentFacade>>
+	{
+
+		@Override
+		public String getElementName()
+		{
+			return "ALIGNMENT_GENERATOR";
+		}
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public boolean isValidInstance(WeightedGenerator<AlignmentFacade> bean)
+		{
+			return !bean.isSingleton() || bean.getNext() != null;
+		}
+
+		@Override
+		public WeightedGenerator<AlignmentFacade> newBaseInstance(GeneratorManager manager,
+																   GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultAlignmentGenerator(manager, element);
+		}
+
+		@Override
+		public WeightedGenerator<AlignmentFacade> newInvalidInstance(GeneratorManager manager,
+																	  String name)
+		{
+			return new SingletonWeightedGenerator<AlignmentFacade>(name);
+		}
+
+		@Override
+		public WeightedGenerator<AlignmentFacade> newMutableInstance(GeneratorManager manager,
+																	  GeneratorElement element) throws MissingDataException
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public WeightedGenerator<AlignmentFacade> newMutableInstance(GeneratorManager manager,
+																	  String name,
+																	  WeightedGenerator<AlignmentFacade> template) throws MissingDataException
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public WeightedGenerator<AlignmentFacade> newCopyInstance(WeightedGenerator<AlignmentFacade> original) throws MissingDataException
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+	}
+
+	private static abstract class AbstractGenerator<E> implements Generator<E>
 	{
 
 		private String name;
@@ -1101,6 +1023,7 @@ public final class GeneratorManager
 		public AbstractGenerator(String name)
 		{
 			this.name = name;
+			this.element = null;
 		}
 
 		public AbstractGenerator(GeneratorElement element)
@@ -1270,7 +1193,7 @@ public final class GeneratorManager
 		}
 	}
 
-	private abstract static class AbstractInfoFacadeGenerator<E extends InfoFacade>
+	private static abstract class AbstractInfoFacadeGenerator<E extends InfoFacade>
 			extends AbstractWeightedGenerator<E> implements InfoFacadeGenerator<E>
 	{
 
@@ -1335,17 +1258,16 @@ public final class GeneratorManager
 
 	}
 
-	private abstract static class AbstractMutableInfoFacadeGenerator<E extends InfoFacade>
+	private static abstract class AbstractMutableInfoFacadeGenerator<E extends InfoFacade>
 			extends AbstractInfoFacadeGenerator<E> implements MutableInfoFacadeGenerator<E>,
 															  ChangeListener
 	{
 
 		private AbstractInfoFacadeGenerator<E> generator = null;
 
-		public AbstractMutableInfoFacadeGenerator(GeneratorManager manager,
-												   AbstractInfoFacadeGenerator<E> generator) throws MissingDataException
+		public AbstractMutableInfoFacadeGenerator(AbstractInfoFacadeGenerator<E> generator) throws MissingDataException
 		{
-			super(manager, generator.element);
+			super(generator.manager, generator.element);
 			this.generator = generator;
 		}
 
@@ -1485,7 +1407,33 @@ public final class GeneratorManager
 
 	}
 
-	private static class DefaultPurchaseMethod extends AbstractGenerator<Integer>
+	private static abstract class AbstractStatGenerationMethod implements StatGenerationMethod
+	{
+
+		private String name;
+		protected GeneratorElement element;
+
+		public AbstractStatGenerationMethod(String name)
+		{
+			this.name = name;
+			this.element = null;
+		}
+
+		public AbstractStatGenerationMethod(GeneratorElement element)
+		{
+			this.name = element.getAttributeValue("name");
+			this.element = element;
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+
+	}
+
+	private static class DefaultPurchaseMethod extends AbstractStatGenerationMethod
 			implements PurchaseMethod
 	{
 
@@ -1519,11 +1467,6 @@ public final class GeneratorManager
 			this.costs = new Vector<Integer>(costMap.values());
 		}
 
-		public Integer getNext()
-		{
-			return null;
-		}
-
 		public int getMinScore()
 		{
 			return min;
@@ -1550,17 +1493,21 @@ public final class GeneratorManager
 			implements MutablePurchaseMethod
 	{
 
-		private DefaultPurchaseMethod generator = null;
+		private GeneratorManager manager;
+		private DefaultMutablePurchaseMethod generator = null;
 
-		public DefaultMutablePurchaseMethod(DefaultPurchaseMethod generator)
+		public DefaultMutablePurchaseMethod(DefaultMutablePurchaseMethod generator)
 		{
 			super(generator.element);
+			this.manager = generator.manager;
 			this.generator = generator;
 		}
 
-		public DefaultMutablePurchaseMethod(GeneratorElement element)
+		public DefaultMutablePurchaseMethod(GeneratorManager manager,
+											 GeneratorElement element)
 		{
 			super(element);
+			this.manager = manager;
 		}
 
 		public void setMaxScore(int score)
@@ -1601,11 +1548,116 @@ public final class GeneratorManager
 				generator.min = min;
 				generator.points = points;
 			}
+			if (element.getDocument() == null)
+			{
+				manager.getCustomGeneratorDocument().getRootElement().addContent(element);
+			}
+			element.fireChangeEvent();
 		}
 
 	}
 
-	private static class DefaultRollMethod extends AbstractGenerator<Integer>
+	private static class DefaultPurchaseMethodBeanInfo extends GeneratorBeanInfo<PurchaseMethod>
+	{
+
+		private static final Properties props = new Properties();
+
+		static
+		{
+			props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP, "availStatGen");
+			props.setProperty(SelectionModel.SELECTION_TEXT_PROP, "selStatGen");
+			props.setProperty(SelectionModel.NEW_TOOLTIP_PROP, "newStatGen");
+			props.setProperty(SelectionModel.COPY_TOOLTIP_PROP, "copyStatGen");
+			props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP,
+							  "deleteStatGen");
+			props.setProperty(SelectionModel.ADD_TOOLTIP_PROP, "addStatGen");
+			props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP,
+							  "removeStatGen");
+		}
+
+		@Override
+		public BeanDescriptor getBeanDescriptor()
+		{
+			return new BeanDescriptor(DefaultRollMethod.class,
+									  PurchaseMethodPanel.class);
+		}
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			return props;
+		}
+
+		@Override
+		public boolean isValidInstance(PurchaseMethod bean)
+		{
+			return bean.getPoints() != -1;
+		}
+
+		@Override
+		public PurchaseMethod newBaseInstance(GeneratorManager manager,
+											   GeneratorElement element)
+		{
+			return new DefaultPurchaseMethod(element);
+		}
+
+		@Override
+		public PurchaseMethod newInvalidInstance(GeneratorManager manager,
+												  String name)
+		{
+			return new DefaultPurchaseMethod(name);
+		}
+
+		@Override
+		public PurchaseMethod newMutableInstance(GeneratorManager manager,
+												  GeneratorElement element)
+		{
+			return new DefaultMutablePurchaseMethod(manager, element);
+		}
+
+		@Override
+		public PurchaseMethod newMutableInstance(GeneratorManager manager,
+												  String name,
+												  PurchaseMethod template)
+		{
+			GeneratorElement generatorElement = new GeneratorElement("PURCHASE_METHOD");
+			generatorElement.setAttribute("name", name).
+					setAttribute("points", "0");
+			Element cost = new Element("COST");
+			cost.setAttribute("score", "0").setText("0");
+
+			MutablePurchaseMethod generator = new DefaultMutablePurchaseMethod(manager,
+																			   generatorElement);
+			if (template != null)
+			{
+				int min = template.getMinScore();
+				int max = template.getMaxScore();
+				generator.setMinScore(min);
+				generator.setMaxScore(max);
+				generator.setPoints(template.getPoints());
+				for (int i = min; i <= max; i++)
+				{
+					generator.setScoreCost(i, template.getScoreCost(i));
+				}
+			}
+			return generator;
+		}
+
+		@Override
+		public PurchaseMethod newCopyInstance(PurchaseMethod original)
+		{
+			return new DefaultMutablePurchaseMethod((DefaultMutablePurchaseMethod) original);
+		}
+
+		@Override
+		public String getElementName()
+		{
+			return "PURCHASE_METHOD";
+		}
+
+	}
+
+	private static class DefaultRollMethod extends AbstractStatGenerationMethod
 			implements RollMethod
 	{
 
@@ -1632,11 +1684,6 @@ public final class GeneratorManager
 			}
 		}
 
-		public Integer getNext()
-		{
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
 		public List<String> getDiceExpressions()
 		{
 			return diceExpressions;
@@ -1653,17 +1700,21 @@ public final class GeneratorManager
 			implements MutableRollMethod
 	{
 
+		private GeneratorManager manager = null;
 		private DefaultRollMethod generator = null;
 
-		public DefaultMutableRollMethod(DefaultRollMethod generator)
+		public DefaultMutableRollMethod(DefaultMutableRollMethod generator)
 		{
 			super(generator.element);
+			this.manager = generator.manager;
 			this.generator = generator;
 		}
 
-		public DefaultMutableRollMethod(GeneratorElement element)
+		public DefaultMutableRollMethod(GeneratorManager manager,
+										 GeneratorElement element)
 		{
 			super(element);
+			this.manager = manager;
 		}
 
 		public void setDiceExpression(int index, String expression)
@@ -1689,6 +1740,152 @@ public final class GeneratorManager
 				generator.assignable = assignable;
 				generator.diceExpressions = diceExpressions;
 			}
+			if (element.getDocument() == null)
+			{
+				manager.getCustomGeneratorDocument().getRootElement().addContent(element);
+			}
+			element.fireChangeEvent();
+		}
+
+	}
+
+	private static class DefaultRollMethodBeanInfo extends GeneratorBeanInfo<RollMethod>
+	{
+
+		private static final Properties props = new Properties();
+
+		static
+		{
+			props.setProperty(SelectionModel.AVAILABLE_TEXT_PROP, "availStatGen");
+			props.setProperty(SelectionModel.SELECTION_TEXT_PROP, "selStatGen");
+			props.setProperty(SelectionModel.NEW_TOOLTIP_PROP, "newStatGen");
+			props.setProperty(SelectionModel.COPY_TOOLTIP_PROP, "copyStatGen");
+			props.setProperty(SelectionModel.DELETE_TOOLTIP_PROP,
+							  "deleteStatGen");
+			props.setProperty(SelectionModel.ADD_TOOLTIP_PROP, "addStatGen");
+			props.setProperty(SelectionModel.REMOVE_TOOLTIP_PROP,
+							  "removeStatGen");
+		}
+
+		@Override
+		public BeanDescriptor getBeanDescriptor()
+		{
+			return new BeanDescriptor(DefaultRollMethod.class,
+									  RollMethodPanel.class);
+		}
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			return props;
+		}
+
+		@Override
+		public boolean isValidInstance(RollMethod bean)
+		{
+			return bean.getDiceExpressions() != null;
+		}
+
+		@Override
+		public RollMethod newBaseInstance(GeneratorManager manager,
+										   GeneratorElement element)
+		{
+			return new DefaultRollMethod(element);
+		}
+
+		@Override
+		public RollMethod newInvalidInstance(GeneratorManager manager,
+											  String name)
+		{
+			return new DefaultRollMethod(name);
+		}
+
+		@Override
+		public RollMethod newMutableInstance(GeneratorManager manager,
+											  GeneratorElement element)
+		{
+			return new DefaultMutableRollMethod(manager, element);
+		}
+
+		@Override
+		public RollMethod newMutableInstance(GeneratorManager manager,
+											  String name, RollMethod template)
+		{
+			GeneratorElement element = new GeneratorElement(getElementName());
+			element.setAttribute("name", name);
+			List<String> expressions;
+			boolean assignable;
+			if (template == null)
+			{
+				expressions = null;
+				assignable = false;
+			}
+			else
+			{
+				expressions = template.getDiceExpressions();
+				assignable = template.isAssignable();
+			}
+			element.setAttribute("assignable", Boolean.toString(assignable));
+			for (int i = 0; i < 6; i++)
+			{
+				Element stat = new Element("STAT");
+				if (expressions != null)
+				{
+					stat.setText(expressions.get(i));
+				}
+				element.addContent(stat);
+			}
+			return new DefaultMutableRollMethod(manager, element);
+		}
+
+		@Override
+		public RollMethod newCopyInstance(RollMethod original)
+		{
+			return new DefaultMutableRollMethod((DefaultMutableRollMethod) original);
+		}
+
+		@Override
+		public String getElementName()
+		{
+			return "ROLL_METHOD";
+		}
+
+	}
+
+	private static abstract class InfoFacadeGeneratorBeanInfo<E extends InfoFacade>
+			extends GeneratorBeanInfo<InfoFacadeGenerator<E>>
+	{
+
+		@Override
+		public boolean isValidInstance(InfoFacadeGenerator<E> bean)
+		{
+			return !bean.isSingleton() || bean.getNext() != null;
+		}
+
+		@Override
+		public InfoFacadeGenerator<E> newInvalidInstance(GeneratorManager manager,
+														  String name)
+		{
+			return new SingletonInfoFacadeGenerator<E>(name);
+		}
+
+		@Override
+		public InfoFacadeGenerator<E> newMutableInstance(GeneratorManager manager,
+														  String name,
+														  InfoFacadeGenerator<E> template) throws MissingDataException
+		{
+			GeneratorElement element;
+			if (template != null)
+			{
+				element = (GeneratorElement) ((AbstractMutableInfoFacadeGenerator) template).element.clone();
+			}
+			else
+			{
+				element = new GeneratorElement(getElementName());
+				element.setAttribute("type", "random");
+			}
+			element.setAttribute("name", name);
+			return newMutableInstance(manager, element);
 		}
 
 	}
@@ -1713,6 +1910,11 @@ public final class GeneratorManager
 	private static class DefaultMutableRaceGenerator extends AbstractMutableInfoFacadeGenerator<RaceFacade>
 	{
 
+		public DefaultMutableRaceGenerator(DefaultMutableRaceGenerator generator) throws MissingDataException
+		{
+			super(generator);
+		}
+
 		public DefaultMutableRaceGenerator(GeneratorManager manager,
 											GeneratorElement element) throws MissingDataException
 		{
@@ -1729,6 +1931,43 @@ public final class GeneratorManager
 		protected String getValueName()
 		{
 			return "RACE";
+		}
+
+	}
+
+	private static class DefaultRaceGeneratorBeanInfo extends InfoFacadeGeneratorBeanInfo<RaceFacade>
+	{
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public InfoFacadeGenerator<RaceFacade> newBaseInstance(GeneratorManager manager,
+																GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultRaceGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<RaceFacade> newMutableInstance(GeneratorManager manager,
+																   GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultMutableRaceGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<RaceFacade> newCopyInstance(InfoFacadeGenerator<RaceFacade> original) throws MissingDataException
+		{
+			return new DefaultMutableRaceGenerator((DefaultMutableRaceGenerator) original);
+		}
+
+		@Override
+		public String getElementName()
+		{
+			return "RACE_GENERATOR";
 		}
 
 	}
@@ -1759,6 +1998,11 @@ public final class GeneratorManager
 			super(manager, element);
 		}
 
+		private DefaultMutableClassGenerator(DefaultMutableClassGenerator defaultMutableClassGenerator) throws MissingDataException
+		{
+			super(defaultMutableClassGenerator);
+		}
+
 		@Override
 		protected ClassFacade getFacade(String name)
 		{
@@ -1773,7 +2017,7 @@ public final class GeneratorManager
 
 	}
 
-	public static class DefaultMutableClassGeneratorBeanInfo extends SimpleBeanInfo
+	private static class DefaultClassGeneratorBeanInfo extends InfoFacadeGeneratorBeanInfo<ClassFacade>
 	{
 
 		@Override
@@ -1781,6 +2025,38 @@ public final class GeneratorManager
 		{
 			return new BeanDescriptor(DefaultMutableClassGenerator.class,
 									  BasicGeneratorSelectionModel.class);
+		}
+
+		@Override
+		public String getElementName()
+		{
+			return "CLASS_GENERATOR";
+		}
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public InfoFacadeGenerator<ClassFacade> newBaseInstance(GeneratorManager manager,
+																 GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultClassGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<ClassFacade> newMutableInstance(GeneratorManager manager,
+																	GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultMutableClassGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<ClassFacade> newCopyInstance(InfoFacadeGenerator<ClassFacade> original) throws MissingDataException
+		{
+			return new DefaultMutableClassGenerator((DefaultMutableClassGenerator) original);
 		}
 
 	}
@@ -1811,6 +2087,11 @@ public final class GeneratorManager
 			super(manager, element);
 		}
 
+		private DefaultMutableSkillGenerator(DefaultMutableSkillGenerator defaultMutableSkillGenerator) throws MissingDataException
+		{
+			super(defaultMutableSkillGenerator);
+		}
+
 		@Override
 		protected SkillFacade getFacade(String name)
 		{
@@ -1821,6 +2102,43 @@ public final class GeneratorManager
 		protected String getValueName()
 		{
 			return "SKILL";
+		}
+
+	}
+
+	private static class DefaultSkillGeneratorBeanInfo extends InfoFacadeGeneratorBeanInfo<SkillFacade>
+	{
+
+		@Override
+		public String getElementName()
+		{
+			return "SKILL_GENERATOR";
+		}
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public InfoFacadeGenerator<SkillFacade> newBaseInstance(GeneratorManager manager,
+																 GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultSkillGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<SkillFacade> newMutableInstance(GeneratorManager manager,
+																	GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultMutableSkillGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<SkillFacade> newCopyInstance(InfoFacadeGenerator<SkillFacade> original) throws MissingDataException
+		{
+			return new DefaultMutableSkillGenerator((DefaultMutableSkillGenerator) original);
 		}
 
 	}
@@ -1916,6 +2234,64 @@ public final class GeneratorManager
 
 	}
 
+	private static class DefaultAbilityBuildBeanInfo extends GeneratorBeanInfo<AbilityBuild>
+	{
+
+		@Override
+		public String getElementName()
+		{
+			return "ABILITY_BUILD";
+		}
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public boolean isValidInstance(AbilityBuild bean)
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public AbilityBuild newBaseInstance(GeneratorManager manager,
+											 GeneratorElement element) throws MissingDataException
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public AbilityBuild newInvalidInstance(GeneratorManager manager,
+												String name)
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public AbilityBuild newMutableInstance(GeneratorManager manager,
+												GeneratorElement element) throws MissingDataException
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public AbilityBuild newMutableInstance(GeneratorManager manager,
+												String name,
+												AbilityBuild template) throws MissingDataException
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public AbilityBuild newCopyInstance(AbilityBuild original) throws MissingDataException
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+	}
+
 	private static class DefaultAbilityGenerator extends AbstractInfoFacadeGenerator<AbilityFacade>
 	{
 
@@ -1941,6 +2317,11 @@ public final class GeneratorManager
 											   GeneratorElement element) throws MissingDataException
 		{
 			super(manager, element);
+		}
+
+		private DefaultMutableAbilityGenerator(DefaultMutableAbilityGenerator defaultMutableAbilityGenerator) throws MissingDataException
+		{
+			super(defaultMutableAbilityGenerator);
 		}
 
 		@Override
@@ -1971,6 +2352,43 @@ public final class GeneratorManager
 				abilityElement.setText(ability.toString());
 				element.addContent(abilityElement);
 			}
+		}
+
+	}
+
+	private static class DefaultAbilityGeneratorBeanInfo extends InfoFacadeGeneratorBeanInfo<AbilityFacade>
+	{
+
+		@Override
+		public String getElementName()
+		{
+			return "ABILITY_GENERATOR";
+		}
+
+		@Override
+		public Properties getDisplayProperties()
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public InfoFacadeGenerator<AbilityFacade> newBaseInstance(GeneratorManager manager,
+																   GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultAbilityGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<AbilityFacade> newMutableInstance(GeneratorManager manager,
+																	  GeneratorElement element) throws MissingDataException
+		{
+			return new DefaultMutableAbilityGenerator(manager, element);
+		}
+
+		@Override
+		public InfoFacadeGenerator<AbilityFacade> newCopyInstance(InfoFacadeGenerator<AbilityFacade> original) throws MissingDataException
+		{
+			return new DefaultMutableAbilityGenerator((DefaultMutableAbilityGenerator) original);
 		}
 
 	}
