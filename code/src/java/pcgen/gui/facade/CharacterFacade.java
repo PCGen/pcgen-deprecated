@@ -20,6 +20,7 @@
  */
 package pcgen.gui.facade;
 
+import javax.swing.undo.UndoManager;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.GenericListModel;
@@ -31,59 +32,68 @@ import pcgen.gui.util.GenericListModel;
 public interface CharacterFacade
 {
 
-    public Gender getGender();
+	public UndoManager getUndoManager();
 
-    public int getScore(StatFacade stat);
+	public Gender getGender();
 
-    public int getMod(StatFacade stat);
+	public void setAlignment(AlignmentFacade alignment);
 
-    public void setScore(StatFacade stat, int score);
+	public AlignmentFacade getAlignment();
 
-    public void addAbility(AbilityCatagoryFacade catagory,
-                            AbilityFacade ability);
+	public void setGender(Gender gender);
 
-    public void removeAbility(AbilityCatagoryFacade catagory,
-                               AbilityFacade ability);
+	public int getScore(StatFacade stat);
 
-    public boolean hasAbility(AbilityCatagoryFacade catagory,
-                               AbilityFacade ability);
+	public int getMod(StatFacade stat);
 
-    /**
-     * Note: This method should never return null. If the character does not possess
-     * any abilities in the parameter catagory, this method should create a new
-     * DefaultGenericListModel for that catagory and keep a reference to it for future use.
-     * @param catagory
-     * @return a List of Abilities the character posseses in the specified catagory
-     */
-    public GenericListModel<AbilityFacade> getAbilities(AbilityCatagoryFacade catagory);
+	public void setScore(StatFacade stat, int score);
 
-    public GenericListModel<CharacterLevelFacade> getLevels();
+	public void addAbility(AbilityCatagoryFacade catagory,
+						   AbilityFacade ability);
 
-    public void addCharacterLevels(ClassFacade[] classes);
+	public void removeAbility(AbilityCatagoryFacade catagory,
+							  AbilityFacade ability);
 
-    public void removeCharacterLevels(int levels);
+	public boolean hasAbility(AbilityCatagoryFacade catagory,
+							  AbilityFacade ability);
 
-    public int getClassLevel(ClassFacade c);
+	/**
+	 * Note: This method should never return null. If the character does not possess
+	 * any abilities in the parameter catagory, this method should create a new
+	 * DefaultGenericListModel for that catagory and keep a reference to it for future use.
+	 * @param catagory
+	 * @return a List of Abilities the character posseses in the specified catagory
+	 */
+	public GenericListModel<AbilityFacade> getAbilities(
+			AbilityCatagoryFacade catagory);
 
-    public int getRemainingSelections(AbilityCatagoryFacade catagory);
+	public GenericListModel<CharacterLevelFacade> getLevels();
 
-    public void setRemainingSelection(AbilityCatagoryFacade catagory,
-                                       int remaining);
+	public void addCharacterLevels(ClassFacade[] classes);
 
-    public int getSkillTotal(SkillFacade skill);
+	public void removeCharacterLevels(int levels);
 
-    public int getSkillModifier(SkillFacade skill);
+	public int getClassLevel(ClassFacade c);
 
-    public float getSkillRanks(SkillFacade skill);
+	public int getRemainingSelections(AbilityCatagoryFacade catagory);
 
-    public GenericComboBoxModel<EquipmentSetFacade> getEquipmentSets();
+	public void setRemainingSelection(AbilityCatagoryFacade catagory,
+									  int remaining);
 
-    public GenericListModel<TempBonusFacade> getTempBonuses();
+	public int getSkillTotal(SkillFacade skill);
 
-    public void applyTempBonus(TempBonusFacade bonus, boolean apply);
+	public int getSkillModifier(SkillFacade skill);
 
-    public boolean isTempBonusApplied(TempBonusFacade bonus);
+	public float getSkillRanks(SkillFacade skill);
 
-    public DataSetFacade getDataSet();
+	public GenericComboBoxModel<EquipmentSetFacade> getEquipmentSets();
+
+	public GenericListModel<TempBonusFacade> getTempBonuses();
+
+	public void applyTempBonus(TempBonusFacade bonus, boolean apply);
+
+	public boolean isTempBonusApplied(TempBonusFacade bonus);
+
+	public DataSetFacade getDataSet();
 
 }

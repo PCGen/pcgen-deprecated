@@ -2021,13 +2021,6 @@ public final class GeneratorManager
 	{
 
 		@Override
-		public BeanDescriptor getBeanDescriptor()
-		{
-			return new BeanDescriptor(DefaultMutableClassGenerator.class,
-									  BasicGeneratorSelectionModel.class);
-		}
-
-		@Override
 		public String getElementName()
 		{
 			return "CLASS_GENERATOR";

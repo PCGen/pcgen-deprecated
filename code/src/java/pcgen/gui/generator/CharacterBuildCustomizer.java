@@ -193,7 +193,7 @@ public class CharacterBuildCustomizer extends JPanel implements Customizer
 			gridBagConstraints.gridwidth = 1;
 			namePanel.add(new JLabel("Name Set:"), gridBagConstraints);
 			{//Initialize namesetComboBox
-				namesetComboBox.setModel(createComboBoxModel(PCGenUIManager.getRegisteredNameGenerators()));
+
 			}
 			gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
 			namePanel.add(namesetComboBox, gridBagConstraints);
@@ -470,6 +470,7 @@ public class CharacterBuildCustomizer extends JPanel implements Customizer
 //        levelComboBox1.setModel(createComboBoxModel(levelGenerators));
 //        levelComboBox2.setModel(createComboBoxModel(levelGenerators));
 //        levelComboBox3.setModel(createComboBoxModel(levelGenerators));
+//		  namesetComboBox.setModel(createComboBoxModel(PCGenUIManager.getRegisteredNameGenerators()));
 	}
 
 	private static boolean anyValid(Generator<Integer> alignmentGenerator,

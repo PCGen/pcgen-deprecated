@@ -73,22 +73,6 @@ public final class PCGenUIManager
         return null;
     }
 
-    public static DefaultGenericListModel<AbilityCatagoryFacade> getRegisteredAbilityCatagories(CharacterFacade character)
-    {
-        return null;
-    }
-
-    public static DefaultGenericListModel<AbilityFacade> getRegisteredAbilities(CharacterFacade character,
-                                                                                  AbilityCatagoryFacade catagory)
-    {
-        return null;
-    }
-
-    public static GenericListModel<SkillFacade> getRegisteredSkills(CharacterFacade character)
-    {
-        return null;
-    }
-
     public static List<Generator<String>> getRegisteredNameGenerators()
     {
         return null;

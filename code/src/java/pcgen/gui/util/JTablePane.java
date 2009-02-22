@@ -39,187 +39,197 @@ import pcgen.gui.util.table.DynamicTableColumnModel;
 import pcgen.gui.util.table.SortableTableModel;
 
 /**
- *
+ * An extention of <code>JScrollPane</code> that encapsulates
+ * a <code>JTableEx</code> in order support use of a
+ * <code>DynamicTableColumnModel</code>. The
+ * <code>DynamicTableColumnModel</code> can be seen as a button in the corner
+ * upper right corner of the scroll pane, next to the JTable's column headers.
+ * The user can click this button to bring up a popupmenu that the user could
+ * then use to customize the visible columns.
+ * 
  * @author Connor Petty <mistercpp2000@gmail.com>
+ * @see JTreeTablePane
+ * @see JTreeViewPane
+ * @see JTreeViewSelectionPane
  */
 public class JTablePane extends JScrollPane
 {
 
-    private static final long serialVersionUID = 4706817975828759006L;
-    private final DynamicTableColumnModelListener listener = new DynamicTableColumnModelListener()
-    {
+	private static final long serialVersionUID = 4706817975828759006L;
+	private final DynamicTableColumnModelListener listener = new DynamicTableColumnModelListener()
+	{
 
-        public void availableColumnAdded(TableColumnModelEvent event)
-        {
-            int index = event.getToIndex();
-            TableColumn column = columnModel.getAvailableColumns().get(index);
-            JCheckBoxMenuItem item = new JCheckBoxMenuItem();
-            item.setSelected(columnModel.isVisible(column));
-            item.setAction(new MenuAction(column));
-            menu.insert(item, index);
-            if (getCorner(JScrollPane.UPPER_RIGHT_CORNER) == null)
-            {
-                setCorner(JScrollPane.UPPER_RIGHT_CORNER, cornerButton);
-            }
-        }
+		public void availableColumnAdded(TableColumnModelEvent event)
+		{
+			int index = event.getToIndex();
+			TableColumn column = columnModel.getAvailableColumns().get(index);
+			JCheckBoxMenuItem item = new JCheckBoxMenuItem();
+			item.setSelected(columnModel.isVisible(column));
+			item.setAction(new MenuAction(column));
+			menu.insert(item, index);
+			if (getCorner(JScrollPane.UPPER_RIGHT_CORNER) == null)
+			{
+				setCorner(JScrollPane.UPPER_RIGHT_CORNER, cornerButton);
+			}
+		}
 
-        public void availableColumnRemove(TableColumnModelEvent event)
-        {
-            menu.remove(event.getFromIndex());
-            if (menu.getComponentCount() == 0)
-            {
-                setCorner(JScrollPane.UPPER_RIGHT_CORNER, null);
-            }
-        }
+		public void availableColumnRemove(TableColumnModelEvent event)
+		{
+			menu.remove(event.getFromIndex());
+			if (menu.getComponentCount() == 0)
+			{
+				setCorner(JScrollPane.UPPER_RIGHT_CORNER, null);
+			}
+		}
 
-    };
-    private final JButton cornerButton = new JButton(new CornerAction());
-    private JPopupMenu menu = new JPopupMenu();
-    private DynamicTableColumnModel columnModel;
-    private JTableEx table;
+	};
+	private final JButton cornerButton = new JButton(new CornerAction());
+	private JPopupMenu menu = new JPopupMenu();
+	private DynamicTableColumnModel columnModel;
+	private JTableEx table;
 
-    /**
-     * Constructor
-     */
-    public JTablePane()
-    {
-        this((SortableTableModel) null);
-    }
+	/**
+	 * Constructor
+	 */
+	public JTablePane()
+	{
+		this((SortableTableModel) null);
+	}
 
-    /**
-     * Constructor
-     * @param tm
-     */
-    public JTablePane(SortableTableModel tm)
-    {
-        this(new JTableEx(tm));
-    }
+	/**
+	 * Constructor
+	 * @param tm
+	 */
+	public JTablePane(SortableTableModel tm)
+	{
+		this(new JTableEx(tm));
+	}
 
-    protected JTablePane(JTableEx table)
-    {
-        super(VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        setTable(table);
-        setColumnModel(createDefaultDynamicTableColumnModel());
-    }
+	protected JTablePane(JTableEx table)
+	{
+		super(VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		setTable(table);
+		setColumnModel(createDefaultDynamicTableColumnModel());
+	}
 
-    protected DynamicTableColumnModel createDefaultDynamicTableColumnModel()
-    {
-        return new DefaultDynamicTableColumnModel(table.getColumnModel(), 1);
-    }
+	protected DynamicTableColumnModel createDefaultDynamicTableColumnModel()
+	{
+		return new DefaultDynamicTableColumnModel(table.getColumnModel(), 1);
+	}
 
-    public void setModel(SortableTableModel model)
-    {
-        table.setModel(model);
-    }
+	public void setModel(SortableTableModel model)
+	{
+		table.setModel(model);
+	}
 
-    public void setColumnModel(DynamicTableColumnModel columnModel)
-    {
-        if (this.columnModel != null)
-        {
-            this.columnModel.removeDynamicTableColumnModelListener(listener);
-        }
-        this.columnModel = columnModel;
-        columnModel.addDynamicTableColumnModelListener(listener);
-        table.setColumnModel(columnModel);
-        List<TableColumn> columns = columnModel.getAvailableColumns();
-        if (!columns.isEmpty())
-        {
-            menu = new JPopupMenu();
-            for (TableColumn column : columns)
-            {
-                JCheckBoxMenuItem item = new JCheckBoxMenuItem();
-                item.setSelected(columnModel.isVisible(column));
-                item.setAction(new MenuAction(column));
-                menu.add(item);
-            }
-            setCorner(JScrollPane.UPPER_RIGHT_CORNER, cornerButton);
-        }
-        else
-        {
-            setCorner(JScrollPane.UPPER_RIGHT_CORNER, null);
-        }
-    }
+	public void setColumnModel(DynamicTableColumnModel columnModel)
+	{
+		if (this.columnModel != null)
+		{
+			this.columnModel.removeDynamicTableColumnModelListener(listener);
+		}
+		this.columnModel = columnModel;
+		columnModel.addDynamicTableColumnModelListener(listener);
+		table.setColumnModel(columnModel);
+		List<TableColumn> columns = columnModel.getAvailableColumns();
+		if (!columns.isEmpty())
+		{
+			menu = new JPopupMenu();
+			for (TableColumn column : columns)
+			{
+				JCheckBoxMenuItem item = new JCheckBoxMenuItem();
+				item.setSelected(columnModel.isVisible(column));
+				item.setAction(new MenuAction(column));
+				menu.add(item);
+			}
+			setCorner(JScrollPane.UPPER_RIGHT_CORNER, cornerButton);
+		}
+		else
+		{
+			setCorner(JScrollPane.UPPER_RIGHT_CORNER, null);
+		}
+	}
 
-    private void setTable(JTableEx table)
-    {
-        this.table = table;
-        setViewportView(table);
-    }
+	private void setTable(JTableEx table)
+	{
+		this.table = table;
+		setViewportView(table);
+	}
 
-    protected JTableEx getTable()
-    {
-        return table;
-    }
+	protected JTableEx getTable()
+	{
+		return table;
+	}
 
-    public boolean getDragEnabled()
-    {
-        return table.getDragEnabled();
-    }
+	public boolean getDragEnabled()
+	{
+		return table.getDragEnabled();
+	}
 
-    public void setDragEnabled(boolean b)
-    {
-        table.setDragEnabled(b);
-    }
+	public void setDragEnabled(boolean b)
+	{
+		table.setDragEnabled(b);
+	}
 
-    @Override
-    public void setTransferHandler(TransferHandler newHandler)
-    {
-        table.setTransferHandler(newHandler);
-    }
+	@Override
+	public void setTransferHandler(TransferHandler newHandler)
+	{
+		table.setTransferHandler(newHandler);
+	}
 
-    @Override
-    public TransferHandler getTransferHandler()
-    {
-        return table.getTransferHandler();
-    }
+	@Override
+	public TransferHandler getTransferHandler()
+	{
+		return table.getTransferHandler();
+	}
 
-    public ListSelectionModel getSelectionModel()
-    {
-        return table.getSelectionModel();
-    }
+	public ListSelectionModel getSelectionModel()
+	{
+		return table.getSelectionModel();
+	}
 
-    public void setDefaultRenderer(Class<?> columnClass,
-                                    TableCellRenderer renderer)
-    {
-        table.setDefaultRenderer(columnClass, renderer);
-    }
+	public void setDefaultRenderer(Class<?> columnClass,
+								   TableCellRenderer renderer)
+	{
+		table.setDefaultRenderer(columnClass, renderer);
+	}
 
-    public void setDefaultEditor(Class<?> columnClass, TableCellEditor editor)
-    {
-        table.setDefaultEditor(columnClass, editor);
-    }
+	public void setDefaultEditor(Class<?> columnClass, TableCellEditor editor)
+	{
+		table.setDefaultEditor(columnClass, editor);
+	}
 
-    private class CornerAction extends AbstractAction
-    {
+	private class CornerAction extends AbstractAction
+	{
 
-        public CornerAction()
-        {
-            super("...");
-        }
+		public CornerAction()
+		{
+			super("...");
+		}
 
-        public void actionPerformed(ActionEvent e)
-        {
-            menu.show(table, table.getWidth() - menu.getWidth(), 0);
-        }
+		public void actionPerformed(ActionEvent e)
+		{
+			menu.show(table, table.getWidth() - menu.getWidth(), 0);
+		}
 
-    }
+	}
 
-    private class MenuAction extends AbstractAction
-    {
+	private class MenuAction extends AbstractAction
+	{
 
-        private boolean visible = false;
-        private TableColumn column;
+		private boolean visible = false;
+		private TableColumn column;
 
-        public MenuAction(TableColumn column)
-        {
-            super(column.getHeaderValue().toString());
-            this.column = column;
-        }
+		public MenuAction(TableColumn column)
+		{
+			super(column.getHeaderValue().toString());
+			this.column = column;
+		}
 
-        public void actionPerformed(ActionEvent e)
-        {
-            columnModel.setVisible(column, visible = !visible);
-        }
+		public void actionPerformed(ActionEvent e)
+		{
+			columnModel.setVisible(column, visible = !visible);
+		}
 
-    }
+	}
 }
