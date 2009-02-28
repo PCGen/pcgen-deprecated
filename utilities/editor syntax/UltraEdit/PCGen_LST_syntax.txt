@@ -2898,6 +2898,7 @@ SPECIALTYKNOWN
 SPELL
 SPELLBOOK
 SPELLFAILURE
+SPELLKNOWN
 SPELLLEVEL
 SPELLRES
 SPELLS
@@ -3239,6 +3240,8 @@ Slashing
 Sonic
 Sp
 Special
+SpecialAttack
+SpecialQuality
 Special Ability
 Species
 Specific
