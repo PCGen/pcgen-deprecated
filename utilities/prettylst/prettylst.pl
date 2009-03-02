@@ -9312,7 +9312,7 @@ sub scan_for_deprecated_tags {
 			qq{The function aMAXb is deprecated, use the Jep function max(a,b) instead},
 			$file_for_error,
 			$line_for_error
-           );
+		);
 	}
 
 	if ( $line =~ /[\d+|\)]MIN\d+/ ) {
@@ -9320,7 +9320,7 @@ sub scan_for_deprecated_tags {
 			qq{The function aMINb is deprecated, use the Jep function min(a,b) instead},
 			$file_for_error,
 			$line_for_error
-           );
+		);
 	}
 
 	if ( $line =~ /\b]TRUNC\b/ ) {
@@ -9328,7 +9328,7 @@ sub scan_for_deprecated_tags {
 			qq{The function TRUNC is deprecated, use the Jep function floor(a) instead},
 			$file_for_error,
 			$line_for_error
-           );
+		);
 	}
 
 	if ( $line =~ /\sHITDICESIZE\s/ ) {
@@ -15039,7 +15039,7 @@ key here: <L<http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D5D2>>
 
 Copyright 2002 to 2006 by E<Eacute>ric E<quot>Space MonkeyE<quot> Beaudoin -- <mailto:beaudoer@videotron.ca>
 
-Copyright 2006 to 2008 by Andrew E<quot>Tir GwaithE<quote> McDougall -- <mailto:tir.gwaith@gmail.com>
+Copyright 2006 to 2008 by Andrew E<quot>Tir GwaithE<quot> McDougall -- <mailto:tir.gwaith@gmail.com>
 
 Copyright 2007 by Richard Bowers
 
