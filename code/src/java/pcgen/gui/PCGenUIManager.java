@@ -23,17 +23,12 @@ package pcgen.gui;
 import java.io.File;
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
-import pcgen.gui.facade.AbilityCatagoryFacade;
-import pcgen.gui.facade.AbilityFacade;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.ClassFacade;
-import pcgen.gui.facade.SkillFacade;
+import pcgen.gui.facade.GameModeFacade;
+import pcgen.gui.facade.SourceFacade;
 import pcgen.gui.filter.DisplayableFilter;
-import pcgen.gui.generator.Generator;
-import pcgen.gui.tools.SelectionModel;
-import pcgen.gui.util.DefaultGenericListModel;
 import pcgen.gui.util.GenericListModel;
 
 /**
@@ -43,88 +38,81 @@ import pcgen.gui.util.GenericListModel;
 public final class PCGenUIManager
 {
 
-    private static final Map<HouseRule, Boolean> rulesMap = new EnumMap<HouseRule, Boolean>(HouseRule.class);
-    private static File pcgenPreviewDir;
+	private static final Map<HouseRule, Boolean> rulesMap = new EnumMap<HouseRule, Boolean>(
+			HouseRule.class);
+	private static File pcgenPreviewDir;
 
-    private PCGenUIManager()
-    {
-    }
+	private PCGenUIManager()
+	{
+	}
 
-    public static <T> SelectionModel<T> getGeneratorSelectionModel(Class<T> c)
-    {
-        if (c == Integer.class)
-        {
-            
-        }
-        else if (c == SkillFacade.class)
-        {
+	public static boolean isQualified(CharacterFacade character, ClassFacade c)
+	{
+		return false;
+	}
 
-        }
-        return null;
-    }
+	public static <T> GenericListModel<DisplayableFilter<? super T>> getDisplayedFilters(
+			Class<T> c)
+	{
+		return null;
+	}
 
-    public static boolean isQualified(CharacterFacade character, ClassFacade c)
-    {
-        return false;
-    }
+	public static Collection<File> getCharacterSheets()
+	{
+		return null;
+	}
 
-    public static <T> GenericListModel<DisplayableFilter<? super T>> getDisplayedFilters(Class<T> c)
-    {
-        return null;
-    }
+	public static GenericListModel<GameModeFacade> getGameModes()
+	{
+		return null;
+	}
 
-    public static List<Generator<String>> getRegisteredNameGenerators()
-    {
-        return null;
-    }
+	public static GenericListModel<SourceFacade> getSources(GameModeFacade gameMode)
+	{
+		return null;
+	}
+	public static boolean isHouseRuleSelected(HouseRule rule)
+	{
+		Boolean b = rulesMap.get(rule);
+		return b != null && b;
+	}
 
-    public static Collection<File> getCharacterSheets()
-    {
-        return null;
-    }
+	public static String getDefaultCharacterName()
+	{
+		return null;
+	}
 
-    public static boolean isHouseRuleSelected(HouseRule rule)
-    {
-        Boolean b = rulesMap.get(rule);
-        return b != null && b;
-    }
+	public static void setPcgenPreviewDir(final File aFile)
+	{
+		pcgenPreviewDir = aFile;
+	}
 
-    public static String getDefaultCharacterName()
-    {
-        return null;
-    }
+	public static File getPcgenPreviewDir()
+	{
+		return pcgenPreviewDir;
+	}
 
-    public static void setPcgenPreviewDir(final File aFile)
-    {
-        pcgenPreviewDir = aFile;
-    }
+	public static enum HouseRule
+	{
 
-    public static File getPcgenPreviewDir()
-    {
-        return pcgenPreviewDir;
-    }
-
-    public static enum HouseRule
-    {
-
-        ABILRANGE, //Allow any range for ability scores
-        AMMOSTACKSWITHWEAPON, // Do ammunition enhancement bonus stack with those of the weapon
-        BONUSSPELLKNOWN, // Add stat bonus to Spells Known
-        CLASSPRE, // Bypass Class Prerequisites
-        EQUIPATTACK, // Treat Weapons In Hand As Equipped For Attacks
-        FEATPRE, // Bypass Feat Prerequisites
-        FREECLOTHES, // Ask For Free Clothing at First Level
-        INTBEFORE, // Increment STAT before calculating skill points when leveling
-        INTBONUSLANG, // Allow Selection of Int bonus Languages after 1st level
-        LEVELCAP, // Ignore Level Cap
-        PROHIBITSPELLS, // Restict Cleric/Druid spells based on alignment
-        SIZECAT, // Use 3.5 Weapon Categories
-        SIZEOBJ, // Use 3.0 Weapon Size
-        SKILLMAX, // Bypass Max Skill Ranks
-        SYS_35WP, // Apply 3.5 Size Category Penalty to Attacks
-        //	SYS_CIP, //Improper tools incure a -2 circumstance penalty
-        //	SYS_DOMAIN, // Apply Casterlevel Bonuses from Domains to Spells
-        SYS_LDPACSK, // Apply Load Penalty to AC and Skills
-        SYS_WTPSK; // Apply Weight Penalty to Skills
-    }
+		ABILRANGE, //Allow any range for ability scores
+		AMMOSTACKSWITHWEAPON, // Do ammunition enhancement bonus stack with those of the weapon
+		BONUSSPELLKNOWN, // Add stat bonus to Spells Known
+		CLASSPRE, // Bypass Class Prerequisites
+		EQUIPATTACK, // Treat Weapons In Hand As Equipped For Attacks
+		FEATPRE, // Bypass Feat Prerequisites
+		FREECLOTHES, // Ask For Free Clothing at First Level
+		INTBEFORE, // Increment STAT before calculating skill points when leveling
+		INTBONUSLANG, // Allow Selection of Int bonus Languages after 1st level
+		LEVELCAP, // Ignore Level Cap
+		PROHIBITSPELLS, // Restict Cleric/Druid spells based on alignment
+		SIZECAT, // Use 3.5 Weapon Categories
+		SIZEOBJ, // Use 3.0 Weapon Size
+		SKILLMAX, // Bypass Max Skill Ranks
+		SYS_35WP, // Apply 3.5 Size Category Penalty to Attacks
+		//	SYS_CIP, //Improper tools incure a -2 circumstance penalty
+		//	SYS_DOMAIN, // Apply Casterlevel Bonuses from Domains to Spells
+		SYS_LDPACSK, // Apply Load Penalty to AC and Skills
+		SYS_WTPSK; // Apply Weight Penalty to Skills
+	}
 }

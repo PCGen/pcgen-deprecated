@@ -28,7 +28,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import pcgen.gui.facade.CharacterFacade;
 import pcgen.gui.facade.EquipmentSetFacade;
-import pcgen.gui.facade.QuickSourceFacade;
+import pcgen.gui.facade.SourceFacade;
 import pcgen.gui.facade.TempBonusFacade;
 import pcgen.gui.tools.CharacterSelectionListener;
 import pcgen.gui.util.AbstractListMenu;
@@ -204,7 +204,7 @@ public class PCGenMenuBar extends JMenuBar implements CharacterSelectionListener
 
     }
 
-    private class QuickSourceMenu extends AbstractListMenu<QuickSourceFacade>
+    private class QuickSourceMenu extends AbstractListMenu<SourceFacade>
     {
 
         public QuickSourceMenu()
@@ -215,7 +215,7 @@ public class PCGenMenuBar extends JMenuBar implements CharacterSelectionListener
             add(new JMenuItem(actionMap.get(PCGenActionMap.SOURCES_ADVANCED_COMMAND)));
         }
 
-        protected JMenuItem createMenuItem(QuickSourceFacade source)
+        protected JMenuItem createMenuItem(SourceFacade source)
         {
             throw new UnsupportedOperationException("Not supported yet.");
         }

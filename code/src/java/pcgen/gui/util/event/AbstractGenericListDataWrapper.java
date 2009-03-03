@@ -29,63 +29,69 @@ import pcgen.gui.util.GenericListModelWrapper;
  * in its implementation of the <code>intervalAdded()</code> method. 
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public abstract class AbstractGenericListDataWrapper<E> implements GenericListDataListener<E>
+public abstract class AbstractGenericListDataWrapper<E> implements
+		GenericListDataListener<E>
 {
 
-    protected GenericListModelWrapper<E> wrapper = null;
+	protected GenericListModelWrapper<E> wrapper = null;
 
-    public AbstractGenericListDataWrapper()
-    {
-    }
+	public AbstractGenericListDataWrapper()
+	{
+	}
 
-    public AbstractGenericListDataWrapper(GenericListModel<E> model)
-    {
-        setModel(model);
-    }
+	public AbstractGenericListDataWrapper(GenericListModel<E> model)
+	{
+		setModel(model);
+	}
 
-    public void setModel(GenericListModel<E> model)
-    {
-        if (wrapper != null)
-        {
-            wrapper.getModel().removeGenericListDataListener(this);
-            removeData(wrapper);
-        }
-        if (model != null)
-        {
-            wrapper = new GenericListModelWrapper<E>(model);
-            model.addGenericListDataListener(this);
-            addData(wrapper);
-        }
-        else
-        {
-            wrapper = null;
-        }
-    }
+	public void setModel(GenericListModel<E> model)
+	{
+		if (wrapper != null)
+		{
+			wrapper.getModel().removeGenericListDataListener(this);
+			clearData();
+		}
+		if (model != null)
+		{
+			wrapper = new GenericListModelWrapper<E>(model);
+			model.addGenericListDataListener(this);
+			addData(wrapper);
+		}
+		else
+		{
+			wrapper = null;
+		}
+	}
 
-    public void intervalAdded(GenericListDataEvent<E> e)
-    {
-        addData(e.getData());
-    }
+	protected void clearData()
+	{
+		removeData(wrapper);
+	}
 
-    public void intervalRemoved(GenericListDataEvent<E> e)
-    {
-        removeData(e.getData());
-    }
+	public void intervalAdded(GenericListDataEvent<E> e)
+	{
+		addData(e.getData());
+	}
 
-    protected abstract void addData(Collection<? extends E> data);
+	public void intervalRemoved(GenericListDataEvent<E> e)
+	{
+		removeData(e.getData());
+	}
 
-    protected abstract void removeData(Collection<? extends E> data);
+	protected abstract void addData(Collection<? extends E> data);
 
-    public void contentsChanged(GenericListDataEvent<E> e)
-    {
-        intervalRemoved(e);
-        intervalAdded(new GenericListDataEvent<E>(e.getSource(),
-                                                  wrapper.subList(e.getIndex0(),
-                                                                  e.getIndex1() +
-                                                                  1),
-                                                  e.getValueIsAdjusting(),
-                                                  e.getType(), e.getIndex0(),
-                                                  e.getIndex1()));
-    }
+	protected abstract void removeData(Collection<? extends E> data);
+
+	public void contentsChanged(GenericListDataEvent<E> e)
+	{
+		intervalRemoved(e);
+		intervalAdded(new GenericListDataEvent<E>(e.getSource(),
+												  wrapper.subList(e.getIndex0(),
+																  e.getIndex1() +
+				1),
+												  e.getValueIsAdjusting(),
+												  e.getType(), e.getIndex0(),
+												  e.getIndex1()));
+	}
 
 }

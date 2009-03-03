@@ -220,7 +220,11 @@ public class JTreeViewPane extends JTablePane
         }
     }
 
-    public List<Object> getSelectedData()
+	/**
+	 * This returns data that is currently highlighted by the user.
+	 * @return 
+	 */
+	public List<Object> getSelectedData()
     {
         TreePath[] paths = getTable().getTree().getSelectionPaths();
         List<Object> data = new ArrayList<Object>(paths.length);

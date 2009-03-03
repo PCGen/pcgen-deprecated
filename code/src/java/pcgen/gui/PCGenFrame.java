@@ -28,7 +28,7 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
-import pcgen.gui.facade.QuickSourceFacade;
+import pcgen.gui.facade.SourceFacade;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.GenericListModel;
 
@@ -88,7 +88,7 @@ public class PCGenFrame extends JFrame
         return null;
     }
 
-    public GenericListModel<QuickSourceFacade> getQuickSources()
+    public GenericListModel<SourceFacade> getQuickSources()
     {
         return null;
     }
