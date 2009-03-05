@@ -59,35 +59,39 @@ public class CharacterOutput
 		return 0;
 	}
 
-	public static PCClass getSelectedClass(PlayerCharacter character, int level)
+	public static PCClass getSelectedClass(PlayerCharacter character,
+										   PCLevel level)
 	{
 		return null;
 	}
 
-	public static SkillCost getSkillCost(PlayerCharacter character, int level,
+	public static SkillCost getSkillCost(PlayerCharacter character,
+										 PCLevel level,
 										 Skill skill)
 	{
 		return null;
 	}
 
-	public static float getMaxRanks(PlayerCharacter character, int level,
+	public static float getMaxRanks(PlayerCharacter character, PCLevel level,
 									SkillCost cost)
 	{
 		return 0;
 	}
 
-	public static int getRankCost(PlayerCharacter character, int level,
+	public static int getRankCost(PlayerCharacter character, PCLevel level,
 								  SkillCost cost)
 	{
 		return 0;
 	}
 
-	public static int getGainedSkillPoints(PlayerCharacter character, int level)
+	public static int getGainedSkillPoints(PlayerCharacter character,
+										   PCLevel level)
 	{
 		return 0;
 	}
 
-	public static int getSpentSkillPoints(PlayerCharacter character, int level)
+	public static int getSpentSkillPoints(PlayerCharacter character,
+										  PCLevel level)
 	{
 		return 0;
 	}
@@ -117,9 +121,9 @@ public class CharacterOutput
 		return null;
 	}
 
-	public static int getLevel(PlayerCharacter character)
+	public static GenericListModel<PCLevel> getLevels(PlayerCharacter character)
 	{
-		return 0;
+		return null;
 	}
 
 	public static int getClassLevel(PlayerCharacter character, PCClass cl)

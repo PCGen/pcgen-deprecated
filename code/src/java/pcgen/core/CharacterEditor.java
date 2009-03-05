@@ -81,14 +81,15 @@ public class CharacterEditor
 	 * @param points the amount of points to invest
 	 * @return true if the points were successfuly invested
 	 */
-	public static boolean investSkillPoints(PlayerCharacter character, int level,
-											Skill skill, int points)
+	public static boolean investSkillPoints(PlayerCharacter character,
+											PCLevel level, Skill skill,
+											int points)
 	{
 		return false;
 	}
 
-	public static void setGainedSkillPoints(PlayerCharacter character, int level,
-											int points)
+	public static void setGainedSkillPoints(PlayerCharacter character,
+											PCLevel level, int points)
 	{
 	}
 
