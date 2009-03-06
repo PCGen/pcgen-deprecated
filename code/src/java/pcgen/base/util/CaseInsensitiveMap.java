@@ -33,6 +33,18 @@ import pcgen.base.lang.CaseInsensitiveString;
  * appropriate matching behavior when a CaseInsensitiveString is passed in as
  * the key to one of the methods of CaseInsensitiveMap.
  * 
+ * NOTE: It is generally preferred to use new TreeMap<String,
+ * blah>(String.CASE_INSENSITIVE_ORDER) when dealing with case insensitive Maps.
+ * This should only be avoided in rare cases where performance is an issue in
+ * fetching items from large maps. In reality, it may be best to remove
+ * CaseInsensitiveMap from use entirely.
+ * 
+ * **WARNING**: This class could be considered to be broken or incomplete.
+ * Unfortunately, in the case of the iterator methods of Map (e.g. keySet()),
+ * this class will expose the CaseInsensitiveString that is used internally to
+ * this Class. It is therefore a poor implementation to use when iteration over
+ * the entries in this Map is requried.
+ * 
  * @param <V>
  *            The Type of the Values stored in this CaseInsensitiveMap
  */
@@ -56,7 +68,7 @@ public class CaseInsensitiveMap<V> extends HashMap<Object, V>
 	private Object resolveObject(Object key)
 	{
 		return key instanceof String ? new CaseInsensitiveString((String) key)
-			: key;
+				: key;
 	}
 
 	/**
@@ -84,6 +96,12 @@ public class CaseInsensitiveMap<V> extends HashMap<Object, V>
 	/**
 	 * Puts the given key/value pair into this CaseInsensitiveMap
 	 * 
+	 * @param key
+	 *            The key indicating the location in this CaseInsensitiveMap
+	 *            where the given value should be stored
+	 * @param value
+	 *            The value to be stored in this CaseInsensensitiveMap under the
+	 *            given key
 	 * @return the value previously mapped to this key or null if no value was
 	 *         previously mapped to the given key
 	 */

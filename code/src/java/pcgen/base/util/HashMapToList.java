@@ -18,9 +18,9 @@
  * Created on Aug 29, 2004
  * Imported into PCGen on June 18, 2005.
  *
- * Current Ver: $Revision: 6897 $
- * Last Editor: $Author: thpr $
- * Last Edited: $Date: 2008-06-26 17:19:07 -0700 (Thu, 26 Jun 2008) $
+ * Current Ver: $Revision$
+ * Last Editor: $Author$
+ * Last Edited: $Date$
  */
 package pcgen.base.util;
 
@@ -76,7 +76,12 @@ public class HashMapToList<K, V> extends AbstractMapToList<K, V>
 	}
 
 	/**
-	 * Creates a new HashSet for use by AbstractMapToList
+	 * Creates a new HashSet for use by AbstractMapToList. It is intended that
+	 * this will only be used by AbstractMapToList.
+	 * 
+	 * Ownership of the constructed Set is transferred to the calling object,
+	 * and no reference to it is maintained by HashMapToList due to this method
+	 * call.
 	 * 
 	 * @see pcgen.base.util.AbstractMapToList#getEmptySet()
 	 */

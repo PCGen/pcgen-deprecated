@@ -33,7 +33,7 @@ import java.util.TreeSet;
  * This weight acts as though <i>weight</i> copies of the item were added to
  * the Collection. The <code>size()</code> method returns the total weight of
  * all items in the Collection. The <code>get()</code> method returns the
- * &quot;weighth&quot; element in the Collection.
+ * &quot;weight&quot; element in the Collection.
  * <p>
  * As an example, if three items are added to the Collection
  * <ul>
@@ -85,6 +85,12 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 * provided. All the elements added will have the default weight equal to
 	 * the number of times they appear in the given collection.
 	 * 
+	 * This constructor is both reference-semantic and value-semantic. It will
+	 * not modify or maintain a reference to the given Collection of objects.
+	 * However, references to the objects contained in the Collection are
+	 * maintained by the WeightedCollection, and the WeightedCollection may
+	 * return references to those objects contained in the Collection.
+	 * 
 	 * @param c
 	 *            The <tt>Collection</tt> to copy.
 	 * @throws NullPointerException
@@ -112,8 +118,9 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		}
 		else
 		{
-			theData = new TreeSet<WeightedItem<E>>(
-					new WeightedItemComparator<E>(comp));
+			theData =
+					new TreeSet<WeightedItem<E>>(new WeightedItemComparator<E>(
+						comp));
 		}
 	}
 
@@ -138,6 +145,12 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 * Adds all the elements from the specified <tt>Collection</tt> to this
 	 * WeightedCollection with the default weight of 1.
 	 * 
+	 * This method is both reference-semantic and value-semantic. It will not
+	 * modify or maintain a reference to the given Collection of objects.
+	 * However, references to the objects contained in the Collection are
+	 * maintained by the WeightedCollection, and the WeightedCollection may
+	 * return references to those objects contained in the Collection.
+	 * 
 	 * @param c
 	 *            The <tt>Collection</tt> to add the elements from.
 	 * @throws NullPointerException
@@ -161,12 +174,13 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 *            Weight to add this element with.
 	 * @param element
 	 *            Element to add.
+	 * @return true if we added successfully
 	 * 
 	 * @see java.util.List#add(int, java.lang.Object)
 	 * @throws IllegalArgumentException
 	 *             if the given weight is less than zero
 	 */
-	public boolean add(final E element, final int weight)
+	public final boolean add(final E element, final int weight)
 	{
 		if (weight < 0)
 		{
@@ -181,7 +195,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		{
 			E wie = wi.getElement();
 			if (wie == null && element == null || wie != null
-					&& wie.equals(element))
+				&& wie.equals(element))
 			{
 				wi.addWeight(weight);
 				return true;
@@ -197,7 +211,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 *            The element to add
 	 * @return true if the element was added.
 	 * 
-	 * @see WeightedCollection#add(int, Object)
+	 * @see WeightedCollection#add(Object, int)
 	 * @see java.util.List#add(java.lang.Object)
 	 */
 	@Override
@@ -241,6 +255,12 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 * WeightedCollection. This Iterator <i>accounts for the weight of the
 	 * elements in the WeightedCollection</i>.
 	 * 
+	 * This method is reference-semantic. While ownership of the Iterator is
+	 * transferred to the calling object (no reference to the iterator is
+	 * maintained by the WeightedCollection), actions on the returned Iterator
+	 * (e.g. remove()) can alter the WeightedCollection on which this method was
+	 * called.
+	 * 
 	 * @return An <tt>Iterator</tt> for the WeightedCollection.
 	 * 
 	 * @see java.util.Collection#iterator()
@@ -257,6 +277,12 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 * the elements in the WeightedCollection</i>. Therefore in a list with
 	 * three elements of differing weights, this iterator simply returns each
 	 * element in turn.
+	 * 
+	 * This method is reference-semantic. While ownership of the Iterator is
+	 * transferred to the calling object (no reference to the iterator is
+	 * maintained by the WeightedCollection), actions on the returned Iterator
+	 * (e.g. remove()) can alter the WeightedCollection on which this method was
+	 * called.
 	 * 
 	 * @return An <tt>Iterator</tt> for the WeightedCollection.
 	 */
@@ -396,7 +422,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		 * possible to actually sort before doing the comparison. - thpr 2/5/07
 		 */
 		return o instanceof WeightedCollection
-				&& theData.equals(((WeightedCollection) o).theData);
+			&& theData.equals(((WeightedCollection<?>) o).theData);
 	}
 
 	/**
@@ -431,6 +457,12 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 * Adds each element in the specified collection with the indicated weight
 	 * value.
 	 * 
+	 * This method is both reference-semantic and value-semantic. It will not
+	 * modify or maintain a reference to the given Collection of objects.
+	 * However, references to the objects contained in the Collection are
+	 * maintained by the WeightedCollection, and the WeightedCollection may
+	 * return references to those objects contained in the Collection.
+	 * 
 	 * @param aWeight
 	 *            The weight value to use for each element added.
 	 * @param c
@@ -442,7 +474,8 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	 * 
 	 * @see java.util.List#addAll(int, java.util.Collection)
 	 */
-	public final boolean addAll(final Collection<? extends E> c, final int aWeight)
+	public final boolean addAll(final Collection<? extends E> c,
+		final int aWeight)
 	{
 		boolean modified = false;
 		for (E item : c)
@@ -516,7 +549,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		public int hashCode()
 		{
 			return theWeight * 29
-					+ (theElement == null ? 0 : theElement.hashCode());
+				+ (theElement == null ? 0 : theElement.hashCode());
 		}
 
 		/**
@@ -540,8 +573,8 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 			{
 				WeightedItem<?> wi = (WeightedItem) o;
 				return theWeight == wi.theWeight
-						&& (theElement == null && wi.theElement == null || theElement != null
-								&& theElement.equals(wi.theElement));
+					&& (theElement == null && wi.theElement == null || theElement != null
+						&& theElement.equals(wi.theElement));
 			}
 			return false;
 		}
@@ -583,7 +616,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		public E next()
 		{
 			if (currentEntry == null
-					|| currentReturned >= currentEntry.theWeight)
+				|| currentReturned >= currentEntry.theWeight)
 			{
 				currentEntry = iter.next();
 				currentReturned = 0;
@@ -601,8 +634,8 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 	private class UnweightedIterator implements Iterator<E>
 	{
 		/** An iterator that iterates over the raw data elements. */
-		private final Iterator<WeightedItem<E>> realIterator = theData
-				.iterator();
+		private final Iterator<WeightedItem<E>> realIterator =
+				theData.iterator();
 
 		/**
 		 * Checks if there are any more elements in the iteration.
@@ -654,7 +687,7 @@ public class WeightedCollection<E> extends AbstractCollection<E>
 		public int compare(WeightedItem<WICT> arg0, WeightedItem<WICT> arg1)
 		{
 			return delegateComparator.compare(arg0.getElement(), arg1
-					.getElement());
+				.getElement());
 		}
 
 	}

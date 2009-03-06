@@ -1,5 +1,5 @@
 /*
- * Copyright 2006 (C) Tom Parker <thpr@sourceforge.net>
+ * Copyright 2006 (C) Tom Parker <thpr@users.sourceforge.net>
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,7 +20,7 @@
 package pcgen.base.lang;
 
 /**
- * @author Tom Parker <thpr@sourceforge.net>
+ * @author Tom Parker (thpr@users.sourceforge.net)
  * 
  * CaseInsensitiveString is designed to be a String-like Object which is fast in
  * dealing with case sensitive comparisons in "consistent with equals"
@@ -32,6 +32,12 @@ package pcgen.base.lang;
  * also overrides the .hashCode() method of Object in order to maintain the
  * "consistent with equals" behavior that is appropriate (and expected by
  * certain classes, such as java.util.HashMap)
+ * 
+ * NOTE: It is generally preferred to use new TreeMap<String,
+ * blah>(String.CASE_INSENSITIVE_ORDER) when dealing with case insensitive Maps.
+ * This should only be avoided in rare cases where performance is an issue in
+ * fetching items from large maps. In reality, it may be best to remove
+ * CaseInsensitiveString from use entirely.
  */
 public class CaseInsensitiveString
 {
@@ -54,13 +60,15 @@ public class CaseInsensitiveString
 	 * 
 	 * @param s
 	 *            The underlying String of this CaseInsensitiveString
+	 * @throws IllegalArgumentException
+	 *             if the given String is null
 	 */
 	public CaseInsensitiveString(String s)
 	{
 		if (s == null)
 		{
 			throw new IllegalArgumentException(
-				"Cannot make a Case Insensitive String for null");
+					"Cannot make a Case Insensitive String for null");
 		}
 		string = s;
 	}
@@ -74,7 +82,7 @@ public class CaseInsensitiveString
 		if (s instanceof CaseInsensitiveString)
 		{
 			return string.equalsIgnoreCase(((CaseInsensitiveString) s)
-				.toString());
+					.toString());
 		}
 		return false;
 	}
