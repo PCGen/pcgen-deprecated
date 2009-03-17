@@ -1,21 +1,21 @@
 package pcgen.message.inst;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.core.facade.PlayerCharacterFacade;
 import pcgen.message.base.PCGenMessage;
 
 public class RevisePlayerCharacter implements PCGenMessage
 {
 
-	private final PlayerCharacter character;
+	private final PlayerCharacterFacade character;
 	private final int revision;
 
-	public RevisePlayerCharacter(PlayerCharacter pc, int rev)
+	public RevisePlayerCharacter(PlayerCharacterFacade pc, int rev)
 	{
 		character = pc;
 		revision = rev;
 	}
 
-	public PlayerCharacter getCharacter()
+	public PlayerCharacterFacade getCharacter()
 	{
 		return character;
 	}

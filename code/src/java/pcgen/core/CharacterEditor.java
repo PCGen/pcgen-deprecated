@@ -22,6 +22,13 @@ package pcgen.core;
 
 import pcgen.cdom.base.Category;
 import pcgen.cdom.enumeration.Gender;
+import pcgen.core.facade.AbilityFacade;
+import pcgen.core.facade.AlignmentFacade;
+import pcgen.core.facade.PCClassFacade;
+import pcgen.core.facade.PCLevelFacade;
+import pcgen.core.facade.PCStatFacade;
+import pcgen.core.facade.PlayerCharacterFacade;
+import pcgen.core.facade.SkillFacade;
 
 /**
  *
@@ -30,43 +37,43 @@ import pcgen.cdom.enumeration.Gender;
 public class CharacterEditor
 {
 
-	public static void setAlignment(PlayerCharacter character,
-									Alignment alignment)
+	public static void setAlignment(PlayerCharacterFacade character,
+									AlignmentFacade alignment)
 	{
 	}
 
-	public static void setGender(PlayerCharacter character, Gender gender)
+	public static void setGender(PlayerCharacterFacade character, Gender gender)
 	{
 	}
 
-	public static void setScore(PlayerCharacter character, PCStat stat,
+	public static void setScore(PlayerCharacterFacade character, PCStatFacade stat,
 								int score)
 	{
 	}
 
-	public static void addAbility(PlayerCharacter character, Ability ability)
+	public static void addAbility(PlayerCharacterFacade character, AbilityFacade ability)
 	{
 	}
 
-	public static void removeAbility(PlayerCharacter character, Ability ability)
+	public static void removeAbility(PlayerCharacterFacade character, AbilityFacade ability)
 	{
 	}
 
-	public static void addLevels(PlayerCharacter character, PCClass[] classes)
+	public static void addLevels(PlayerCharacterFacade character, PCClassFacade[] classes)
 	{
 	}
 
-	public static void removeLevels(PlayerCharacter character, int levels)
+	public static void removeLevels(PlayerCharacterFacade character, int levels)
 	{
 	}
 
-	public static void setRemainingSelection(PlayerCharacter character,
-											 Category<Ability> catagory,
+	public static void setRemainingSelection(PlayerCharacterFacade character,
+											 Category<AbilityFacade> catagory,
 											 int remaining)
 	{
 	}
 
-	public static void applyTempBonus(PlayerCharacter character, TempBonus bonus,
+	public static void applyTempBonus(PlayerCharacterFacade character, TempBonus bonus,
 									  boolean apply)
 	{
 	}
@@ -81,15 +88,15 @@ public class CharacterEditor
 	 * @param points the amount of points to invest
 	 * @return true if the points were successfuly invested
 	 */
-	public static boolean investSkillPoints(PlayerCharacter character,
-											PCLevel level, Skill skill,
+	public static boolean investSkillPoints(PlayerCharacterFacade character,
+											PCLevelFacade level, SkillFacade skill,
 											int points)
 	{
 		return false;
 	}
 
-	public static void setGainedSkillPoints(PlayerCharacter character,
-											PCLevel level, int points)
+	public static void setGainedSkillPoints(PlayerCharacterFacade character,
+											PCLevelFacade level, int points)
 	{
 	}
 

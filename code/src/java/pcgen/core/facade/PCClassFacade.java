@@ -1,9 +1,9 @@
-package pcgen.core;
+package pcgen.core.facade;
 
 import java.util.List;
 import pcgen.cdom.enumeration.Type;
 
-public interface PCClass
+public interface PCClassFacade
 {
 
 	public List<Type> getTypes();
@@ -12,6 +12,6 @@ public interface PCClass
 
 	public Type getSpellType();
 
-	public PCStat getSpellStat();
+	public PCStatFacade getSpellStat();
 
 }

@@ -1,15 +1,14 @@
-package pcgen.core;
+package pcgen.core.facade;
 
 import pcgen.cdom.base.CDOMObject;
 
-public interface PCStat extends CDOMObject
+public interface PCStatFacade extends CDOMObject
 {
 
 	public String getName();
 
 	public String getAbbreviation();
 
-	@Override
 	public String toString();
 
 }

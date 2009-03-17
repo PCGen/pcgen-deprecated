@@ -34,8 +34,8 @@ import java.util.Map;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.helper.ChoiceSet;
-import pcgen.core.Alignment;
-import pcgen.core.PCStat;
+import pcgen.core.facade.AlignmentFacade;
+import pcgen.core.facade.PCStatFacade;
 import pcgen.util.enumeration.Load;
 import pcgen.util.enumeration.Visibility;
 
@@ -76,11 +76,11 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<BigDecimal> COST = new ObjectKey<BigDecimal>();
 
-	public static final ObjectKey<PCStat> KEY_STAT = new ObjectKey<PCStat>();
+	public static final ObjectKey<PCStatFacade> KEY_STAT = new ObjectKey<PCStatFacade>();
 
-	public static final ObjectKey<PCStat> SPELL_STAT = new ObjectKey<PCStat>();
+	public static final ObjectKey<PCStatFacade> SPELL_STAT = new ObjectKey<PCStatFacade>();
 
-	public static final ObjectKey<PCStat> BONUS_SPELL_STAT = new ObjectKey<PCStat>();
+	public static final ObjectKey<PCStatFacade> BONUS_SPELL_STAT = new ObjectKey<PCStatFacade>();
 
 	public static final ObjectKey<Boolean> READ_ONLY = new ObjectKey<Boolean>();
 
@@ -98,7 +98,7 @@ public final class ObjectKey<T> {
 
 	public static final ObjectKey<Boolean> USE_UNTRAINED = new ObjectKey<Boolean>();
 
-	public static final ObjectKey<Alignment> ALIGNMENT = new ObjectKey<Alignment>();
+	public static final ObjectKey<AlignmentFacade> ALIGNMENT = new ObjectKey<AlignmentFacade>();
 
 	public static final ObjectKey<Boolean> EXCLUSIVE = new ObjectKey<Boolean>();
 

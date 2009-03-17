@@ -1,8 +1,8 @@
-package pcgen.core;
+package pcgen.core.facade;
 
 import pcgen.cdom.base.CDOMObject;
 
-public interface Campaign extends CDOMObject
+public interface CampaignFacade extends CDOMObject
 {
 
 	public String getPublisher();

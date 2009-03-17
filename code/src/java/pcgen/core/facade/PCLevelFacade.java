@@ -18,7 +18,7 @@
  * 
  * Created on Mar 2, 2009, 5:28:12 PM
  */
-package pcgen.core;
+package pcgen.core.facade;
 
 import pcgen.cdom.base.CDOMObject;
 
@@ -26,6 +26,6 @@ import pcgen.cdom.base.CDOMObject;
  *
  * @author Connor Petty <cpmeister@users.sourceforge.net>
  */
-public interface PCLevel extends CDOMObject
+public interface PCLevelFacade extends CDOMObject
 {
 }

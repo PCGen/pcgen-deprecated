@@ -1,19 +1,19 @@
 package pcgen.message.inst;
 
-import pcgen.core.PlayerCharacter;
+import pcgen.core.facade.PlayerCharacterFacade;
 import pcgen.message.base.PCGenMessage;
 
 public class SetActivePlayerCharacter implements PCGenMessage
 {
 
-	private final PlayerCharacter character;
+	private final PlayerCharacterFacade character;
 	
-	public SetActivePlayerCharacter(PlayerCharacter pc)
+	public SetActivePlayerCharacter(PlayerCharacterFacade pc)
 	{
 		character = pc;
 	}
 
-	public PlayerCharacter getCharacter()
+	public PlayerCharacterFacade getCharacter()
 	{
 		return character;
 	}

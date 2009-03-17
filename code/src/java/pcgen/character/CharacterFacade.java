@@ -8,29 +8,29 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CategorizedCDOMObject;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.enumeration.AssociationKey;
-import pcgen.core.PCClass;
-import pcgen.core.PlayerCharacter;
+import pcgen.core.facade.PCClassFacade;
+import pcgen.core.facade.PlayerCharacterFacade;
 
 public interface CharacterFacade
 {
 
 	public <T extends CDOMObject> Map<T, AssociatedPrereqObject> getActive(
-			PlayerCharacter pc, Class<T> cl);
+			PlayerCharacterFacade pc, Class<T> cl);
 
-	public <T extends CDOMObject> int getWeight(PlayerCharacter pc, T obj);
+	public <T extends CDOMObject> int getWeight(PlayerCharacterFacade pc, T obj);
 
 	public <T extends CategorizedCDOMObject<T>> Category<T> getCategory(
-			PlayerCharacter pc, T obj);
+			PlayerCharacterFacade pc, T obj);
 
 	public <T extends CDOMObject> Map<T, AssociatedPrereqObject> getListContents(
-			PlayerCharacter pc, CDOMList<T> list);
+			PlayerCharacterFacade pc, CDOMList<T> list);
 
-	public <T extends CDOMObject, R> R getListAttribute(PlayerCharacter pc,
+	public <T extends CDOMObject, R> R getListAttribute(PlayerCharacterFacade pc,
 			CDOMList<T> list, T obj, AssociationKey<R> ak);
 
-	public int getLevel(PlayerCharacter pc);
+	public int getLevel(PlayerCharacterFacade pc);
 
-	public int getPCClassLevel(PlayerCharacter pc, PCClass cl);
+	public int getPCClassLevel(PlayerCharacterFacade pc, PCClassFacade cl);
 
 	// public Collection<ChoiceSet<?>> getUnfinishedChoices(PlayerCharacter pc);
 

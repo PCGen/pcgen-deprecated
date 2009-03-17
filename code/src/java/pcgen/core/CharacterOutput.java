@@ -24,6 +24,14 @@ import javax.swing.undo.UndoManager;
 import pcgen.cdom.enumeration.AbilityCategory;
 import pcgen.cdom.enumeration.Gender;
 import pcgen.cdom.enumeration.SkillCost;
+import pcgen.core.facade.AbilityFacade;
+import pcgen.core.facade.AlignmentFacade;
+import pcgen.core.facade.EquipmentFacade;
+import pcgen.core.facade.PCClassFacade;
+import pcgen.core.facade.PCLevelFacade;
+import pcgen.core.facade.PCStatFacade;
+import pcgen.core.facade.PlayerCharacterFacade;
+import pcgen.core.facade.SkillFacade;
 import pcgen.gui.util.GenericComboBoxModel;
 import pcgen.gui.util.GenericListModel;
 
@@ -34,64 +42,64 @@ import pcgen.gui.util.GenericListModel;
 public class CharacterOutput
 {
 
-	public static UndoManager getUndoManager(PlayerCharacter character)
+	public static UndoManager getUndoManager(PlayerCharacterFacade character)
 	{
 		return null;
 	}
 
-	public static Alignment getAlignment(PlayerCharacter character)
+	public static AlignmentFacade getAlignment(PlayerCharacterFacade character)
 	{
 		return null;
 	}
 
-	public static Gender getGender(PlayerCharacter character)
+	public static Gender getGender(PlayerCharacterFacade character)
 	{
 		return null;
 	}
 
-	public static int getScore(PlayerCharacter character, PCStat stat)
+	public static int getScore(PlayerCharacterFacade character, PCStatFacade stat)
 	{
 		return 0;
 	}
 
-	public static int getMod(PlayerCharacter character, PCStat stat)
+	public static int getMod(PlayerCharacterFacade character, PCStatFacade stat)
 	{
 		return 0;
 	}
 
-	public static PCClass getSelectedClass(PlayerCharacter character,
-										   PCLevel level)
+	public static PCClassFacade getSelectedClass(PlayerCharacterFacade character,
+										   PCLevelFacade level)
 	{
 		return null;
 	}
 
-	public static SkillCost getSkillCost(PlayerCharacter character,
-										 PCLevel level,
-										 Skill skill)
+	public static SkillCost getSkillCost(PlayerCharacterFacade character,
+										 PCLevelFacade level,
+										 SkillFacade skill)
 	{
 		return null;
 	}
 
-	public static float getMaxRanks(PlayerCharacter character, PCLevel level,
+	public static float getMaxRanks(PlayerCharacterFacade character, PCLevelFacade level,
 									SkillCost cost)
 	{
 		return 0;
 	}
 
-	public static int getRankCost(PlayerCharacter character, PCLevel level,
+	public static int getRankCost(PlayerCharacterFacade character, PCLevelFacade level,
 								  SkillCost cost)
 	{
 		return 0;
 	}
 
-	public static int getGainedSkillPoints(PlayerCharacter character,
-										   PCLevel level)
+	public static int getGainedSkillPoints(PlayerCharacterFacade character,
+										   PCLevelFacade level)
 	{
 		return 0;
 	}
 
-	public static int getSpentSkillPoints(PlayerCharacter character,
-										  PCLevel level)
+	public static int getSpentSkillPoints(PlayerCharacterFacade character,
+										  PCLevelFacade level)
 	{
 		return 0;
 	}
@@ -103,51 +111,51 @@ public class CharacterOutput
 	 * @param catagory
 	 * @return a List of Abilities the character posseses in the specified catagory
 	 */
-	public static GenericListModel<Ability> getAbilities(
-			PlayerCharacter character, AbilityCategory catagory)
+	public static GenericListModel<AbilityFacade> getAbilities(
+			PlayerCharacterFacade character, AbilityCategory catagory)
 	{
 		return null;
 	}
 
-	public static GenericComboBoxModel<Equipment> getEquipmentSets(
-			PlayerCharacter character)
+	public static GenericComboBoxModel<EquipmentFacade> getEquipmentSets(
+			PlayerCharacterFacade character)
 	{
 		return null;
 	}
 
 	public static GenericListModel<TempBonus> getTempBonuses(
-			PlayerCharacter character)
+			PlayerCharacterFacade character)
 	{
 		return null;
 	}
 
-	public static GenericListModel<PCLevel> getLevels(PlayerCharacter character)
+	public static GenericListModel<PCLevelFacade> getLevels(PlayerCharacterFacade character)
 	{
 		return null;
 	}
 
-	public static int getClassLevel(PlayerCharacter character, PCClass cl)
+	public static int getClassLevel(PlayerCharacterFacade character, PCClassFacade cl)
 	{
 		return 0;
 	}
 
-	public static int getRemainingSelections(PlayerCharacter character,
+	public static int getRemainingSelections(PlayerCharacterFacade character,
 											 AbilityCategory catagory)
 	{
 		return 0;
 	}
 
-	public static int getSkillTotal(PlayerCharacter character, Skill skill)
+	public static int getSkillTotal(PlayerCharacterFacade character, SkillFacade skill)
 	{
 		return 0;
 	}
 
-	public static int getSkillModifier(PlayerCharacter character, Skill skill)
+	public static int getSkillModifier(PlayerCharacterFacade character, SkillFacade skill)
 	{
 		return 0;
 	}
 
-	public static float getSkillRanks(PlayerCharacter character, Skill skill)
+	public static float getSkillRanks(PlayerCharacterFacade character, SkillFacade skill)
 	{
 		return 0;
 	}

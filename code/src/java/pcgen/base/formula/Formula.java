@@ -17,8 +17,8 @@
  */
 package pcgen.base.formula;
 
-import pcgen.core.Equipment;
-import pcgen.core.PlayerCharacter;
+import pcgen.core.facade.EquipmentFacade;
+import pcgen.core.facade.PlayerCharacterFacade;
 
 /**
  * @author Thomas Parker (thpr [at] yahoo.com)
@@ -41,7 +41,7 @@ public interface Formula
 	 * @return The Number indicating the result of the Formula when resolved in
 	 *         the given context.
 	 */
-	public Number resolve(PlayerCharacter pc, String source);
+	public Number resolve(PlayerCharacterFacade pc, String source);
 
 	/**
 	 * Resolves the formula relative to the given Equipment, EquipmentHead,
@@ -65,8 +65,8 @@ public interface Formula
 	 * @return The Number indicating the result of the Formula when resolved in
 	 *         the given context.
 	 */
-	public Number resolve(Equipment equipment, boolean primary,
-			PlayerCharacter apc, String source);
+	public Number resolve(EquipmentFacade equipment, boolean primary,
+			PlayerCharacterFacade apc, String source);
 
 	/**
 	 * Returns true if the underlying Formula is known to be static.

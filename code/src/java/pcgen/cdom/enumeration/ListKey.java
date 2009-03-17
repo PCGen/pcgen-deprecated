@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import pcgen.base.util.CaseInsensitiveMap;
-import pcgen.core.Alignment;
+import pcgen.core.facade.AlignmentFacade;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
@@ -69,8 +69,8 @@ public final class ListKey<T>
 
 	public static final ListKey<Type> PROFICIENCY_TYPES = new ListKey<Type>();
 
-	public static final ListKey<Alignment> FOLLOWER_ALIGN =
-			new ListKey<Alignment>();
+	public static final ListKey<AlignmentFacade> FOLLOWER_ALIGN =
+			new ListKey<AlignmentFacade>();
 
 	public static final ListKey<RaceSubType> REMOVED_RACESUBTYPE =
 			new ListKey<RaceSubType>();

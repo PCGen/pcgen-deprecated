@@ -28,7 +28,7 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import pcgen.base.util.CaseInsensitiveMap;
-import pcgen.core.WeaponProf;
+import pcgen.core.facade.WeaponProfFacade;
 
 /**
  * @author Tom Parker <thpr@sourceforge.net>
@@ -38,8 +38,8 @@ import pcgen.core.WeaponProf;
 public final class AssociationListKey<T>
 {
 
-	public static final AssociationListKey<WeaponProf> WEAPON_PROF =
-			new AssociationListKey<WeaponProf>();
+	public static final AssociationListKey<WeaponProfFacade> WEAPON_PROF =
+			new AssociationListKey<WeaponProfFacade>();
 
 	private static CaseInsensitiveMap<AssociationListKey<?>> map = null;
 

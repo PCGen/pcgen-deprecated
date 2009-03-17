@@ -4,17 +4,17 @@ import javax.swing.undo.UndoableEdit;
 
 import pcgen.base.lang.Command;
 import pcgen.character.CharacterFacade;
-import pcgen.core.PCClass;
+import pcgen.core.facade.PCClassFacade;
 
 public class AddLevelToCharacter implements Command
 {
 
 	private final String name;
 	private final CharacterFacade character;
-	private final PCClass cl;
+	private final PCClassFacade cl;
 
 	public AddLevelToCharacter(String editName, CharacterFacade dataStore,
-			PCClass addedClass)
+			PCClassFacade addedClass)
 	{
 		character = dataStore;
 		cl = addedClass;

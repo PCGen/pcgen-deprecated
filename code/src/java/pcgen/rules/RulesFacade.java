@@ -3,7 +3,7 @@ package pcgen.rules;
 import java.util.Collection;
 
 import pcgen.cdom.base.CDOMObject;
-import pcgen.core.Campaign;
+import pcgen.core.facade.CampaignFacade;
 
 public interface RulesFacade
 {
@@ -12,5 +12,5 @@ public interface RulesFacade
 	
 	public void clearRules();
 	
-	public boolean loadRules(Collection<Campaign> collection);
+	public boolean loadRules(Collection<CampaignFacade> collection);
 }

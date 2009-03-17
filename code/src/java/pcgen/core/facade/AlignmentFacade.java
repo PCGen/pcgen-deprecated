@@ -1,15 +1,14 @@
-package pcgen.core;
+package pcgen.core.facade;
 
 import pcgen.cdom.base.CDOMObject;
 
-public interface Alignment extends CDOMObject
+public interface AlignmentFacade extends CDOMObject
 {
 
     public String getName();
 
     public String getAbbreviation();
 
-    @Override
     public String toString();
 
 }

@@ -23,14 +23,14 @@ import java.util.Collections;
 import pcgen.base.enumeration.TypeSafeConstant;
 import pcgen.base.util.CaseInsensitiveMap;
 import pcgen.cdom.base.Category;
-import pcgen.core.Ability;
+import pcgen.core.facade.AbilityFacade;
 
 /**
  * @author Tom Parker (thpr [at] yahoo.com)
  * 
  * This Class is a Type Safe Constant.
  */
-public final class AbilityCategory implements TypeSafeConstant, Category<Ability>
+public final class AbilityCategory implements TypeSafeConstant, Category<AbilityFacade>
 {
 
 	public static AbilityCategory FEAT = getConstant("FEAT");
