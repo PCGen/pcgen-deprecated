@@ -144,7 +144,8 @@ public class WeaponProfToken implements CDOMSecondaryToken<CDOMObject>
 			}
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(getTokenName()).append('|').append(profs).append(suffix);
+		sb.append(getTokenName()).append('|').append(firstarg).append('|')
+				.append(profs).append(suffix);
 		Formula f = FormulaFactory.getFormulaFor(firstarg);
 		context.obj.put(obj, FormulaKey.EMBEDDED_NUMCHOICES, f);
 		context.obj.put(obj, FormulaKey.EMBEDDED_SELECT, f);
