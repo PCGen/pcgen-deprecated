@@ -16537,22 +16537,9 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	{
 		rebuildingAbilities = true;
 		getVariableProcessor().pauseCache();
-
-		try
-		{
-			rebuildAggregateAbilityListWorker();
-		}
-		catch (Exception e)
-		{
-			Logging.errorPrint(
-				"Encountered error while rebuilding abilities list - ignoring",
-				e);
-		}
-		finally
-		{
-			getVariableProcessor().restartCache();
-			rebuildingAbilities = false;
-		}
+		rebuildAggregateAbilityListWorker();
+		getVariableProcessor().restartCache();
+		rebuildingAbilities = false;
 	}
 
 	/**
