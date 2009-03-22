@@ -16525,7 +16525,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			rebuildAggregateAbilityList();
 			abilities = theAbilities.get(aCategory, Ability.Nature.AUTOMATIC);
 		}
-		return abilities;
+		return Collections.unmodifiableList(abilities);
 	}
 
 	/**
