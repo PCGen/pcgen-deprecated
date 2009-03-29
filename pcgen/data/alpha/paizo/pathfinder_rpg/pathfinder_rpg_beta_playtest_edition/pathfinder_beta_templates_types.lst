@@ -3,6 +3,10 @@ SOURCELONG:Pathfinder RPG (Beta Playtest Edition)	SOURCESHORT:PFRPGB	SOURCEWEB:h
 # Original RSRD Entry by: PCGen Data Team
 # Pathfinder RPG Entry by: Stefan Radermacher
 
+# This is a work-around for BONUS:MISC|MAXDEX not working in ability object when using VARs.
+# Template Name			Visible	Misc bonus
+Armor Training workaround	VISIBLE:NO	BONUS:MISC|MAXDEX|ArmorTraining|PREEQUIP:1,TYPE=Armor
+
 ###Block: Creature Types
 # Template Name	Visible	Define			Bonus to HP													Main Race Type	Race Subtype
 Construct		VISIBLE:NO	DEFINE:LOCK.CON|10	BONUS:HP|CURRENTMAX|max(SIZE-2,0)*10	BONUS:HP|CURRENTMAX|max(SIZE-6,0)*10
