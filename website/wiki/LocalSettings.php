@@ -57,6 +57,7 @@ $wgPasswordSender = "drew0500@yahoo.com";
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
+$wgEmailConfirmToEdit = true;
 
 # Database settings are stored separately
 require_once("DbSettings.php");
@@ -68,7 +69,7 @@ $wgMemCachedServers = array();
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
-$wgEnableUploads       = false;
+$wgEnableUploads       = true;
 $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
 
@@ -114,5 +115,5 @@ $wgCacheEpoch = max( $wgCacheEpoch, $configdate );
 $wgGroupPermissions['*']['edit'] = false;
 
 # Require approval of new accounts
-require_once("$IP/extensions/ConfirmAccount/SpecialConfirmAccount.php");
-$wgAccountRequestMinWords=10;
+# require_once("$IP/extensions/ConfirmAccount/SpecialConfirmAccount.php");
+# $wgAccountRequestMinWords=10;
