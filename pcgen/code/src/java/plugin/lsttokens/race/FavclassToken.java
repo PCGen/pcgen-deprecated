@@ -294,6 +294,7 @@ public class FavclassToken extends AbstractToken implements
 	{
 		PCClass cls = Globals.getContext().ref
 				.silentlyGetConstructedCDOMObject(PCCLASS_CLASS, o);
+System.err.println("!+" + cls);
 		if (cls != null)
 		{
 			pc.addAssoc(obj, AssociationListKey.FAVCLASS, cls);
