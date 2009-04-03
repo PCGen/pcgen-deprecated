@@ -76,8 +76,8 @@ public class PreSpellSchoolTester extends AbstractPrerequisiteTest implements
 	public String toHtmlString(final Prerequisite prereq)
 	{
 		final Object[] args =
-				new Object[]{prereq.getOperator().toDisplayString(),
-					prereq.getOperand(), prereq.getSubKey(), prereq.getKey()};
+			new Object[]{prereq.getOperator().toDisplayString(),
+				"1", prereq.getOperand(), prereq.getKey()};
 		return PropertyFactory
 			.getFormattedString("PreSpellSchool.toHtml", args); //$NON-NLS-1$
 	}
