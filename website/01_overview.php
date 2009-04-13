@@ -6,6 +6,14 @@ require_once('include/header.php.inc');
 
     <div id="content" class="content">
 
+        <h1>PCGen Overview</h1>
+
+        <p>PCGen is a <strong>FREE</strong> Open Source RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (It's Java-based so: Windows, Mac OS X, Linux, Unix are supported). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://www.pcgen-test.org/wiki/index.php?title=Board_of_Directors">Board Of Directors</a>.</p>
+
+        <h1>Mission Statement</h1>
+
+        <p>To be the worlds most flexible d20 character generation and maintenance software.</p>
+
         <h1>Major Links</h1>
         <ul>
 	        <li><a href="03_get_pcgen.php">Get PCGen</a> - Download PCGen </li>
@@ -15,10 +23,6 @@ require_once('include/header.php.inc');
 	        <li><a href="https://sourceforge.net/projects/pcgen/">Sourceforge Project Page</a></li>
    	        <li><a href="http://pcgen.sourceforge.net/banners/">Our Fantastic Images and Banners</a></li>
 		</ul>
-
-        <h1>PCGen Overview</h1>
-
-        <p>PCGen is a Java-based RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (Windows, Mac OS X, Linux, etc.). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://www.pcgen-test.org/wiki/index.php?title=Board_of_Directors">Board Of Directors</a>.</p>
 
         <h2>Publishers</h2>
 
@@ -50,6 +54,14 @@ require_once('include/header.php.inc');
         <h2>Technical Requirements</h2>
 
         <p>PCGen 5.10.0 (and above) needs to run under Java 1.5.x (or above).   The <a href="http://java.sun.com/j2se/" title="The source for JAVA">Java runtime environment</a> is available for all common PC platforms, including Windows, Macintosh, Unix and Linux.</p>
+
+        <h2>Licensing</h2>
+
+        <p>
+		The core PCGen code is licensed under the <a href="http://www.opensource.org/licenses/lgpl-2.1.php">LGPL ver 2.1</a> open source license. Its various 	
+        data sources are licensed under individual agreements, see the <a href="http://www.pcgen-test.org/wiki/index.php?title=Data_License">Data License</a> 
+        team on our wiki for details.
+        </p>
 
     </div> <!-- div content -->
 
