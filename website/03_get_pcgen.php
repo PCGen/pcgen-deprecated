@@ -99,7 +99,7 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <P>PCGen is open-source software available for free under the <a href="http://www.gnu.org/copyleft/lgpl.html">LGPL License</a>. There are a couple of ways you can get it:
         <UL>
         <LI><a href="#stable">Stable Download</a></LI>
-        <LI><a href="#alpha">Alpha Releases</a></LI>
+        <LI><a href="#alpha">Alpha/Beta/RC Releases</a></LI>
         <LI><a href="#autobuild">Nightly Builds</a></LI>
         <LI><a href="#subversion">Subversion Access</a></LI>
         </UL>

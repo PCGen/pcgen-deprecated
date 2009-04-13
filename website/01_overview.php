@@ -55,14 +55,6 @@ require_once('include/header.php.inc');
 
         <p>PCGen 5.10.0 (and above) needs to run under Java 1.5.x (or above).   The <a href="http://java.sun.com/j2se/" title="The source for JAVA">Java runtime environment</a> is available for all common PC platforms, including Windows, Macintosh, Unix and Linux.</p>
 
-        <h2>Licensing</h2>
-
-        <p>
-		The core PCGen code is licensed under the <a href="http://www.opensource.org/licenses/lgpl-2.1.php">LGPL ver 2.1</a> open source license. Its various 	
-        data sources are licensed under individual agreements, see the <a href="http://www.pcgen-test.org/wiki/index.php?title=Data_License">Data License</a> 
-        team on our wiki for details.
-        </p>
-
     </div> <!-- div content -->
 
 <?php
