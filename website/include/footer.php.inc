@@ -27,7 +27,7 @@ writeStatItems("http://sourceforge.net/export/rss2_projsummary.php?group_id=2557
     <p>
     <div align="center">
         <a href="http://www.opensource.org/docs/definition.php" title="Certified with the OSI"><img src="images/button_osi.png" width="88" height="31" alt="Certified with the OSI" border="0" /></a>
-        <a href="http://sourceforge.net" title="Hosted by SourceForge"><img src="http://sourceforge.net/sflogo.php?group_id=25576&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" /></a>
+	<a href="http://sourceforge.net/projects/pcgen" title="Hosted by SourceForge"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=25576&amp;type=12" width="88" height="31" border="0" alt="Get PCGen :: A RPG Character Generator at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
     </div>
     <div align="center">
         <a href="http://www.w3.org/MarkUp/" title="Rendered in XHTML1"><img src="images/button_xhtml.png" width="88" height="31" alt="Rendered in XHTML1" border="0" /></a>
