@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Mar  2 22:28:30 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+# CVS $Revision$ $Author$ -- Sun Mar 29 14:31:10 2009 -- reformated by prettylst.pl v1.39 (build 9548)
 SOURCELONG:Pathfinder RPG (Beta Playtest Edition)	SOURCESHORT:PFRPGB	SOURCEWEB:http://paizo.com/store/downloads/pathfinderRPG/v5748btpy84o0	SOURCEDATE:2008-08
 # Original Entry by: Stefan Radermacher
 
@@ -48,12 +48,12 @@ Orc Ferocity								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	V
 Weapon Familiarity ~ Orc	OUTPUTNAME:Weapon Familiarity	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Half-Orcs are proficient with greataxes and falchions, and treat any weapon with the word "orc" in its name as a martial weapon.																				AUTO:WEAPONPROF|Greataxe|Falchion	CHANGEPROF:TYPE.Orc=Martial	SOURCEPAGE:p.10
 
 ###Block: Halfling Abilities
-# Ability Name			Output Name				Category of Ability		Type						Visible	Description																					Automatically Gained Weapon Prof.	Save checks bonus				Bonus to skill							Change Weapon Prof. Category		Source Page
-Keen Senses ~ Halfling		OUTPUTNAME:Keen Senses		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +2 racial bonus on sound-based Perception checks.																						BONUS:SKILL|Perception (Taste)|2|TYPE=Racial								SOURCEPAGE:p.11
-Sure Footed									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +2 racial bonus on Acrobatics and Climb skill checks.																					BONUS:SKILL|Acrobatics,Climb|2|TYPE=Racial								SOURCEPAGE:p.11
-Halfling Luck								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +1 racial bonus on all sving throws.																		BONUS:CHECKS|ALL|1|TYPE=Racial																SOURCEPAGE:p.11
-Fearless									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +2 racial bonus on saving throws against fear. This bonus stacks with the bonus granted by Halfling Luck.																												SOURCEPAGE:p.11
-Weapon Familiarity ~ Halfling	OUTPUTNAME:Weapon Familiarity	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings are proficient with slings, and treat any weapon with the word "halfling" in its name as a martial weapon.		AUTO:WEAPONPROF|Sling																		CHANGEPROF:TYPE.Halfling=Martial	SOURCEPAGE:p.11
+# Ability Name			Output Name				Category of Ability		Type						Visible	Description																					Automatically Gained Weapon Prof.	Save checks bonus				Bonus to skill						Change Weapon Prof. Category		Source Page
+Keen Senses ~ Halfling		OUTPUTNAME:Keen Senses		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +2 racial bonus on sound-based Perception checks.																						BONUS:SKILL|Perception (Taste)|2|TYPE=Racial							SOURCEPAGE:p.11
+Sure Footed									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +2 racial bonus on Acrobatics and Climb skill checks.																					BONUS:SKILL|Acrobatics,Climb|2|TYPE=Racial							SOURCEPAGE:p.11
+Halfling Luck								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +1 racial bonus on all sving throws.																		BONUS:CHECKS|ALL|1|TYPE=Racial															SOURCEPAGE:p.11
+Fearless									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings receive a +2 racial bonus on saving throws against fear. This bonus stacks with the bonus granted by Halfling Luck.																											SOURCEPAGE:p.11
+Weapon Familiarity ~ Halfling	OUTPUTNAME:Weapon Familiarity	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Halflings are proficient with slings, and treat any weapon with the word "halfling" in its name as a martial weapon.		AUTO:WEAPONPROF|Sling																	CHANGEPROF:TYPE.Halfling=Martial	SOURCEPAGE:p.11
 
 ###Block: Human Abilities
 # Ability Name		Output Name				Category of Ability		Type						Visible	Description																															Bonus to Ability Pool																	Source Page
