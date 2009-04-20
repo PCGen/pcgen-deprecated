@@ -115,9 +115,9 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=129606" style="font-size: 80%;">[View Older Production Releases]</a>
         </p>
         
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5141_win_install.exe">Download PCGen 5.14.1 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5141_mac_build.dmg">Download PCGen 5.14.1 for Mac<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5141_full.zip">Download PCGen 5.14.1 for Other Systems<small>&nbsp;</small></a></div><br/>
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5160_win_install.exe">Download PCGen 5.16.0 for Windows<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5160_mac_build.dmg">Download PCGen 5.16.0 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5160_full.zip">Download PCGen 5.16.0 for Other Systems<small>&nbsp;</small></a></div><br/>
 
         <h2>Option 2. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
         <p>These are development milestone releases designed to display the work in progress on PCGen
@@ -145,8 +145,8 @@ writePcgenFileItems("http://sourceforge.net/export/rss2_projfiles.php?group_id=2
 
         <h2>Option 4. Subversion Access<a class="" title="subversion" name="subversion"></a></h2>
         <p>We use the Subversion service hosted by SourceForge for 
-        all our code and data. If you want direct acces to the source, see the 
-        <a href="http://pcgen.sourceforge.net/autobuilds/scm-usage.html" style="font-size: 80%;">Subversion usage page</a>
+        all our code and data. If you want direct access to the source, see the 
+        <a href="http://pcgen-test.org/autobuilds/scm-usage.html" style="font-size: 80%;">Subversion usage page</a>
         </p>
 
     </div> <!-- div content -->
