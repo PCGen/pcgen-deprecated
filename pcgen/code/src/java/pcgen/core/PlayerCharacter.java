@@ -17422,9 +17422,16 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return count;
 	}
 
+	/* (non-Javadoc)
+	 * @see pcgen.core.AssociationStore#getDetailedAssociations(pcgen.cdom.base.CDOMObject)
+	 */
 	public List<FixedStringList> getDetailedAssociations(CDOMObject obj)
 	{
-		return assocSupt.getAssocList(obj, AssociationListKey.CHOICES);
+		List<FixedStringList> list = assocSupt.getAssocList(obj, AssociationListKey.CHOICES);
+		if (list == null) {
+			list = Collections.emptyList();
+		}
+		return list;
 	}
 
 	public List<String> getExpandedAssociations(CDOMObject obj)
