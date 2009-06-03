@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Mar 29 14:31:10 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+# CVS $Revision$ $Author$ -- Sun Mar 29 14:23:06 2009 -- reformated by prettylst.pl v1.39 (build 9548)
 SOURCELONG:Pathfinder RPG (Beta Playtest Edition)	SOURCESHORT:PFRPGB	SOURCEWEB:http://paizo.com/store/downloads/pathfinderRPG/v5748btpy84o0	SOURCEDATE:2008-08
 # Original Entry by: Stefan Radermacher
 
@@ -787,7 +787,7 @@ Arcane Bond ~ Object	OUTPUTNAME:Arcane Bond	CATEGORY:Special Ability	TYPE:Specia
 Cantrips ~ Wizard		OUTPUTNAME:Cantrips	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike				VISIBLE:YES				DESC:Wizards can prepare a number of cantrips, or 0-level spells, each day. They can cast these spells at will as a spell-like ability.																																							SOURCEPAGE:p.49
 
 ###Block: Wizard Base Arcane School Ability
-# Ability Name	Category of Ability		Type			Visible	Define				Bonus to Ability Pool																																																																																																																Source Page
+# Ability Name	Category of Ability		Type			Visible	Define				Bonus to Ability Pool																																																																																																																													Source Page
 Arcane School	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:ArcaneSchoolLVL|0	BONUS:ABILITYPOOL|Arcane School|1	BONUS:ABILITYPOOL|Wizard 2nd Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,2	BONUS:ABILITYPOOL|Wizard 4th Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,4	BONUS:ABILITYPOOL|Wizard 6th Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,6	BONUS:ABILITYPOOL|Wizard 10th Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,10	BONUS:ABILITYPOOL|Wizard 12th Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,12	BONUS:ABILITYPOOL|Wizard 14th Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,14	BONUS:ABILITYPOOL|Wizard 16th Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,16	BONUS:ABILITYPOOL|Wizard 18th Level Bonus Spell|1|PREVARGTEQ:ArcaneSchoolLVL,18	SOURCEPAGE:p.49
 
 ###Block: Wizard Arcane Schools
