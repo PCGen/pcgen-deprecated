@@ -7,23 +7,23 @@ GENRE:Fantasy
 BOOKTYPE:Core
 SETTING:4e
 TYPE:4e
-#Including the proper notations here that 4e is WotC
-PUBNAMELONG:Wizards of the Coast
-PUBNAMESHORT:WotC
-PUBNAMEWEB:http://www.wizards.com/default.asp?x=dnd
+PUBNAMELONG:PCGen
+PUBNAMESHORT:PCGen
+PUBNAMEWEB:http://pcgen.sourceforge.net/
 SOURCELONG:Starter Set for 4th Ed fun	
 SOURCESHORT:4e_SK
-SOURCEWEB:http://www.wizards.com/default.asp?x=dnd
+SOURCEWEB:http://pcgen.sourceforge.net/
 ISOGL:NO
-#
+
 
 #PCGEN Copyright for Acknowledgment of people involved in getting the 4e tested
+
 COPYRIGHT:PCGen Team, 2008, including but not limited too, Tir Gwaith, Andrew Maitland, Tom Parker, James Dempsey, Eddy Anthony, Eric Smith, and many more.
 
-INFOTEXT:4e Starter Set, you must enter your own information from the books to play.
-INFOTEXT:Use the 4e Documentation Guide to create your set.
+INFOTEXT:4e Starter Set, you must enter your own information from the books to play. Use the 4e Documentation Guide to create your set.
 
 ###Block: Lst Files --------------------
+
 ABILITY:4e_abilities_class.lst
 ABILITY:4e_abilities_class_powers.lst
 ABILITY:4e_abilities_race.lst
@@ -43,6 +43,7 @@ EQUIPMOD:4e_eqmods.lst
 
 FEAT:4e_feats.lst
 
+KIT:4e_kits.lst
 
 LANGUAGE:4e_languages.lst
 
@@ -56,5 +57,6 @@ SKILL:4e_skills.lst
 
 TEMPLATE:4e_templates.lst
 
-###COMMENT: Kits are required, do not remove.
-KIT:4e_kits.lst
+#
+# End
+#
