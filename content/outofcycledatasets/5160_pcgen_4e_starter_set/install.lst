@@ -1,0 +1,17 @@
+CAMPAIGN:4e Starter Set
+MINVER:5.14.1
+MINDEVVER: 5.15.0
+DEST:DATA
+
+#PCGEN Copyright for Acknowledgment of people involved in getting the 4e tested
+COPYRIGHT:PCGen Team, 2008, including but not limited too, Tir Gwaith, Andrew Maitland, Tom Parker, James Dempsey, Eddy Anthony, Eric Smith, and many more.
+
+PUBNAMELONG:PCGen
+PUBNAMESHORT:PCGen
+PUBNAMEWEB:http://pcgen.sourceforge.net/
+
+SOURCELONG:Starter Set for 4th Ed fun	
+SOURCESHORT:4e_SK
+SOURCEWEB:http://pcgen.sourceforge.net/
+
+INFOTEXT:4e Starter Set, you must enter your own information from the books to play. Use the 4e Documentation Guide to create your set. Dataset Version 1.0
