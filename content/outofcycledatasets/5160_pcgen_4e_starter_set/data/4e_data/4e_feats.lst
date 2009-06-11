@@ -5,7 +5,7 @@ SOURCELONG:Starter Set for 4th Ed fun	SOURCESHORT:4e_SK
 
 # Ability Name				Type				Required Ability					Multiple?	Choose				Bonus to skill		Source Page
 Skill Training				TYPE:General									MULT:YES	CHOOSE:SKILLSNAMED|ALL		BONUS:SKILL|LIST|1	SOURCEPAGE:p.201
-Skill Focus					TYPE:General		PREAFEAT:1,Skill Training			MULT:YES	CHOOSE:FEAT=Skill Training	BONUS:SKILL|LIST|1	SOURCEPAGE:p.201
+Skill Focus					TYPE:General		PREFEAT:1,Skill Training			MULT:YES	CHOOSE:FEAT=Skill Training	BONUS:SKILL|LIST|1	SOURCEPAGE:p.201
 
 
 ###COMMENT: Feel free to make more feats here.

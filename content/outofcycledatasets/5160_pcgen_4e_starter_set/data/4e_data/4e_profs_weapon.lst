@@ -6,8 +6,13 @@ SOURCELONG:Starter Set for 4th Ed fun	SOURCESHORT:4e_SK	SOURCEWEB:http://www.wiz
 #SIMPLE MONKEY WEAPONS
 #One-Handed
 Club						TYPE:Weapon.Melee.Simple Melee.OneHanded.OneHandedMelee.Club.Monkey
-Banana					TYPE:Weapon.Melee.Simple Melee.OneHanded.OneHandedMelee.Banana.Monkey
+Banana					TYPE:Weapon.Melee.Simple Melee.OneHanded.OneHandedMelee.Banana.Bananas.Monkey.Simplistic
 War Hammer					TYPE:Weapon.Melee.Simple Malee.OneHanded
+
+Monkey Bite					TYPE:Weapon.Melee.Simple Melee
+Monkey Claws				TYPE:Weapon.Melee.Simple Melee
+Monkey Fists				TYPE:Weapon.Melee.Simple Melee
+
 ###COMMENT: Add more weapon proficiencies here.
 
 
