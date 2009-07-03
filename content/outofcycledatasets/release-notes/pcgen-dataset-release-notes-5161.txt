@@ -1,0 +1,27 @@
+For release notes see 
+<https://sourceforge.net/docman/display_doc.php?docid=180557&group_id=25576>
+
+Data Sets in this release
+
+    Title: 4e Starter Set
+    File: 5160_pcgen_4e_starter_set_0.1.zip
+    Publisher: PCGen
+    Game Mode: 4e
+    Release Date: 2009-07-03
+
+       * Note: The 4e Starter Set does NOT contain any data from the game, 
+       it is an aid for those who wish to code thier own sets and simply provides 
+       the basic stucture including a gameMode, outputsheets and some sample data.
+
+
+Installing Data Sets
+
+To install any of these data sets follow these instructions.
+
+   1. Download the data set packages you are interested in. Do not unzip them, PCGen reads the zip file directly so you need to retain that file.
+   2. Launch PCGen and select Tools > Install Dataset.
+   3. Click the Select button and navigate to the archive file to install via the presented "File Selection" dialog.
+   4. PCGen will verify that the selected dataset is compatible with the version of PCGen being used.
+   5. Information on the selected archive is displayed and you will be given a choice of "DATA" or "VENDORDATA" folders with the default specified in installer file.
+   6. Select the destination and click Install.
+   7. The dataset is saved to the selected location and is made available for use within PCGen.
