@@ -12045,6 +12045,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 								.intValue();
 					String timeunit =
 							apo.getAssociation(AssociationKey.TIME_UNIT);
+					// The timeunit needs to default to day as per the docs
+					if (timeunit == null) 
+					{
+						timeunit = "Day";
+					}
 					String book = apo.getAssociation(AssociationKey.SPELLBOOK);
 
 					final Spell newSpell = sp.clone();
