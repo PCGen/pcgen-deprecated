@@ -2567,7 +2567,6 @@ public class PCClass extends PObject
 			classObjects.add(getClassLevel(i));
 		}
 		classObjects.add(this);
-		int iSize = aPC.sizeInt();
 		for (CDOMObject cdo : classObjects)
 		{
 			List<String> udam = cdo.getListFor(ListKey.UNARMED_DAMAGE);
