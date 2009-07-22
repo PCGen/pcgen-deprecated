@@ -116,9 +116,9 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=129606" style="font-size: 80%;">[View Older Production Releases]</a>
         </p>
         
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5160_win_install.exe">Download PCGen 5.16.0 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5160_mac_build.dmg">Download PCGen 5.16.0 for Mac<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5160_full.zip">Download PCGen 5.16.0 for Other Systems<small>&nbsp;</small></a></div><br/>
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5161_win_install.exe">Download PCGen 5.16.1 for Windows<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5161_mac_build.dmg">Download PCGen 5.16.1 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5161_full.zip">Download PCGen 5.16.1 for Other Systems<small>&nbsp;</small></a></div><br/>
 
         <h2>Option 2. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
         <p>These are development milestone releases designed to display the work in progress on PCGen
