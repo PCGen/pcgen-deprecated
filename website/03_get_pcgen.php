@@ -10,17 +10,8 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         $outCount = 0;
         $prevVerNum = array(0,0,0);
         
-
-//        echo "<p>Channel: " . $rss->channel['title'] . "</p>";
-
         foreach ($rss->items as $item)
         {
-
-//            foreach ($item as $tempkey => $tempvalue)
-//            {
-//                echo "<p>$tempkey<br />\n" . htmlspecialchars($tempvalue) . "\n</p>\n";
-//            }
-
             $title  = $item['title'];
             $title  = strtolower($title);
             $title  = str_replace("_", " ", $title);
@@ -77,7 +68,6 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
               echo "<div class=\"published\">Released: $pub</div>\n";
 
               echo "<p>$desc</p>\n";
-//              echo "<span class=\"newslink\">$pub</span></p>\n";
               echo "\n";
               $outCount++;
               
@@ -96,14 +86,15 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
     <div id="content" class="content">
 
         <h1>How to Get PCGen</h1>
-        <P>PCGen is open-source software available for free under the <a href="http://www.gnu.org/copyleft/lgpl.html">LGPL License</a>. There are a couple of ways you can get it:
-        <UL>
-        <LI><a href="#stable">Stable Download</a></LI>
-        <LI><a href="#alpha">Alpha/Beta/RC Releases</a></LI>
-        <LI><a href="#autobuild">Nightly Builds</a></LI>
-        <LI><a href="#subversion">Subversion Access</a></LI>
-        <LI><a href="http://www.pcgen-test.org/wiki/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next fix!</LI>
-        </UL>
+        <p>PCGen is open-source software available for free under the <a href="http://www.gnu.org/copyleft/lgpl.html">LGPL License</a>. There are a couple of ways you can get it:
+        <ul>
+            <li><a href="#stable">Stable Download</a></li>
+            <li><a href="#data">Stable Data Sets</a> - New data sets can be installed into an existing version of PCGen</li>
+            <li><a href="#alpha">Alpha/Beta/RC Releases</a></li>
+            <li><a href="#autobuild">Nightly Builds</a></li>
+            <li><a href="#subversion">Subversion Access</a></li>
+            <li><a href="http://www.pcgen-test.org/wiki/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next fix!</li>
+        </ul>
 
         <h2>Option 1. Download Latest Stable Release of PCGen<a class="" title="stable" name="stable"></a></h2>
         <p>Click on the link suited to your computer below. You can also look at 
@@ -120,7 +111,13 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5161_mac_build.dmg">Download PCGen 5.16.1 for Mac<small>&nbsp;</small></a></div><br />
         <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5161_full.zip">Download PCGen 5.16.1 for Other Systems<small>&nbsp;</small></a></div><br/>
 
-        <h2>Option 2. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
+        <h2>Option 2. Download Stable Data Sets<a class="" title="data" name="data"></a></h2>
+        <p>These are stable data sets that are developed in between stable releases of PCGen but can be installed and used with a stable version of PCGen.
+        </p>
+        <a href="http://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/" style="font-size: 80%;">[View Stable Data Sets]</a>
+        </p>
+
+        <h2>Option 3. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
         <p>These are development milestone releases designed to display the work in progress on PCGen
         and for use in testing new features. Use at own risk. Basic functionality is tested before
         each alpha and beta build though.
