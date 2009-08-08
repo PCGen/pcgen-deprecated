@@ -13,9 +13,10 @@ require_once('include/header.php.inc');
             <li><a href="http://groups.yahoo.com/group/pcgen">PCGen</a> - The main group for PCGen news, discussion and fun!</li>
         </ul>
         <ul>
+            <li><a href="http://groups.yahoo.com/group/pcgen_developers">PCGen Developers</a> - Group for the coders of PCGen</li>
+            <li><a href="http://groups.yahoo.com/group/pcgen_experimental">Experimental</a> - Group for PCGen data developers and for most new PCGen-released datasets</li>
             <li><a href="http://groups.yahoo.com/group/LSTfileclass">LST File Class</a> - Group for tutorials on how to edit PCGen LST files</li>
             <li><a href="http://groups.yahoo.com/group/pcgenlistfilehelp">PCGen List File Help</a> - Group for questions on PCGen LST files and docs</li>
-            <li><a href="http://groups.yahoo.com/group/pcgen_experimental">Experimental</a> - Group for PCGen data developers and for most new PCGen-released datasets</li>
             <li><a href="http://groups.yahoo.com/group/pcgenview">PCGenView</a> - Group for Palm program to display the PCGen characters</li>
             <li><a href="http://groups.yahoo.com/group/PCGScry/">PCGScry</a> - Group for Pocket PC program to display the PCGen characters</li>
             <li><a href="http://groups.yahoo.com/group/pcgen-xml">PCGen-XML</a> - Group for design of future XML schema for PCGen</li>
@@ -61,7 +62,7 @@ require_once('include/header.php.inc');
 
         <h3>Via Email</h3>
 
-        <p>To send a message to other group members, create an email and address it to groupname@yahoogroups.com, substituting the actual name of your group for "groupname." Group names are not case sensitive.</p>
+        <p>To send a message to other group members, create an email and address it to groupname@yahoogroups.com, substituting the actual name of your group for &quot;groupname.&quot; Group names are not case sensitive.</p>
 
         <p>Note: you can only post to groups you've joined, and only from email addresses registered with YahooGroups. If you misspell the name of a group, or attempt to send an email from an account other than the one you joined under, your message will not be delivered. If you receive a failure notice, check your email addresses and try again.</p>
 
