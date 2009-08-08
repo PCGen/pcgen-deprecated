@@ -17,6 +17,7 @@ require_once('include/header.php.inc');
         <h1>Major Links</h1>
         <ul>
 	        <li><a href="03_get_pcgen.php">Get PCGen</a> - Download PCGen </li>
+            <li><a href="http://www.pcgen-test.org/wiki/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next fix!
 	        <li><a href="http://www.pcgen-test.org/wiki">Project Wiki</a> - This is a good source of project information</li>
 	        <li><a href="http://groups.yahoo.com/group/pcgen">Main User Community Group</a></li>
 	        <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate to PCGen!</a></li>
@@ -31,11 +32,14 @@ require_once('include/header.php.inc');
         <h2>PCGen Features</h2>
 
         <ul>
-            <li>Supports scores of d20 games and settings from over a dozen publishers.</li>
-            <li>Highly configurable, allowing the GM to add or remove races, classes, feats, and house rules such as unusual class or race restrictions.</li>
-            <li>Supports level advancement, with configurable progressions of feats, skills, and ability score bonuses.</li>
-            <li>Produces numerous customized character sheets in HTML and PDF format.</li>
-            <li>Produces a &quot;party&quot; sheet with information needed by the GM.</li>
+            <li>Allows you to Create and Maintain multiple Characters.</li>
+            <li>Is FREE and works on all major operating systems (Windows, Linux, UNIX, Mac OS</li>
+            <li>Data and character files are operating system independent</li>
+            <li>Supports d20 based Game Systems including D&amp;D (3E, 3.5E, 4E), d20 Modern, Pathfinder, d20 Modern</li>
+            <li>Supports Tons of Publishers and their products (see here for a full list)</li>
+            <li>Is highly configurable, allowing the user to add or remove races, classes, feats, and house rules such as unusual class or race restrictions.</li>
+            <li>Supports level advancement, with configurable progressions of feats, skills and ability score bonuses.</li>
+            <li>Produces numerous customized character and party sheets in HTML, TEXT and PDF formats.</li>
         </ul>
 
         <h2>GMGen Plugin Features</h2>
@@ -53,7 +57,14 @@ require_once('include/header.php.inc');
 
         <h2>Technical Requirements</h2>
 
-        <p>PCGen 5.10.0 (and above) needs to run under Java 1.5.x (or above).   The <a href="http://java.sun.com/j2se/" title="The source for JAVA">Java runtime environment</a> is available for all common PC platforms, including Windows, Macintosh, Unix and Linux.</p>
+        <ul>
+            <li>All versions of PCGen need Sun's Java Runtime Environment (JRE) which is available for all common OS's, including Windows, Mac OS, UNIX and Linux.</li>
+            <li>PCGen 5.10.2 (and above) needs to run under Sun's JRE (Java) 1.5.x (or above).</li>
+            <li>If you wish to view PDF output sheets, you'll need a PDF viewer.</li>
+            <li>Minimum RAM is 256MB (recommended 1-2GB)</li>
+            <li>Minimum CPU is 1GHz (recommended 2Ghz+)</li>
+            <li>200MB of free HD space</li>
+		</ul>
 
     </div> <!-- div content -->
 
