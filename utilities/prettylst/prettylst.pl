@@ -1702,6 +1702,43 @@ for my $pre_tag (@PRE_Tags) {
 	$PRE_Tags{$pre_tag_name} = 1;
 }
 
+my %double_PCC_tags = (
+	'BONUS:ABILITYPOOL',	=> 1,
+	'BONUS:CASTERLEVEL',	=> 1,
+	'BONUS:CHECKS',		=> 1,
+	'BONUS:COMBAT',		=> 1,
+	'BONUS:DC',			=> 1,
+	'BONUS:DOMAIN',		=> 1,
+	'BONUS:DR',			=> 1,
+	'BONUS:FEAT',		=> 1,
+	'BONUS:FOLLOWERS',	=> 1,
+	'BONUS:HP',			=> 1,
+	'BONUS:MISC',		=> 1,
+	'BONUS:MOVEADD',		=> 1,
+	'BONUS:MOVEMULT',		=> 1,
+	'BONUS:PCLEVEL',		=> 1,
+	'BONUS:POSTMOVEADD',	=> 1,
+	'BONUS:POSTRANGEADD',	=> 1,
+	'BONUS:RANGEADD',		=> 1,
+	'BONUS:RANGEMULT',	=> 1,
+	'BONUS:SIZEMOD',		=> 1,
+	'BONUS:SKILL',		=> 1,
+	'BONUS:SKILLPOINTS',	=> 1,
+	'BONUS:SKILLPOOL',	=> 1,
+	'BONUS:SKILLRANK',	=> 1,
+	'BONUS:SLOTS',		=> 1,
+	'BONUS:SPELLCAST',	=> 1,
+	'BONUS:SPELLCASTMULT',	=> 1,
+	'BONUS:SPELLKNOWN',	=> 1,
+	'BONUS:STAT',		=> 1,
+	'BONUS:UDAM',		=> 1,
+	'BONUS:VAR',		=> 1,
+	'BONUS:VISION',		=> 1,
+	'BONUS:WEAPONPROF',	=> 1,
+	'BONUS:WIELDCATEGORY',	=> 1,
+ );
+
+
 my @SOURCE_Tags = (
 	'SOURCELONG',
 	'SOURCESHORT',
@@ -1782,6 +1819,44 @@ my @Global_BONUS_Tags = (
 #	'BONUS:TOHIT:*',			# Deprecated
 #	'BONUS:WEAPON:*',			# Equipment and EquipMod files only
 );
+
+# Global tags allowed in PCC files.
+my @double_PCC_tags = (
+	'BONUS:ABILITYPOOL:*',		
+	'BONUS:CASTERLEVEL:*',		
+	'BONUS:CHECKS:*',			
+	'BONUS:COMBAT:*',			
+	'BONUS:DC:*',			
+	'BONUS:DOMAIN:*',			
+	'BONUS:DR:*',			
+	'BONUS:FEAT:*',			
+	'BONUS:FOLLOWERS',		
+	'BONUS:HP:*',			
+	'BONUS:MISC:*',			
+	'BONUS:MOVEADD:*',		
+	'BONUS:MOVEMULT:*',		
+	'BONUS:PCLEVEL:*',		
+	'BONUS:POSTMOVEADD:*',		
+	'BONUS:POSTRANGEADD:*',		
+	'BONUS:RANGEADD:*',		
+	'BONUS:RANGEMULT:*',		
+	'BONUS:SIZEMOD:*',		
+	'BONUS:SKILL:*',			
+	'BONUS:SKILLPOINTS:*',		
+	'BONUS:SKILLPOOL:*',		
+	'BONUS:SKILLRANK:*',		
+	'BONUS:SLOTS:*',			
+	'BONUS:SPELLCAST:*',		
+	'BONUS:SPELLCASTMULT:*',	
+	'BONUS:SPELLKNOWN:*',		
+	'BONUS:STAT:*',			
+	'BONUS:UDAM:*',			
+	'BONUS:VAR:*',			
+	'BONUS:VISION:*',			
+	'BONUS:WEAPONPROF:*',		
+	'BONUS:WIELDCATEGORY:*',	
+);	
+
 
 # Order for the tags for each line type.
 my %master_order = (
@@ -2704,6 +2779,9 @@ my %master_order = (
 		'TEMPLATE',
 		'WEAPONPROF',
 		'#EXTRAFILE',		# Fix #EXTRAFILE so it recognizes #EXTRAFILE references (so OGL is a known referenced file again.)
+		
+		#These tags are normal file global tags....
+		@double_PCC_tags,		#Global tags that are double - $tag does not end with ':'
 	],
 
 	'RACE' => [
@@ -4541,7 +4619,12 @@ if ($cl_options{input_path}) {
 
 			# The parse_tag function modified the values.
 			$must_write = YES;
-			$pcc_lines[-1] = "$tag:$value";
+			if ( $double_PCC_tags{$tag} ) {
+				$pcc_lines[-1] = "$tag$value";
+			}
+			else { 
+				$pcc_lines[-1] = "$tag:$value";
+			}
 		}
 
 		if ($tag) {
