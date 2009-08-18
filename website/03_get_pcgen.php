@@ -93,7 +93,7 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
             <li><a href="#alpha">Alpha/Beta/RC Releases</a></li>
             <li><a href="#autobuild">Nightly Builds</a></li>
             <li><a href="#subversion">Subversion Access</a></li>
-            <li><a href="http://www.pcgen-test.org/wiki/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next fix!</li>
+            <li><a href="http://wiki.pcgen.org/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next fix!</li>
         </ul>
 
         <h2>Option 1. Download Latest Stable Release of PCGen<a class="" title="stable" name="stable"></a></h2>

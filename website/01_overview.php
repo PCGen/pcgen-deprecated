@@ -8,7 +8,7 @@ require_once('include/header.php.inc');
 
         <h1>PCGen Overview</h1>
 
-        <p>PCGen is a <strong>FREE</strong> Open Source RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (It's Java-based so: Windows, Mac OS X, Linux, Unix are supported). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://www.pcgen-test.org/wiki/index.php?title=Board_of_Directors">Board Of Directors</a>.</p>
+        <p>PCGen is a <strong>FREE</strong> Open Source RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (It's Java-based so: Windows, Mac OS X, Linux, Unix are supported). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://wiki.pcgen.org/index.php?title=Board_of_Directors">Board Of Directors</a>.</p>
 
         <h1>Mission Statement</h1>
 
@@ -17,8 +17,8 @@ require_once('include/header.php.inc');
         <h1>Major Links</h1>
         <ul>
 	        <li><a href="03_get_pcgen.php">Get PCGen</a> - Download PCGen </li>
-            <li><a href="http://www.pcgen-test.org/wiki/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next fix!
-	        <li><a href="http://www.pcgen-test.org/wiki">Project Wiki</a> - This is a good source of project information</li>
+            <li><a href="http://wiki.pcgen.org/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next fix!
+	        <li><a href="http://wiki.pcgen.org/">Project Wiki</a> - This is a good source of project information</li>
 	        <li><a href="http://groups.yahoo.com/group/pcgen">Main User Community Group</a></li>
 	        <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate to PCGen!</a></li>
 	        <li><a href="https://sourceforge.net/projects/pcgen/">Sourceforge Project Page</a></li>
@@ -27,7 +27,7 @@ require_once('include/header.php.inc');
 
         <h2>Publishers</h2>
 
-        <p>Are you a publisher, concerned about how PCGen may affect your product? Your concerns are understandable. Please read this <a href="https://sourceforge.net/docman/display_doc.php?docid=21131&group_id=25576" title="An open letter from Bryan McRoberts to all D20 publishers.">open letter from Bryan McRoberts</a>, the creator of PCGen. You may also be reassured to see the list of <a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/acknowledgments/publishersandsources.html" title="Books currently available in latest upcoming version of PCGen, sorted by publisher.">other publishers</a> which have chosen to improve their game by allowing its use with PCGen.  See <a href="http://www.pcgen-test.org/wiki/index.php?title=Publishers">Publishers Wiki page</a> for more details</p>
+        <p>Are you a publisher, concerned about how PCGen may affect your product? Your concerns are understandable. Please read this <a href="https://sourceforge.net/docman/display_doc.php?docid=21131&group_id=25576" title="An open letter from Bryan McRoberts to all D20 publishers.">open letter from Bryan McRoberts</a>, the creator of PCGen. You may also be reassured to see the list of <a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/acknowledgments/publishersandsources.html" title="Books currently available in latest upcoming version of PCGen, sorted by publisher.">other publishers</a> which have chosen to improve their game by allowing its use with PCGen.  See <a href="http://wiki.pcgen.org/index.php?title=Publishers">Publishers Wiki page</a> for more details</p>
 
         <h2>PCGen Features</h2>
 

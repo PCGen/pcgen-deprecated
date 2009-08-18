@@ -20,7 +20,7 @@ require_once('include/header.php.inc');
 	        <li><a href="http://www.pcgen-test.org/autobuilds/index.html">Index of Autobuilds and Links</a>
 			<li><a href="http://www.pcgen-test.org/autobuilds/download.html">Download Autobuilds</a>
 			<li><a href="http://www.pcgen-test.org/autobuilds/pcgen-docs/index.html">Autobuild Online Documentation</a>
-            <li><a href="http://www.pcgen-test.org/wiki/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next stable fix!                   
+            <li><a href="http://wiki.pcgen.org/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next stable fix!                   
         </ul>
 
     </div> <!-- div content -->

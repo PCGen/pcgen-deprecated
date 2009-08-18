@@ -20,7 +20,7 @@ writeStatItems("http://sourceforge.net/export/rss2_projsummary.php?group_id=2557
 
     <h1>Licensing</h1>
     <p>PCGen is free, open-source software, and is distributed under the <a href="http://www.gnu.org/licenses/licenses.html#LGPL">GNU Lesser General Public License</a> (LGPL).  
-    Its various data sources are licensed under individual agreements, see the <a href="http://www.pcgen-test.org/wiki/index.php?title=Data_License">Data License</a> team on our wiki for details.
+    Its various data sources are licensed under individual agreements, see the <a href="http://wiki.pcgen.org/index.php?title=Data_License">Data License</a> team on our wiki for details.
     </p>
 
     <h1>Associations</h1>
