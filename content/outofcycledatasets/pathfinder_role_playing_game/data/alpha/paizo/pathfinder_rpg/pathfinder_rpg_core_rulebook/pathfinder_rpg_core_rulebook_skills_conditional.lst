@@ -1,0 +1,24 @@
+# CVS $Revision$ $Author$ -- Mon Aug 24 09:47:39 2009 -- reformated by prettylst.pl v1.38 (build 7302)
+SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
+# Original Entry by: Stefan Radermacher
+
+###Block: Conditional Skills for output only
+# Skill Name							Key Stat	Untrained?		Skill Penalty Apply	Classes	Type			Visible		Source Page		Bonus to skill
+Acrobatics (Jump)							KEYSTAT:DEX	USEUNTRAINED:NO	ACHECK:YES			CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.87	BONUS:SKILL|Acrobatics (Jump)|skillinfo("MODIFIER","Acrobatics")-DEX
+Appraise (Precious metals and gemstones)			KEYSTAT:INT	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.90	BONUS:SKILL|Appraise (Precious metals and gemstones)|skillinfo("MODIFIER","Appraise")-INT
+Linguistics (Understand exotic written messages)	KEYSTAT:INT	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse				SOURCEPAGE:p.518	BONUS:SKILL|Linguistics (Understand exotic written messages)|skillinfo("MODIFIER","Linguistics")-INT
+Perception (Notice unusual stonework)			KEYSTAT:WIS	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.102	BONUS:SKILL|Perception (Notice unusual stonework)|skillinfo("MODIFIER","Perception")-WIS
+Perception (Trapfinding)					KEYSTAT:WIS	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.102	BONUS:SKILL|Perception (Trapfinding)|skillinfo("MODIFIER","Perception")-WIS
+Spellcraft (Identify Magic Item)				KEYSTAT:INT	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.106	BONUS:SKILL|Spellcraft (Identify Magic Item)|skillinfo("MODIFIER","Spellcraft")-INT
+Survival (Follow or identify tracks)			KEYSTAT:WIS	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.107	BONUS:SKILL|Survival (Follow or identify tracks)|skillinfo("MODIFIER","Survival")-WIS
+
+
+###Block: Skill .MODs
+# Skill Name	Define									Bonus to skill rank
+Acrobatics.MOD	DEFINE:UseConditionalJump|0						BONUS:SKILLRANK|Acrobatics (Jump)|skillinfo("RANK","Acrobatics")|PREVARGTEQ:UseConditionalJump,1
+Appraise.MOD	DEFINE:UseConditionalPreciousMetals|0				BONUS:SKILLRANK|Appraise (Precious metals and gemstones)|skillinfo("RANK","Appraise")|PREVARGTEQ:UseConditionalPreciousMetals,1
+Linguistics.MOD	DEFINE:UseConditionalUnderstandExoticWrittenMessages|0	BONUS:SKILLRANK|Linguistics (Understand exotic written messages)|skillinfo("RANK","Linguistics")|PREVARGTEQ:UseConditionalUnderstandExoticWrittenMessages,1
+Perception.MOD	DEFINE:UseConditionalStonework|0					BONUS:SKILLRANK|Perception (Notice unusual stonework)|skillinfo("RANK","Perception")|PREVARGTEQ:UseConditionalStonework,1
+Perception.MOD	DEFINE:UseConditionalTrapfinding|0					BONUS:SKILLRANK|Perception (Trapfinding)|skillinfo("RANK","Perception")|PREVARGTEQ:UseConditionalTrapfinding,1
+Spellcraft.MOD	DEFINE:UseConditionalIdentifyItems|0				BONUS:SKILLRANK|Spellcraft (Identify Magic Item)|skillinfo("RANK","Spellcraft")|PREVARGTEQ:UseConditionalIdentifyItems,1
+Survival.MOD	DEFINE:UseConditionalTracks|0						BONUS:SKILLRANK|Survival (Follow or identify tracks)|skillinfo("RANK","Survival")|PREVARGTEQ:UseConditionalTracks,1

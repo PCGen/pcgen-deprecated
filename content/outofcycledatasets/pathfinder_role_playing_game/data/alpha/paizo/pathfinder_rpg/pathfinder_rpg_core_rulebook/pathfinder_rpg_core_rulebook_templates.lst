@@ -1,0 +1,34 @@
+# CVS $Revision$ $Author$ -- Mon Aug 24 09:47:39 2009 -- reformated by prettylst.pl v1.38 (build 7302)
+SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
+# Original RSRD Entry by: PCGen Data Team
+# Pathfinder RPG Entry by: Stefan Radermacher
+
+###Block: Timeless Body For Druid and Monk
+# Template Name			Visible	Template																		Minimum Age			Maximum Age			Multiple Requirements						Stat bonus
+Timeless Body			VISIBLE:NO	TEMPLATE:CHOOSE:Timeless Body ~ Adult|Timeless Body ~ Middle Age|Timeless Body ~ Old|Timeless Body ~ Venerable
+
+Timeless Body ~ Adult		VISIBLE:NO																								!PREAGESET:1,Middle Age										BONUS:STAT|STR,CON,DEX|1|PREMULT:2,[PREAGESET:1,Middle Age],[!PREAGESET:1,Old]	BONUS:STAT|STR,CON,DEX|3|PREMULT:2,[PREAGESET:1,Old],[!PREAGESET:1,Venerable]	BONUS:STAT|STR,CON,DEX|6|PREAGESET:1,Venerable
+Timeless Body ~ Middle Age	VISIBLE:NO																												PREMULT:2,[PREAGESET:1,Middle Age],[!PREAGESET:1,Old]	BONUS:STAT|STR,CON,DEX|2|PREMULT:2,[PREAGESET:1,Old],[!PREAGESET:1,Venerable]	BONUS:STAT|STR,CON,DEX|5|PREAGESET:1,Venerable
+Timeless Body ~ Old		VISIBLE:NO																												PREMULT:2,[PREAGESET:1,Old],[!PREAGESET:1,Venerable]	BONUS:STAT|STR,CON,DEX|3|PREAGESET:1,Venerable
+Timeless Body ~ Venerable	VISIBLE:NO																				PREAGESET:1,Venerable
+
+###Block: Workarounds
+# This is a work-around for BONUS:MISC|MAXDEX not working in ability object when using VARs.
+# Template Name			Visible	Misc bonus
+Armor Training workaround	VISIBLE:NO	BONUS:MISC|MAXDEX|ArmorTraining|PREEQUIP:1,TYPE=Armor
+
+###Block: Augment Summoning template
+# Template Name		Visible	Stat bonus			Add 					Ability
+Augment Summoning		VISIBLE:YES	BONUS:STAT|STR,CON|4
+
+
+
+Raven Familiar Language	VISIBLE:NO					ADD:LANGUAGE|1|TYPE=Spoken	ABILITY:Special Ability|AUTOMATIC|Speak One Language
+
+
+###Block: Fractional Hit Die Adjustments for Monster classes
+# Template Name	Hit Dice Size			Visible
+Half Hitdie		HITDIE:%/2|CLASS.TYPE=Monster	VISIBLE:NO
+Quarter Hitdie	HITDIE:%/4|CLASS.TYPE=Monster	VISIBLE:NO
+Eighth Hitdie	HITDIE:%/8|CLASS.TYPE=Monster	VISIBLE:NO
+
