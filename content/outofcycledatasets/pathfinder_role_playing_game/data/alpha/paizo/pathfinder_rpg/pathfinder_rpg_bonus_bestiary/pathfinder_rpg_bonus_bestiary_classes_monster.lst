@@ -1,5 +1,5 @@
-# CVS $Revision$ $Author$ -- Mon Jun 22 13:42:08 2009 -- reformated by prettylst.pl v1.39 (build 9548)
-SOURCELONG:Pathfinder Roleplaying Game Bonus Bestiary	SOURCESHORT:PFBB	SOURCEWEB:http://paizo.com/pathfinder/pathfinderRPG/v5748btpy87f9	SOURCEDATE:2009-06
+# CVS $Revision$ $Author$ -- Wed Sep  9 20:13:35 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bonus Bestiary	SOURCESHORT:PFBB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy87f9	SOURCEDATE:2009-06
 
 # Class Name	Hit Dice	Type			Max Level		Ability					Save checks bonus											Combat bonus
 CLASS:Aberration	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
@@ -10,7 +10,7 @@ CLASS:Aberration	STARTSKILLPTS:4	MODTOSKILLS:YES
 
 # Class Name	Hit Dice	Type			Max Level		Ability					Save checks bonus											Combat bonus
 CLASS:Animal	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
-# Class Name	Prohibited Class			Reg. Race Type
+# Class Name	Reg. Race Type
 CLASS:Animal	PRERACETYPE:Animal
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?
 CLASS:Animal	STARTSKILLPTS:2	MODTOSKILLS:YES
