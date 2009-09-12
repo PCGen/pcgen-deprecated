@@ -7,7 +7,7 @@ CLASS:Companion	HD:8		TYPE:Monster.Companion	ABB:AC		MAXLEVEL:20	SOURCEPAGE:p.52
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Companion	STARTSKILLPTS:1	CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|Perception|Stealth|Survival|Swim
 ###Block: Level Advancement
-1	BONUS:SKILLPOINTS|NUMBER|-3|PRELEVELMAX:1	ABILITY:Special Ability|AUTOMATIC|Animal Tricks and Training
+1	BONUS:SKILLPOINTS|NUMBER|-3|PRELEVELMAX:1	ABILITY:Special Ability|AUTOMATIC|Animal Tricks and Training	ABILITY:FEAT|AUTOMATIC|CMB Output
 
 ###Block: Familiars are 'animals'. Using Companion Stuff
 
@@ -17,5 +17,6 @@ CLASS:Animal	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.306	ABILITY:FEAT|A
 CLASS:Animal	PRERACETYPE:Animal
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
 CLASS:Animal	STARTSKILLPTS:2	MODTOSKILLS:YES			CSKILL:Acrobatics|Climb|Fly|Perception|Stealth|Swim
+1	ABILITY:FEAT|AUTOMATIC|CMB Output
 
 #EOF
