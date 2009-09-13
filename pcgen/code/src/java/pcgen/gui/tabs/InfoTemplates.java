@@ -1329,7 +1329,7 @@ public class InfoTemplates extends BaseCharacterInfoTab
 				{
 					final String sourceString = SourceFormat.getFormattedString(
 							template, SourceFormat.LONG, false);
-					if (sourceString.length() == 0)
+					if (sourceString.length() != 0)
 					{
 						if ((!added && (i == (rootAsPObjectNode.getChildCount() - 1)))
 							|| sourceString.equals((rootAsPObjectNode

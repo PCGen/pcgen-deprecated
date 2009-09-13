@@ -251,8 +251,8 @@ public class AbilityModel extends AbstractTreeTableModel implements
 			}
 
 			final String sourceString = SourceFormat.getFormattedString(
-					ability, SourceFormat.LONG, false);
-			if (sourceString.length() == 0)
+					ability, SourceFormat.MEDIUM, false);
+			if (sourceString.length() != 0)
 			{
 				sourceSet.add(sourceString);
 			}
@@ -812,6 +812,12 @@ public class AbilityModel extends AbstractTreeTableModel implements
 	private void buildSubTreeSourceName(final boolean showAll,
 		final PObjectNode rootAsPObjectNode, final List<Ability> abilityList)
 	{
+		Map<String, PObjectNode> sourceMap = new HashMap<String, PObjectNode>();
+		for (int i = 0; i < rootAsPObjectNode.getChildCount(); ++i)
+		{
+			PObjectNode child = rootAsPObjectNode.getChild(i);
+			sourceMap.put(child.toString(), child);
+		}
 		for (final Ability ability : abilityList)
 		{
 			if (showAll || theFilter == null
@@ -823,25 +829,15 @@ public class AbilityModel extends AbstractTreeTableModel implements
 				{
 					sourceString = "None";
 				}
-				//
-				boolean found = false;
-				for (int i = 0; i < rootAsPObjectNode.getChildCount(); ++i)
+				PObjectNode node = sourceMap.get(sourceString);
+				if (node == null)
 				{
-					if (sourceString.equals(rootAsPObjectNode.getChild(i)
-						.toString()))
-					{
-						found = true;
-						final PObjectNode aFN =
-								createAbilityPObjectNode(rootAsPObjectNode
-									.getChild(i), ability);
-						rootAsPObjectNode.getChild(i).addChild(aFN);
-					}
+					rootAsPObjectNode.addChild(createAbilityPObjectNode(
+							rootAsPObjectNode, ability), true);
 				}
-				if (!found)
+				else
 				{
-					final PObjectNode aFN =
-						createAbilityPObjectNode(rootAsPObjectNode, ability);
-					rootAsPObjectNode.addChild(aFN, true);
+					node.addChild(createAbilityPObjectNode(node, ability));
 				}
 			}
 		}
