@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Aug 24 11:26:32 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Sep 13 15:22:28 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Stefan Radermacher
 
@@ -15,14 +15,14 @@ Wizard Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Special	VISIBLE:NO	AU
 
 ###Block: Uncanny Dodge and Improved Uncanny Dodge --------------------------------------------------------------------------------------
 # Use: ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge ~ Base to add the Uncanny Dodge/Improved Uncanny Dodge feature
-# Add: BONUS:VAR|UncannyDodgeProgression|1 for each time the class gets either Uncanny Dodge or Improved Uncanny Dodge
+# Add: BONUS:VAR|UncannyDodgeLevel|1 for each time the class gets either Uncanny Dodge or Improved Uncanny Dodge
 # put this on class line one of any class that gets Uncanny Dodge
-#	BONUS:VAR|UncannyDodgeFlankingLVL|CL|TYPE=EachClass.STACK
-# Ability Name		Category of Ability		Type						Visible	Define											Description																																																					Ability																														Modify VAR
-Uncanny Dodge ~ Base	CATEGORY:Special Ability	TYPE:Internal				VISIBLE:NO	DEFINE:UncannyDodgeFlankingLVL|0	DEFINE:UncannyDodgeProgression|0																																																							ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge|PREVARGTEQ:UncannyDodgeProgression,1	ABILITY:Special Ability|AUTOMATIC|Improved Uncanny Dodge|PREVARGTEQ:UncannyDodgeProgression,2
+#	BONUS:VAR|UncannyDodgeFlankingLevel|CL|TYPE=EachClass.STACK
+# Ability Name		Category of Ability		Type						Visible	Define										Description																																																					Ability																												Modify VAR
+Uncanny Dodge ~ Base	CATEGORY:Special Ability	TYPE:Internal				VISIBLE:NO	DEFINE:UncannyDodgeFlankingLevel|0	DEFINE:UncannyDodgeLevel|0																																																							ABILITY:Special Ability|AUTOMATIC|Uncanny Dodge|PREVARGTEQ:UncannyDodgeLevel,1	ABILITY:Special Ability|AUTOMATIC|Improved Uncanny Dodge|PREVARGTEQ:UncannyDodgeLevel,2
 #
-Uncanny Dodge		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES													DESC:You can react to danger before your senses would normally allow you to do so. You cannot be caught flat-footed, even if the attacker is invisible. You still lose your Dexterity bonus to AC if immobilized. You can still lose your Dexterity bonus to AC if an opponent successfully uses the feint action against you.
-Improved Uncanny Dodge	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES													DESC:You can no longer be flanked. This defense denies a rogue the ability to sneak attack you by flanking you, unless the attacker is a rogue of at least level %1.|UncannyDodgeFlankingLVL																																																						BONUS:VAR|UncannyDodgeFlankingLVL|4|TYPE=OnceOnly
+Uncanny Dodge		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES												DESC:You can react to danger before your senses would normally allow you to do so. You cannot be caught flat-footed, even if the attacker is invisible. You still lose your Dexterity bonus to AC if immobilized. You can still lose your Dexterity bonus to AC if an opponent successfully uses the feint action against you.
+Improved Uncanny Dodge	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES												DESC:You can no longer be flanked. This defense denies a rogue the ability to sneak attack you by flanking you, unless the attacker is a rogue of at least level %1.|UncannyDodgeFlankingLevel																																																				BONUS:VAR|UncannyDodgeFlankingLevel|4|TYPE=OnceOnly
 
 ###Block: Evasion and Improved Evasion --------------------------------------------------------------------------------------------------
 # Ability Name	Unique Key			Category of Ability		Type											Visible	Description																																																							Ability
