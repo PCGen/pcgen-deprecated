@@ -34,7 +34,7 @@ FOLLOWER:CompLevel=7	TYPE:Animal Companion	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Comp
 ###Block: Non-Size Bonuses
 # Class of the Master	Type				Ability													Required Race												Combat bonus						Stat bonus
 FOLLOWER:CompLevel=4	TYPE:Animal Companion															PRERACE:1,Companion (Ape)										BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
-FOLLOWER:CompLevel=4	TYPE:Animal Companion															PRERACE:1,Companion (Bird (Eagle)),Bird (Hawk)),Bird (Owl))													BONUS:STAT|STR|2	BONUS:STAT|CON|2
+FOLLOWER:CompLevel=4	TYPE:Animal Companion															PRERACE:1,Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl))									BONUS:STAT|STR|2	BONUS:STAT|CON|2
 FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Ferocity							PRERACE:1,Companion (Boar)
 FOLLOWER:CompLevel=4	TYPE:Animal Companion															PRERACE:1,Companion (Camel)																		BONUS:STAT|STR|2	BONUS:STAT|CON|2
 FOLLOWER:CompLevel=7	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Grab|Pounce|Rake						PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger)))			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
