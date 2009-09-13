@@ -133,12 +133,12 @@ CLASS:Druid		SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=0|LEVEL=1|LEVEL=2|
 1	DOMAIN:Water[PREABILITY:1,CATEGORY=Special Ability,Druid Domain ~ Water]
 1	DOMAIN:Weather[PREABILITY:1,CATEGORY=Special Ability,Druid Domain ~ Weather]
 ###Block: Wild Shape
-1	BONUS:VAR|DruidWildShape|CL	ABILITY:Special Ability|AUTOMATIC|Wild Shape|Druid Wild Shape|Druid Wild Shape Times|Druid Wild Shape Progression
+1	BONUS:VAR|DruidWildShape|CL	ABILITY:Special Ability|AUTOMATIC|Druid Wild Shape|Druid Wild Shape Times|Druid Wild Shape Progression
 ###Block: Level progression
 1	CAST:3,1				BONUS:VAR|WildEmpathyLVL|CL	ABILITY:Special Ability|AUTOMATIC|Nature Sense|Orisons ~ Druid|Spontaneous Casting ~ Druid|Wild Empathy
 2	CAST:4,2									ABILITY:Special Ability|AUTOMATIC|Woodland Stride
 3	CAST:4,2,1									ABILITY:Special Ability|AUTOMATIC|Trackless Step
-4	CAST:4,3,2									ABILITY:Special Ability|AUTOMATIC|Resist Nature's Lure
+4	CAST:4,3,2									ABILITY:Special Ability|AUTOMATIC|Wild Shape|Resist Nature's Lure
 5	CAST:4,3,2,1
 6	CAST:4,3,3,2
 7	CAST:4,4,3,2,1
