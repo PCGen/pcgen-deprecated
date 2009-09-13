@@ -111,13 +111,15 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5161_mac_build.dmg">Download PCGen 5.16.1 for Mac<small>&nbsp;</small></a></div><br />
         <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5161_full.zip">Download PCGen 5.16.1 for Other Systems<small>&nbsp;</small></a></div><br/>
 
-        <h2>Option 2. Download Stable Data Sets<a class="" title="data" name="data"></a></h2>
+        <h3>Download Stable Data Sets<a class="" title="data" name="data"></a></h3>
         <p>These are stable data sets that are developed in between stable releases of PCGen but can be installed and used with a stable version of PCGen.
         </p>
+        <div class="downloadbar"><a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/5.16.1%20OOC%20Data%20Sets/5161_pathfinder_role_playing_game_release1.zip/download">Download Pathfinder RPG dataset for PCGen 5.16.1<small>&nbsp;</small></a></div><br />
+        <p>
         <a href="http://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/" style="font-size: 80%;">[View Stable Data Sets]</a>
         </p>
 
-        <h2>Option 3. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
+        <h2>Option 2. Download Alpha Releases<a class="" title="alpha" name="alpha"></a></h2>
         <p>These are development milestone releases designed to display the work in progress on PCGen
         and for use in testing new features. Use at own risk. Basic functionality is tested before
         each alpha and beta build though.
