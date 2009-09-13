@@ -1091,7 +1091,7 @@ public final class EditorMainForm extends JDialog
 		switch (editType)
 		{
 			case EditorConstants.EDIT_DEITY:
-				((Deity) thisPObject).getSafeListFor(ListKey.PANTHEON).clear();
+				((Deity) thisPObject).removeListFor(ListKey.PANTHEON);
 
 				break;
 
