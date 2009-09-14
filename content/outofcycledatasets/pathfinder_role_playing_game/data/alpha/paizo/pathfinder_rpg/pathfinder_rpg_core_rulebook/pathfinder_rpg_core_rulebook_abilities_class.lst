@@ -415,7 +415,7 @@ Improved Disarm		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PR
 Improved Feint		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PREFEAT:1,Improved Feint	PREVARGTEQ:MonkBonusFeatLVL,6		VFEAT:Improved Feint
 Improved Trip		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PREFEAT:1,Improved Trip	PREVARGTEQ:MonkBonusFeatLVL,6		VFEAT:Improved Trip
 Mobility			CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PREFEAT:1,Mobility		PREVARGTEQ:MonkBonusFeatLVL,6		VFEAT:Mobility
-Improved Critical		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PREFEAT:1,Improved Critical	PREVARGTEQ:MonkBonusFeatLVL,10	VFEAT:Improved Critical
+Improved Critical		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY						PREVARGTEQ:MonkBonusFeatLVL,10	VFEAT:Improved Critical	CHOOSE:WEAPONPROFS|LIST	BONUS:WEAPONPROF=%LIST|CRITRANGEDOUBLE|1|TYPE=NonStackingCrit	MULT:YES	STACK:NO
 Medusa's Wrath		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PREFEAT:1,Medusa's Wrath	PREVARGTEQ:MonkBonusFeatLVL,10	VFEAT:Medusa's Wrath
 Snatch Arrows		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PREFEAT:1,Snatch Arrows	PREVARGTEQ:MonkBonusFeatLVL,10	VFEAT:Snatch Arrows
 Spring Attack		CATEGORY:Special Ability	TYPE:MonkBonusFeat	VISIBLE:DISPLAY	!PREFEAT:1,Spring Attack	PREVARGTEQ:MonkBonusFeatLVL,10	VFEAT:Spring Attack
