@@ -492,10 +492,10 @@ Animal Companion		KEY:Companion ~ Hunter's Bond	CATEGORY:Special Ability	TYPE:Sp
 ##Badger,Bird,Camel,Cat (Small),Dire Animal (Dire Rat),Dog,Horse (Heavy),Horse (Light),Pony,Snake (Viper/Small),Snake (Viper/Medium),Snake (Constrictor/Medium),Wolf,Shark (Medium)	SOURCEPAGE:p.66
 
 ###Block: Ranger Internals
-# Ability Name		Category of Ability		Type			Visible	Define					Bonus to Ability Pool													Modify VAR										Source Page
-Combat Style		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:CombatStyleLVL|0			BONUS:ABILITYPOOL|Combat Style|1	BONUS:ABILITYPOOL|Ranger Bonus Feat|(CombatStyleLVL+2)/4												SOURCEPAGE:p.65
-Ranger Favored Enemy	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredEnemyLVL|0	BONUS:ABILITYPOOL|Favored Enemy|RangerFavoredEnemyLVL/5+1							BONUS:VAR|FavoredEBonuses|RangerFavoredEnemyLVL/5
-Ranger Favored Terrain	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredTerrainLVL|0	BONUS:ABILITYPOOL|Favored Terrain|(RangerFavoredEnemyLVL+2)/5						BONUS:VAR|FavoredTBonuses|max(0,(RangerFavoredTerrainLVL-3)/5)
+# Ability Name		Category of Ability		Type			Visible	Define					Bonus to Ability Pool																					Source Page
+Combat Style		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:CombatStyleLVL|0			BONUS:ABILITYPOOL|Combat Style|1	BONUS:ABILITYPOOL|Ranger Bonus Feat|(CombatStyleLVL+2)/4									SOURCEPAGE:p.65
+Ranger Favored Enemy	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredEnemyLVL|0	BONUS:ABILITYPOOL|Favored Enemy|RangerFavoredEnemyLVL/5+1	BONUS:ABILITYPOOL|Favored Enemy Bonus|RangerFavoredEnemyLVL/5
+Ranger Favored Terrain	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredTerrainLVL|0	BONUS:ABILITYPOOL|Favored Terrain|(RangerFavoredEnemyLVL+2)/5	BONUS:ABILITYPOOL|Favored Terrain Bonus|max(0,(RangerFavoredTerrainLVL-3)/5)
 
 ###Block: Ranger Combat Styles
 # Ability Name	Category of Ability		Type				Visible		Source Page
