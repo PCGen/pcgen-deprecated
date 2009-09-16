@@ -6,7 +6,7 @@ SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:
 # Skill Name							Key Stat	Untrained?		Skill Penalty Apply	Classes	Type			Visible		Source Page		Bonus to skill
 Acrobatics (Jump)							KEYSTAT:DEX	USEUNTRAINED:NO	ACHECK:YES			CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.87	BONUS:SKILL|Acrobatics (Jump)|skillinfo("MODIFIER","Acrobatics")-DEX
 Appraise (Precious metals and gemstones)			KEYSTAT:INT	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.90	BONUS:SKILL|Appraise (Precious metals and gemstones)|skillinfo("MODIFIER","Appraise")-INT
-Linguistics (Understand exotic written messages)	KEYSTAT:INT	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse				SOURCEPAGE:p.518	BONUS:SKILL|Linguistics (Understand exotic written messages)|skillinfo("MODIFIER","Linguistics")-INT
+Linguistics (Understand exotic written messages)	KEYSTAT:INT	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.518	BONUS:SKILL|Linguistics (Understand exotic written messages)|skillinfo("MODIFIER","Linguistics")-INT
 Perception (Notice unusual stonework)			KEYSTAT:WIS	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.102	BONUS:SKILL|Perception (Notice unusual stonework)|skillinfo("MODIFIER","Perception")-WIS
 Perception (Trapfinding)					KEYSTAT:WIS	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.102	BONUS:SKILL|Perception (Trapfinding)|skillinfo("MODIFIER","Perception")-WIS
 Spellcraft (Identify Magic Item)				KEYSTAT:INT	USEUNTRAINED:NO					CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.106	BONUS:SKILL|Spellcraft (Identify Magic Item)|skillinfo("MODIFIER","Spellcraft")-INT
