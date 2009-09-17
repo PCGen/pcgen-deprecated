@@ -9,11 +9,11 @@ CLASS:Aberration	PRERACETYPE:Aberration
 CLASS:Aberration	STARTSKILLPTS:4	MODTOSKILLS:YES
 
 # Class Name	Hit Dice	Type			Max Level		Ability					Save checks bonus											Combat bonus
-CLASS:Animal	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
+#CLASS:Animal	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name	Reg. Race Type
-CLASS:Animal	PRERACETYPE:Animal
+#CLASS:Animal	PRERACETYPE:Animal
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?
-CLASS:Animal	STARTSKILLPTS:2	MODTOSKILLS:YES
+#CLASS:Animal	STARTSKILLPTS:2	MODTOSKILLS:YES
 
 # Class Name	Hit Dice	Type			Max Level		Ability																		Save checks bonus								Combat bonus
 CLASS:Construct	HD:10		TYPE:Monster	MAXLEVEL:NOLIMIT	ABILITY:Special Ability|AUTOMATIC|Construct Traits|PREVAREQ:NoTypeTraits,0	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex,BASE.Will|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
