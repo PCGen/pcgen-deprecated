@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Sep  6 22:28:21 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Thu Sep 17 21:30:42 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original RSRD Entry by: PCGen Data Team
 # Pathfinder RPG Entry by: Stefan Radermacher and Eric Smith (Maredudd)
@@ -37,7 +37,7 @@ Battleaxe									PROFICIENCY:WEAPON|Battleaxe			TYPE:Weapon.Melee.OneHanded.Mar
 Flail										PROFICIENCY:WEAPON|Flail			TYPE:Weapon.Melee.OneHanded.Martial.Standard.Bludgeoning.Flail														COST:8	WT:5				CRITMULT:x2			CRITRANGE:1												DAMAGE:1d8					EQMOD:STEEL.DISARM.TRIP									WIELD:OneHanded								SIZE:M	SOURCEPAGE:p.146																																			SPROP:Can be used to make trip attacks.
 Longsword									PROFICIENCY:WEAPON|Longsword			TYPE:Weapon.Melee.OneHanded.Martial.Standard.Slashing.Sword.BladeHeavy													COST:15	WT:4				CRITMULT:x2			CRITRANGE:2												DAMAGE:1d8					EQMOD:STEEL											WIELD:OneHanded								SIZE:M	SOURCEPAGE:p.147
 Pick (Heavy)		OUTPUTNAME:Pick, Heavy			PROFICIENCY:WEAPON|Pick (Heavy)		TYPE:Weapon.Melee.OneHanded.Martial.Standard.Piercing.Pick.Axe														COST:8	WT:6				CRITMULT:x4			CRITRANGE:1												DAMAGE:1d6					EQMOD:STEEL											WIELD:OneHanded								SIZE:M	SOURCEPAGE:p.142
-Rapier									PROFICIENCY:WEAPON|Rapier			TYPE:Weapon.Melee.OneHanded.Martial.Finesseable.Standard.Piercing.Sword.BladeLight											COST:20	WT:2				CRITMULT:x2			CRITRANGE:3												DAMAGE:1d6					EQMOD:STEEL											WIELD:OneHanded								SIZE:M	SOURCEPAGE:p.148
+Rapier									PROFICIENCY:WEAPON|Rapier			TYPE:Weapon.Melee.OneHanded.Martial.Finesseable.Standard.Piercing.Sword.BladeLight											COST:20	WT:2				CRITMULT:x2			CRITRANGE:3												DAMAGE:1d6					EQMOD:STEEL											WIELD:OneHanded								SIZE:M	SOURCEPAGE:p.148																					BONUS:WEAPON|DAMAGEMULT:2|-0.5
 Scimitar									PROFICIENCY:WEAPON|Scimitar			TYPE:Weapon.Melee.OneHanded.Martial.Standard.Slashing.Sword.BladeHeavy													COST:15	WT:4				CRITMULT:x2			CRITRANGE:3												DAMAGE:1d6					EQMOD:STEEL											WIELD:OneHanded								SIZE:M	SOURCEPAGE:p.142
 Trident									PROFICIENCY:WEAPON|Trident			TYPE:Weapon.Melee.OneHanded.Martial.Ranged.Thrown.Standard.Piercing.Trident.Spear											COST:15	WT:4				CRITMULT:x2			CRITRANGE:1												DAMAGE:1d8					EQMOD:STEEL.BRACE										WIELD:OneHanded	RANGE:10						SIZE:M	SOURCEPAGE:p.149
 Warhammer									PROFICIENCY:WEAPON|Warhammer			TYPE:Weapon.Melee.OneHanded.Martial.Standard.Bludgeoning.Hammer														COST:12	WT:5				CRITMULT:x3			CRITRANGE:1												DAMAGE:1d8					EQMOD:STEEL											WIELD:OneHanded								SIZE:M	SOURCEPAGE:p.142
