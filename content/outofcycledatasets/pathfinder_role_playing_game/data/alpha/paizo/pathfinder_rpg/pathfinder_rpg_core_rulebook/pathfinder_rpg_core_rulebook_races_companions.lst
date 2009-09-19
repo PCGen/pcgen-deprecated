@@ -26,6 +26,8 @@ Companion (Snake (Constrictor))	OUTPUTNAME:[NAME]				STARTFEATS:1	SIZE:M	MOVE:Wa
 Companion (Snake (Viper))		OUTPUTNAME:[NAME]				STARTFEATS:1	SIZE:S	MOVE:Walk,20,Climb,20,Swim,20		FACE:5,5	REACH:5				BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|-2	BONUS:STAT|DEX|6	BONUS:STAT|INT|-10	BONUS:STAT|WIS|2	BONUS:STAT|CHA|-8									ABILITY:Special Ability|AUTOMATIC|Scent|Poison			LEGS:0			NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing.Slashing.Poison,*1,1d3										MONSTERCLASS:Companion:2			RACETYPE:Animal					TYPE:Animal	HITDICEADVANCEMENT:16	SOURCEPAGE:p.56	KIT:1|Companion ~ Snake
 Companion (Wolf)				OUTPUTNAME:[NAME]				STARTFEATS:1	SIZE:M	MOVE:Walk,50				FACE:5,5	REACH:5	VISION:Low-light	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|2	BONUS:STAT|DEX|4	BONUS:STAT|CON|4	BONUS:STAT|INT|-8	BONUS:STAT|WIS|2	BONUS:STAT|CHA|-4							ABILITY:Special Ability|AUTOMATIC|Scent|Trip			LEGS:4			NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing.Slashing,*1,1d6												MONSTERCLASS:Companion:2			RACETYPE:Animal					TYPE:Animal	HITDICEADVANCEMENT:16	SOURCEPAGE:p.56	KIT:1|Companion ~ Wolf
 
+# Not listed in the Book but referenced in the Core for Ranger
+#Companion (Dire Rat)			OUTPUTNAME:[NAME]				
 
 
 ###Block: Familiar
