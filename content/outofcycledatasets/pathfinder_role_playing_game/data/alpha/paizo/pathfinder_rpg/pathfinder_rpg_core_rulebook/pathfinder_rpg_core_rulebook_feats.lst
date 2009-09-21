@@ -202,46 +202,45 @@ Power Attack (Two-Handed)	VISIBLE:NO	BONUS:WEAPON|TOHIT|-PowerAttackModifier|TYP
 
 ###Block: Modified Feats for Sorcerer Bloodlines
 # Feat Name				Type
-#Arcane Strike.MOD			TYPE:DestinedBloodline
-#Augment Summoning.MOD		TYPE:AbyssalBloodline
-#Blind-Fight.MOD			TYPE:DraconicBloodline.InfernalBloodline
-#Cleave.MOD				TYPE:AbyssalBloodline
-#Combat Casting.MOD		TYPE:AberrantBloodline.ArcaneBloodline.UndeadBloodline
-#Combat Expertise.MOD		TYPE:InfernalBloodline
-#Deceitful.MOD			TYPE:InfernalBloodline
-#Diehard.MOD				TYPE:DestinedBloodline.UndeadBloodline
-# Feat Name			Type
-Dodge.MOD			TYPE:CelestialBloodline.ElementalBloodline.FeyBloodline
-Empower Spell.MOD		TYPE:AbyssalBloodline.ElementalBloodline
-#Endurance.MOD			TYPE:DestinedBloodline.UndeadBloodline
-#Extend Spell.MOD			TYPE:CelestialBloodline.InfernalBloodline
-Great Fortitude.MOD	TYPE:AbyssalBloodline.DraconicBloodline.ElementalBloodline
-#Improved Bull Rush.MOD		TYPE:AbyssalBloodline
-#Improved Counterspell.MOD	TYPE:ArcaneBloodline
-#Improved Disarm.MOD		TYPE:AberrantBloodline.InfernalBloodline
-#Improved Grapple.MOD		TYPE:AberrantBloodline
-Improved Initiative.MOD	TYPE:AberrantBloodline.ArcaneBloodline.DraconicBloodline.ElementalBloodline.FeyBloodline
-#Improved Sunder.MOD		TYPE:AbyssalBloodline
-#Improved Unarmed Strike.MOD	TYPE:AberrantBloodline
-#Iron Will.MOD			TYPE:AberrantBloodline.ArcaneBloodline.CelestialBloodline.InfernalBloodline.UndeadBloodline
-#Leadership.MOD			TYPE:DestinedBloodline
-Lightning Reflexes.MOD	TYPE:DestinedBloodline.ElementalBloodline.FeyBloodline
-#Maximize Spell.MOD		TYPE:DestinedBloodline
-#Mobility.MOD			TYPE:CelestialBloodline.FeyBloodline
-#Mounted Combat.MOD		TYPE:CelestialBloodline
-#Point Blank Shot.MOD		TYPE:FeyBloodline
-Power Attack.MOD		TYPE:AbyssalBloodline.DraconicBloodline.ElementalBloodline
-#Precise Shot.MOD			TYPE:FeyBloodline
-#Quicken Spell.MOD			TYPE:DraconicBloodline.FeyBloodline
-#Ride-By Attack.MOD		TYPE:CelestialBloodline
-#Scribe Scroll.MOD			TYPE:ArcaneBloodline
-#Silent Spell.MOD			TYPE:AberrantBloodline
-#Spell Focus.MOD			TYPE:ArcaneBloodline.UndeadBloodline
-#Spell Penetration.MOD		TYPE:InfernalBloodline
-#Still Spell.MOD			TYPE:ArcaneBloodline.UndeadBloodline
-#Toughness.MOD			TYPE:DraconicBloodline.UndeadBloodline
-Weapon Finesse.MOD	TYPE:CelestialBloodline.ElementalBloodline
-#Weapon Focus.MOD			TYPE:DestinedBloodline
+Arcane Strike.MOD			TYPE:DestinedBloodline
+Augment Summoning.MOD		TYPE:AbyssalBloodline
+Blind-Fight.MOD			TYPE:DraconicBloodline.InfernalBloodline
+Cleave.MOD				TYPE:AbyssalBloodline
+Combat Casting.MOD		TYPE:AberrantBloodline.ArcaneBloodline.UndeadBloodline
+Combat Expertise.MOD		TYPE:InfernalBloodline
+Deceitful.MOD			TYPE:InfernalBloodline
+Diehard.MOD				TYPE:DestinedBloodline.UndeadBloodline
+Dodge.MOD				TYPE:CelestialBloodline.ElementalBloodline.FeyBloodline
+Empower Spell.MOD			TYPE:AbyssalBloodline.ElementalBloodline
+Endurance.MOD			TYPE:DestinedBloodline.UndeadBloodline
+Extend Spell.MOD			TYPE:CelestialBloodline.InfernalBloodline
+Great Fortitude.MOD		TYPE:AbyssalBloodline.DraconicBloodline.ElementalBloodline
+Improved Bull Rush.MOD		TYPE:AbyssalBloodline
+Improved Counterspell.MOD	TYPE:ArcaneBloodline
+Improved Disarm.MOD		TYPE:AberrantBloodline.InfernalBloodline
+Improved Grapple.MOD		TYPE:AberrantBloodline
+Improved Initiative.MOD		TYPE:AberrantBloodline.ArcaneBloodline.DraconicBloodline.ElementalBloodline.FeyBloodline
+Improved Sunder.MOD		TYPE:AbyssalBloodline
+Improved Unarmed Strike.MOD	TYPE:AberrantBloodline
+Iron Will.MOD			TYPE:AberrantBloodline.ArcaneBloodline.CelestialBloodline.InfernalBloodline.UndeadBloodline
+Leadership.MOD			TYPE:DestinedBloodline
+Lightning Reflexes.MOD		TYPE:DestinedBloodline.ElementalBloodline.FeyBloodline
+Maximize Spell.MOD		TYPE:DestinedBloodline
+Mobility.MOD			TYPE:CelestialBloodline.FeyBloodline
+Mounted Combat.MOD		TYPE:CelestialBloodline
+Point Blank Shot.MOD		TYPE:FeyBloodline
+Power Attack.MOD			TYPE:AbyssalBloodline.DraconicBloodline.ElementalBloodline
+Precise Shot.MOD			TYPE:FeyBloodline
+Quicken Spell.MOD			TYPE:DraconicBloodline.FeyBloodline
+Ride-By Attack.MOD		TYPE:CelestialBloodline
+Scribe Scroll.MOD			TYPE:ArcaneBloodline
+Silent Spell.MOD			TYPE:AberrantBloodline
+Spell Focus.MOD			TYPE:ArcaneBloodline.UndeadBloodline
+Spell Penetration.MOD		TYPE:InfernalBloodline
+Still Spell.MOD			TYPE:ArcaneBloodline.UndeadBloodline
+Toughness.MOD			TYPE:DraconicBloodline.UndeadBloodline
+Weapon Finesse.MOD		TYPE:CelestialBloodline.ElementalBloodline
+Weapon Focus.MOD			TYPE:DestinedBloodline
 
 
 ###Block: Monster Feats
