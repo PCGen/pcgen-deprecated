@@ -22,6 +22,10 @@ Spell Resistance				KEY:Spell Resistance ~ Familiar	CATEGORY:Special Ability	TYP
 #
 Fourth Level Advancement								CATEGORY:Special Ability	TYPE:Special
 Seventh Level Advancement								CATEGORY:Special Ability	TYPE:Special
+#
+Companion Bonus Choice								CATEGORY:Special Ability	TYPE:Special	BONUS:ABILITYPOOL|Companion Level Increase Choice|1
+Stat Increase		KEY:Companion Choice ~ Stat		TYPE:CompChoice	CATEGORY:Special Ability
+Regular Progression	KEY:Companion Choice ~ Regular	TYPE:CompChoice	CATEGORY:Special Ability
 
 Companion Skills										CATEGORY:Special Ability	TYPE:Special																																																																																														CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|Perception|Stealth|Survival|Swim
 War Trained											CATEGORY:Special Ability	TYPE:SpecialQuality
@@ -31,7 +35,7 @@ War Trained											CATEGORY:Special Ability	TYPE:SpecialQuality
 Tail Slap		KEY:Tail Slap ~ Crocodile	CATEGORY:Special Ability	TYPE:Special		NATURALATTACKS:Tail Slap,Weapon.Natural.Melee.Finesseable.Bludgeoning,*1,1d8
 
 Blindsense							CATEGORY:Special Ability	TYPE:SpecialQuality
-Contrict							CATEGORY:Special Ability	TYPE:SpecialAttack
+Constrict							CATEGORY:Special Ability	TYPE:SpecialAttack
 Death Roll							CATEGORY:Special Ability	TYPE:SpecialAttack
 Ferocity							CATEGORY:Special Ability	TYPE:SpecialAttack
 Poison							CATEGORY:Special Ability	TYPE:SpecialAttack

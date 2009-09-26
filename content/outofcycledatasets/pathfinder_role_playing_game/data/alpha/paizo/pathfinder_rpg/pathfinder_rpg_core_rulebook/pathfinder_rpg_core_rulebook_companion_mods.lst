@@ -24,27 +24,35 @@ FOLLOWER:CompLevel=18	TYPE:Animal Companion	HD:1																											BONUS
 FOLLOWER:CompLevel=20	TYPE:Animal Companion	HD:1
 
 ###Block: Size Mod -
-#FOLLOWER:CompLevel=4	TYPE:Animal Companion	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Companion (Ape),Companion (Badger (Wolverine))),Companion (Bear),Companion (Boar),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Crocodile (Alligator)),Companion (Dog),Companion (Shark),Companion (Snake (Constrictor),Companion (Snake (Viper)
 # Class of the Master	Type				Adjust PC Size
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
 FOLLOWER:CompLevel=7	TYPE:Animal Companion	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
 
+###Block: Companion Choice
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice	PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Camel),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
+FOLLOWER:CompLevel=7	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
 
+###Block: Bonus to Stat Instead of Ability
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	BONUS:STAT|DEX,CON|2	PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat	PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Camel),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
+FOLLOWER:CompLevel=7	TYPE:Animal Companion	BONUS:STAT|DEX,CON|2	PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
 
-###TODO:Instead of taking the listed benefit at 4th or 7th level, you can instead choose to increase the companion's Dexterity and Constitution by 2.
+###CLARIFY:Instead of taking the listed benefit at 4th or 7th level, you can instead choose to increase the companion's Dexterity and Constitution by 2.
+###CLARIFY:Does this mean Size Increase as well?
+
 ###Block: Non-Size Bonuses
-# Class of the Master	Type				Ability													Required Race												Combat bonus						Stat bonus
-FOLLOWER:CompLevel=4	TYPE:Animal Companion															PRERACE:1,Companion (Ape)										BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
-FOLLOWER:CompLevel=4	TYPE:Animal Companion															PRERACE:1,Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl))									BONUS:STAT|STR|2	BONUS:STAT|CON|2
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Ferocity							PRERACE:1,Companion (Boar)
-FOLLOWER:CompLevel=4	TYPE:Animal Companion															PRERACE:1,Companion (Camel)																		BONUS:STAT|STR|2	BONUS:STAT|CON|2
-FOLLOWER:CompLevel=7	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Grab|Pounce|Rake						PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger)))			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Sprint								PRERACE:1,Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard)))
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Tail Slap ~ Crocodile|Death Roll|Grab|Sprint	PRERACE:1,Companion (Crocodile (Alligator))
-FOLLOWER:CompLevel=7	TYPE:Animal Companion															PRERACE:1,Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor))	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|War Trained							PRERACE:1,Companion (Horse),Companion (Pony)
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Blindsense							PRERACE:1,Companion (Shark)
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Contrict							PRERACE:1,Companion (Snake (Viper))									BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE
-FOLLOWER:CompLevel=7	TYPE:Animal Companion															PRERACE:1,Companion (Wolf)										BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
+# Class of the Master	Type				Ability													Required Ability											Required Race												Combat bonus						Stat bonus
+FOLLOWER:CompLevel=4	TYPE:Animal Companion															PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Ape)										BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
+FOLLOWER:CompLevel=4	TYPE:Animal Companion															PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl))									BONUS:STAT|STR|2	BONUS:STAT|CON|2
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Ferocity							PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Boar)
+FOLLOWER:CompLevel=4	TYPE:Animal Companion															PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Camel)																		BONUS:STAT|STR|2	BONUS:STAT|CON|2
+FOLLOWER:CompLevel=7	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Grab|Pounce|Rake						PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger)))			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Sprint								PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard)))
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Tail Slap ~ Crocodile|Death Roll|Grab|Sprint	PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Crocodile (Alligator))
+FOLLOWER:CompLevel=7	TYPE:Animal Companion															PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor))	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|War Trained							PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Horse),Companion (Pony)
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Blindsense							PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Shark)
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Constrict							PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Snake (Viper))									BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE
+FOLLOWER:CompLevel=7	TYPE:Animal Companion															PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Wolf)										BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
 
 
 
@@ -74,19 +82,26 @@ FOLLOWER:SMLevel=20	TYPE:Special Mount	HD:1
 FOLLOWER:SMLevel=4	TYPE:Special Mount	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Companion (Boar),Companion (Dog),Companion (Shark)
 FOLLOWER:SMLevel=7	TYPE:Special Mount	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Wolf)
 
+###Block: Companion Choice
+FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice	PRERACE:1,Companion (Boar),Companion (Dog),Companion (Shark)
+FOLLOWER:SMLevel=7	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Wolf)
 
-###TODO:Instead of taking the listed benefit at 4th or 7th level, you can instead choose to increase the companion's Dexterity and Constitution by 2. Thinking of forcing a Choice, that if not made results in the defaults, but if taken on does the listed events.
+###Block: Bonus to Stat Instead of Ability
+FOLLOWER:SMLevel=4	TYPE:Special Mount	BONUS:STAT|DEX,CON|2	PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat		PRERACE:1,Companion (Boar),Companion (Dog),Companion (Shark)
+FOLLOWER:SMLevel=7	TYPE:Special Mount	BONUS:STAT|DEX,CON|2	PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat		PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Wolf)
+
+###CLARIFY:Instead of taking the listed benefit at 4th or 7th level, you can instead choose to increase the companion's Dexterity and Constitution by 2.
+###CLARIFY:Does this mean Size Increase as well?
+
 ###Block: Non-Size Bonuses
-# Class of the Master	Type				Ability								Required Race											Combat bonus						Stat bonus
-FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Ferocity		PRERACE:1,Companion (Boar)
-FOLLOWER:SMLevel=4	TYPE:Special Mount										PRERACE:1,Companion (Camel)																	BONUS:STAT|STR|2	BONUS:STAT|CON|2
-FOLLOWER:SMLevel=7	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Grab|Pounce|Rake	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger)))		BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
-FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Sprint			PRERACE:1,Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard)))
-FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|War Trained		PRERACE:1,Companion (Horse),Companion (Pony)
-FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Blindsense		PRERACE:1,Companion (Shark)
-FOLLOWER:SMLevel=7	TYPE:Special Mount										PRERACE:1,Companion (Wolf)									BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
-
-#
+# Class of the Master	Type				Ability													Required Ability											Required Race												Combat bonus						Stat bonus
+FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Ferocity							PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Boar)
+FOLLOWER:SMLevel=4	TYPE:Special Mount															PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Camel)																		BONUS:STAT|STR|2	BONUS:STAT|CON|2
+FOLLOWER:SMLevel=7	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Grab|Pounce|Rake						PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger)))			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
+FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Sprint								PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard)))
+FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|War Trained							PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Horse),Companion (Pony)
+FOLLOWER:SMLevel=4	TYPE:Special Mount	ABILITY:Special Ability|AUTOMATIC|Blindsense							PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Shark)
+FOLLOWER:SMLevel=7	TYPE:Special Mount															PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	PRERACE:1,Companion (Wolf)										BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE
 
 ###Block:Familiar - No apparent changes from RSRD
 # Class of the Master	Type			Spell Res.	Ability										Copy Masters BAB		Copy Masters Checks	HP formula based on Master	Use Masters skills?	Define			Combat bonus						Main Race Type

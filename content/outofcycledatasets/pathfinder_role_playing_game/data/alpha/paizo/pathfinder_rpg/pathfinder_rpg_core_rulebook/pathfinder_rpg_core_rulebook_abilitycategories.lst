@@ -70,10 +70,10 @@ ABILITYCATEGORY:Knowledge Class Skill		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YE
 ABILITYCATEGORY:Arcane Bloodline School Power	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ArcaneBloodlineSchoolPower	PLURAL:ArcaneBloodlineSchoolPower	DISPLAYLOCATION:Class Abilities
 
 ###Block: Handle Animal Tricks and Training
-# Ability Category			Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object		Plural description for UI	Display Location
-ABILITYCATEGORY:Animal Trick		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AnimalTrick		PLURAL:Animal Tricks		DISPLAYLOCATION:Class Abilities
-ABILITYCATEGORY:Animal Training	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AnimalTraining	PLURAL:Animal Training		DISPLAYLOCATION:Class Abilities
-
+# Ability Category					Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object		Plural description for UI			Display Location
+ABILITYCATEGORY:Animal Trick				VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AnimalTrick		PLURAL:Animal Tricks				DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Animal Training			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AnimalTraining	PLURAL:Animal Training				DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Companion Level Increase Choice	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:CompChoice		PLURAL:Companion Level Increase Choice	DISPLAYLOCATION:Class Abilities
 ###Block: Prestige Classes --------------------------
 
 
