@@ -72,10 +72,10 @@ Performance		KEY:Animal Training ~ Performance		CATEGORY:Special Ability	TYPE:An
 Riding		KEY:Animal Training ~ Riding			CATEGORY:Special Ability	TYPE:AnimalTraining.General.SpecialQuality	DESC:An animal trained to bear a rider knows the tricks come, heel, and stay. Training an animal for riding takes 3 weeks.																																																												ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Come|Animal Trick ~ Heel|Animal Trick ~ Stay
 
 ###Block: Companion Stat Increase
-CompStat 1	OUTPUTNAME:Strength	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|STR|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
-CompStat 2	OUTPUTNAME:Dexterity	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|DEX|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
-CompStat 3	OUTPUTNAME:Constitution	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|CON|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
-CompStat 4	OUTPUTNAME:Intelligence	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|INT|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
-CompStat 5	OUTPUTNAME:Wisdom		KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|WIS|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
-CompStat 6	OUTPUTNAME:Charisma	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|CHA|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 1	OUTPUTNAME:Strength	KEY:Companion Stat ~ STR	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|STR|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 2	OUTPUTNAME:Dexterity	KEY:Companion Stat ~ DEX	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|DEX|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 3	OUTPUTNAME:Constitution	KEY:Companion Stat ~ CON	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|CON|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 4	OUTPUTNAME:Intelligence	KEY:Companion Stat ~ INT	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|INT|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 5	OUTPUTNAME:Wisdom		KEY:Companion Stat ~ WIS	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|WIS|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 6	OUTPUTNAME:Charisma	KEY:Companion Stat ~ CHA	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|CHA|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
 
