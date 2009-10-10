@@ -3,38 +3,44 @@ SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:
 # Original Entry by: Andrew Maitland
 
 ###Block:Companion for Druid and Ranger - Paladin uses same table but has separate entry
-# Class of the Master	Type				Hit Dice	Ability													Virtual Feat				Automatically Gained Feat	Combat bonus						Stat bonus					Modify VAR
-FOLLOWER:CompLevel=1	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Link|Share Spells|Bonus Tricks|Companion Skills																										BONUS:VAR|BonusTricks|1+var("CompLevel")/3
+# Class of the Master	Type				Hit Dice	Ability													Virtual Feat				Automatically Gained Feat	Combat bonus						Stat bonus					
+FOLLOWER:CompLevel=1	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Link|Share Spells|Bonus Tricks|Companion Skills																										BONUS:VAR|BonusTricks|1
 FOLLOWER:CompLevel=2	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=3	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Evasion																			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Fourth Level Advancement
+FOLLOWER:CompLevel=3	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Evasion																			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Fourth Level Advancement																																			BONUS:ABILITYPOOL|Companion Stat Increase|1		BONUS:SIZEMOD|NUMBER|1|PREVAREQ:CompAdvancementLvlA,1		ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice|PREVAREQ:CompAdvancementLvlA,1		BONUS:STAT|DEX,CON|2|PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat|PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Camel),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
 FOLLOWER:CompLevel=5	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=6	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Devotion																		BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1
-FOLLOWER:CompLevel=7	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Seventh Level Advancement
+FOLLOWER:CompLevel=6	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Devotion																		BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=7	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Seventh Level Advancement																																												BONUS:SIZEMOD|NUMBER|1|PREVAREQ:CompAdvancementLvlB,1		ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice|PREVAREQ:CompAdvancementLvlB,1		BONUS:STAT|DEX,CON|2|PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat|PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
 FOLLOWER:CompLevel=8	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=9	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Multiattack							VFEAT:Multiattack|PREHANDSGTEQ:3	AUTO:FEAT|Multiattack		BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1
+FOLLOWER:CompLevel=9	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Multiattack							VFEAT:Multiattack|PREHANDSGTEQ:3	AUTO:FEAT|Multiattack		BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1		BONUS:ABILITYPOOL|Companion Stat Increase|1
 FOLLOWER:CompLevel=10	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=12	TYPE:Animal Companion	HD:1																											BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1
+FOLLOWER:CompLevel=12	TYPE:Animal Companion	HD:1																											BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
 FOLLOWER:CompLevel=13	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=14	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=15	TYPE:Animal Companion																												BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1
+FOLLOWER:CompLevel=14	TYPE:Animal Companion	HD:1																																														BONUS:ABILITYPOOL|Companion Stat Increase|1
+FOLLOWER:CompLevel=15	TYPE:Animal Companion																												BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
 FOLLOWER:CompLevel=16	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Improved Evasion
 FOLLOWER:CompLevel=17	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=18	TYPE:Animal Companion	HD:1																											BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1
-FOLLOWER:CompLevel=20	TYPE:Animal Companion	HD:1
+FOLLOWER:CompLevel=18	TYPE:Animal Companion	HD:1																											BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=20	TYPE:Animal Companion	HD:1																																														BONUS:ABILITYPOOL|Companion Stat Increase|1
+
 
 ###Block: Size Mod -
 # Class of the Master	Type				Adjust PC Size
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
-FOLLOWER:CompLevel=7	TYPE:Animal Companion	BONUS:SIZEMOD|NUMBER|1|PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
+#FOLLOWER:CompLevel=4	TYPE:Animal Companion
+#PREVAREQ:CompAdvancementLvlA,1
+#|PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
+#FOLLOWER:CompLevel=7	TYPE:Animal Companion	
+#|PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
 
 ###Block: Companion Choice
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice	PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Camel),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
-FOLLOWER:CompLevel=7	TYPE:Animal Companion	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
+FOLLOWER:CompLevel=4	TYPE:Animal Companion
+#PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Camel),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
+FOLLOWER:CompLevel=7	TYPE:Animal Companion	
+#PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
 
 ###Block: Bonus to Stat Instead of Ability
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	BONUS:STAT|DEX,CON|2	PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat	PRERACE:1,Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Boar),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Camel),Companion (Crocodile (Alligator)),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Sanke (Constrictor)),Companion (Snake (Viper))
-FOLLOWER:CompLevel=7	TYPE:Animal Companion	BONUS:STAT|DEX,CON|2	PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat	PRERACE:1,Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Wolf)
+FOLLOWER:CompLevel=4	TYPE:Animal Companion
+FOLLOWER:CompLevel=7	TYPE:Animal Companion
 
 ###CLARIFY:Instead of taking the listed benefit at 4th or 7th level, you can instead choose to increase the companion's Dexterity and Constitution by 2.
 ###CLARIFY:Does this mean Size Increase as well?

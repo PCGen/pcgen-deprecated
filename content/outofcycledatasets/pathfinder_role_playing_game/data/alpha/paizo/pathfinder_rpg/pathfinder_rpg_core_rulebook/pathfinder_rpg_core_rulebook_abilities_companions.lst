@@ -5,7 +5,7 @@ SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:
 
 ###Block: COmpanion Abilities
 # Ability Name				Unique Key					Category of Ability		Type						Define			Description																																																																													Bonus to Ability Pool					Class Skill
-Bonus Tricks										CATEGORY:Special Ability	TYPE:SpecialQuality			DEFINE:BonusTricks|0	DESC:%1|BonusTricks																																																																											BONUS:ABILITYPOOL|Animal Trick|BonusTricks
+Bonus Tricks										CATEGORY:Special Ability	TYPE:SpecialQuality			DEFINE:BonusTricks|0	DESC:%1|BonusTricks																																																																											BONUS:ABILITYPOOL|Animal Trick|var("BonusTricks")	
 Link												CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary					DESC:A druid can handle her animal companion as a free action, or push it as a move action, even if she doesn't have any ranks in the Handle Animal skill. The druid gains a +4 circumstance bonus on all wild empathy checks and Handle Animal checks made regarding an animal companion.
 Share Spells										CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary					DESC:The druid may cast a spell with a target of "You" on her animal companion (as a spell with a range of touch) instead of on herself. A druid may cast spells on her animal companion even if the spells normally do not affect creatures of the companion's type (animal). Spells cast in this way must come from a class that grants an animal companion. This ability does not allow the animal to share abilities that are not spells, even if they function like spells.
 Ability Score Increase									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary					DESC:The animal companion adds +1 to one of its ability scores.
@@ -29,6 +29,8 @@ Regular Progression	KEY:Companion Choice ~ Regular	TYPE:CompChoice	CATEGORY:Spec
 
 Companion Skills										CATEGORY:Special Ability	TYPE:Special																																																																																														CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|Perception|Stealth|Survival|Swim
 War Trained											CATEGORY:Special Ability	TYPE:SpecialQuality
+
+CompanionIncrease		CATEGORY:Special Ability	DEFINE:CompAdvancementLvlA|0	DEFINE:CompAdvancementLvlB|0
 
 ###Block: Companion Specials
 # Ability Name	Unique Key				Category of Ability		Type				Natural Attacks
@@ -69,6 +71,11 @@ Hunting		KEY:Animal Training ~ Hunting			CATEGORY:Special Ability	TYPE:AnimalTra
 Performance		KEY:Animal Training ~ Performance		CATEGORY:Special Ability	TYPE:AnimalTraining.General.SpecialQuality	DESC:An animal trained for performance knows the tricks come, fetch, heel, perform, and stay. Training an animal for performance takes 5 weeks.																																																									ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Come|Animal Trick ~ Fetch|Animal Trick ~ Heel|Animal Trick ~ Perform|Animal Trick ~ Stay
 Riding		KEY:Animal Training ~ Riding			CATEGORY:Special Ability	TYPE:AnimalTraining.General.SpecialQuality	DESC:An animal trained to bear a rider knows the tricks come, heel, and stay. Training an animal for riding takes 3 weeks.																																																												ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Come|Animal Trick ~ Heel|Animal Trick ~ Stay
 
-
-
+###Block: Companion Stat Increase
+CompStat 1	OUTPUTNAME:Strength	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|STR|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 2	OUTPUTNAME:Dexterity	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|DEX|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 3	OUTPUTNAME:Constitution	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|CON|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 4	OUTPUTNAME:Intelligence	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|INT|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 5	OUTPUTNAME:Wisdom		KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|WIS|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
+CompStat 6	OUTPUTNAME:Charisma	KEY:Companion Stat ~ Strength	TYPE:CompStatChoice	CATEGORY:Special Ability	BONUS:STAT|CHA|1	CHOOSE:NOCHOICE	MULT:YES	STACK:YES
 
