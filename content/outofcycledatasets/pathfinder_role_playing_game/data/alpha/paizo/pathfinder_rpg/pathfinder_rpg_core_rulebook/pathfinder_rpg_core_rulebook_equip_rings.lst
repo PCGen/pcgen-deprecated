@@ -32,8 +32,8 @@ Ring of Force Shield															TYPE:Magic.Ring	COST:8500	SOURCEPAGE:p.481	BO
 Ring of Freedom of Movement														TYPE:Magic.Ring	COST:40000	SOURCEPAGE:p.481																													SPROP:This gold ring allows the wearer to act as if continually under the effect of a freedom of movement spell.
 Ring of Friend Shield															TYPE:Magic.Ring	COST:25000	SOURCEPAGE:p.481																													SPROP:Either wearer of one of a pair of  the  rings  can, at any time, command his ring to cast a Shield Other spell with the wearer of the mated ring as the recipient.
 Ring of Invisibility															TYPE:Magic.Ring	COST:20000	SOURCEPAGE:p.481																													SPROP:By activating this simple silver ring, the wearer can beneft from Invisibility, as the spell.
-Ring of Jumping																TYPE:Magic.Ring	COST:2500	SOURCEPAGE:p.481							BONUS:SKILL|Acrobatics (Jump)|5|TYPE=Competence									BONUS:VAR|UseConditionalJump|1
-Ring of Jumping (Improved)				OUTPUTNAME:Ring of Jumping, [NAME]					TYPE:Magic.Ring	COST:10000	SOURCEPAGE:p.481							BONUS:SKILL|Acrobatics (Jump)|10|TYPE=Competence								BONUS:VAR|UseConditionalJump|1
+Ring of Jumping																TYPE:Magic.Ring	COST:2500	SOURCEPAGE:p.481							BONUS:SKILL|Acrobatics (Jump)|5|TYPE=Competence
+Ring of Jumping (Improved)				OUTPUTNAME:Ring of Jumping, [NAME]					TYPE:Magic.Ring	COST:10000	SOURCEPAGE:p.481							BONUS:SKILL|Acrobatics (Jump)|10|TYPE=Competence
 Ring of Mind Shielding															TYPE:Magic.Ring	COST:8000	SOURCEPAGE:p.481																													SPROP:The wearer is continually immune to detect thoughts, discern lies, and any attempt to magically discern her alignment.
 Ring of Protection +1															TYPE:Magic.Ring	COST:2000	SOURCEPAGE:p.481	BONUS:COMBAT|AC|1|TYPE=Deflection
 Ring of Protection +2															TYPE:Magic.Ring	COST:8000	SOURCEPAGE:p.481	BONUS:COMBAT|AC|2|TYPE=Deflection
