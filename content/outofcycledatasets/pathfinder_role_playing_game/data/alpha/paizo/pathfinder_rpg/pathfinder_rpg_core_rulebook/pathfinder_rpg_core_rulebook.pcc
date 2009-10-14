@@ -97,4 +97,4 @@ HIDETYPE:FEAT|SpecialQuality|SpecialAttack|Extraordinary|SpellLike|Supernatural|
 HIDETYPE:FEAT|WizardBonus|SkillFocus|WeaponFocus
 HIDETYPE:FEAT|AberrantBloodline|AbyssalBloodline|ArcaneBloodline|CelestialBloodline|DestinedBloodline|DraconicBloodline|ElementalBloodline|FeyBloodline|InfernalBloodline|UndeadBloodline
 
-BONUS:ABILITYPOOL|Favored Class|1|PRESTAT:1,INT=3
+BONUS:ABILITYPOOL|Favored Class|1|PREPCLEVEL:MIN=1
