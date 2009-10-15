@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Jun  3 01:45:13 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+# CVS $Revision$ $Author$ -- Wed Oct 14 23:30:54 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Stefan Radermacher
 
@@ -14,11 +14,11 @@ Stonecunning								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	V
 Weapon Familiarity	KEY:Weapon Familiarity ~ Dwarf	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Dwarves are proficient with battleaxes, heavy picks, and warhammers, and treat any weapon with the word "dwarven" in its name as a martial weapon.																									AUTO:WEAPONPROF|Battleaxe|Pick (Heavy)|Warhammer																					BONUS:WEAPONPROF=Waraxe (Dwarven)|WIELDCATEGORY|-1	CHANGEPROF:TYPE.Dwarven=Martial	SOURCEPAGE:p.21
 
 ###Block: Elf Abilities
-# Ability Name		Unique Key				Category of Ability		Type						Visible	Description																																			Automatically Gained Weapon Prof.				Bonus to skill						Modify VAR						Change Weapon Prof. Category	Source Page
-Elven Immunities		KEY:Elven Immunities ~ Elf	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves are immune to magic sleep effects and get a +2 racial saving throw bonus against enchantment spells or effects.																																													SOURCEPAGE:p.22
-Elven Magic								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves receive a +2 racial bonus on caster level checks made to overcome spell resistance. In addition, elves receive a +2 racial bonus on Spellcraft skill checks made to identify the properties of magic items.										BONUS:SKILL|Spellcraft (Identify magic item)|2|TYPE=Racial											SOURCEPAGE:p.22
-Keen Senses			KEY:Keen Senses ~ Elf		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves receive a +2 bonus on Perception skill checks.																																				BONUS:SKILL|Perception|2|TYPE=Racial														SOURCEPAGE:p.22
-Weapon Familiarity	KEY:Weapon Familiarity ~ Elf	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves are proficient with longbows (including composite longbows), longswords, rapiers, and shortbows (including composite shortbows), and treat any weapon with the word "elven" in its name as a martial weapon.	AUTO:WEAPONPROF|Longsword|Rapier|Longbow|Shortbow																CHANGEPROF:TYPE.Elven=Martial	SOURCEPAGE:p.22
+# Ability Name		Unique Key				Category of Ability		Type						Visible	Description																																			Automatically Gained Weapon Prof.				Bonus to skill								Change Weapon Prof. Category	Source Page
+Elven Immunities		KEY:Elven Immunities ~ Elf	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves are immune to magic sleep effects and get a +2 racial saving throw bonus against enchantment spells or effects.																																								SOURCEPAGE:p.22
+Elven Magic								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves receive a +2 racial bonus on caster level checks made to overcome spell resistance. In addition, elves receive a +2 racial bonus on Spellcraft skill checks made to identify the properties of magic items.										BONUS:SKILL|Spellcraft (Identify magic item)|2|TYPE=Racial						SOURCEPAGE:p.22
+Keen Senses			KEY:Keen Senses ~ Elf		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves receive a +2 bonus on Perception skill checks.																																				BONUS:SKILL|Perception|2|TYPE=Racial									SOURCEPAGE:p.22
+Weapon Familiarity	KEY:Weapon Familiarity ~ Elf	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Elves are proficient with longbows (including composite longbows), longswords, rapiers, and shortbows (including composite shortbows), and treat any weapon with the word "elven" in its name as a martial weapon.	AUTO:WEAPONPROF|Longsword|Rapier|Longbow|Shortbow											CHANGEPROF:TYPE.Elven=Martial	SOURCEPAGE:p.22
 
 ###Block: Gnome Abilities
 # Ability Name			Unique Key					Category of Ability		Type						Visible		Innate Spells																							Description																											Choose					Bonus to Ability Pool			Bonus to DC				Bonus to skill					Change Weapon Prof. Category	Source Page
