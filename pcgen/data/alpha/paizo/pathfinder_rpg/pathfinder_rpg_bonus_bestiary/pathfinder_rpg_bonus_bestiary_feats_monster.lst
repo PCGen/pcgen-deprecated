@@ -1,0 +1,7 @@
+# CVS $Revision$ $Author$ -- Wed Sep  9 20:13:35 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bonus Bestiary	SOURCESHORT:PFBB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy87f9	SOURCEDATE:2009-06
+# Original Entry by: Stefan Radermacher
+
+###Block: General Feats
+# Feat Name		Type			Required Movement Rate	Description
+Flyby Attack	TYPE:General	PREMOVE:1,Fly=1		DESC:When flying, the creature can take a move action (including a dive) and another standard action at any point during the move.
