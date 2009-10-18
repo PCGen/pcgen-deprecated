@@ -146,7 +146,7 @@ writePcgenFileItems("http://sourceforge.net/export/rss2_projfiles.php?group_id=2
         <h2>Option 4. Subversion Access<a class="" title="subversion" name="subversion"></a></h2>
         <p>We use the Subversion service hosted by SourceForge for 
         all our code and data. If you want direct access to the source, see the 
-        <a href="http://pcgen-test.org/autobuilds/scm-usage.html" style="font-size: 80%;">Subversion usage page</a>
+        <a href="http://sourceforge.net/scm/?type=svn&group_id=25576" style="font-size: 80%;">Subversion usage page</a>
         </p>
 
     </div> <!-- div content -->
