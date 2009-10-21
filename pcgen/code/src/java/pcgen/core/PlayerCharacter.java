@@ -4938,8 +4938,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			if (".CLEARRACIAL".equals(aString))
 			{
 				clearRacials = true;
-				languages.removeAll(getRace().getSafeListFor(
-					ListKey.AUTO_LANGUAGES));
+				List<CDOMReference<Language>> oldLangs = getRace().getSafeListFor(ListKey.AUTO_LANGUAGES);
+				for (CDOMReference<Language> langRef : oldLangs)
+				{
+					languages.removeAll(langRef.getContainedObjects());
+				}
 			}
 			else if (".CLEARALL".equals(aString) || ".CLEAR".equals(aString))
 			{
@@ -6382,7 +6385,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			removeAllAssocs(oldRace, AssociationListKey.CHARACTER_SPELLS);
 
-			languages.removeAll(oldRace.getSafeListFor(ListKey.AUTO_LANGUAGES));
+			List<CDOMReference<Language>> oldRaceLangs = oldRace.getSafeListFor(ListKey.AUTO_LANGUAGES);
+			for (CDOMReference<Language> langRef : oldRaceLangs)
+			{
+				languages.removeAll(langRef.getContainedObjects());
+			}
 
 			cachedWeaponProfs = null;
 
@@ -10685,11 +10692,18 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		cachedWeaponProfs = null;
 
-		languages.removeAll(inTmpl.getSafeListFor(ListKey.AUTO_LANGUAGES)); // remove
+		List<CDOMReference<Language>> oldLangs = inTmpl.getSafeListFor(ListKey.AUTO_LANGUAGES);
+		for (CDOMReference<Language> langRef : oldLangs)
+		{
+			languages.removeAll(langRef.getContainedObjects()); // remove
+		}
 		// template
 		// languages.
-		templateAutoLanguages.removeAll(inTmpl
-			.getSafeListFor(ListKey.AUTO_LANGUAGES)); // remove them from the
+		oldLangs = inTmpl.getSafeListFor(ListKey.AUTO_LANGUAGES);
+		for (CDOMReference<Language> langRef : oldLangs)
+		{
+			templateAutoLanguages.removeAll(langRef.getContainedObjects()); // remove them from the
+		}
 		// local listing. Don't
 		// clear though in case
 		// of multiple
