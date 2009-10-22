@@ -34,6 +34,16 @@ Immunity to Petrification	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordi
 Immunity to Poison		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	VISIBLE:YES	DESC:You never take poison damage.			ASPECT:Immunity|Poison
 Immunity to Sleep			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	VISIBLE:YES	DESC:You are never subject to sleep effects.	ASPECT:Immunity|Sleep
 
+###Block: Vulnerabilities
+# Ability Name					Category of Ability		Type								Visible	Description
+Vulnerability To Acid				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES	DESC:You take half again as much (+50%%) damage as normal from Acid, regardless of whether a saving throw is allowed, or if the save is a success or failure
+Vulnerability To Cold				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES	DESC:You take half again as much (+50%%) damage as normal from Cold, regardless of whether a saving throw is allowed, or if the save is a success or failure
+Vulnerability To Fire				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES	DESC:You take half again as much (+50%%) damage as normal from Fire, regardless of whether a saving throw is allowed, or if the save is a success or failure
+Vulnerability To Electricity			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES	DESC:You take half again as much (+50%%) damage as normal from Electricity, regardless of whether a saving throw is allowed, or if the save is a success or failure
+Vulnerability To Sonic				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES	DESC:You take half again as much (+50%%) damage as normal from Sonic, regardless of whether a saving throw is allowed, or if the save is a success or failure
+Vulnerability To Sunlight			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES
+Vulnerability to Protection from Evil	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES
+
 ###Block: Misc abilities
 # Ability Name		Category of Ability		Type								Visible	Define				Description																																	Source Page
 Channel Resistance	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Resistance	VISIBLE:YES	DEFINE:ChannelResistance|0	DESC:You gain a +%1 bonus on Will saves made against channeled energy. You add your bonus to any Will save made to halve the damage and resis the effect.|ChannelResistance|PREVARGT:ChannelResistance,0	SOURCEPAGE:p.561
