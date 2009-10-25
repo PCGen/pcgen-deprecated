@@ -48,4 +48,5 @@ INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Publishin
 ABILITY:pathfinder_rpg_bestiary_abilities_monsters_general.lst
 CLASS:pathfinder_rpg_bestiary_classes_monster.lst
 FEAT:pathfinder_rpg_bestiary_feats_monster.lst
+LANGUAGE:pathfinder_rpg_bestiary_languages.lst
 TEMPLATE:pathfinder_rpg_bestiary_templates_types.lst
