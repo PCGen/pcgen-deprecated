@@ -12,11 +12,11 @@ CLASS:Companion	STARTSKILLPTS:1	CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimi
 ###Block: Familiars are 'animals'. Using Companion Stuff
 
 # Class Name	Hit Dice	Type			Max Level		Source Page		Ability					Save checks bonus											Combat bonus
-CLASS:Animal	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.306	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
+#CLASS:Animal	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.306	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name	Reg. Race Type
-CLASS:Animal	PRERACETYPE:Animal
+#CLASS:Animal	PRERACETYPE:Animal
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
-CLASS:Animal	STARTSKILLPTS:2	MODTOSKILLS:YES			CSKILL:Acrobatics|Climb|Fly|Perception|Stealth|Swim
-1	ABILITY:FEAT|AUTOMATIC|CMB Output
+#CLASS:Animal	STARTSKILLPTS:2	MODTOSKILLS:YES			CSKILL:Acrobatics|Climb|Fly|Perception|Stealth|Swim
+#1	ABILITY:FEAT|AUTOMATIC|CMB Output
 
 #EOF

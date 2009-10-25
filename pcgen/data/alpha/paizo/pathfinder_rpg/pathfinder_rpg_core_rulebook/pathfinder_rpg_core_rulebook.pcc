@@ -92,6 +92,9 @@ TEMPLATE:pathfinder_rpg_core_rulebook_templates.lst
 TEMPLATE:pathfinder_rpg_core_rulebook_templates_conditional.lst
 WEAPONPROF:pathfinder_rpg_core_rulebook_weaponprofs.lst
 
+# Load Essential Bestairy Data with Core
+PCC:@/alpha/paizo/pathfinder_rpg/pathfinder_rpg_bestiary/core/pathfinder_rpg_bestiary_core.pcc
+
 #Hide internal feat types
 HIDETYPE:FEAT|SpecialQuality|SpecialAttack|Extraordinary|SpellLike|Supernatural|AttackOption|Aura|Immunity|ModifyAC|Resistance|Weakness
 HIDETYPE:FEAT|WizardBonus|SkillFocus|WeaponFocus

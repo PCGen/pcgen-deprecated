@@ -37,13 +37,11 @@ CompanionIncrease										CATEGORY:Special Ability							DEFINE:CompAdvancement
 Tail Slap		KEY:Tail Slap ~ Crocodile	CATEGORY:Special Ability	TYPE:Special		NATURALATTACKS:Tail Slap,Weapon.Natural.Melee.Finesseable.Bludgeoning,*1,1d8
 
 Blindsense							CATEGORY:Special Ability	TYPE:SpecialQuality
-Constrict							CATEGORY:Special Ability	TYPE:SpecialAttack
 Death Roll							CATEGORY:Special Ability	TYPE:SpecialAttack
 Ferocity							CATEGORY:Special Ability	TYPE:SpecialAttack
 Poison							CATEGORY:Special Ability	TYPE:SpecialAttack
 Spit			KEY:Spit ~ Camel			CATEGORY:Special Ability	TYPE:SpecialAttack
 Sprint							CATEGORY:Special Ability	TYPE:SpecialQuality
-Amphibious							CATEGORY:Special Ability	TYPE:SpecialQuality
 Attach							CATEGORY:Special Ability	TYPE:SpecialAttack
 
 ###Block: Animal Tricks ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
