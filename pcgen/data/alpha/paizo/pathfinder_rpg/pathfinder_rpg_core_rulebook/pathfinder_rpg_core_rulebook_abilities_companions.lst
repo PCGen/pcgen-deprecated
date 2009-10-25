@@ -44,6 +44,11 @@ Spit			KEY:Spit ~ Camel			CATEGORY:Special Ability	TYPE:SpecialAttack
 Sprint							CATEGORY:Special Ability	TYPE:SpecialQuality
 Attach							CATEGORY:Special Ability	TYPE:SpecialAttack
 
+# Shadowdancer -
+Companion Shadow Benefits				CATEGORY:Special Ability	TYPE:SpecialQuality			BENEFIT:+4 bonus on Will saves made to halve the damage from positive channeled energy and the shadow cannot be turned or commanded.
+Strength Damage						CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	BENEFIT:A shadow's touch deals 1d6 points of Strength damage to a living creature. This is a negative energy effect. A creature dies if this Strength damage equals or exceeds its actual Strength score.
+
+
 ###Block: Animal Tricks ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Ability Name	Unique Key				Category of Ability		Type						Restricted Ability								Description
 Attack		KEY:Animal Trick ~ Attack	CATEGORY:Special Ability	TYPE:AnimalTrick.SpecialQuality	!PREABILITY:1,CATEGORY=Animal Trick,Animal Trick ~ Attack		DESC:The animal attacks apparent enemies. You may point to a particular creature that you wish the animal to attack, and it will comply if able. Normally, an animal will attack only humanoids, monstrous humanoids, giants, or other animals. Teaching an animal to attack all creatures (including such unnatural creatures as undead and aberrations) counts as two tricks.	DESC:Animal will attack all creatures|PREABILITY:1,CATEGORY=Animal Trick,Animal Trick ~ Attack II

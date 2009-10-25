@@ -48,5 +48,7 @@ Familiar (Weasel)			OUTPUTNAME:[NAME]	STARTFEATS:1	SIZE:T	MOVE:Walk,20,Climb,20	
 
 
 
-
+###Block: Shadowdancer Companion 
+# COMMENT: Animal 1 instead of undead 3 since it makes no difference for the creature. Only has 1/2 master HP.
+Companion (Shadow)		OUTPUTNAME:[NAME]	STARTFEATS:1	CR:3	SIZE:M	RACETYPE:Undead	RACESUBTYPE:Incorporeal	TEMPLATE:Incorporeal	VISION:Darkvision (60')	MONSTERCLASS:Companion:1	ABILITY:Special ABility|AUTOMATIC|Channel Resistance|Strength Damage|Companion Shadow Benefits	MOVE:Fly,40	BONUS:VAR|ChannelResistance|2	NATURALATTACKS:Incorporeal Touch,Melee.Natural.Weapon.Touch,*1,1d6
 

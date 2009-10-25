@@ -148,6 +148,10 @@ MASTERBONUSRACE:Familiar (Toad)		TYPE:Familiar						BONUS:HP|CURRENTMAX|3						V
 MASTERBONUSRACE:Familiar (Weasel)		TYPE:Familiar	BONUS:CHECKS|Reflex|2											VFEAT:Alertness
 #
 
+FOLLOWER:ShadowCompanion=1	TYPE:Shadow Companion	COPYMASTERBAB:MASTER	COPYMASTERCHECK:MASTER	COPYMASTERHP:max(1,MASTER/2)	
+
+
+
 
 ###Block: Standard Companions
 # Class of the Master		Type			Automatically Gained Armor Prof.
