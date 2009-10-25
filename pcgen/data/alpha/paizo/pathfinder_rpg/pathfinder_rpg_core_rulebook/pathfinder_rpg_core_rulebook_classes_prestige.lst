@@ -1,7 +1,7 @@
 # CVS $Revision$ $Author$ -- Sat Jul 11 22:44:20 2009 -- reformated by prettylst.pl v1.39 (build 9548)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Stefan Radermacher
-
+###TODO: Source Page Numbers
 
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus													Combat bonus
 CLASS:Mystic Theurge	HD:6		TYPE:PC.Prestige	ABB:Myt		MAXLEVEL:10	SOURCEPAGE:p.387	BONUS:CHECKS|BASE.Will|(CL+1)/2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|(CL+1)/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
@@ -156,7 +156,7 @@ CLASS:Eldritch Knight	HD:10		TYPE:PC.Prestige	ABB:Elk		MAXLEVEL:10	SOURCEPAGE:p.
 CLASS:Eldritch Knight	PREABILITY:1,CATEGORY=Special Ability,All Martial Weapon Proficiencies	PRESPELLTYPE:1,Arcane=3
 # Class Name		Skill Pts/Lvl	Class Skill
 CLASS:Eldritch Knight	STARTSKILLPTS:2	CSKILL:Climb|Knowledge (Arcana)|Knowledge (Nobility)|Linguistics|Ride|Sense Motive|Spellcraft|Swim
-1	BONUS:ABILITYPOOL|Fighter Feat|1
+1	BONUS:ABILITYPOOL|Fighter Feat|1	BONUS:FighterLVL|CL
 2							ADD:SPELLCASTER|Arcane
 3							ADD:SPELLCASTER|Arcane
 4							ADD:SPELLCASTER|Arcane
