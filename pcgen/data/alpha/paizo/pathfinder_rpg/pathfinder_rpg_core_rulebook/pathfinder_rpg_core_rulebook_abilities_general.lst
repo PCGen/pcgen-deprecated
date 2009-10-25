@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Sep  9 20:13:35 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sat Oct 24 21:28:52 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original RSRD Entry by: PCGen Data Team
 # Original Entry by: Stefan Radermacher
@@ -45,8 +45,8 @@ Vulnerability To Sunlight			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraor
 Vulnerability to Protection from Evil	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness	VISIBLE:YES
 
 ###Block: Misc abilities
-# Ability Name		Category of Ability		Type								Visible	Define				Description																																	Source Page
-Channel Resistance	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Resistance	VISIBLE:YES	DEFINE:ChannelResistance|0	DESC:You gain a +%1 bonus on Will saves made against channeled energy. You add your bonus to any Will save made to halve the damage and resis the effect.|ChannelResistance|PREVARGT:ChannelResistance,0	SOURCEPAGE:p.561
+# Ability Name		Category of Ability		Type								Visible	Define				Description																																	Source Page		Aspects
+Channel Resistance	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Resistance	VISIBLE:YES	DEFINE:ChannelResistance|0	DESC:You gain a +%1 bonus on Will saves made against channeled energy. You add your bonus to any Will save made to halve the damage and resist the effect.|ChannelResistance|PREVARGT:ChannelResistance,0	SOURCEPAGE:p.561	ASPECT:Ability Benefit|%1|ChannelResistance
 
 ###Block: Flight Maneuverability
 # Ability Name		Category of Ability		Visible	Define				Choose											Ability																																																																								Modify VAR							Class Skill	Temporary effect description
