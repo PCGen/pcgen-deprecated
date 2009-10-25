@@ -34,10 +34,10 @@ DESC:Get your first look at the upcoming Pathfinder Roleplaying Game and the Pat
 #EXTRAFILE:OGL.txt
 
 ABILITY:pathfinder_rpg_bonus_bestiary_abilities_monsters.lst
-ABILITY:pathfinder_rpg_bonus_bestiary_abilities_monsters_general.lst
-CLASS:pathfinder_rpg_bonus_bestiary_classes_monster.lst
+#ABILITY:pathfinder_rpg_bonus_bestiary_abilities_monsters_general.lst
+#CLASS:pathfinder_rpg_bonus_bestiary_classes_monster.lst
 CLASS:pathfinder_rpg_bonus_bestiary_classes_monster_specific.lst
 FEAT:pathfinder_rpg_bonus_bestiary_feats_monster.lst
 KIT:pathfinder_rpg_bonus_bestiary_kits_races.lst
 RACE:pathfinder_rpg_bonus_bestiary_races.lst
-TEMPLATE:pathfinder_rpg_bonus_bestiary_templates_types.lst
+#TEMPLATE:pathfinder_rpg_bonus_bestiary_templates_types.lst
