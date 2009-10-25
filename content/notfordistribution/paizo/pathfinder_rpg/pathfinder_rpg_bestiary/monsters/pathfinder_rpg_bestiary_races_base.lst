@@ -1,0 +1,6 @@
+# CVS $Revision$ $Author$ -- Tue Aug  4 21:45:44 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+###Block: Creatures without racial hit dice
+# Race Name	Starting Feats	Size		Move			Face/Space	Reach		Vision			Automatic Languages		Bonus Languages								Bonus to skill						Stat bonus			Modify VAR													Ability																Nb Legs	Main Race Type	Race Subtype		Type			Challenge Rating	Source Page		Innate Spells
+Aasimar	STARTFEATS:1	SIZE:M	MOVE:Walk,30	FACE:5	REACH:5	VISION:Darkvision (60')	LANGAUTO:Celestial,Common	LANGBONUS:Draconic,Dwarven,Elven,Gnome,Halfling,Sylvan	BONUS:SKILL|Diplomacy,Perception|2|TYPE=Racial	BONUS:STAT|WIS,CHA|2	BONUS:VAR|AcidResistanceBonus,ColdResistanceBonus,ElectricityResistanceBonus|5	ABILITY:Special Ability|AUTOMATIC|Resistance to Acid|Resistance to Cold|Resistance to Electricity	LEGS:2	RACETYPE:Outsider	RACESUBTYPE:Native	TYPE:Outsider	CR:1/2		SOURCEPAGE:p.7	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Daylight

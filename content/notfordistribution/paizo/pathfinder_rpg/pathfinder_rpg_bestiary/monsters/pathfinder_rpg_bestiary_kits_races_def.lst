@@ -1,0 +1,62 @@
+# CVS $Revision$ $Author$ -- Tue Aug  4 20:05:16 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+STARTPACK:Dog (Riding) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Dog (Riding)]	SOURCEPAGE:p.118
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=10
+RACE:Dog (Riding)	!PRERACE:1,%
+NAME:Riding Dog
+ALIGN:TN
+SKILL:Acrobatics	RANK:1
+SKILL:Perception	RANK:1
+FEAT:Skill Focus (Perception)
+
+STARTPACK:Dolphin Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Dolphin]	SOURCEPAGE:p.88
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=11|CHA=10
+RACE:Dolphin	!PRERACE:1,%
+NAME:Dolphin
+ALIGN:TN
+SKILL:Perception	RANK:1
+SKILL:Swim		RANK:1
+FEAT:Weapon Finesse
+
+STARTPACK:Eagle Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Eagle]	SOURCEPAGE:p.118
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+RACE:Eagle	!PRERACE:1,%
+NAME:Eagle
+ALIGN:TN
+SKILL:Fly	RANK:1
+FEAT:Weapon Finesse
+
+STARTPACK:Elemental (Air Small) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Elemental (Air Small)]	SOURCEPAGE:p.120
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+RACE:Elemental (Air Small)	!PRERACE:1,%
+NAME:Air Elemental, Small
+ALIGN:TN
+SKILL:Acrobatics			RANK:1
+SKILL:Escape Artist		RANK:1
+SKILL:Fly				RANK:1
+SKILL:Knowledge (Planes)	RANK:1
+SKILL:Perception			RANK:1
+SKILL:Stealth			RANK:1
+FEAT:Flyby Attack
+
+STARTPACK:Elemental (Earth Small) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Elemental (Earth Small)]	SOURCEPAGE:p.120
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+RACE:Elemental (Earth Small)	!PRERACE:1,%
+NAME:Earth Elemental, Small
+ALIGN:TN
+SKILL:Appraise				RANK:1
+SKILL:Climb					RANK:1
+SKILL:Knowledge (Dungeoneering)	RANK:1
+SKILL:Knowledge (Planes)		RANK:1
+SKILL:Perception				RANK:1
+SKILL:Stealth				RANK:1
+FEAT:Power Attack
+
+STARTPACK:Frog (Poison) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Frog (Poison)]	SOURCEPAGE:p.118
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=10
+RACE:Frog (Poison)	!PRERACE:1,%
+NAME:Poisonous Frog
+ALIGN:TN
+SKILL:Perception	RANK:1
+FEAT:Weapon Finesse

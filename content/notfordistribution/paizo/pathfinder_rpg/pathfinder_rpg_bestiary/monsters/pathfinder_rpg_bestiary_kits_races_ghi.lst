@@ -1,0 +1,298 @@
+# CVS $Revision$ $Author$ -- Sat Oct 24 22:07:40 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+
+STARTPACK:Gargoyle Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Gargoyle],[!PRERACE:1,%]	SOURCEPAGE:p. 137
+ALIGN:CE
+RACE:Gargoyle	!PRERACE:1,%
+NAME:Gargoyle
+SKILL:Fly		RANK:4
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:4
+FEAT:Hover
+FEAT:Improved Initiative
+FEAT:Skill Focus (Fly)
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Kapoacinth Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Kapoacinth],[!PRERACE:1,%]	SOURCEPAGE:p. 137
+ALIGN:CE
+RACE:Kapoacinth	!PRERACE:1,%
+NAME:Kapoacinth
+SKILL:Swim		RANK:4
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:4
+FEAT:Hover
+FEAT:Improved Initiative
+FEAT:Skill Focus (Swim)
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Gelatinous Cube Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Gelatinous Cube],[!PRERACE:1,%]	SOURCEPAGE:p. 138
+ALIGN:TN
+RACE:Gelatinous Cube	!PRERACE:1,%
+NAME:Gelatinous Cube
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Genie (Djinni) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Djinni)],[!PRERACE:1,%]	SOURCEPAGE:p. 139
+ALIGN:CG
+RACE:Genie (Djinni)	!PRERACE:1,%
+NAME:Genie (Djinni)
+SKILL:Appraise			RANK:7
+SKILL:TYPE=Craft			RANK:7
+SKILL:Fly				RANK:7
+SKILL:Knowledge (Planes)	RANK:7
+SKILL:Perception			RANK:7
+SKILL:Sense Motive		RANK:7
+SKILL:Spellcraft			RANK:7
+SKILL:Stealth			RANK:7
+FEAT:Combat Casting
+FEAT:Combat Reflexes
+FEAT:Dodge
+FEAT:Wind Stance
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+GEAR:Scimitar	SIZE:L	LOCATION:Primary Hand	EQMOD:MWORKW
+
+
+STARTPACK:Genie (Djinni/Noble) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Djinni/Noble)],[!PRERACE:1,%]	SOURCEPAGE:p. 139
+ALIGN:CG
+RACE:Genie (Djinni/Noble)	!PRERACE:1,%
+NAME:Genie (Djinni/Noble)
+SKILL:Appraise			RANK:7
+SKILL:TYPE=Craft			RANK:7
+SKILL:Fly				RANK:7
+SKILL:Knowledge (Planes)	RANK:7
+SKILL:Perception			RANK:7
+SKILL:Sense Motive		RANK:7
+SKILL:Spellcraft			RANK:7
+SKILL:Stealth			RANK:7
+FEAT:Combat Casting
+FEAT:Combat Reflexes
+FEAT:Dodge
+FEAT:Wind Stance
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+GEAR:Scimitar	SIZE:L	LOCATION:Primary Hand	EQMOD:MWORKW
+
+
+STARTPACK:Genie (Efreeti) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Efreeti)],[!PRERACE:1,%]	SOURCEPAGE:p. 140
+ALIGN:LE
+RACE:Genie (Efreeti)	!PRERACE:1,%
+NAME:Genie (Efreeti)
+SKILL:Bluff			RANK:10
+SKILL:TYPE=Craft		RANK:10
+SKILL:Disguise		RANK:3
+SKILL:Fly			RANK:2
+SKILL:Intimidate		RANK:10
+SKILL:Perception		RANK:10
+SKILL:Sense Motive	RANK:10
+SKILL:Spellcraft		RANK:10
+SKILL:Stealth		RANK:6
+FEAT:Combat Casting
+FEAT:Combat Reflexes
+FEAT:Deceitful
+FEAT:Dodge
+FEAT:Quicken Spell Like Ability (Scorching Ray)
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
+GEAR:Falchion	SIZE:L	LOCATION:Primary Hand	EQMOD:MWORKW
+
+
+STARTPACK:Genie (Efreeti/Noble) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Efreeti/Noble)],[!PRERACE:1,%]	SOURCEPAGE:p. 140
+ALIGN:LE
+RACE:Genie (Efreeti/Noble)	!PRERACE:1,%
+NAME:Genie (Efreeti/Noble)
+SKILL:Bluff			RANK:10
+SKILL:TYPE=Craft		RANK:10
+SKILL:Disguise		RANK:3
+SKILL:Fly			RANK:2
+SKILL:Intimidate		RANK:10
+SKILL:Perception		RANK:10
+SKILL:Sense Motive	RANK:10
+SKILL:Spellcraft		RANK:10
+SKILL:Stealth		RANK:6
+FEAT:Combat Casting
+FEAT:Combat Reflexes
+FEAT:Deceitful
+FEAT:Dodge
+FEAT:Quicken Spell Like Ability (Scorching Ray)
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
+GEAR:Falchion	SIZE:L	LOCATION:Primary Hand	EQMOD:MWORKW
+
+
+STARTPACK:Genie (Janni) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Janni)],[!PRERACE:1,%]	SOURCEPAGE:p. 141
+ALIGN:TN
+RACE:Genie (Janni)	!PRERACE:1,%
+NAME:Genie (Janni)
+SKILL:Appraise		RANK:6
+SKILL:TYPE=Craft		RANK:6
+SKILL:Fly			RANK:1
+SKILL:Perception		RANK:6
+SKILL:Ride			RANK:1
+SKILL:Sense Motive	RANK:6
+SKILL:Spellcraft		RANK:6
+SKILL:Stealth		RANK:1
+FEAT:Combat Reflexes
+FEAT:Dodge
+FEAT:Mobility
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+GEAR:Longbow (Composite)	LOCATION:Carried		EQMOD:BOWSTR|3
+GEAR:Scimitar			LOCATION:Primary Hand
+GEAR:Chainmail			LOCATION:Equipped
+
+
+STARTPACK:Genie (Marid) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Marid)],[!PRERACE:1,%]	SOURCEPAGE:p. 142
+ALIGN:CN
+RACE:Genie (Marid)	!PRERACE:1,%
+NAME:Genie (Marid)
+SKILL:TYPE=Craft			RANK:12
+SKILL:Diplomacy			RANK:12
+SKILL:Knowledge (Planes)	RANK:12
+SKILL:Perception			RANK:12
+SKILL:Sense Motive		RANK:12
+SKILL:Spellcraft			RANK:12
+SKILL:Stealth			RANK:12
+SKILL:Swim				RANK:12
+FEAT:Combat Casting
+FEAT:Combat Reflexes
+FEAT:Dodge
+FEAT:Great Fortitude
+FEAT:Improved Natural Attack (Slam)
+FEAT:Power Attack
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+GEAR:Trident	SIZE:L	LOCATION:Both Hands	EQMOD:MWORKW
+
+
+STARTPACK:Genie (Shaitan) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Shaitan)],[!PRERACE:1,%]	SOURCEPAGE:p. 143
+ALIGN:LN
+RACE:Genie (Shaitan)	!PRERACE:1,%
+NAME:Genie (Shaitan)
+SKILL:Appraise			RANK:9
+SKILL:Bluff				RANK:9
+SKILL:Climb				RANK:9
+SKILL:Craft (Gemcutting)	RANK:9
+SKILL:Knowledge (Engineering)	RANK:9
+SKILL:Perception			RANK:9
+SKILL:Sense Motive		RANK:9
+SKILL:Spellcraft			RANK:9
+FEAT:Combat Casting
+FEAT:Improved Bull Rush
+FEAT:Improved Natural Attack (Slam)
+FEAT:Power Attack
+FEAT:Quicken Spell Like Ability (Glitterdust)
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+GEAR:Scimitar	LOCATION:Primary Hand	EQMOD:MWORKW
+
+
+STARTPACK:Genie (Shaitan/Noble) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Genie (Shaitan/Noble)],[!PRERACE:1,%]	SOURCEPAGE:p. 143
+ALIGN:LN
+RACE:Genie (Shaitan/Noble)	!PRERACE:1,%
+NAME:Genie (Shaitan/Noble)
+SKILL:Appraise			RANK:9
+SKILL:Bluff				RANK:9
+SKILL:Climb				RANK:9
+SKILL:Craft (Gemcutting)	RANK:9
+SKILL:Knowledge (Engineering)	RANK:9
+SKILL:Perception			RANK:9
+SKILL:Sense Motive		RANK:9
+SKILL:Spellcraft			RANK:9
+FEAT:Combat Casting
+FEAT:Improved Bull Rush
+FEAT:Improved Natural Attack (Slam)
+FEAT:Power Attack
+FEAT:Quicken Spell Like Ability (Glitterdust)
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+GEAR:Scimitar	LOCATION:Primary Hand	EQMOD:MWORKW
+
+
+STARTPACK:Human Ghost Aristocrat	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Human],[!PRERACE:1,%]	SOURCEPAGE:p. 144
+ALIGN:CE
+RACE:Human	!PRERACE:1,%
+CLASS:Aristocrat	LEVEL:7
+NAME:Human Ghost Aristocrat
+SKILL:Fly				RANK:5
+SKILL:Knowledge (History)	RANK:7
+SKILL:Knowledge (Nobility)	RANK:7
+SKILL:Perception			RANK:7
+SKILL:Sense Motive		RANK:7
+SKILL:Stealth			RANK:2
+FEAT:Dodge
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Toughness
+STAT:STR=10|DEX=12|CON=10|INT=10|WIS=11|CHA=14
+TEMPLATE:Ghost
+ABILITY:CATEGORY=Ability Bonus|+2 Charisma
+ABILITY:CATEGORY=Favored Class|Fighter
+ABILITY:CATEGORY=Ghost Ability|Frightful Moan
+
+
+STARTPACK:Ghoul Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Ghoul],[!PRERACE:1,%]	SOURCEPAGE:p. 146
+ALIGN:CE
+RACE:Ghoul	!PRERACE:1,%
+NAME:Ghoul
+SKILL:Acrobatics	RANK:2
+SKILL:Climb		RANK:2
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+SKILL:Swim		RANK:2
+FEAT:Weapon Finesse
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+
+
+STARTPACK:Ghast Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Ghast],[!PRERACE:1,%]	SOURCEPAGE:p. 146
+ALIGN:CE
+RACE:Ghast	!PRERACE:1,%
+NAME:Ghast
+SKILL:Acrobatics	RANK:2
+SKILL:Climb		RANK:2
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+SKILL:Swim		RANK:2
+FEAT:Weapon Finesse
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+
+
+STARTPACK:Lacedon Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Lacedon],[!PRERACE:1,%]	SOURCEPAGE:p. 146
+ALIGN:CE
+RACE:Lacedon	!PRERACE:1,%
+NAME:Lacedon
+SKILL:Acrobatics	RANK:2
+SKILL:Climb		RANK:2
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+SKILL:Swim		RANK:2
+FEAT:Weapon Finesse
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+
+
+STARTPACK:Giant (Cloud) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Giant (Cloud)],[!PRERACE:1,%]	SOURCEPAGE:p. 147
+ALIGN:NG|NE
+RACE:Giant (Cloud)	!PRERACE:1,%
+NAME:Cloud Giant
+SKILL:Climb					RANK:6
+SKILL:TYPE=Craft				RANK:6
+SKILL:Diplomacy				RANK:5
+SKILL:Intimidate				RANK:10
+SKILL:Perception				RANK:11
+SKILL:Perform (String Instruments)	RANK:4
+FEAT:Awesome Blow
+FEAT:Cleave
+FEAT:Great Cleave
+FEAT:Greater Bull Rush
+FEAT:Greater Overrun
+FEAT:Intimidating Prowess
+FEAT:Iron Will
+FEAT:Power Attack
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+GEAR:Morningstar	SIZE:G	LOCATION:Both Hands
+GEAR:Chain Shirt	SIZE:H	LOCATION:Equipped
+
+
+STARTPACK:Horse (Pony) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Horse (Poison)]	SOURCEPAGE:p.118
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+RACE:Horse (Pony)	!PRERACE:1,%
+NAME:Pony
+ALIGN:TN
+SKILL:Perception	RANK:2
+FEAT:Endurance

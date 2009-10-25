@@ -1,0 +1,15 @@
+SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
+# Original Entry by: Eric Smith (Maredudd)
+
+###Block: Conditional Skills for output only
+# Skill Name							Key Stat	Untrained?		Skill Penalty Apply	Classes	Type			Visible		Source Page		Bonus to skill
+Disguise (When mimicking objects)		KEYSTAT:CHA										CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT					SOURCEPAGE:p.205					BONUS:SKILL|Disguise (When mimicking objects)|skillinfo("MODIFIER","Disguise")-CHA
+Stealth (In caverns)					KEYSTAT:DEX										CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT					SOURCEPAGE:p.209					BONUS:SKILL|Stealth (In caverns)|skillinfo("MODIFIER","Stealth")-DEX
+
+###Block: Skill .MODs
+
+
+###Block: Skill .MODs
+# Skill Name	Define									Bonus to skill rank
+Disguise.MOD	DEFINE:UseConditionalMimicObjects|0		BONUS:SKILLRANK|Disguise (When mimicking objects)|skillinfo("RANK","Disguise")|PREVARGTEQ:UseConditionalMimicObjects,1
+Stealth.MOD		DEFINE:UseConditionalStealthInCaverns|0	BONUS:SKILLRANK|Stealth (In caverns)|skillinfor("RANK","Stealth")|PREVARGTEQ:UseConditionalStealthInCaverns,1

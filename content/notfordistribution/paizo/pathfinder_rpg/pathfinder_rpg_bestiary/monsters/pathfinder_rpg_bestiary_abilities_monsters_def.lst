@@ -1,0 +1,19 @@
+# CVS $Revision$ $Author$ -- Sun Aug  9 12:17:38 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+###Block: Dolphin abilities
+# Ability Name	Category of Ability		Type						Visible	Define				Description															Modify VAR						Source Page
+Hold Breath		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DEFINE:HoldBreathDuration|0	DESC:A dolphin can hold its breath for %1 rounds before it risks drowning.|HoldBreathDuration	BONUS:VAR|HoldBreathDuration|CONSCORE*6	SOURCEPAGE:p.88
+
+###Block: Elemental (Air) abilities
+# Ability Name	Category of Ability		Type						Visible	Description															Source Page
+Air Mastery		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Airborne creatures take a -1 penalty on attack and damage rolls against an air elemental.	SOURCEPAGE:p.120
+
+###Block: Elemental (Earth) abilities
+# Ability Name	Category of Ability		Type						Visible	Description																																																																																					Source Page
+Earth Glide		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:A burrowing earth elemental can pass through stone, dirt, or almost any other sort of earth except metal as easily as a fish swims through water. If protected against fire damage, it can even glide through lava. Its burrowing leaves behind no tunnel or hole, nor does it create any ripple or other sign of its presence. A Move Earth spell cast on an area containing a burrowing earth elemental flings the elemental back 30 feet, stunning the creature for 1 round unless it succeeds on a DC 15 Fortitude save.	SOURCEPAGE:p.122
+Earth Mastery	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:An earth elemental gains a +1 bonus on attack and damage rolls if both it and its foe are touching the ground. If an opponent is airborne or waterborne, the elemental takes a –4 penalty on attack and damage rolls. These modifiers apply to bull rush and overrun maneuvers, whether the elemental is initiating or resisting these kinds of attacks.																												SOURCEPAGE:p.122
+
+###Block: Frog abilities
+# Ability Name	Unique Key		Category of Ability		Type						Visible	Define		Description																	Modify VAR					Source Page
+Poison		KEY:Poison ~ Frog	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:PoisonDC|0	DESC:Injury; Save Fort DC %1; Frequency 1/round for 6 rounds; Effect 1d2 Con damage; Cure 1 save.|PoisonDC	BONUS:VAR|PoisonDC|10+(TL/2)+CON	SOURCEPAGE:p.135

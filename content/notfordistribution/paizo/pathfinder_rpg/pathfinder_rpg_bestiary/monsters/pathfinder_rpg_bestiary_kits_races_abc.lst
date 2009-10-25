@@ -1,0 +1,72 @@
+# CVS $Revision$ $Author$ -- Tue Aug  4 20:05:16 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.7
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+RACE:Aboleth	!PRERACE:1,%
+NAME:Aboleth
+ALIGN:LE
+SKILL:Bluff			RANK:8
+SKILL:Intimidate		RANK:8
+SKILL:TYPE.Knowledge	RANK:8
+SKILL:Perception		RANK:8
+SKILL:Spellcraft		RANK:8
+SKILL:Swim			RANK:8
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Weapon Focus (Tentacle)
+
+STARTPACK:Angel (Astral Deva) Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Angel (Astral Deva)]	SOURCEPAGE:p.10
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+RACE:Angel (Astral Deva)	!PRERACE:1,%
+NAME:Astral Deva
+ALIGN:NG
+SKILL:Acrobatics			RANK:15
+SKILL:TYPE.Craft			RANK:15
+SKILL:Diplomacy			RANK:15
+SKILL:Intimidate			RANK:15
+SKILL:Knowledge (Planes)	RANK:15
+SKILL:Knowledge (Religion)	RANK:15
+SKILL:Perception			RANK:15
+SKILL:Sense Motive		RANK:15
+SKILL:Stealth			RANK:15
+FEAT:Alertness
+FEAT:Cleave
+FEAT:Great Fortitude
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Power Attack
+FEAT:Toughness
+FEAT:Weapon Focus (Warhammer)
+GEAR:Warhammer	SIZE:PC	LOCATION:Primary Hand	EQMOD:PLUS2W.DISRPT
+
+STARTPACK:Ant (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Giant)]	SOURCEPAGE:p.16
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+RACE:Ant (Giant)	!PRERACE:1,%
+NAME:Giant Ant
+ALIGN:TN
+
+STARTPACK:Ant (Worker) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Worker)]	SOURCEPAGE:p.16
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+RACE:Ant (Worker)	!PRERACE:1,%
+NAME:Worker Ant
+ALIGN:TN
+
+STARTPACK:Ant (Drone) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Drone)]	SOURCEPAGE:p.16
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+RACE:Ant (Drone)	!PRERACE:1,%
+NAME:Drone Ant
+ALIGN:TN
+
+STARTPACK:Ant (Queen) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Queen)]	SOURCEPAGE:p.16
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+RACE:Ant (Queen)	!PRERACE:1,%
+NAME:Queen Ant
+ALIGN:TN
+
+STARTPACK:Beetle (Fire) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Beetle (Fire)]	SOURCEPAGE:p.118
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+RACE:Beetle (Fire)	!PRERACE:1,%
+NAME:Fire Beetle
+ALIGN:TN
