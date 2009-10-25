@@ -65,8 +65,8 @@ Mimic Object	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:A m
 
 
 ###Block: Minotar Specific Abilities
-# Ability Name	Category of Ability		Type								Visible	Description																											Source Page		VISIBLS
-Natural Cunning	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary					DESC:You possess an innate cunning and logical ability granting an immunity to maze spells and prevents you from ever becoming lost. You are never caught flat-footed.	SOURCEPAGE:p.206	VISIBLS:YES
+# Ability Name	Category of Ability		Type								Visible	Description																											Source Page
+Natural Cunning	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary					DESC:You possess an innate cunning and logical ability granting an immunity to maze spells and prevents you from ever becoming lost. You are never caught flat-footed.	SOURCEPAGE:p.206
 Powerful Charge	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.AttackOption	VISIBLE:YES	DESC:When you make a charge, you deal extra damage in addition to the normal benefits and hazards of a charge.										SOURCEPAGE:p.206
 
 ###Block: Mite Specific Abilities

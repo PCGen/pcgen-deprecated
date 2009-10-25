@@ -18,10 +18,10 @@ Air Mastery		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Air
 Three Wishes	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike		DESC:Noble djinn can grant three wishes to any being (nongenies only) who captures them.	SOURCEPAGE:p. 139
 
 ###Block: Genie (Efreeti) Abilities
-# Ability Name	Unique Key				Category of Ability		Type								Define				Description																		Modify VAR						Source Page		Description of the Benefits																																																					TYPE-Options
+# Ability Name	Unique Key				Category of Ability		Type								Define				Description																		Modify VAR						Source Page		Description of the Benefits
 Change Size		KEY:Change Size ~ Efreeti	CATEGORY:Special Ability	TYPE:SpecialAttack.SpellLike.AttackOption		DEFINE:EfreetiChangeSizeDC|0	DESC:Twice per day, an efreeti can magically change a creature's size.								BONUS:VAR|EfreetiChangeSizeDC|11+CHA	SOURCEPAGE:p. 140	BENEFIT:Twice per day, an efreeti can magically change a creature's size. This works just like an enlarge person or reduce person spell (the efreeti chooses when using the ability), except that the ability can work on the efreeti. A DC %1 Fortitude save negates the effect. This is the equivalent of a 2nd-level spell.|EfreetiChangeSizeDC
 Heat			KEY:Heat ~ Efreeti		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.AttackOption						DESC:An efreeti's body deals 1d6 points of fire damage whenever it hits in melee, or in each round it grapples.								SOURCEPAGE:p. 140
-Detect Magic	KEY:Detect Magic ~ Efreeti	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense								DESC:An Efreeti's spell-like ability to detect magic is always active.															SOURCEPAGE:p. 140																																																										TYPE-Options:  AttackOption.Aura.Immunity.ModifyAC.Resistance.Weakness
+Detect Magic	KEY:Detect Magic ~ Efreeti	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense								DESC:An Efreeti's spell-like ability to detect magic is always active.															SOURCEPAGE:p. 140
 
 ###Block: Genie (Janni) Abilities
 # Ability Name		Unique Key			Category of Ability		Type						Define				Description															Modify VAR					Source Page		Description of the Benefits
