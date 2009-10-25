@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Oct 24 22:07:59 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Oct 25 17:35:58 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 ###Block: Gargoyle Abilities
@@ -13,9 +13,9 @@ Paralysis		KEY:Paralysis ~ Gelatinous Cube	CATEGORY:Special Ability	TYPE:Special
 Transparent								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary									DESC:Due to its lack of coloration, a gelatinous cube is difficult to discern.																SOURCEPAGE:p. 138	BENEFIT:Due to its lack of coloration, a gelatinous cube is difficult to discern. A DC 15 Perception check is required to notice a motionless gelatinous cube. Any creature that fails to notice a gelatinous cube and walks into it is automatically engulfed.
 
 ###Block: Genie (Djinni) Abilities
-# Ability Name	Category of Ability		Type						Description														Source Page
-Air Mastery		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Airborne creatures take a -1 penalty on attack and damage rolls against you.		SOURCEPAGE:p. 139
-Three Wishes	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike		DESC:Noble djinn can grant three wishes to any being (nongenies only) who captures them.	SOURCEPAGE:p. 139
+# Ability Name	Unique Key			Category of Ability		Type						Description														Source Page
+Air Mastery		KEY:Air Mastery ~ Genie	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Airborne creatures take a -1 penalty on attack and damage rolls against you.		SOURCEPAGE:p. 139
+Three Wishes					CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike		DESC:Noble djinn can grant three wishes to any being (nongenies only) who captures them.	SOURCEPAGE:p. 139
 
 ###Block: Genie (Efreeti) Abilities
 # Ability Name	Unique Key				Category of Ability		Type								Define				Description																		Modify VAR						Source Page		Description of the Benefits
