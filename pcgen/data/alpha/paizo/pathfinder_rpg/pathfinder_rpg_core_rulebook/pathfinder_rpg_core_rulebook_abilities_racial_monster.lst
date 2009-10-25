@@ -5,7 +5,7 @@ SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:
 ###Block: Monster Racial for Companions
 # Ability Name	Category of Ability		Type
 #Grab			CATEGORY:Special Ability	TYPE:SpecialAttack
-Hold Breath		CATEGORY:Special Ability	TYPE:SpecialQuality
+#Hold Breath		CATEGORY:Special Ability	TYPE:SpecialQuality
 #Pounce		CATEGORY:Special Ability	TYPE:SpecialAttack
 #Rake			CATEGORY:Special Ability	TYPE:SpecialAttack
 #Scent			CATEGORY:Special Ability	TYPE:SpecialQuality
