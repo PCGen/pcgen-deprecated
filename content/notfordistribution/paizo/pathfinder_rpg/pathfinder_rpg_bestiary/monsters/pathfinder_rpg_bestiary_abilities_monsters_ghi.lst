@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Oct 25 17:35:58 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Tue Oct 27 14:53:55 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 ###Block: Gargoyle Abilities
@@ -59,9 +59,8 @@ Paralysis		KEY:Paralysis ~ Ghoul	CATEGORY:Special Ability	TYPE:SpecialAttack.Sup
 Stench		KEY:Stench ~ Ghast	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Aura	DEFINE:GhastStenchDC|0		DESC:10-foot radius, Fort DC %1 negates, sickened for 1d6+4 minutes|GhastStenchDC													BONUS:VAR|GhastStenchDC|10+(HD/2)+CON	SOURCEPAGE:p. 146	ASPECT:Ability Benefit|30 ft.	BENEFIT:The Ghast secretes an oily chemical that nearly every other creature finds offensive. All living creatures (except those with the stench special ability) within 30 feet must succeed on a Fortitude save (DC %1) or be sickened for 1d6+4 minutes. Creatures that successfully save cannot be affected by the same creature's stench for 24 hours. A delay poison or neutralize poison spell removes the effect from the sickened creature. Creatures with immunity to poison are unaffected, and creatures resistant to poison receive their normal bonus on their saving throws.|GhastStenchDC
 
 ###Block: Giant (Cloud) Abilities
-# Ability Name	Category of Ability		Type								Define				Description																		Multiple?	Choose			Weapon prof. bonus			Source Page		Aspects								Description of the Benefits
-Oversized Weapon	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary																											MULT:YES	CHOOSE:WEAPONPROFS|LIST	BONUS:WEAPONPROF=%LIST|PCSIZE|1
-Rock Throwing	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.AttackOption	DEFINE:RockThrowingRange|0	DESC:This creature is an accomplished rock thrower and has a +1 racial bonus on attack rolls with thrown rocks.													SOURCEPAGE:p. 147	ASPECT:Ability Benefit|(%1 ft.)|RockThrowingRange	BENEFIT:This creature is an accomplished rock thrower and has a +1 racial bonus on attack rolls with thrown rocks. A creature can hurl rocks up to two categories smaller than its size. A "rock" is any large, bulky, and relatively regularly shaped object made of any material with a hardness of at least 5. The creature can hurl the rock up to five range increments. Damage from a thrown rock is generally twice the creature's base slam damage plus 1-1/2 its Strength bonus.
+# Ability Name	Category of Ability		Type						Multiple?	Choose			Weapon prof. bonus
+Oversized Weapon	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	MULT:YES	CHOOSE:WEAPONPROFS|LIST	BONUS:WEAPONPROF=%LIST|PCSIZE|1
 
 ###Block: Horse abilities
 # Ability Name	Category of Ability		Type						Visible	Description															Source Page

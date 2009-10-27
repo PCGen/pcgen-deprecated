@@ -12,7 +12,7 @@ Air			VISIBLE:NO	SOURCEPAGE:p.310
 Angel			VISIBLE:NO	SOURCEPAGE:p.310																						BONUS:VAR|ElectricityResistanceBonus,FireResistanceBonus|10	ABILITY:Special Ability|AUTOMATIC|Immunity to Acid|Immunity to Cold|Immunity to Petrification|Resistance to Electricity|Resistance to Fire|Protective Aura|Truespeech	VISION:Darkvision (60')|Low-light Vision
 Aquatic		VISIBLE:NO	SOURCEPAGE:p.310
 Elemental		VISIBLE:NO	SOURCEPAGE:p.311
-Incorporeal		VISIBLE:NO	SOURCEPAGE:p.312	DEFINE:LOCK.STR|10	DEFINE:CanNotGrapple|1	BONUS:COMBAT|AC|max(1,CHA)|TYPE=Deflection	BONUS:COMBAT|TOHIT.MELEE|DEX											ABILITY:Special Ability|AUTOMATIC|Incorporeal Traits
+Incorporeal		VISIBLE:NO	SOURCEPAGE:p.312	DEFINE:LOCK.STR|10	DEFINE:CanNotGrapple|1	BONUS:COMBAT|AC|max(1,CHA)|TYPE=Deflection	BONUS:COMBAT|TOHIT.MELEE|DEX											ABILITY:Special Ability|AUTOMATIC|Incorporeal
 
 ###Block: Variable Type Traits
 # Template Name	Visible	Define
