@@ -562,6 +562,7 @@
 												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMB_Bull.INTVAL.SIGN|</td>
 												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMB_Overrun.INTVAL.SIGN|</td>
 											    </tr>
+|IIF(VAR.CMD:1)|
 											    <tr>
 												     <td align="center" class="center border2 color_header bor_col_dark">DEFENSE</td>
 												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMB_Grapple_DEF.INTVAL|</td>
@@ -571,6 +572,17 @@
 												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMB_Bull_DEF.INTVAL|</td>
 												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMB_Overrun_DEF.INTVAL|</td>
 											    </tr>
+|ELSE|
+											    <tr>
+												     <td align="center" class="center border2 color_header bor_col_dark">DEFENSE</td>
+												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMD_Grapple.INTVAL|</td>
+												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMD_Trip.INTVAL|</td>
+												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMD_Disarm.INTVAL|</td>
+												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMD_Sunder.INTVAL|</td>
+												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMD_BullRush.INTVAL|</td>
+												     <td align="center" class="center border2 color_hilite bor_col_dark">|VAR.CMD_Overruns.INTVAL|</td>
+											    </tr>
+|ENDIF|
 											    <tr>
 												     <td align="center" width="28%"></td>
 												     <td align="center" width="12%" valign="top" class="center bottom font7">GRAPPLE</td>
