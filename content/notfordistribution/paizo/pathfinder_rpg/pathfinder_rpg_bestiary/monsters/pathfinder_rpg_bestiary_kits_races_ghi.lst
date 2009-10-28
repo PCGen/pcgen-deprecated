@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Oct 24 22:07:40 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Tue Oct 27 22:41:26 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 
@@ -285,8 +285,117 @@ FEAT:Intimidating Prowess
 FEAT:Iron Will
 FEAT:Power Attack
 STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
-GEAR:Morningstar	SIZE:G	LOCATION:Both Hands
-GEAR:Chain Shirt	SIZE:H	LOCATION:Equipped
+GEAR:Morningstar		SIZE:G	LOCATION:Both Hands
+GEAR:Chain Shirt		SIZE:H	LOCATION:Equipped
+GEAR:Rock (Medium)			LOCATION:Not Carried
+
+STARTPACK:Giant (Fire) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Giant (Fire)],[!PRERACE:1,%]	SOURCEPAGE:p. 148
+ALIGN:LE
+RACE:Giant (Fire)	!PRERACE:1,%
+NAME:Fire Giant
+SKILL:Climb		RANK:8
+SKILL:TYPE=Craft	RANK:5
+SKILL:Intimidate	RANK:8
+SKILL:Perception	RANK:9
+FEAT:Cleave
+FEAT:Great Cleave
+FEAT:Improved Overrun
+FEAT:Improved Sunder
+FEAT:Iron Will
+FEAT:Martial Weapon Proficiency (Greatsword)
+FEAT:Power Attack
+FEAT:Weapon Focus (Greatsword)
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+GEAR:Greatsword	SIZE:L	LOCATION:Both Hands
+GEAR:Half-Plate	SIZE:L	LOCATION:Equipped
+GEAR:Rock (Small)			LOCATION:Not Carried
+
+
+STARTPACK:Giant (Frost) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Giant (Frost)],[!PRERACE:1,%]	SOURCEPAGE:p. 149
+ALIGN:CE
+RACE:Giant (Frost)	!PRERACE:1,%
+NAME:Frost Giant
+SKILL:Climb		RANK:3
+SKILL:TYPE=Craft	RANK:4
+SKILL:Intimidate	RANK:4
+SKILL:Perception	RANK:5
+SKILL:Stealth	RANK:6
+FEAT:Cleave
+FEAT:Great Cleave
+FEAT:Improved Overrun
+FEAT:Improved Sunder
+FEAT:Martial Weapon Proficiency (Greataxe)
+FEAT:Power Attack
+FEAT:Skill Focus (Stealth)
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+GEAR:Greataxe	SIZE:L	LOCATION:Both Hands
+GEAR:Chain Shirt	SIZE:L	LOCATION:Equipped
+GEAR:Rock (Small)			LOCATION:Not Carried
+
+
+STARTPACK:Giant (Hill) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Giant (Hill)],[!PRERACE:1,%]	SOURCEPAGE:p. 150
+ALIGN:CE
+RACE:Giant (Hill)	!PRERACE:1,%
+NAME:Hill Giant
+SKILL:Climb		RANK:3
+SKILL:Intimidate	RANK:4
+SKILL:Perception	RANK:3
+FEAT:Cleave
+FEAT:Intimidating Prowess
+FEAT:Martial Weapon Proficiency (Greatclub)
+FEAT:Power Attack
+FEAT:Weapon Focus (Greatclub)
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=10|CHA=11
+GEAR:Greatclub	SIZE:L	LOCATION:Both Hands
+GEAR:Hide		SIZE:L	LOCATION:Equipped
+GEAR:Rock (Small)			LOCATION:Not Carried
+
+
+STARTPACK:Giant (Stone) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Giant (Stone)],[!PRERACE:1,%]	SOURCEPAGE:p. 151
+ALIGN:TN
+RACE:Giant (Stone)	!PRERACE:1,%
+NAME:Stone Giant
+SKILL:Climb		RANK:1
+SKILL:Intimidate	RANK:9
+SKILL:Perception	RANK:8
+SKILL:Stealth	RANK:3
+FEAT:Iron Will
+FEAT:Martial Weapon Proficiency (Greatclub)
+FEAT:Point Blank Shot
+FEAT:Power Attack
+FEAT:Precise Shot
+FEAT:Quick Draw
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+GEAR:Greatclub	SIZE:L	LOCATION:Both Hands
+GEAR:Rock (Small)			LOCATION:Not Carried
+
+
+STARTPACK:Giant (Storm) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Giant (Storm)],[!PRERACE:1,%]	SOURCEPAGE:p. 152
+ALIGN:CG
+RACE:Giant (Storm)	!PRERACE:1,%
+NAME:Storm Giant
+SKILL:Acrobatics		RANK:16
+SKILL:Climb			RANK:3
+SKILL:TYPE=Craft		RANK:7
+SKILL:Intimidate		RANK:15
+SKILL:Perception		RANK:19
+SKILL:Perform (Sing)	RANK:7
+SKILL:Sense Motive	RANK:16
+SKILL:Swim			RANK:1
+FEAT:Awesome Blow
+FEAT:Cleave
+FEAT:Combat Reflexes
+FEAT:Improved Bull Rush
+FEAT:Improved Critical (Greatsword)
+FEAT:Improved Sunder
+FEAT:Improved Vital Strike
+FEAT:Iron Will
+FEAT:Power Attack
+FEAT:Vital Strike
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=10|CHA=11
+GEAR:Greatsword			SIZE:H	LOCATION:Both Hands	EQMOD:MWORKW
+GEAR:Longbow (Composite)	SIZE:H	LOCATION:Carried		EQMOD:MWORKW.BOWSTR|14
+GEAR:Breastplate			SIZE:H	LOCATION:Equipped		EQMOD:MWORKA
 
 
 STARTPACK:Horse (Pony) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Horse (Poison)]	SOURCEPAGE:p.118

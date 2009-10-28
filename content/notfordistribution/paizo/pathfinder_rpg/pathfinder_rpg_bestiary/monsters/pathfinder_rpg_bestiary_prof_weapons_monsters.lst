@@ -1,0 +1,6 @@
+# CVS $Revision$ $Author$ -- Tue Oct 27 21:58:01 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+###Block: Thrown Rocks
+# Weapon Name	Type
+Rock			TYPE:Simple.Ranged.Bludgeoning.Thrown.Rock
