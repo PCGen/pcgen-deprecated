@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Oct 27 22:41:26 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Oct 28 12:42:37 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 
@@ -396,6 +396,16 @@ STAT:STR=11|DEX=10|CON=11|INT=10|WIS=10|CHA=11
 GEAR:Greatsword			SIZE:H	LOCATION:Both Hands	EQMOD:MWORKW
 GEAR:Longbow (Composite)	SIZE:H	LOCATION:Carried		EQMOD:MWORKW.BOWSTR|14
 GEAR:Breastplate			SIZE:H	LOCATION:Equipped		EQMOD:MWORKA
+
+
+STARTPACK:Gibbering Mouther Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Gibbering Mouther],[!PRERACE:1,%]	SOURCEPAGE:p. 153
+ALIGN:TN
+RACE:Gibbering Mouther	!PRERACE:1,%
+NAME:Gibbering Mouther
+SKILL:Perception	RANK:4
+FEAT:Weapon Finesse
+FEAT:Weapon Focus (Bite)
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=10
 
 
 STARTPACK:Horse (Pony) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Horse (Poison)]	SOURCEPAGE:p.118

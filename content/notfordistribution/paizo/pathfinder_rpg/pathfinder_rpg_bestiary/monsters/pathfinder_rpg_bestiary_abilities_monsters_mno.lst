@@ -13,7 +13,6 @@ Sudden Strike	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:
 
 ###Block: Medusa Abilities
 # Ability Name	Output Name		Category of Ability		Type						Visible	Define				Description													Modify VAR						Source Page		Aspects
-All-Around Vision				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:NO						DESC:+4 racial bonus to Perception checks and cannot be flanked.											SOURCEPAGE:p.201
 Petrifying Gaze				CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:NO	DEFINE:PetrifyingGazeDC|0	DESC:Turn to stone permanently, 30 feet, Fortitude DC %1 negates.|PetrifyingGazeDC	BONUS:VAR|PetrifyingGazeDC|(HD/2)+10+CHA	SOURCEPAGE:p.201
 Poison ~ Medusa	OUTPUTNAME:Poison	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:NO	DEFINE:MedusaPoisonDC|0																BONUS:VAR|MedusaPoisonDC|(HD/2)+10+CON	SOURCEPAGE:p.201	ASPECT:Poison Effect|-1d3 Strength	ASPECT:Save Frequency|1/rd	ASPECT:Poison Duration|6rds	ASPECT:Poison Cure|2 consecutive saves	ASPECT:Save DC|%1|MedusaPoisonDC
 
