@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Oct 28 12:42:37 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Oct 28 21:50:40 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 
@@ -406,6 +406,56 @@ SKILL:Perception	RANK:4
 FEAT:Weapon Finesse
 FEAT:Weapon Focus (Bite)
 STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+
+
+STARTPACK:Girallon Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Girallon],[!PRERACE:1,%]	SOURCEPAGE:p. 154
+ALIGN:TN
+RACE:Girallon	!PRERACE:1,%
+NAME:Girallon
+SKILL:Perception	RANK:4
+SKILL:Stealth	RANK:3
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Skill Focus (Perception)
+FEAT:Toughness
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
+
+
+STARTPACK:Gnoll Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Gnoll],[!PRERACE:1,%]	SOURCEPAGE:p. 155
+ALIGN:CE
+RACE:Gnoll	!PRERACE:1,%
+NAME:Gnoll
+SKILL:Perception	RANK:2
+FEAT:Power Attack
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=11|CHA=10
+GEAR:Longspear			LOCATION:Both Hands
+GEAR:Leather			LOCATION:Equipped
+GEAR:Shield (Heavy/Wooden)	LOCATION:Equipped
+GEAR:Battleaxe			LOCATION:Carried
+
+
+STARTPACK:Goblin Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Goblin],[!PRERACE:1,%]	SOURCEPAGE:p. 156
+ALIGN:NE
+RACE:Goblin	!PRERACE:1,%
+NAME:Goblin
+CLASS:Warrior	LEVEL:1
+SKILL:Ride	RANK:1
+SKILL:Swim	RANK:1
+FEAT:Improved Initiative
+STAT:STR=13|DEX=11|CON=12|INT=10|WIS=9|CHA=8
+GEAR:Sword (Short)		SIZE:S	LOCATION:Primary Hand
+GEAR:Shortbow			SIZE:S	LOCATION:Carried
+GEAR:Leather			SIZE:S	LOCATION:Equipped
+GEAR:Shield (Light/Wooden)	SIZE:S	LOCATION:Equipped
+
+
+STARTPACK:Goblin Dog Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Goblin Dog],[!PRERACE:1,%]	SOURCEPAGE:p. 157
+ALIGN:TN
+RACE:Goblin Dog	!PRERACE:1,%
+NAME:Goblin Dog
+SKILL:Stealth	RANK:1
+FEAT:Toughness
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=10|CHA=10
 
 
 STARTPACK:Horse (Pony) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Horse (Poison)]	SOURCEPAGE:p.118
