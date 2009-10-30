@@ -1872,13 +1872,19 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 				+ ")\nCould not find any ADD: " + name + "|" + dString);
 			return;
 		}
+		boolean found = false;
 		for (PersistentTransitionChoice<?> tc : addList)
 		{
-			processTransitionChoice(cdo, it2, name, dString, tc);
+			found |= processTransitionChoice(cdo, it2, name, dString, tc);
+		}
+		if (!found)
+		{
+			warnings.add(cdo.getDisplayName() + "(" + cdo.getClass().getName()
+					+ ")\nCould not find matching ADD: " + name + "|" + dString);
 		}
 	}
 
-	private <T> void processTransitionChoice(CDOMObject cdo,
+	private <T> boolean processTransitionChoice(CDOMObject cdo,
 		Iterator<PCGElement> it2, String name, String dString,
 		PersistentTransitionChoice<T> tc)
 	{
@@ -1902,11 +1908,11 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 					tc.restoreChoice(thePC, cdo, tc.castChoice(obj));
 				}
 			}
+			return true;
 		}
 		else
 		{
-			warnings.add(cdo.getDisplayName() + "(" + cdo.getClass().getName()
-				+ ")\nCould not find matching ADD: " + name + "|" + dString);
+			return false;
 		}
 	}
 
