@@ -8859,6 +8859,14 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			SR =
 					Math.max(SR, pcClass.getSafe(ObjectKey.SR).getReduction()
 						.resolve(this, pcClass.getQualifiedKey()).intValue());
+			int lvl = pcClass.getLevel();
+			for (int i = 0; i <= lvl; i++)
+			{
+				PCClassLevel pcl = pcClass.getClassLevel(i);
+				SR =
+					Math.max(SR, pcl.getSafe(ObjectKey.SR).getReduction()
+						.resolve(this, pcl.getQualifiedKey()).intValue());
+			}
 		}
 
 		for (Ability aFeat : getFullAbilitySet())
