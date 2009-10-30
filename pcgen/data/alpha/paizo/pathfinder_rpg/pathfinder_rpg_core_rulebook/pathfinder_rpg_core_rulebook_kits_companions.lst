@@ -51,6 +51,9 @@ STAT:STR=10|DEX=11|CON=11|INT=11|WIS=10|CHA=10
 STARTPACK:Companion ~ Wolf	TYPE:Companion	VISIBLE:NO
 STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
 
+STARTPACK:Companion ~ Dire Rat	TYPE:Companion	VISIBLE:NO
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=11|CHA=10
+
 
 ###Block: Familiars --------------------------------------------------------------
 STARTPACK:Familiar ~ Bat	TYPE:Companion	VISIBLE:NO

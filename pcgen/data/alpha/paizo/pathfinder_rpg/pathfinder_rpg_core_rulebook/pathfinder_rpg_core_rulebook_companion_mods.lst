@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Oct 25 17:37:00 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Thu Oct 29 21:51:57 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Andrew Maitland
 
@@ -148,10 +148,8 @@ MASTERBONUSRACE:Familiar (Toad)		TYPE:Familiar						BONUS:HP|CURRENTMAX|3						V
 MASTERBONUSRACE:Familiar (Weasel)		TYPE:Familiar	BONUS:CHECKS|Reflex|2											VFEAT:Alertness
 #
 
-FOLLOWER:ShadowCompanion=1	TYPE:Shadow Companion	COPYMASTERBAB:MASTER	COPYMASTERCHECK:MASTER	COPYMASTERHP:max(1,MASTER/2)	
-
-
-
+# Class of the Master		Type				Copy Masters BAB		Copy Masters Checks	HP formula based on Master
+FOLLOWER:ShadowCompanion=1	TYPE:Shadow Companion	COPYMASTERBAB:MASTER	COPYMASTERCHECK:MASTER	COPYMASTERHP:max(1,MASTER/2)
 
 ###Block: Standard Companions
 # Class of the Master		Type			Automatically Gained Armor Prof.
