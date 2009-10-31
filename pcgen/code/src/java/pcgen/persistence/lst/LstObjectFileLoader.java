@@ -634,6 +634,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 		{
 			for (ModEntry element : entryList)
 			{
+				context.setSourceURI(element.source.getURI());
 				try
 				{
 					Campaign origCampaign = object.get(ObjectKey.SOURCE_CAMPAIGN);
@@ -676,6 +677,7 @@ public abstract class LstObjectFileLoader<T extends PObject> extends Observable
 	{
 		for (ModEntry me : copyLineList)
 		{
+			context.setSourceURI(me.source.getURI());
 			performCopy(context, me);
 		}
 		copyLineList.clear();
