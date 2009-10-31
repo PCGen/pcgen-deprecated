@@ -17,22 +17,25 @@ import pcgen.util.Logging;
 public class SubstitutionLevelSupport
 {
 
-	public static boolean levelArrayQualifies(final PlayerCharacter pc, final String aLine,
-		final CampaignSourceEntry tempSource)
+	public static boolean levelArrayQualifies(int level,
+			final PlayerCharacter pc, final String aLine,
+			final CampaignSourceEntry tempSource)
 	{
-		final PCClassLoader classLoader = new PCClassLoader(); 
-		 PCClass dummyClass = new PCClass();   
-		 
-		 try
+		final PCClassLoader classLoader = new PCClassLoader();
+		PCClass dummyClass = new PCClass();
+
+		try
 		{
-			classLoader.parseLine(Globals.getContext(), dummyClass, aLine, tempSource);
+			classLoader.parseLine(Globals.getContext(), dummyClass, aLine,
+					tempSource);
 		}
 		catch (PersistenceLayerException e)
 		{
 			Logging
-			.errorPrint("Unable to parse line from levelArray: " + aLine);
-		} 
-		 return dummyClass.qualifies(pc);
+					.errorPrint("Unable to parse line from levelArray: "
+							+ aLine);
+		}
+		return dummyClass.getClassLevel(level).qualifies(pc);
 	}
 
 	/**
@@ -56,7 +59,7 @@ public class SubstitutionLevelSupport
 	
 			if (aLevel == modLevel)
 			{
-				if (levelArrayQualifies(aPC, aLine, line.source))
+				if (levelArrayQualifies(aLevel, aPC, aLine, line.source))
 				{
 					newLevels.add(line);
 				}
@@ -88,7 +91,7 @@ public class SubstitutionLevelSupport
 	
 			if (level == modLevel)
 			{
-				if (!levelArrayQualifies(pc, aLine, line.source))
+				if (!levelArrayQualifies(level, pc, aLine, line.source))
 				{
 					return false;
 				}
