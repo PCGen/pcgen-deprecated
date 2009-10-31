@@ -266,7 +266,7 @@ public final class PCClassLoader extends LstObjectFileLoader<PCClass>
 			Logging.errorPrint("Expected a level value, but got '"
 					+ lineIdentifier + "' instead (as a level line in "
 					+ pcClass.getKeyName() + ") in source " + source.getURI());
-			Logging.errorPrint("  Rest of line was: + " + restOfLine);
+			Logging.errorPrint("  Rest of line was: " + restOfLine);
 		}
 	}
 
