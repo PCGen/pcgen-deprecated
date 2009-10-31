@@ -1424,23 +1424,21 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		StringBuffer unqualified = new StringBuffer();
 		List<PCClass> classList = pc.getClassList();
 		List<PCClass> exclassList = new ArrayList<PCClass>();
+		pc.setAlignment(newAlignment, false, true);
 
 		for (PCClass aClass : classList)
 		{
-			pc.setAlignment(oldAlignment, false, true);
+			if (!aClass.isQualified(pc))
 			{
-				if (!aClass.isQualified(pc))
+				if (aClass.containsKey(ObjectKey.EX_CLASS))
 				{
-					if (aClass.containsKey(ObjectKey.EX_CLASS))
+					if (unqualified.length() > 0)
 					{
-						if (unqualified.length() > 0)
-						{
-							unqualified.append(", "); //$NON-NLS-1$
-						}
-
-						unqualified.append(aClass.getKeyName());
-						exclassList.add(aClass);
+						unqualified.append(", "); //$NON-NLS-1$
 					}
+
+					unqualified.append(aClass.getKeyName());
+					exclassList.add(aClass);
 				}
 			}
 		}
