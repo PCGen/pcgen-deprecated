@@ -3,10 +3,6 @@ SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:
 # Original Entry by: Andrew Maitland
 
 
-###Block: Expert Class Skills
-# Ability Name		Category of Ability		Type				Visible		Stackable?	Multiple?	Choose			Class Skill
-#Expert Class Skills	CATEGORY:Special Ability	TYPE:ExpertClassSkills	VISIBLE:DISPLAY	STACK:NO	MULT:YES	CHOOSE:SKILLSNAMED|ALL	CSKILL:LIST
-
 ###Block: Weapon Proficiencies
 # Ability Name				Category of Ability		Type			Visible	Automatically Gained Weapon Prof.
 Assassin Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Special	VISIBLE:NO	AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Crossbow (Heavy)|Dagger|Dart|Rapier|Sap|Shortbow|Sword (Short)
