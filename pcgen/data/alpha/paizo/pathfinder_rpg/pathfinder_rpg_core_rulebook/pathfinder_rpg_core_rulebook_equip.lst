@@ -131,6 +131,7 @@ Artisan's Tools (Calligraphy)		TYPE:Goods.Tools.Artisan.CraftToolsCalligraphy			
 Artisan's Tools (Carpentry)		TYPE:Goods.Tools.Artisan.CraftToolsCarpentry													COST:5	WT:5								SOURCEPAGE:p.161	BONUS:SKILL|Craft (Carpentry)|2|TYPE=Circumstance|PRETYPE:1,Masterwork
 Artisan's Tools (Cloth)			TYPE:Goods.Tools.Artisan.CraftToolsCloth														COST:5	WT:5								SOURCEPAGE:p.161	BONUS:SKILL|Craft (Cloth)|2|TYPE=Circumstance|PRETYPE:1,Masterwork
 Artisan's Tools (Clothing)		TYPE:Goods.Tools.Artisan.CraftToolsClothing													COST:5	WT:5								SOURCEPAGE:p.161	BONUS:SKILL|Craft (Clothing)|2|TYPE=Circumstance|PRETYPE:1,Masterwork
+Artisan's Tools (Gemcutting)		TYPE:Goods.Tools.Artisan.CraftToolsGemcutting													COST:5	WT:5								SOURCEPAGE:p.161	BONUS:SKILL|Craft (Gemcutting)|2|TYPE=Circumstance|PRETYPE:1,Masterwork
 Artisan's Tools (Glass)			TYPE:Goods.Tools.Artisan.CraftToolsGlass														COST:5	WT:5								SOURCEPAGE:p.161	BONUS:SKILL|Craft (Glass)|2|TYPE=Circumstance|PRETYPE:1,Masterwork
 Artisan's Tools (Jewelry)		TYPE:Goods.Tools.Artisan.CraftToolsJewelry													COST:5	WT:5								SOURCEPAGE:p.161	BONUS:SKILL|Craft (Jewelry)|2|TYPE=Circumstance|PRETYPE:1,Masterwork
 Artisan's Tools (Leather)		TYPE:Goods.Tools.Artisan.CraftToolsLeather													COST:5	WT:5								SOURCEPAGE:p.161	BONUS:SKILL|Craft (Leather)|2|TYPE=Circumstance|PRETYPE:1,Masterwork

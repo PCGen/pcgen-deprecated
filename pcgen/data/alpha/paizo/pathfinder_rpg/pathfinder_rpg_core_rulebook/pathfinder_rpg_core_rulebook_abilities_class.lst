@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Nov  1 21:31:22 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Mon Nov  2 12:28:37 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Stefan Radermacher and Maredudd (Eric C. Smith)
 
@@ -831,7 +831,7 @@ Bonded Object	KEY:Arcane Bond ~ Bonded Object	CATEGORY:Special Ability	TYPE:Arca
 Cantrips		KEY:Cantrips ~ Wizard			CATEGORY:Special Ability	TYPE:SpecialQuality
 
 ###Block: Wizard Base Arcane School Ability
-# Ability Name	Category of Ability		Type			Visible	Define
+# Ability Name	Category of Ability		Type			Visible	Define				Ability
 Arcane School	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:ArcaneSchoolLVL|0	ABILITY:Special Ability|AUTOMATIC|Universal School|!PREABILITY:1,CATEGORY=Special Ability,TYPE.ArcaneSchool
 
 ###Block: Wizard Arcane Schools
