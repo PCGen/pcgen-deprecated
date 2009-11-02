@@ -831,8 +831,8 @@ Bonded Object	KEY:Arcane Bond ~ Bonded Object	CATEGORY:Special Ability	TYPE:Arca
 Cantrips		KEY:Cantrips ~ Wizard			CATEGORY:Special Ability	TYPE:SpecialQuality
 
 ###Block: Wizard Base Arcane School Ability
-# Ability Name	Category of Ability		Type			Visible	Define										Modify VAR																																																																																																		Source Page
-Arcane School	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:ArcaneSchoolLVL|0	DEFINE:ArcaneSchoolBonusSpellLvl|0	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=1	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=2	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=3	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=4	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=5	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=6	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=7	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=8	BONUS:VAR|ArcaneSchoolBonusSpellLvl|1|PRESPELLTYPE:1,Arcane=9	SOURCEPAGE:p.49
+# Ability Name	Category of Ability		Type			Visible	Define
+Arcane School	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:ArcaneSchoolLVL|0	ABILITY:Special Ability|AUTOMATIC|Universal School|!PREABILITY:1,CATEGORY=Special Ability,TYPE.ArcaneSchool
 
 ###Block: Wizard Arcane Schools
 # Ability Name		Category of Ability		Type									Description											Ability																																																	Bonus to Ability Pool					Source Page
@@ -844,7 +844,7 @@ Evocation School		CATEGORY:Special Ability	TYPE:SpecialQuality.ClassSpecializati
 Illusion School		CATEGORY:Special Ability	TYPE:SpecialQuality.ClassSpecialization.ArcaneSchool	DESC:You have chosen to specialize in illusion spells.			ABILITY:Special Ability|AUTOMATIC|Extended Illusion ~ Illusion School|Blinding Ray ~ Illusion School	ABILITY:Special Ability|AUTOMATIC|Invisibility Field ~ Illusion School|PREVARGTEQ:ArcaneSchoolLVL,8																	BONUS:ABILITYPOOL|Arcane Opposition School|2	SOURCEPAGE:p.81
 Necromancy School		CATEGORY:Special Ability	TYPE:SpecialQuality.ClassSpecialization.ArcaneSchool	DESC:You have chosen to specialize in necromancy spells.			ABILITY:Special Ability|AUTOMATIC|Power Over Undead ~ Necromancy School|Grave Touch ~ Necromancy School	ABILITY:Special Ability|AUTOMATIC|Life Sight ~ Necromancy School|PREVARGTEQ:ArcaneSchoolLVL,8																	BONUS:ABILITYPOOL|Arcane Opposition School|2	SOURCEPAGE:p.81
 Transmutation School	CATEGORY:Special Ability	TYPE:SpecialQuality.ClassSpecialization.ArcaneSchool	DESC:You have chosen to specialize in transmutation spells.			ABILITY:Special Ability|AUTOMATIC|Physical Enhancement ~ Transmutation School|Telekinetic Fist ~ Transmutation School	ABILITY:Special Ability|AUTOMATIC|Change Shape ~ Transmutation School|PREVARGTEQ:ArcaneSchoolLVL,8														BONUS:ABILITYPOOL|Arcane Opposition School|2	SOURCEPAGE:p.82
-Universal School		CATEGORY:Special Ability	TYPE:SpecialQuality.ClassSpecialization.ArcaneSchool	DESC:You have chosen not to specialize in a single school of spells.	ABILITY:Special Ability|AUTOMATIC|Hand of the Apprentice ~ Universal School	ABILITY:Special Ability|AUTOMATIC|Metamagic Mastery ~ Universal School|PREVARGTEQ:ArcaneSchoolLVL,8																													SOURCEPAGE:p.82
+Universal School		CATEGORY:Special Ability	TYPE:SpecialQuality.ClassSpecialization			DESC:You have chosen not to specialize in a single school of spells.	ABILITY:Special Ability|AUTOMATIC|Hand of the Apprentice ~ Universal School	ABILITY:Special Ability|AUTOMATIC|Metamagic Mastery ~ Universal School|PREVARGTEQ:ArcaneSchoolLVL,8																													SOURCEPAGE:p.82
 
 ###Block: Wizard Arcane Opposition Schools
 # Ability Name				Category of Ability		Type											Description											Source Page		Description of the Benefits
@@ -905,7 +905,6 @@ Life Sight		KEY:Life Sight ~ Necromancy School		CATEGORY:Special Ability	TYPE:Sp
 Command Undead	KEY:Command Undead ~ Necromancer		CATEGORY:Special Ability	TYPE:NecromancerChanneling.SpecialAttack																		DESC:Standard action, use one of your uses of channeling to enslave undead within 30 feet. Undead receive a Will save DC %1 to negate the effect. Undead that fail their saves fall under your control, obeying your commands to the best of their ability, as if under the effects of control undead. Intelligent undead receive a new saving throw each day to resist your command. You can control %2 of undead, so long as their total Hit Dice do not exceed your wizard level. Contested control of undead by another is an opposed Charisma check whenever your orders conflict.|ChannelEnergyPowerOverUndeadDC|ArcaneSchoolLVL
 Turn Undead		KEY:Turn Undead ~ Necromancer			CATEGORY:Special Ability	TYPE:NecromancerChanneling.SpecialAttack																		DESC:Standard action, use one of your uses of channeling to cause all undead within 30 feet of you to flee, as if panicked. Undead receive a Will save %1 to negate the effect. Undead that fail their save flee for 1 minute. Intelligent undead receive a new saving throw each round to end the effect.|ChannelEnergyPowerOverUndeadDC
 
-
 ###Block: Transmutation School Abilities
 # Ability Name				Unique Key							Category of Ability		Type									Visible	Define						Description																																																																				Ability																						Stat bonus										Modify VAR																				Source Page		Aspects							Temporary effect description
 Physical Enhancement			KEY:Physical Enhancement ~ Transmutation School	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.ArcaneSchoolPower			DEFINE:PhysicalEnhancementProgression|0	DESC:You gain a +%1 enhancement bonus to %2 physical ability score (Strength, Dexterity, or Constitution). You can change this bonus to a new ability score when you prepare spells.|min(5,(ArcaneSchoolLVL/5)+1)|PhysicalEnhancementProgression																													ABILITY:Special Ability|AUTOMATIC|Physical Enhancement Bonus ~ STR|Physical Enhancement Bonus ~ DEX|Physical Enhancement Bonus ~ CON												BONUS:VAR|PhysicalEnhancementProgression|1	BONUS:VAR|PhysicalEnhancementProgression|1|PREVARGTEQ:ArcaneSchoolLVL,20	SOURCEPAGE:p.82
@@ -919,104 +918,6 @@ Change Shape				KEY:Change Shape ~ Transmutation School		CATEGORY:Special Abilit
 # Ability Name		Unique Key							Category of Ability		Type									Description																																																																				Source Page
 Hand of the Apprentice	KEY:Hand of the Apprentice ~ Universal School	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural.ArcaneSchoolPower	DESC:As a standard action, you can make a single attack against a foe within 30 feet as a ranged attack with a thrown weapon, using your Intelligence modifier on the attack roll instead of the Dexterity modifier. You can use this ability %1 times per day.|INT+3																										SOURCEPAGE:p.82
 Metamagic Mastery		KEY:Metamagic Mastery ~ Universal School		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural.ArcaneSchoolPower	DESC:You can apply any one metamagic feat that you know to a spell you are about to cast. This does not alter the level of the spell or the casting time. You can use this ability %1 per day. Any time you use this ability to apply a metamagic feat that increases the spell level by more than 1, you must use an additional daily usage for each level above 1 that the feat adds to the spell.|(ArcaneSchoolLVL-8)/2)+1	SOURCEPAGE:p.197
-
-###Block: Wizard Bonus Spells
-
-###Block: Abjuration School Bonus Spells
-# Ability Name						Description
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive an additional spell slot per day for one 1st level abjuration spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Abjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level abjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
-
-###Block: Conjuration School Bonus Spells
-# Ability Name						Description
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive an additional spell slot per day for one 1st level conjuration spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Conjuration School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level conjuration spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
-
-###Block: Divination School Bonus Spells
-# Ability Name						Description
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive an additional spell slot per day for one 1st level divination spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Divination School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level divination spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
-
-###Block: Enchanment School Bonus Spells
-# Ability Name						Description
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive an additional spell slot per day for one 1st level enchantment spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Enchantment School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level enchantment spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
-
-###Block: Evocation School Bonus Spells
-# Ability Name						Description
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive an additional spell slot per day for one 1st level evocation spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Evocation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level evocation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
-
-###Block: Illusion School Bonus Spells
-# Ability Name						Description
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive an additional spell slot per day for one 1st level illusion spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Illusion School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level illusion spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
-
-###Block: Necromancy School Bonus Spells
-# Ability Name						Description
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive an additional spell slot per day for one 1st level necromancy spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Necromancy School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level necromancy spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
-
-###Block: Transmutation School Bonus Spells
-# Ability Name							Description
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive an additional spell slot per day for one 1st level transmutation spell.|PREVAREQ:ArcaneSchoolBonusSpellLvl,1
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st and 2nd level transmutation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,2
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 3rd level transmutation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,3
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 4th level transmitation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,4
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 5th level transmutation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,5
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 6th level transmutation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,6
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 7th level transmutation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,7
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 8th level transmutation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,8
-CATEGORY=Special Ability|Transmutation School.MOD	DESC:You receive additional spell slots per day, one each for 1st through 9th level transmutation spells.|PREVAREQ:ArcaneSchoolBonusSpellLvl,9
 
 ###Block: Expert Abilities --------------------------------------------------------------------------------------------------------------------------------
 # Ability Name		Category of Ability		Type				Visible		Stackable?	Multiple?	Choose			Class Skill
