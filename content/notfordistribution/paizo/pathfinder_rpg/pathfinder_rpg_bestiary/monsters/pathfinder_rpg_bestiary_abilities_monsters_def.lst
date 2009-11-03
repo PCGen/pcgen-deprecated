@@ -1,10 +1,6 @@
 # CVS $Revision$ $Author$ -- Sun Oct 25 17:35:58 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
-###Block: Dolphin abilities
-# Ability Name	Category of Ability		Type						Visible	Define				Description															Modify VAR						Source Page
-Hold Breath		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DEFINE:HoldBreathDuration|0	DESC:A dolphin can hold its breath for %1 rounds before it risks drowning.|HoldBreathDuration	BONUS:VAR|HoldBreathDuration|CONSCORE*6	SOURCEPAGE:p.88
-
 ###Block: Elemental (Air) abilities
 # Ability Name	Unique Key					Category of Ability		Type						Visible	Description															Source Page
 Air Mastery		KEY:Air Mastery ~ Air Elemental	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Airborne creatures take a -1 penalty on attack and damage rolls against an air elemental.	SOURCEPAGE:p.120

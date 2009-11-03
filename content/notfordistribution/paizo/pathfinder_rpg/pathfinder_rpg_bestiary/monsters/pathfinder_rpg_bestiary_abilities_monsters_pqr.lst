@@ -1,6 +1,3 @@
 # CVS $Revision$ $Author$ -- Sat Aug  8 12:38:49 2009 -- reformated by prettylst.pl v1.39 (build 9548)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
-###Block: Dire Rat abilities
-# Ability Name	Unique Key			Category of Ability		Type						Visible	Define			Description																										Modify VAR					Source Page
-Disease		KEY:Disease ~ Dire Rat	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:DiseaseDC|0	DESC:Filth Fever: Bite injury; Save Fort DC %1; Onset 1d3 days; Frequency 1/day; Effect 1d3 Dex damage and 1d3 Con damage; Cure 2 consecutive saves.|DiseaseDC	BONUS:VAR|DiseaseDC|10+(TL/2)+CON	SOURCEPAGE:p.232
