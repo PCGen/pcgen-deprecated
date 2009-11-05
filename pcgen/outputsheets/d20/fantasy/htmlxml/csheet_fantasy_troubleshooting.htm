@@ -6,9 +6,9 @@
 	This format is designed to provide detailed information on bonuses 
 	and other objects for the purpose of troubleshooting characters
 
-$Revision: 1.5 $
-$Author: eddyanthony $
-$Date: 2007/03/08 18:57:54 $
+$Revision$
+$Author$
+$Date$
 
 -->
 <style type="text/css">
@@ -67,13 +67,17 @@ $Date: 2007/03/08 18:57:54 $
 |ELSE|
 |AC.NaturalArmor.SIGN|[NATURAL] 
 |ENDIF|
+|IIF(AC.Deflection:0)|
+|ELSE|
+|AC.Deflection.SIGN|[DEFLECTION] 
+|ENDIF|
 |IIF(AC.Misc:0)|
 |ELSE|
 |AC.Misc.SIGN|[MISC]
 |ENDIF|
 |IIF(AC.Armor:0)|
 |ELSE|
-|AC.Armor.SIGN| |EQ.IS.ARMOR.0.NAME|, 
+|AC.Armor.SIGN| [|EQ.IS.ARMOR.0.NAME|], 
 |ENDIF|
 |IIF(AC.Shield:0)|
 |ELSE|
