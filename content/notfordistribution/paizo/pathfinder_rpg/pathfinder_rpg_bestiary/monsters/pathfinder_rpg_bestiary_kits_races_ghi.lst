@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Nov  9 23:59:47 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Tue Nov 10 12:54:53 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 
@@ -534,6 +534,38 @@ SKILL:Stealth	RANK:4
 FEAT:Improved Initiative
 FEAT:Toughness
 STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Green Hag Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Green Hag],[!PRERACE:1,%]	SOURCEPAGE:p.167
+ALIGN:CE
+RACE:Green Hag	!PRERACE:1,%
+NAME:Green Hag
+SKILL:Bluff				RANK:9
+SKILL:Disguise			RANK:5
+SKILL:Knowledge (Arcana)	RANK:9
+SKILL:Perception			RANK:9
+SKILL:Sense Motive		RANK:6
+SKILL:Stealth			RANK:9
+SKILL:Swim				RANK:3
+FEAT:Alertness
+FEAT:Blind-Fight
+FEAT:Combat Casting
+FEAT:Deceitful
+FEAT:Great Fortitude
+STAT:STR=11|DEX=10|CON=10|INT=11|WIS=11|CHA=10
+
+
+STARTPACK:Griffon Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Griffon],[!PRERACE:1,%]	SOURCEPAGE:p.168
+ALIGN:TN
+RACE:Griffon	!PRERACE:1,%
+NAME:Griffon
+SKILL:Acrobatics	RANK:1
+SKILL:Fly		RANK:2
+SKILL:Perception	RANK:1
+FEAT:Iron Will
+FEAT:Skill Focus (Perception)
+FEAT:Weapon Focus (Bite)
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=11|CHA=10
 
 
 STARTPACK:Horse (Pony) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Horse (Poison)]	SOURCEPAGE:p.118
