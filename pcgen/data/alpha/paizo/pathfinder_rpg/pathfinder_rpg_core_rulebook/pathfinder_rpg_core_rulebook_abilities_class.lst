@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Nov  3 09:37:01 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Tue Nov 10 00:19:36 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Stefan Radermacher and Maredudd (Eric C. Smith)
 
@@ -219,8 +219,8 @@ Venom Immunity								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary
 A Thousand Faces								CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	DESC:You have the ability to change your appearance at will, as if using the Alter Self spell, but only while in your normal form.																									SOURCEPAGE:p.51
 
 ###Block: Nature's Bond
-# Ability Name	Unique Key						Output Name					Category of Ability		Type								Visible		Define			Bonus to Ability Pool			Allow Follower			Allowed Companions
-Animal Companion	KEY:Nature's Bond ~ Animal Companion							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.NatureBond				DEFINE:CompLevel|0							FOLLOWERS:Animal Companion|1	COMPANIONLIST:Animal Companion|Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Boar),Companion (Camel),Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Crocodile (Alligator)),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Snake (Constrictor)),Companion (Snake (Viper)),Companion (Wolf)
+# Ability Name	Unique Key						Output Name					Category of Ability		Type								Visible		Define			Bonus to Ability Pool			Modify VAR					Allow Follower			Allowed Companions
+Animal Companion	KEY:Nature's Bond ~ Animal Companion							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.NatureBond				DEFINE:CompLevel|0													FOLLOWERS:Animal Companion|1	COMPANIONLIST:Animal Companion|Companion (Ape),Companion (Badger (Wolverine)),Companion (Bear),Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl)),Companion (Boar),Companion (Camel),Companion (Cat (Big (Lion))),Companion (Cat (Big (Tiger))),Companion (Cat (Small (Cheetah))),Companion (Cat (Small (Leopard))),Companion (Crocodile (Alligator)),Companion (Dinosaur (Deinonychus)),Companion (Dinosaur (Velociraptor)),Companion (Dog),Companion (Horse),Companion (Pony),Companion (Shark),Companion (Snake (Constrictor)),Companion (Snake (Viper)),Companion (Wolf)
 Druid Domain	KEY:Nature's Bond ~ Druid Domain								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.NatureBond	VISIBLE:DISPLAY					BONUS:ABILITYPOOL|Druid Domain|1	BONUS:VAR|DomainPowerTimes|3+WIS
 
 #Domain Choices
