@@ -99,5 +99,4 @@ SPELL:pathfinder_rpg_bestiary_spells.lst
 TEMPLATE:pathfinder_rpg_bestiary_templates.lst
 #TEMPLATE:pathfinder_rpg_bestiary_templates_dragons.lst
 TEMPLATE:pathfinder_rpg_bestiary_templates_simple.lst
-TEMPLATE:pathfinder_rpg_bestiary_templates_types.lst
 WEAPONPROF:pathfinder_rpg_bestiary_prof_weapons_monsters.lst
