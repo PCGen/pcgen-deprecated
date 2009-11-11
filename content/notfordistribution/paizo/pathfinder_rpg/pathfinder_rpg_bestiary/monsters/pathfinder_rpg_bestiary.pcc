@@ -88,6 +88,7 @@ RACE:pathfinder_rpg_bestiary_races_vw.lst
 RACE:pathfinder_rpg_bestiary_races_xyz.lst
 RACE:pathfinder_rpg_bestiary_races_base.lst
 RACE:pathfinder_rpg_bestiary_races_familiars.lst
+SKILL:pathfinder_rpg_bestiary_skills_conditional.lst
 SPELL:pathfinder_rpg_bestiary_spells.lst
 TEMPLATE:pathfinder_rpg_bestiary_templates_simple.lst
 WEAPONPROF:pathfinder_rpg_bestiary_prof_weapons_monsters.lst

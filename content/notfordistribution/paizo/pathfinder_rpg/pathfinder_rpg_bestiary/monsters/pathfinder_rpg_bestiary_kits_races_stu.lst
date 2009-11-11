@@ -1,2 +1,15 @@
-# CVS $Revision$ $Author$ -- Tue Aug  4 20:05:16 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+# CVS $Revision$ $Author$ -- Tue Nov 10 22:18:52 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+STARTPACK:Unicorn Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Unicorn],[!PRERACE:1,%]	SOURCEPAGE:p.269
+ALIGN:CG
+RACE:Unicorn	!PRERACE:1,%
+NAME:Unicorn
+SKILL:Acrobatics	RANK:2
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+SKILL:Survival	RANK:2
+FEAT:Multiattack
+FEAT:Weapon Focus (Gore)
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=11|CHA=10
+

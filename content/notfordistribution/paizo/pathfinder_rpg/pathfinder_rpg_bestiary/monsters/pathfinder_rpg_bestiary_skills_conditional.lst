@@ -1,15 +1,17 @@
-SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
+# CVS $Revision$ $Author$ -- Tue Nov 10 22:18:52 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 # Original Entry by: Eric Smith (Maredudd)
 
 ###Block: Conditional Skills for output only
-# Skill Name							Key Stat	Untrained?		Skill Penalty Apply	Classes	Type			Visible		Source Page		Bonus to skill
-Disguise (When mimicking objects)		KEYSTAT:CHA										CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT					SOURCEPAGE:p.205					BONUS:SKILL|Disguise (When mimicking objects)|skillinfo("MODIFIER","Disguise")-CHA
-Stealth (In caverns)					KEYSTAT:DEX										CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT					SOURCEPAGE:p.209					BONUS:SKILL|Stealth (In caverns)|skillinfo("MODIFIER","Stealth")-DEX
+# Skill Name				Key Stat	Untrained?		Classes	Type			Visible		Source Page
+#Disguise (When mimicking objects)	KEYSTAT:CHA	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.205
+#Stealth (In caverns)			KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.209
+# Skill Name		Key Stat	Untrained?		Classes	Type			Visible		Source Page
+Survival (In forests)	KEYSTAT:WIS	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT	SOURCEPAGE:p.107
 
 ###Block: Skill .MODs
-
-
-###Block: Skill .MODs
-# Skill Name	Define									Bonus to skill rank
-Disguise.MOD	DEFINE:UseConditionalMimicObjects|0		BONUS:SKILLRANK|Disguise (When mimicking objects)|skillinfo("RANK","Disguise")|PREVARGTEQ:UseConditionalMimicObjects,1
-Stealth.MOD		DEFINE:UseConditionalStealthInCaverns|0	BONUS:SKILLRANK|Stealth (In caverns)|skillinfor("RANK","Stealth")|PREVARGTEQ:UseConditionalStealthInCaverns,1
+# Skill Name	Bonus to skill									Bonus to skill rank
+#Disguise.MOD	BONUS:SKILL|Disguise (When mimicking objects)|SKILL.Disguise.MISC	BONUS:SKILLRANK|Disguise (When mimicking objects)|skillinfo("RANK","Disguise")|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Disguise (When mimicking objects).MISC"),var("SKILL.Disguise.MISC")
+#Stealth.MOD	BONUS:SKILL|Stealth (In caverns)|SKILL.Stealth.MISC			BONUS:SKILLRANK|Stealth (In caverns)|skillinfor("RANK","Stealth")|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Stealth (In caverns).MISC"),var("SKILL.Stealth.MISC")
+# Skill Name	Bonus to skill							Bonus to skill rank
+Survival.MOD	BONUS:SKILL|Survival (In forests)|SKILL.Survival.MISC	BONUS:SKILLRANK|Survival (In forests)|SKILLRANK=Survival|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Survival (In forests).MISC"),var("SKILL.Survival.MISC")
