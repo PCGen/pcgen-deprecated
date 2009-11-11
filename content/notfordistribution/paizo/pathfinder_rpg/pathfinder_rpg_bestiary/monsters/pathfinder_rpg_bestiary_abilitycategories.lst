@@ -1,0 +1,11 @@
+# CVS $Revision: $ $Author: $ -- Wed Sep 16 07:58:26 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+#SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+
+# Ability Category					Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object	Plural description for UI			Display Location
+ABILITYCATEGORY:Ghost Ability				VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:GhostAbility	PLURAL:Ghost Abilities				DISPLAYLOCATION:Racial Abilities
+ABILITYCATEGORY:Half-Celestial Ability Bonus	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AbilityBonus	PLURAL:Half-Celestial Ability Bonuses	DISPLAYLOCATION:Racial Abilities
+ABILITYCATEGORY:Half-Fiend Ability Bonus		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AbilityBonus	PLURAL:Half-Fiend Ability Bonuses		DISPLAYLOCATION:Racial Abilities
+
+#
+# End
+#

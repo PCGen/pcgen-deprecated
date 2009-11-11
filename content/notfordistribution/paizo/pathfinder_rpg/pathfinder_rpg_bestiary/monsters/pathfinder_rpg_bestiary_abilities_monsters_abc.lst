@@ -1,5 +1,5 @@
-# CVS $Revision$ $Author$ -- Sat Aug  8 21:59:20 2009 -- reformated by prettylst.pl v1.39 (build 9548)
-SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+# CVS $Revision$ $Author$ -- Tue Nov 10 16:51:22 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Aboleth abilities
 # Ability Name	Category of Ability		Type							Visible	Define			Description																																																																																												Modify VAR						Source Page
@@ -7,13 +7,28 @@ Mucus Cloud		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.Aura	VISI
 Slime			CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary		VISIBLE:YES	DEFINE:SlimeDC|0		DESC:A creature hit by an aboleth's tentacle must succeed on a DC %1 Fortitude save or his skin and flesh transform into a clear, slimy membrane over the course of 1d4 rounds. The creature's new "flesh" is soft and tender, reducing its Constitution score by 4 as long as it persists. If the creature's flesh isn't kept moist, it dries quickly and the victim takes 1d12 points of damage every 10 minutes. Remove disease and similar effects can restore an afflicted creature to normal, but immunity to disease offers no protection from this attack.|SlimeDC	BONUS:VAR|SlimeDC|10+(TL/2)+CON		SOURCEPAGE:p.8
 
 ###Block: Angel abilities
-# Ability Name	Category of Ability		Type						Visible
-Stun			CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:YES
+# Ability Name	Category of Ability		Type							Visible
+Protective Aura	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Aura	VISIBLE:YES
+Stun			CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural		VISIBLE:YES
+Truespeech		CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural		VISIBLE:YES
 
 ###Block: Ant abilities
 # Ability Name	Unique Key			Category of Ability		Type						Visible	Define		Description																Modify VAR					Source Page
 Poison		KEY:Poison ~ Giant Ant	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:PoisonDC|0	DESC:Injury; Save Fort DC %1; Frequency 1/round for 4 rounds; Effect 1d2 Str; Cure 1 save.|PoisonDC	BONUS:VAR|PoisonDC|10+(TL/2)+CON	SOURCEPAGE:p.16
 
+###Block: Bat Swarm abilities
+# Ability Name	Category of Ability		Type						Visible	Description																																														Source Page
+Wounding		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DESC:Any living creature damaged by a bat swarm continues to bleed, losing 1 hit point per round thereafter. Multiple wounds do not result in cumulative bleeding loss. The bleeding can be stopped by a DC 10 Heal check or the application of a cure spell or some other healing magic.	SOURCEPAGE:p.11
+
 ###Block: Beetle abilities
 # Ability Name	Category of Ability		Type						Visible	Description																										Source Page
 Luminescence	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:A fire beetle's glowing glands provide light in a 10-foot radius. A dead fire beetle's luminescent glands continue to glow for 1d6 days after its death.	SOURCEPAGE:p.33
+
+###Block: Centipede abilities
+# Ability Name	Unique Key				Category of Ability		Type						Visible	Define		Description																	Modify VAR					Source Page
+Poison		KEY:Poison ~ Giant Centipede	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:PoisonDC|0	DESC:Injury; Save Fort DC %1; Frequency 1/round for 6 rounds; Effect 1d3 Dex damage; Cure 1 save.|PoisonDC	BONUS:VAR|PoisonDC|10+(TL/2)+CON	SOURCEPAGE:p.43
+Poison		KEY:Poison ~ Centipede Swarm	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:PoisonDC|0	DESC:Injury; Save Fort DC %1; Frequency 1/round for 6 rounds; Effect 1d4 Dex damage; Cure 1 save.|PoisonDC	BONUS:VAR|PoisonDC|10+(TL/2)+CON	SOURCEPAGE:p.43
+
+#
+# End
+#

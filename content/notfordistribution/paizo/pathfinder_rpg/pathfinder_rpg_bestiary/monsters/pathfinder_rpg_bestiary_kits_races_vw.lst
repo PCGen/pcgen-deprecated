@@ -1,2 +1,27 @@
-# CVS $Revision$ $Author$ -- Tue Aug  4 20:05:16 2009 -- reformated by prettylst.pl v1.39 (build 9548)
-SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+
+STARTPACK:Wolf Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Wolf]	SOURCEPAGE:p.278
+RACE:Wolf	!PRERACE:1,%
+NAME:Wolf
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:2
+FEAT:Skill Focus (Perception)
+
+
+STARTPACK:Wolf (Dire) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Wolf (Dire)]	SOURCEPAGE:p.278
+RACE:Wolf (Dire)	!PRERACE:1,%
+NAME:Dire Wolf
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:2
+FEAT:Run
+FEAT:Skill Focus (Perception)
+FEAT:Weapon Focus (Claw)
+
+#
+# End
+#

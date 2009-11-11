@@ -1,0 +1,29 @@
+# CVS $Revision: $ $Author: $ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+
+###Block: Creature Types
+# Template Name	Visible	Define			Bonus to HP
+Construct		VISIBLE:NO	DEFINE:LOCK.CON|10	BONUS:HP|CURRENTMAX|max(SIZE-2,0)*10	BONUS:HP|CURRENTMAX|max(SIZE-6,0)*10
+Undead		VISIBLE:NO	DEFINE:LOCK.CON|10	BONUS:HP|CURRENTMAX|TL*CHA
+
+###Block: Creature Subtypes
+# Template Name	Visible	Source Page		Define							Combat bonus											Modify VAR									Class Skill				Ability																											Vision
+Air			VISIBLE:NO	SOURCEPAGE:p.310
+Angel			VISIBLE:NO	SOURCEPAGE:p.310																						BONUS:VAR|ElectricityResistanceBonus,FireResistanceBonus|10						ABILITY:Special Ability|AUTOMATIC|Immunity to Acid|Immunity to Cold|Immunity to Petrification|Resistance to Electricity|Resistance to Fire|Protective Aura|Truespeech	VISION:Darkvision (60')|Low-light Vision
+Aquatic		VISIBLE:NO	SOURCEPAGE:p.310
+Earth			VISIBLE:NO	SOURCEPAGE:p.310
+Elemental		VISIBLE:NO	SOURCEPAGE:p.311
+Fire			VISIBLE:NO	SOURCEPAGE:p.312																																					ABILITY:Special Ability|AUTOMATIC|Immunity to Fire|Vulnerability to Cold
+Giant			VISIBLE:NO	SOURCEPAGE:p.312																																CSKILL:Intimidate|Perception																													VISION:Low-light Vision
+Goblinoid		VISIBLE:NO	SOURCEPAGE:p.312																																CSKILL:Stealth
+Incorporeal		VISIBLE:NO	SOURCEPAGE:p.312	DEFINE:LOCK.STR|10	DEFINE:CanNotGrapple|1	BONUS:COMBAT|AC|max(1,CHA)|TYPE=Deflection	BONUS:COMBAT|TOHIT.MELEE|DEX																ABILITY:Special Ability|AUTOMATIC|Incorporeal Traits
+Swarm			VISIBLE:NO	SOURCEPAGE:p.312																																					ABILITY:Special Ability|AUTOMATIC|Swarm Traits|Distraction ~ Swarm
+Water			VISIBLE:NO	SOURCEPAGE:p.313
+
+###Block: Variable Type Traits
+# Template Name	Visible	Define
+Mindless		VISIBLE:NO	DEFINE:LOCK.INT|10
+
+#
+# End
+#

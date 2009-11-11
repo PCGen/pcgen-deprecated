@@ -1,5 +1,5 @@
-# CVS $Revision$ $Author$ -- Sat Oct 24 10:25:19 2009 -- reformated by prettylst.pl v1.39 (build 10232)
-SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Simpe Templated
 # Template Name		Visible	Source Page		Combat bonus											Adjust PC Size		Stat bonus								Modify VAR																																													Ability																					Spell Res.	Vision			Hit Dice
@@ -9,11 +9,6 @@ Fiendish Creature		VISIBLE:YES	SOURCEPAGE:p.294																											BONUS:
 Giant Creature		VISIBLE:YES	SOURCEPAGE:p.295	BONUS:COMBAT|AC|3|TYPE=NaturalArmor.REPLACE	BONUS:COMBAT|DAMAGESIZE|1	BONUS:SIZEMOD|NUMBER|1	BONUS:STAT|STR,CON|4|TYPE=Size	BONUS:STAT|DEX|-2
 Young Creature		VISIBLE:YES	SOURCEPAGE:p.295	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:COMBAT|DAMAGESIZE|-1	BONUS:SIZEMOD|NUMBER|-1	BONUS:STAT|DEX|-2|TYPE=Size	BONUS:STAT|STR,CON|-4
 
-###Block: Ghost Template
-# Template Name	Hit Dice Size			Challenge Rating	Visible	Template				Source Page		Bonus to Ability Pool				Bonus to HP				Bonus to skill						Stat bonus		Modify VAR									Class Skill																			Ability																	Move		Main Race Type	Race Subtype		Vision
-Ghost			HITDIE:8|CLASS.TYPE=Monster	CR:2			VISIBLE:YES	TEMPLATE:Undead|Incorporeal	SOURCEPAGE:p.144	BONUS:ABILITYPOOL|Ghost Ability|(CR-3)/3	BONUS:HP|CURRENTMAX|CHA-CON	BONUS:SKILL|Perception,Stealth|8|TYPE=Racial	BONUS:STAT|CHA|4	BONUS:VAR|Maneuverability|5	BONUS:VAR|ChannelResistance|4	CSKILL:Climb|Disguise|Fly|Intimidate|Knowledge (Arcana)|Knowledge (Religion)|Perception|Sense Motive|Spellcraft|Stealth	ABILITY:Special Ability|AUTOMATIC|Rejuvenation|Corrupting Touch|Flight Maneuverability|Channel Resistance	MOVE:Fly,30	RACETYPE:Undead	RACESUBTYPE:Incorporeal	VISION:Darkvision (60')
-
-# Can't do now: Remove Natural Armor bonus
-# Can't do now: Remove MOVE modes
-# Can't do now: Set Fly Speed
-# Can't do now: Remove Base Attacks
+#
+# End
+#

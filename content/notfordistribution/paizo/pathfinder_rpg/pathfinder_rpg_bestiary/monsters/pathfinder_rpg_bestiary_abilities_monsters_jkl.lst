@@ -1,2 +1,14 @@
-# CVS $Revision$ $Author$ -- Sat Aug  8 14:54:53 2009 -- reformated by prettylst.pl v1.39 (build 9548)
-SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+
+###Block: Crag Linnorm abilities
+# Ability Name			Category of Ability		Type						Visible	Define			Description																													Modify VAR
+Death Curse				CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatrual	VISIBLE:YES	DEFINE:DeathCurseDC|0	DESC:When a creature slays a crag linnorm, the slayer is affected by the curse of fire. Curse of Fire: save Will DC %1; effect creature gains vulnerability to fire.|DeathCurseDC	BONUS:VAR|DeathCurseDC|10+(HD/2)+CHA
+Freedom of Movement		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES					DESC:A crag linnorm is under the constant effect of Freedom of Movement, as per the spell of the same name. This effect cannot be dispelled.
+Immunity to Curse Effects	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES					DESC:A crag linnorm cannot be cursed.
+Poison ~ Crag Linnorm		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatrual	VISIBLE:YES	DEFINE:PoisonDC|0		DESC:Bite - Injury; Save Fort DC %1; Frequency 1/round for 10 rounds; Effect 2d6 fire damage and 1d4 Con drain; Cure 2 consecutive saves.|PoisonDC						BONUS:VAR|PoisonDC|10+(HD/2)+CON
+True Seeing				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES					DESC:A crag linnorm has constant True Seeing, as per the spell of the same name.
+
+#
+# End
+#

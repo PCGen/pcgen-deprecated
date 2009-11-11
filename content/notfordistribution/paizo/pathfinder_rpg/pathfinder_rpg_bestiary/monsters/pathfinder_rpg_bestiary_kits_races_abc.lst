@@ -1,11 +1,11 @@
-# CVS $Revision$ $Author$ -- Tue Aug  4 20:05:16 2009 -- reformated by prettylst.pl v1.39 (build 9548)
-SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
-STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.7
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.8
 RACE:Aboleth	!PRERACE:1,%
 NAME:Aboleth
 ALIGN:LE
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
 SKILL:Bluff			RANK:8
 SKILL:Intimidate		RANK:8
 SKILL:TYPE.Knowledge	RANK:8
@@ -17,11 +17,12 @@ FEAT:Iron Will
 FEAT:Lightning Reflexes
 FEAT:Weapon Focus (Tentacle)
 
-STARTPACK:Angel (Astral Deva) Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Angel (Astral Deva)]	SOURCEPAGE:p.10
-STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+
+STARTPACK:Angel (Astral Deva) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Angel (Astral Deva)]	SOURCEPAGE:p.10
 RACE:Angel (Astral Deva)	!PRERACE:1,%
 NAME:Astral Deva
 ALIGN:NG
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
 SKILL:Acrobatics			RANK:15
 SKILL:TYPE.Craft			RANK:15
 SKILL:Diplomacy			RANK:15
@@ -41,32 +42,144 @@ FEAT:Toughness
 FEAT:Weapon Focus (Warhammer)
 GEAR:Warhammer	SIZE:PC	LOCATION:Primary Hand	EQMOD:PLUS2W.DISRPT
 
+
 STARTPACK:Ant (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Giant)]	SOURCEPAGE:p.16
-STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 RACE:Ant (Giant)	!PRERACE:1,%
 NAME:Giant Ant
 ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+
 
 STARTPACK:Ant (Worker) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Worker)]	SOURCEPAGE:p.16
-STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 RACE:Ant (Worker)	!PRERACE:1,%
 NAME:Worker Ant
 ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+
 
 STARTPACK:Ant (Drone) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Drone)]	SOURCEPAGE:p.16
-STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 RACE:Ant (Drone)	!PRERACE:1,%
 NAME:Drone Ant
 ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+
 
 STARTPACK:Ant (Queen) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Queen)]	SOURCEPAGE:p.16
-STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 RACE:Ant (Queen)	!PRERACE:1,%
 NAME:Queen Ant
 ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 
-STARTPACK:Beetle (Fire) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Beetle (Fire)]	SOURCEPAGE:p.118
-STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+
+STARTPACK:Ape (Gorilla) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ape (Gorilla)]	SOURCEPAGE:p.17
+RACE:Ape (Gorilla)	!PRERACE:1,%
+NAME:Gorilla
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
+SKILL:Acrobatics	RANK:1
+SKILL:Climb		RANK:1
+SKILL:Perception	RANK:1
+FEAT:Great Fortitude
+FEAT:Skill Focus (Perception)
+
+
+STARTPACK:Ape (Dire) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ape (Dire)]	SOURCEPAGE:p.17
+RACE:Ape (Dire)	!PRERACE:1,%
+NAME:Dire Ape
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
+SKILL:Acrobatics	RANK:1
+SKILL:Climb		RANK:1
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:1
+FEAT:Iron Will
+FEAT:Skill Focus (Perception)
+
+
+STARTPACK:Bat (Dire) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Bat (Dire)]	SOURCEPAGE:p.30
+RACE:Bat (Dire)	!PRERACE:1,%
+NAME:Dire Bat
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+SKILL:Fly		RANK:2
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:1
+FEAT:Alertness
+FEAT:Stealthy
+
+
+STARTPACK:Bat Swarm Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Bat Swarm]	SOURCEPAGE:p.30
+RACE:Bat Swarm	!PRERACE:1,%
+NAME:Bat Swarm
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+SKILL:Perception	RANK:3
+FEAT:Lightning Reflexes
+FEAT:Skill Focus (Perception)
+
+
+STARTPACK:Beetle (Fire) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Beetle (Fire)]	SOURCEPAGE:p.33
 RACE:Beetle (Fire)	!PRERACE:1,%
 NAME:Fire Beetle
 ALIGN:TN
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+
+
+STARTPACK:Centipede (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (Giant)]	SOURCEPAGE:p.43
+RACE:Centipede (Giant)	!PRERACE:1,%
+NAME:Giant Centipede
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Centipede (House) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (House)]	SOURCEPAGE:p.43
+RACE:Centipede (House)	!PRERACE:1,%
+NAME:House Centipede
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Centipede (Sewer) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (Sewer)]	SOURCEPAGE:p.43
+RACE:Centipede (Sewer)	!PRERACE:1,%
+NAME:Sewer Centipede
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Centipede (Hisser) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (Hisser)]	SOURCEPAGE:p.43
+RACE:Centipede (Hisser)	!PRERACE:1,%
+NAME:Hisser Centipede
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Centipede (Giant Whiptail) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (Giant Whiptail)]	SOURCEPAGE:p.43
+RACE:Centipede (Giant Whiptail)	!PRERACE:1,%
+NAME:Giant Whiptail Centipede
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Centipede (Great Forest) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (Great Forest)]	SOURCEPAGE:p.43
+RACE:Centipede (Great Forest)	!PRERACE:1,%
+NAME:Great Forest Centipede
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Centipede (Titan) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (Titan)]	SOURCEPAGE:p.43
+RACE:Centipede (Titan)	!PRERACE:1,%
+NAME:Titan Centipede
+ALIGN:TN
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Centipede Swarm Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede Swarm]	SOURCEPAGE:p.43
+RACE:Centipede Swarm	!PRERACE:1,%
+NAME:Centipede Swarm
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+
+#
+# End
+#

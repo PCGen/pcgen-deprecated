@@ -1,3 +1,82 @@
-# CVS $Revision$ $Author$ -- Tue Aug  4 20:05:16 2009 -- reformated by prettylst.pl v1.39 (build 9548)
-SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
+# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
+
+STARTPACK:Drow Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Drow]	SOURCEPAGE:p.114
+RACE:Drow	!PRERACE:1,%
+NAME:Drow
+ALIGN:CE
+STAT:STR=11|DEX=13|CON=12|INT=10|WIS=9|CHA=8
+CLASS:Warrior	LEVEL:1
+#SKILL:Ride	RANK:1
+#SKILL:Swim	RANK:1
+FEAT:Weapon Finesse
+GEAR:Leather					SIZE:M	LOCATION:Equipped
+GEAR:Shield (Light/Steel)			SIZE:M	LOCATION:Equipped
+GEAR:Rapier						SIZE:M	LOCATION:Primary Hand
+GEAR:Crossbow (Hand)				SIZE:M	LOCATION:Carried
+GEAR:Bolt (Crossbow)		QTY:20			LOCATION:Carried
+#GEAR:Poison (Drow)		QTY:2
+
+
+STARTPACK:Goblin Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Goblin]	SOURCEPAGE:p.156
+RACE:Goblin	!PRERACE:1,%
+NAME:Goblin
+ALIGN:NE
+STAT:STR=13|DEX=11|CON=12|INT=10|WIS=9|CHA=8
+CLASS:Warrior	LEVEL:1
+SKILL:Ride	RANK:1
+SKILL:Swim	RANK:1
+FEAT:Improved Initiative
+GEAR:Leather					SIZE:S	LOCATION:Equipped
+GEAR:Shield (Light/Wooden)			SIZE:S	LOCATION:Equipped
+GEAR:Sword (Short)				SIZE:S	LOCATION:Primary Hand
+GEAR:Shortbow					SIZE:S	LOCATION:Carried
+GEAR:Arrow				QTY:20			LOCATION:Carried
+
+
+STARTPACK:Tengu Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Tengu]	SOURCEPAGE:p.263
+RACE:Tengu	!PRERACE:1,%
+NAME:Tengu
+ALIGN:TN
+STAT:STR=12|DEX=15|CON=14|INT=10|WIS=13|CHA=8
+CLASS:Rogue	LEVEL:1
+SKILL:Acrobatics		RANK:1
+SKILL:Appraise		RANK:1
+SKILL:Bluff			RANK:1
+SKILL:Climb			RANK:1
+SKILL:Knowledge (Local)	RANK:1
+SKILL:Linguistics		RANK:1
+SKILL:Perception		RANK:1
+SKILL:Stealth		RANK:1
+FEAT:Weapon Finesse
+GEAR:Leather			SIZE:M	LOCATION:Equipped
+GEAR:Dagger				SIZE:M	LOCATION:Primary Hand
+GEAR:Shortbow			SIZE:M	LOCATION:Carried
+GEAR:Arrow		QTY:20			LOCATION:Carried
+
+
+STARTPACK:Tiefling Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Tiefling]	SOURCEPAGE:p.264
+RACE:Tiefling	!PRERACE:1,%
+NAME:Tiefling
+ALIGN:NE
+STAT:STR=13|DEX=15|CON=14|INT=10|WIS=12|CHA=8
+CLASS:Rogue	LEVEL:1
+SKILL:Acrobatics		RANK:1
+SKILL:Bluff			RANK:1
+SKILL:Disable Device	RANK:1
+SKILL:Escape Artist	RANK:1
+SKILL:Intimidate		RANK:1
+SKILL:Perception		RANK:1
+SKILL:Sense Motive	RANK:1
+SKILL:Sleight of Hand	RANK:1
+SKILL:Stealth		RANK:1
+FEAT:Weapon Finesse
+GEAR:Studded Leather			SIZE:M	LOCATION:Equipped
+GEAR:Sword (Short)			SIZE:M	LOCATION:Primary Hand
+GEAR:Crossbow (Light)			SIZE:M	LOCATION:Carried
+GEAR:Bolt (Crossbow)	QTY:20			LOCATION:Carried
+
+#
+# End
+#
