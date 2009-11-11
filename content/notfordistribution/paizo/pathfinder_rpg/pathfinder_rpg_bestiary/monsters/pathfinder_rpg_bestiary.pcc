@@ -79,6 +79,7 @@ KIT:pathfinder_rpg_bestiary_kits_races_vw.lst
 KIT:pathfinder_rpg_bestiary_kits_races_xyz.lst
 KIT:pathfinder_rpg_bestiary_kits_races_base.lst
 KIT:pathfinder_rpg_bestiary_kits_races_familiars.lst
+KIT:pathfinder_rpg_bestiary_kits_races_templates.lst
 LANGUAGE:pathfinder_rpg_bestiary_languages.lst
 RACE:pathfinder_rpg_bestiary_races_abc.lst
 RACE:pathfinder_rpg_bestiary_races_def.lst
@@ -92,6 +93,7 @@ RACE:pathfinder_rpg_bestiary_races_vw.lst
 RACE:pathfinder_rpg_bestiary_races_xyz.lst
 RACE:pathfinder_rpg_bestiary_races_base.lst
 RACE:pathfinder_rpg_bestiary_races_familiars.lst
+RACE:pathfinder_rpg_bestiary_races_templates.lst
 SKILL:pathfinder_rpg_bestiary_skills_conditional.lst
 SPELL:pathfinder_rpg_bestiary_spells.lst
 TEMPLATE:pathfinder_rpg_bestiary_templates.lst

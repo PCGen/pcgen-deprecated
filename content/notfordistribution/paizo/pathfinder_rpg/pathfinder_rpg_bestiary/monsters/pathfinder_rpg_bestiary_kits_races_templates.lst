@@ -1,0 +1,24 @@
+# CVS $Revision: 10953 $ $Author: eddyanthony $ -- Tue Nov 10 22:18:52 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+
+STARTPACK:Human Ghost Aristocrat	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Human],[!PRERACE:1,%]	SOURCEPAGE:p.144
+RACE:Human	!PRERACE:1,%
+NAME:Human Ghost Aristocrat
+ALIGN:CE
+STAT:STR=10|DEX=12|CON=10|INT=10|WIS=11|CHA=14
+CLASS:Aristocrat	LEVEL:7
+SKILL:Fly				RANK:5
+SKILL:Knowledge (History)	RANK:7
+SKILL:Knowledge (Nobility)	RANK:7
+SKILL:Perception			RANK:7
+SKILL:Sense Motive		RANK:7
+SKILL:Stealth			RANK:2
+FEAT:Dodge
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Toughness
+TEMPLATE:Ghost
+ABILITY:CATEGORY=Ability Bonus|+2 Charisma
+ABILITY:CATEGORY=Favored Class|Fighter
+ABILITY:CATEGORY=Ghost Ability|Frightful Moan
