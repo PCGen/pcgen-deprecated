@@ -1,4 +1,4 @@
-# CVS $Revision: 10953 $ $Author: eddyanthony $ -- Tue Nov 10 22:18:52 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Tue Nov 10 22:18:52 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Human Ghost Aristocrat	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Human],[!PRERACE:1,%]	SOURCEPAGE:p.144
@@ -22,3 +22,20 @@ TEMPLATE:Ghost
 ABILITY:CATEGORY=Ability Bonus|+2 Charisma
 ABILITY:CATEGORY=Favored Class|Fighter
 ABILITY:CATEGORY=Ghost Ability|Frightful Moan
+
+
+STARTPACK:Half-Celestial Unicorn	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Unicorn],[!PRERACE:1,%]	SOURCEPAGE:p.169
+ALIGN:CG
+RACE:Unicorn	!PRERACE:1,%
+NAME:Half-Celestial Unicorn
+SKILL:Acrobatics	RANK:2
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+SKILL:Survival	RANK:2
+FEAT:Multiattack
+FEAT:Weapon Focus (Gore)
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=11|CHA=10
+TEMPLATE:Half-Celestial
+ABILITY:CATEGORY=Half-Celestial Ability Bonus|+2 Strength ~ Template
+ABILITY:CATEGORY=Half-Celestial Ability Bonus|+2 Constitution ~ Template
+ABILITY:CATEGORY=Half-Celestial Ability Bonus|+2 Wisdom ~ Template

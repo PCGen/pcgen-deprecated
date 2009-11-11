@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Nov 10 15:40:11 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Nov 11 11:26:15 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Ghost abilities
@@ -10,6 +10,15 @@ Draining Touch	CATEGORY:Special Ability	TYPE:SpecialAttack.GhostAbility.AttackOp
 Frightful Moan	CATEGORY:Special Ability	TYPE:SpecialAttack.GhostAbility.AttackOption.Supernatural	DESC:The ghost can emit a frightful moan as a standard action.																										SOURCEPAGE:p.144	BENEFIT:The ghost died in the throes of crippling terror. It can emit a frightful moan as a standard action. All living creatures within a 30-foot spread must succeed on a Will save or become panicked for 2d4 rounds. This is a sonic mind-affecting fear effect. A creature that successfully saves against the moan cannot be affected by the same ghost's moan for 24 hours.
 Malevolence		CATEGORY:Special Ability	TYPE:SpecialAttack.GhostAbility.AttackOption.Supernatural	DESC:The ghost's jealousy of the living is particularly potent.																										SOURCEPAGE:p.144	BENEFIT:The ghost's jealousy of the living is particularly potent. Once per round, the ghost can merge its body with a creature on the Material Plane. This ability is similar to a magic jar spell (caster level 10th or the ghost's Hit Dice, whichever is higher), except that it does not require a receptacle. To use this ability, the ghost must be adjacent to the target. The target can resist the attack with a successful Will save. A creature that successfully saves is immune to that same ghost's malevolence for 24 hours.
 Telekinesis		CATEGORY:Special Ability	TYPE:SpecialAttack.GhostAbility.AttackOption.Supernatural	DESC:The ghost can use telekinesis as a standard action once every 1d4 rounds.																							SOURCEPAGE:p.144	BENEFIT:The ghost's death involved great physical trauma. The ghost can use telekinesis as a standard action once every 1d4 rounds (caster level 12th or equal to the ghost's HD, whichever is higher).
+
+###Block: Template Ability Bonus Abilities
+# Ability Name	Unique Key					Category of Ability		Type					Visible		Stat bonus
++2 Strength		KEY:+2 Strength ~ Template		CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	VISIBLE:DISPLAY	BONUS:STAT|STR|2
++2 Dexterity	KEY:+2 Dexterity ~ Template		CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	VISIBLE:DISPLAY	BONUS:STAT|DEX|2
++2 Constitution	KEY:+2 Constitution ~ Template	CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	VISIBLE:DISPLAY	BONUS:STAT|CON|2
++2 Intelligence	KEY:+2 Intelligence ~ Template	CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	VISIBLE:DISPLAY	BONUS:STAT|INT|2
++2 Wisdom		KEY:+2 Wisdom ~ Template		CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	VISIBLE:DISPLAY	BONUS:STAT|WIS|2
++2 Charisma		KEY:+2 Charisma ~ Template		CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	VISIBLE:DISPLAY	BONUS:STAT|CHA|2
 
 ###Block: Half-Outsider Abilities
 # Ability Name	Unique Key					Category of Ability		Type						Define				Description														Modify VAR						Source Page
