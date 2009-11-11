@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Nov 11 17:52:09 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.8
@@ -94,6 +94,19 @@ SKILL:Perception	RANK:1
 SKILL:Stealth	RANK:1
 FEAT:Iron Will
 FEAT:Skill Focus (Perception)
+
+
+STARTPACK:Basilisk Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Basilisk],[!PRERACE:1,%]	SOURCEPAGE:p.29
+ALIGN:TN
+RACE:Basilisk	!PRERACE:1,%
+NAME:Basilisk
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:4
+FEAT:Blind-Fight
+FEAT:Great Fortitude
+FEAT:Iron Will
+FEAT:Skill Focus (Perception)
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 
 
 STARTPACK:Bat (Dire) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Bat (Dire)]	SOURCEPAGE:p.30

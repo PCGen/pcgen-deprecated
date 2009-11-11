@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Nov 11 12:50:35 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Nov 11 17:52:09 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Aboleth abilities
@@ -13,6 +13,10 @@ Stun			CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:YES
 ###Block: Ant abilities
 # Ability Name	Unique Key			Category of Ability		Type						Visible	Define		Description																Modify VAR					Source Page
 Poison		KEY:Poison ~ Giant Ant	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:PoisonDC|0	DESC:Injury; Save Fort DC %1; Frequency 1/round for 4 rounds; Effect 1d2 Str; Cure 1 save.|PoisonDC	BONUS:VAR|PoisonDC|10+(TL/2)+CON	SOURCEPAGE:p.16
+
+###Block: Basilisk Abilities
+# Ability Name	Unique Key			Category of Ability		Type						Define					Description																	Source Page		Aspects							Description of the Benefits
+Gaze			KEY:Gaze ~ Basilisk	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:BasiliskGazeDC|10+(HD/2)+CON	DESC:Turn to stone permanently (as flesh to stone), range 30 feet, Fortitude DC %1 negates.|BasiliskGazeDC	SOURCEPAGE:p.29	ASPECT:Ability Benefit|(DC %1)|BasiliskGazeDC	BENEFIT:Turn to stone permanently (as flesh to stone), range 30 feet, Fortitude DC %1 negates. A creature petrified in this matter that is then coated (not just splashed) with fresh basilisk blood (taken from a basilisk no more than 1 hour dead) is instantly restored to flesh. A single basilisk contains enough blood to coat 1d3 Medium creatures in this manner.|BasiliskGazeDC
 
 ###Block: Bat Swarm abilities
 # Ability Name	Category of Ability		Type						Visible	Description																																														Source Page
