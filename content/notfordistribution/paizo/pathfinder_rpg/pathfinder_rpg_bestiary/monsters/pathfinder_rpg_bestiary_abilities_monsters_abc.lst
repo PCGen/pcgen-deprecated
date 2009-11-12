@@ -1,14 +1,14 @@
-# CVS $Revision$ $Author$ -- Wed Nov 11 17:52:09 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Thu Nov 12 15:37:16 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Aboleth abilities
-# Ability Name	Category of Ability		Type							Visible	Define			Description																																																																																												Modify VAR						Source Page
-Mucus Cloud		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.Aura	VISIBLE:YES	DEFINE:MucusCloudDC|0	DESC:While underwater, an aboleth exudes a cloud of transparent slime. All creatures adjacent to an aboleth must succeed on a DC %1 Fortitude save each round or lose the ability to breathe air (but gain the ability to breathe water) for 3 hours. Renewed contact with an aboleth's mucus cloud and failing another save extends the effect for another 3 hours.|MucusCloudDC																																BONUS:VAR|MucusCloudDC|10+(TL/2)+CON	SOURCEPAGE:p.8
-Slime			CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary		VISIBLE:YES	DEFINE:SlimeDC|0		DESC:A creature hit by an aboleth's tentacle must succeed on a DC %1 Fortitude save or his skin and flesh transform into a clear, slimy membrane over the course of 1d4 rounds. The creature's new "flesh" is soft and tender, reducing its Constitution score by 4 as long as it persists. If the creature's flesh isn't kept moist, it dries quickly and the victim takes 1d12 points of damage every 10 minutes. Remove disease and similar effects can restore an afflicted creature to normal, but immunity to disease offers no protection from this attack.|SlimeDC	BONUS:VAR|SlimeDC|10+(TL/2)+CON		SOURCEPAGE:p.8
+# Ability Name	Unique Key				Category of Ability		Type							Visible	Define			Description																																																																																												Modify VAR						Source Page
+Mucus Cloud		KEY:Mucus Cloud ~ Aboleth	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.Aura	VISIBLE:YES	DEFINE:MucusCloudDC|0	DESC:While underwater, an aboleth exudes a cloud of transparent slime. All creatures adjacent to an aboleth must succeed on a DC %1 Fortitude save each round or lose the ability to breathe air (but gain the ability to breathe water) for 3 hours. Renewed contact with an aboleth's mucus cloud and failing another save extends the effect for another 3 hours.|MucusCloudDC																																BONUS:VAR|MucusCloudDC|10+(TL/2)+CON	SOURCEPAGE:p.8
+Slime			KEY:Slime ~ Aboleth		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary		VISIBLE:YES	DEFINE:SlimeDC|0		DESC:A creature hit by an aboleth's tentacle must succeed on a DC %1 Fortitude save or his skin and flesh transform into a clear, slimy membrane over the course of 1d4 rounds. The creature's new "flesh" is soft and tender, reducing its Constitution score by 4 as long as it persists. If the creature's flesh isn't kept moist, it dries quickly and the victim takes 1d12 points of damage every 10 minutes. Remove disease and similar effects can restore an afflicted creature to normal, but immunity to disease offers no protection from this attack.|SlimeDC	BONUS:VAR|SlimeDC|10+(TL/2)+CON		SOURCEPAGE:p.8
 
 ###Block: Angel abilities
-# Ability Name	Category of Ability		Type						Visible
-Stun			CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:YES
+# Ability Name	Unique Key		Category of Ability		Type						Visible
+Stun			KEY:Stun ~ Angel	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:YES
 
 ###Block: Ant abilities
 # Ability Name	Unique Key			Category of Ability		Type						Visible	Define		Description																Modify VAR					Source Page
@@ -19,12 +19,12 @@ Poison		KEY:Poison ~ Giant Ant	CATEGORY:Special Ability	TYPE:SpecialAttack.Extra
 Gaze			KEY:Gaze ~ Basilisk	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:BasiliskGazeDC|10+(HD/2)+CON	DESC:Turn to stone permanently (as flesh to stone), range 30 feet, Fortitude DC %1 negates.|BasiliskGazeDC	SOURCEPAGE:p.29	ASPECT:Ability Benefit|(DC %1)|BasiliskGazeDC	BENEFIT:Turn to stone permanently (as flesh to stone), range 30 feet, Fortitude DC %1 negates. A creature petrified in this matter that is then coated (not just splashed) with fresh basilisk blood (taken from a basilisk no more than 1 hour dead) is instantly restored to flesh. A single basilisk contains enough blood to coat 1d3 Medium creatures in this manner.|BasiliskGazeDC
 
 ###Block: Bat Swarm abilities
-# Ability Name	Category of Ability		Type						Visible	Description																																														Source Page
-Wounding		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DESC:Any living creature damaged by a bat swarm continues to bleed, losing 1 hit point per round thereafter. Multiple wounds do not result in cumulative bleeding loss. The bleeding can be stopped by a DC 10 Heal check or the application of a cure spell or some other healing magic.	SOURCEPAGE:p.11
+# Ability Name	Unique Key				Category of Ability		Type						Visible	Description																																														Source Page
+Wounding		KEY:Wounding ~ Bat Swarm	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DESC:Any living creature damaged by a bat swarm continues to bleed, losing 1 hit point per round thereafter. Multiple wounds do not result in cumulative bleeding loss. The bleeding can be stopped by a DC 10 Heal check or the application of a cure spell or some other healing magic.	SOURCEPAGE:p.11
 
 ###Block: Beetle abilities
-# Ability Name	Category of Ability		Type						Visible	Description																										Source Page
-Luminescence	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:A fire beetle's glowing glands provide light in a 10-foot radius. A dead fire beetle's luminescent glands continue to glow for 1d6 days after its death.	SOURCEPAGE:p.33
+# Ability Name	Unique Key				Category of Ability		Type						Visible	Description																										Source Page
+Luminescence	KEY:Luminescence ~ Beetle	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:A fire beetle's glowing glands provide light in a 10-foot radius. A dead fire beetle's luminescent glands continue to glow for 1d6 days after its death.	SOURCEPAGE:p.33
 
 ###Block: Centipede abilities
 # Ability Name	Unique Key				Category of Ability		Type						Visible	Define		Description																	Modify VAR					Source Page
