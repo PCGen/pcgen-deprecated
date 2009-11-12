@@ -6,7 +6,7 @@ CLASS:Dark Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.211	ABILITY:FEA
 # Class Name	Required Race		Reg. Race Type
 CLASS:Dark Naga	PRERACE:1,Naga (Dark)	PRERACETYPE:Aberration
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?
-CLASS:Dark Naga	STARTSKILLPTS:4	MODTOSKILLS:YES
+CLASS:Dark Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
 1						ADD:SPELLCASTER|1|Sorcerer
 3	BONUS:PCLEVEL|Sorcerer|1
 4	BONUS:PCLEVEL|Sorcerer|1
@@ -20,8 +20,8 @@ CLASS:Guardian Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.213	ABILITY
 # Class Name		Required Race			Reg. Race Type
 CLASS:Guardian Naga	PRERACE:1,Naga (Guardian)	PRERACETYPE:Aberration
 # Class Name		Skill Pts/Lvl	Add INT to Skill Points?
-CLASS:Guardian Naga	STARTSKILLPTS:4	MODTOSKILLS:YES
-1						ADD:SPELLCASTER|1|Sorcerer	SPELLLIST:1|Cleric
+CLASS:Guardian Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
+1						ADD:SPELLCASTER|1|Sorcerer
 2	BONUS:PCLEVEL|Sorcerer|1
 3	BONUS:PCLEVEL|Sorcerer|1
 5	BONUS:PCLEVEL|Sorcerer|1
@@ -36,8 +36,8 @@ CLASS:Spirit Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.215	ABILITY:F
 # Class Name	Required Race		Reg. Race Type
 CLASS:Spirit Naga	PRERACE:1,Naga (Spirit)	PRERACETYPE:Aberration
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?
-CLASS:Spirit Naga	STARTSKILLPTS:4	MODTOSKILLS:YES
-1						ADD:SPELLCASTER|1|Sorcerer	SPELLLIST:1|Cleric
+CLASS:Spirit Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
+1						ADD:SPELLCASTER|1|Sorcerer
 3	BONUS:PCLEVEL|Sorcerer|1
 4	BONUS:PCLEVEL|Sorcerer|1
 5	BONUS:PCLEVEL|Sorcerer|1
