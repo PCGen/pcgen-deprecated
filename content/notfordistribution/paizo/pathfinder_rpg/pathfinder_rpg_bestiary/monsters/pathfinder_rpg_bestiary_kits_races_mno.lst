@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Nov 11 13:23:23 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Thu Nov 12 12:46:11 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Manticore Default	TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Manticore]	SOURCEPAGE:p.199
@@ -38,15 +38,16 @@ FEAT:Weapon Finesse
 GEAR:Dagger		SIZE:PC	LOCATION:Primary Hand
 GEAR:Longbow	SIZE:PC	LOCATION:Carried		EQMOD:MWORKW
 
+
 STARTPACK:Mephit (Air) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Air)]	SOURCEPAGE:p.202
 RACE:Mephit (Air)	!PRERACE:1,%
 NAME:Air Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -55,11 +56,11 @@ STARTPACK:Mephit (Dust) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQU
 RACE:Mephit (Dust)	!PRERACE:1,%
 NAME:Dust Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -68,11 +69,11 @@ STARTPACK:Mephit (Earth) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQ
 RACE:Mephit (Earth)	!PRERACE:1,%
 NAME:Earth Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -81,11 +82,11 @@ STARTPACK:Mephit (Fire) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQU
 RACE:Mephit (Fire)	!PRERACE:1,%
 NAME:Fire Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -94,11 +95,11 @@ STARTPACK:Mephit (Ice) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUI
 RACE:Mephit (Ice)	!PRERACE:1,%
 NAME:Ice Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -107,11 +108,11 @@ STARTPACK:Mephit (Magma) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQ
 RACE:Mephit (Magma)	!PRERACE:1,%
 NAME:Magma Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -120,11 +121,11 @@ STARTPACK:Mephit (Ooze) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQU
 RACE:Mephit (Ooze)	!PRERACE:1,%
 NAME:Ooze Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -133,11 +134,11 @@ STARTPACK:Mephit (Salt) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQU
 RACE:Mephit (Salt)	!PRERACE:1,%
 NAME:Salt Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -146,11 +147,11 @@ STARTPACK:Mephit (Steam) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQ
 RACE:Mephit (Steam)	!PRERACE:1,%
 NAME:Steam Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
@@ -159,13 +160,26 @@ STARTPACK:Mephit (Water) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQ
 RACE:Mephit (Water)	!PRERACE:1,%
 NAME:Water Mephit
 ALIGN:TN
-STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
-SKILL:Bluff		RANK:1
-SKILL:Fly		RANK:1
-SKILL:Perception	RANK:1
-SKILL:Stealth	RANK:1
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+SKILL:Bluff		RANK:3
+SKILL:Fly		RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
+
+
+STARTPACK:Morlock Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Morlock]	SOURCEPAGE:209
+RACE:Morlock	!PRERACE:1,%
+NAME:Morlock
+ALIGN:CE
+STAT:STR=10|DEX=11|CON=11|INT=11|WIS=10|CHA=10
+SKILL:Acrobatics	RANK:1
+SKILL:Climb		RANK:1
+SKILL:Stealth	RANK:1
+FEAT:Improved Initiative
+FEAT:Lightning Reflexes
+GEAR:Club	SIZE:M	LOCATION:Primary Hand
 
 
 STARTPACK:Ogre Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre]	SOURCEPAGE:220
