@@ -1,16 +1,8 @@
-# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Thu Nov 12 12:30:11 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
-# Class Name	Hit Dice	Type			Max Level			Source Page			Ability								Save checks bonus											Combat bonus
-CLASS:Aberration	HD:8	TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.306	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
-# Class Name	Reg. Race Type
-CLASS:Aberration	PRERACETYPE:Aberration
-# Class Name	Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
-CLASS:Aberration	STARTSKILLPTS:4	MODTOSKILLS:YES			CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
-
-
-# Class Name	Hit Dice	Type			Max Level			Source Page			Ability									Save checks bonus													Combat bonus
-CLASS:Dark Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.211	ABILITY:FEAT|AUTOMATIC|CMB Output		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
+# Class Name	Hit Dice	Type			Max Level		Source Page		Ability					Save checks bonus											Combat bonus
+CLASS:Dark Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.211	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name	Required Race		Reg. Race Type
 CLASS:Dark Naga	PRERACE:1,Naga (Dark)	PRERACETYPE:Aberration
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?
@@ -23,9 +15,9 @@ CLASS:Dark Naga	STARTSKILLPTS:4	MODTOSKILLS:YES
 8	BONUS:PCLEVEL|Sorcerer|1
 9	BONUS:PCLEVEL|Sorcerer|1
 
-# Class Name		Hit Dice	Type			Max Level			Source Page			Ability									Save checks bonus											Combat bonus
-CLASS:Guardian Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.213	ABILITY:FEAT|AUTOMATIC|CMB Output		BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
-# Class Name		Required Race				Reg. Race Type
+# Class Name		Hit Dice	Type			Max Level		Source Page		Ability					Save checks bonus											Combat bonus
+CLASS:Guardian Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.213	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
+# Class Name		Required Race			Reg. Race Type
 CLASS:Guardian Naga	PRERACE:1,Naga (Guardian)	PRERACETYPE:Aberration
 # Class Name		Skill Pts/Lvl	Add INT to Skill Points?
 CLASS:Guardian Naga	STARTSKILLPTS:4	MODTOSKILLS:YES
@@ -39,9 +31,9 @@ CLASS:Guardian Naga	STARTSKILLPTS:4	MODTOSKILLS:YES
 10	BONUS:PCLEVEL|Sorcerer|1
 11	BONUS:PCLEVEL|Sorcerer|1
 
-# Class Name		Hit Dice	Type			Max Level			Source Page			Ability								Save checks bonus											Combat bonus
+# Class Name	Hit Dice	Type			Max Level		Source Page		Ability					Save checks bonus											Combat bonus
 CLASS:Spirit Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.215	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
-# Class Name		Required Race			Reg. Race Type
+# Class Name	Required Race		Reg. Race Type
 CLASS:Spirit Naga	PRERACE:1,Naga (Spirit)	PRERACETYPE:Aberration
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?
 CLASS:Spirit Naga	STARTSKILLPTS:4	MODTOSKILLS:YES
