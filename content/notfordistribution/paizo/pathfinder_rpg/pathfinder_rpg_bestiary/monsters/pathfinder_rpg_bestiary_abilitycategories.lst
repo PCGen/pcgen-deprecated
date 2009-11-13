@@ -4,6 +4,7 @@
 # Ability Category					Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object			Plural description for UI			Display Location
 ABILITYCATEGORY:Ghost Ability				VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:GhostAbility			PLURAL:Ghost Abilities				DISPLAYLOCATION:Racial Abilities
 ABILITYCATEGORY:Half-Celestial Ability Bonus	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	PLURAL:Half-Celestial Ability Bonuses	DISPLAYLOCATION:Racial Abilities
+ABILITYCATEGORY:Half-Dragon Type			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal			TYPE:HalfDragonType		PLURAL:Half-Dragon Types			DISPLAYLOCATION:Racial Abilities
 ABILITYCATEGORY:Half-Fiend Ability Bonus		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TemplateAbilityBonus	PLURAL:Half-Fiend Ability Bonuses		DISPLAYLOCATION:Racial Abilities
 
 #

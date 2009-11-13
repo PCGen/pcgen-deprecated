@@ -1,18 +1,70 @@
-# CVS $Revision$ $Author$ -- Wed Nov 11 17:34:58 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Thu Nov 12 21:59:46 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Ghost Template
 # Template Name	Hit Dice Size			Challenge Rating	Visible	Template				Source Page		Bonus to Ability Pool				Bonus to HP				Bonus to skill						Stat bonus		Modify VAR									Class Skill																			Ability																	Move		Main Race Type	Race Subtype		Vision
 Ghost			HITDIE:8|CLASS.TYPE=Monster	CR:2			VISIBLE:YES	TEMPLATE:Undead|Incorporeal	SOURCEPAGE:p.144	BONUS:ABILITYPOOL|Ghost Ability|(CR-3)/3	BONUS:HP|CURRENTMAX|CHA-CON	BONUS:SKILL|Perception,Stealth|8|TYPE=Racial	BONUS:STAT|CHA|4	BONUS:VAR|Maneuverability|5	BONUS:VAR|ChannelResistance|4	CSKILL:Climb|Disguise|Fly|Intimidate|Knowledge (Arcana)|Knowledge (Religion)|Perception|Sense Motive|Spellcraft|Stealth	ABILITY:Special Ability|AUTOMATIC|Rejuvenation|Corrupting Touch|Flight Maneuverability|Channel Resistance	MOVE:Fly,30	RACETYPE:Undead	RACESUBTYPE:Incorporeal	VISION:Darkvision (60')
-# Can't do now: Remove Natural Armor bonus
-# Can't do now: Remove MOVE modes
-# Can't do now: Set Fly Speed
-# Can't do now: Remove Base Attacks
+#TODO Can't do now: Remove Natural Armor bonus
+#TODO Can't do now: Remove MOVE modes
+#TODO Can't do now: Set Fly Speed
+#TODO Can't do now: Remove Base Attacks
 
 ###Block: Half-Celestial & Half-Fiend Templates
 # Template Name	Damage Reduction	Template																																		Source Page		Define				Required AL		Prohibited Race										Required Stat	Bonus to Ability Pool						Combat bonus						Damage reduction			Misc bonus												Stat bonus						Modify VAR																											Ability																														Clone Movement		Spell Res.			Main Race Type	Race Subtype		Vision			Innate Spells
 Half-Celestial	DR:5/Magic																																					SOURCEPAGE:p.169	DEFINE:HalfCelestialSR|0	PREALIGN:LG,NG,CG	!PRERACE:1,RACETYPE=Construct,RACETYPE=Undead,RACESUBTYPE=Incorporeal	PRESTAT:1,INT=4	BONUS:ABILITYPOOL|Half-Celestial Ability Bonus|3	BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:DR|Magic|5|PREHD:MIN=12	BONUS:MISC|CR|1	BONUS:MISC|CR|1|PREHD:MIN=6	BONUS:MISC|CR|1|PREHD:MIN=11	BONUS:STAT|STR,DEX,CON,INT,WIS,CHA|2	BONUS:VAR|AcidResistanceBonus,ColdResistanceBonus,ElectricityResistanceBonus|10	BONUS:VAR|HalfCelestialSR|min(CR+11,35)	BONUS:VAR|Maneuverability|4			ABILITY:Special Ability|AUTOMATIC|Flight Maneuverability|Immunity To Disease|Resistance to Acid|Resistance to Cold|Resistance to Electricity|Smite Evil ~ Half-Celestial			MOVECLONE:Walk,Fly,*2	SR:HalfCelestialSR	RACETYPE:Outsider	RACESUBTYPE:Native	VISION:Darkvision (60')	SPELLS:Innate|TIMES=3|CASTERLEVEL=TL|Protection from Evil|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Bless|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Aid|Detect Evil|PRELEVEL:MIN=3|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Cure Serious Wounds|Neutralize Poison|PRELEVEL:MIN=5|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Holy Smite,14+CHA|Remove Disease|PRELEVEL:MIN=7|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Dispel Evil,13+CHA|PRELEVEL:MIN=9|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Holy Word,17+CHA|PRELEVEL:MIN=11|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=3|CASTERLEVEL=TL|Holy Aura,18+CHA|PRELEVEL:MIN=13|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Hallow,15+CHA|PRELEVEL:MIN=13|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Charm Monster (Mass),18+CHA|PRELEVEL:MIN=15|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Summon Monster IX (Celestials Only),14+CHA|PRELEVEL:MIN=17|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Resurrection,17+CHA|PRELEVEL:MIN=19|PRESTAT:1,INT=8,WIS=8
 Half-Fiend		DR:5/Magic		TEMPLATE:CHOOSE:Bite ~ Claw (Fine)|Bite ~ Claw (Diminutive)|Bite ~ Claw (Tiny)|Bite ~ Claw (Small)|Bite ~ Claw (Medium)|Bite ~ Claw (Large)|Bite ~ Claw (Huge)|Bite ~ Claw (Gargantuan)|Bite ~ Claw (Colossal)	SOURCEPAGE:p.171	DEFINE:HalfFiendSR|0		PREALIGN:LE,NE,CE	!PRERACE:1,RACETYPE=Construct,RACETYPE=Undead,RACESUBTYPE=Incorporeal	PRESTAT:1,INT=4	BONUS:ABILITYPOOL|Half-Fiend Ability Bonus|3		BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:DR|Magic|5|PREHD:MIN=12	BONUS:MISC|CR|1	BONUS:MISC|CR|1|PREHD:MIN=6	BONUS:MISC|CR|1|PREHD:MIN=11	BONUS:STAT|STR,DEX,CON,INT,WIS,CHA|2	BONUS:VAR|AcidResistanceBonus,ColdResistanceBonus,ElectricityResistanceBonus,FireResistanceBonus|10	BONUS:VAR|HalfFiendSR|min(CR+11,35)	BONUS:VAR|Maneuverability|4	ABILITY:Special Ability|AUTOMATIC|Flight Maneuverability|Immunity To Poison|Resistance to Acid|Resistance to Cold|Resistance to Electricity|Resistance to Fire|Smite Good ~ Half-Fiend	MOVECLONE:Walk,Fly,*2	SR:HalfFiendSR		RACETYPE:Outsider	RACESUBTYPE:Native	VISION:Darkvision (60')	SPELLS:Innate|TIMES=3|CASTERLEVEL=TL|Darkness,12+CHA|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Desecrate,12+CHA|PRELEVEL:MIN=3|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Unholy Blight,14+CHA|PRELEVEL:MIN=5|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=3|CASTERLEVEL=TL|Poison,14+CHA|PRELEVEL:MIN=7|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Contagion,13+CHA|PRELEVEL:MIN=9|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Blasphemy,17+CHA|PRELEVEL:MIN=11|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=3|CASTERLEVEL=TL|Unholy Aura,18+CHA|PRELEVEL:MIN=13|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Unhallow,15+CHA|PRELEVEL:MIN=13|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Horrid Wilting,18+CHA|PRELEVEL:MIN=15|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Summon Monster IX (Fiends Only),14+CHA|PRELEVEL:MIN=17|PRESTAT:1,INT=8,WIS=8	SPELLS:Innate|TIMES=1|CASTERLEVEL=TL|Destruction,17+CHA|PRELEVEL:MIN=19|PRESTAT:1,INT=8,WIS=8
+
+###Block: Half-Dragon Template
+# Template Name	Challenge Rating	Template					Source Page		Prohibited Race													Bonus to Ability Pool				Combat bonus					Stat bonus									Ability												Main Race Type	Vision
+Half-Dragon		CR:2			TEMPLATE:CHOOSE:Half-Dragon Flight	SOURCEPAGE:p.170	!PRERACE:1,RACETYPE=Construct,RACETYPE=Dragon,RACETYPE=Undead,RACESUBTYPE=Incorporeal	BONUS:ABILITYPOOL|Half-Dragon Type|1	BONUS:COMBAT|AC|4|TYPE=NaturalArmor.STACK	BONUS:STAT|STR|8	BONUS:STAT|CON|6	BONUS:STAT|INT,CHA|2	ABILITY:Special Ability|AUTOMATIC|Immunity to Sleep|Immunity to Paralysis	RACETYPE:Dragon	VISION:Darkvision (60')|Low-light
+#TODO Can't do now:  Set Fly Speed if creature already has a better fly speed than walk x2
+#TODO Can't do now:  Remove natural attacks if new claw and bte attacks are better, they just get both
+#TODO Can't do now:  Recalculate skill pool for Dragons 6 points per level
+
+###Block: Half-Dragon Flight
+# Template Name		Visible	Modify VAR						Ability									Clone Movement
+Half-Dragon Flight	VISIBLE:NO	BONUS:VAR|Maneuverability|3|TYPE=Racial	ABILITY:Special Ability|AUTOMATIC|Flight Maneuverability	MOVECLONE:Walk,Fly,*2
+#TODO Can't do now:  Set Fly Speed if creature already has a better fly speed than walk x2
+# Tried !PREMOVE:1,Fly=(MOVEBASE*2) but that didn't work
+
+###Block: Half-Dragon Melee attack TEMPLATE:CHOOSE
+# Template Name	Template
+Half-Dragon.MOD	TEMPLATE:CHOOSE:Half-Dragon Bite ~ Fine|Half-Dragon Bite ~ Dimunitive|Half-Dragon Bite ~ Tiny|Half-Dragon Bite ~ Small|Half-Dragon Bite ~ Medium|Half-Dragon Bite ~ Large|Half-Dragon Bite ~ Huge|Half-Dragon Bite ~ Gargantuan|Half-Dragon Bite ~ Colossal
+Half-Dragon.MOD	TEMPLATE:CHOOSE:Half-Dragon Claw ~ Tiny|Half-Dragon Claw ~ Small|Half-Dragon Claw ~ Medium|Half-Dragon Claw ~ Large|Half-Dragon Claw ~ Huge|Half-Dragon Claw ~ Gargantuan|Half-Dragon Claw ~ Colossal
+#TODO: Issue - If a creature has only 1 natural attack, like Bite, they get STR*1.5 bonus damage, once the claw attack is added the Bite should drop to just STR but we have no way to adjust that
+
+###Block: Half-Dragon Melee attacks
+# Template Name			Visible	!PREEQUIP		Required Size	Natural Attacks
+Half-Dragon Bite ~ Fine		VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:F		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,1
+Half-Dragon Bite ~ Dimunitive	VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:D		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,1d2
+Half-Dragon Bite ~ Tiny		VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:T		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,1d3
+Half-Dragon Bite ~ Small	VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:S		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,1d4
+Half-Dragon Bite ~ Medium	VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:M		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,1d6
+Half-Dragon Bite ~ Large	VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:L		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,1d8
+Half-Dragon Bite ~ Huge		VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:H		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,2d6
+Half-Dragon Bite ~ Gargantuan	VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:G		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,2d8
+Half-Dragon Bite ~ Colossal	VISIBLE:NO	!PREEQUIP:1,Bite	PRESIZEEQ:C		NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing,*1,4d6
+
+Half-Dragon Claw ~ Tiny		VISIBLE:NO	!PREEQUIP:1,Claw	PRESIZEEQ:T		NATURALATTACKS:Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d2
+Half-Dragon Claw ~ Small	VISIBLE:NO	!PREEQUIP:1,Claw	PRESIZEEQ:S		NATURALATTACKS:Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d3
+Half-Dragon Claw ~ Medium	VISIBLE:NO	!PREEQUIP:1,Claw	PRESIZEEQ:M		NATURALATTACKS:Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d4
+Half-Dragon Claw ~ Large	VISIBLE:NO	!PREEQUIP:1,Claw	PRESIZEEQ:L		NATURALATTACKS:Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d6
+Half-Dragon Claw ~ Huge		VISIBLE:NO	!PREEQUIP:1,Claw	PRESIZEEQ:H		NATURALATTACKS:Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,1d8
+Half-Dragon Claw ~ Gargantuan	VISIBLE:NO	!PREEQUIP:1,Claw	PRESIZEEQ:G		NATURALATTACKS:Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,2d6
+Half-Dragon Claw ~ Colossal	VISIBLE:NO	!PREEQUIP:1,Claw	PRESIZEEQ:C		NATURALATTACKS:Claw,Weapon.Natural.Melee.Finesseable.Piercing.Slashing,*2,2d8
+
+###Block: Half-Dragon Types
+# Template Name		Visible	Subrace
+Black Half-Dragon		VISIBLE:NO	SUBRACE:Half-Black Dragon
+Blue Half-Dragon		VISIBLE:NO	SUBRACE:Half-Blue Dragon
+Brass Half-Dragon		VISIBLE:NO	SUBRACE:Half-Brass Dragon
+Bronze Half-Dragon	VISIBLE:NO	SUBRACE:Half-Bronze Dragon
+Copper Half-Dragon	VISIBLE:NO	SUBRACE:Half-Copper Dragon
+Gold Half-Dragon		VISIBLE:NO	SUBRACE:Half-Gold Dragon
+Green Half-Dragon		VISIBLE:NO	SUBRACE:Half-Green Dragon
+Red Half-Dragon		VISIBLE:NO	SUBRACE:Half-Red Dragon
+Silver Half-Dragon	VISIBLE:NO	SUBRACE:Half-Silver Dragon
+White Half-Dragon		VISIBLE:NO	SUBRACE:Half-White Dragon
 
 #
 # End
