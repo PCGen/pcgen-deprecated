@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Nov 12 15:50:19 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Nov 13 13:07:31 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Gargoyle abilities
@@ -34,6 +34,10 @@ Water Mastery	KEY:Water Mastery ~ Marid	CATEGORY:Special Ability	TYPE:SpecialAtt
 Water's Fury	KEY:Water's Fury ~ Marid	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural.AttackOption	DEFINE:WatersFuryDC|0	DESC:As a standard action, a marid can release a jet of water in a 60-foot line that deals 1d6 points of damage and blinds the target struck for 1d6 rounds. A DC %1 Reflex save reduces the damage by half and negates the blinding effect.|WatersFuryDC	BONUS:VAR|WatersFuryDC|14+CON	SOURCEPAGE:p.142
 Vortex		KEY:Vortex ~ Marid		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural.AttackOption					DESC:A marid can transform into a vortex of swirling, churning water once every 10 mintues.																																SOURCEPAGE:p.142	BENEFIT:A marid can transform into a vortex of swirling, churning water once every 10 mintues. This ability functions identically to the whirlwind ability (10-50 ft. tall, 1d8+4 damage, DC 17, see page 306 for full details on this special attack), save that it can only be used while the marid is underwater; a marid cannot leave a body of water while in vortex form.
 Change Shape	KEY:Change Shape ~ Marid	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural							DESC:Water Elemental, Humanoid or Giant, Alter Self, Elemental Body III, or Giant Form I																																	SOURCEPAGE:p.142
+Detect Evil		KEY:Detect Evil ~ Marid		CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:You can sense the presence of evil.
+Detect Good		KEY:Detect Good ~ Marid		CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:You can sense the presence of good.
+Detect Magic	KEY:Detect Magic ~ Marid	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:You detect magical auras.
+Water Walk		KEY:Water Walk ~ Marid		CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.ModifyMovement					DESC:The Genie can tread on any liquid as if it were firm ground.
 
 ###Block: Genie (Shaitan) abilities
 # Ability Name	Unique Key				Category of Ability		Type								Define			Description																																																			Modify VAR				Source Page		Description of the Benefits
