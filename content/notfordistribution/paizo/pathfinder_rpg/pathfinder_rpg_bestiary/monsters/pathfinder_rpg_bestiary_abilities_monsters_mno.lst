@@ -93,20 +93,28 @@ Poison		KEY:Poison ~ Dark Naga			CATEGORY:Special Ability	TYPE:SpecialQuality.Ex
 
 ###Block: Naga, Guardian abilities
 # Ability Name	Unique Key				Category of Ability		Type						Source Page		Description of the Benefits
-Spit			KEY:Spit ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	BENEFIT:Biteï¿½injury or spitï¿½contact; save Fort DC 19; frequency 1/round for 6 rounds; effect 1d4 Con damage; cure 2 consecutive saves. The save DC is Constitution-based.
-Poison		KEY:Poison ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	BENEFIT:Stingï¿½injury; save Fort DC 19; frequency 1 round; effect sleep for 2d4 minutes; cure 1 save.
+Spit			KEY:Spit ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	BENEFIT:Bite-injury or spit-contact; save Fort DC 19; frequency 1/round for 6 rounds; effect 1d4 Con damage; cure 2 consecutive saves. The save DC is Constitution-based.
+Poison		KEY:Poison ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	BENEFIT:Sting-injury; save Fort DC 19; frequency 1 round; effect sleep for 2d4 minutes; cure 1 save.
 
 ###Block: Naga, Spirit abilities
 # Ability Name	Unique Key					Category of Ability		Type						Description													Source Page		Description of the Benefits
 Charming Gaze	KEY:Charming Gaze ~ Spirit Naga		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DESC:As charm person, 30 feet, Will DC 20 negates. The save DC is Charisma-based.	SOURCEPAGE:p.213
 Poison		KEY:Poison ~ Spirit Naga		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary															SOURCEPAGE:p.213	BENEFIT:Bite-injury; save Fort DC 20; frequency 1/round for 6 rounds; effect 1d4 Con damage; cure 1 save.
 
-###Block: Naga, Spirit abilities
+###Block: Neothelid abilities
 # Ability Name	Unique Key						Category of Ability			Type								Define											Description																																																										Source Page							Description of the Benefits
 Breath Weapon	KEY:Breath Weapon ~ Neothelid	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:BreathWeaponDC|0	DESC:A neothelid unleashes a 50-ft cone of acid																						SOURCEPAGE:p.214		BENEFIT:A neothelid can as a standard action unleash a 50-ft. cone of acid every 1d4 rounds dealing 14d10 acid damage. A reflex save (DC %1) halves the damage.|BreathWeaponDC			BONUS:VAR|BreathWeaponDC|10+(HD/2)+CON
 Mind Thrust		KEY:Mind Thrust ~ Neothelid		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural														DESC:A neothelid can deliver a massive blast of mental energy.							SOURCEPAGE:p.214		BENEFIT:As a standard action up to three times a day, a neothelid can deliver a massive blast of mental energy at any one target within 60 feet, inflicting 15d10 points of damage. A successful DC 25 Will save negates the effect. This effect can only harm creatures with Intelligence scores. This is a mind-affecting effect. The save DC is Charisma-based.
 Psychic Crush	KEY:Psychic Crush ~ Neothelid	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural														DESC:A neothelid can attempt to crush the mind of a single creature.	SOURCEPAGE:p.214		BENEFIT:As a standard action up to three times a day, a neothelid can attempt to crush the mind of a single creature within 60 feet. The target must make a DC 25 Will save or collapse, becoming unconscious and dying at Ð1 hit points. If the target succeeds on the save, it takes 6d6 points of damage and is sickened for 1 round. This is a mind-affecting effect. The save DC is Charisma-based.
 Trace Teleport	KEY:Trace Teleport ~ Neothelid	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense																																																																																	SOURCEPAGE:p.214		BENEFIT:A neothelid telepathically and reflexively learns the mental coordinates of the destination, of all creatures that teleport within 60 feet of it, gaining an awareness of the location equivalent to Òseen casually.Ó This knowledge fades and is lost after 1 minute. This power does not grant any environmental information about the conditions of the destination.
+Fly				KEY:Fly ~ Neothelid				CATEGORY:Special Ability	TYPE:SpecialQuality																																																																																																																					SOURCEPAGE:p.214
+
+###Block: Night Hag abilities
+# Ability Name	Unique Key						Category of Ability			Type								Define			Description													Source Page							Description of the Benefits
+Change Shape	KEY:Change Shape ~ Night Hag	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural					DESC:A night hag can assume the appearance of any humanoid creature.					SOURCEPAGE:p.215
+Disease			KEY:Disease ~ Night Hag			CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural																													SOURCEPAGE:p.215		BENEFIT:BiteÑinjury; save Fort DC 20; onset immediate; frequency 1/day; effect 1d6 Con damage (target must save a 2nd time or 1 point of the damage is drain instead); cure 2 consecutive saves. The save DC is Constitution-based.
+Dream Haunting	KEY:Dream Haunting ~ Night Hag	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural																														SOURCEPAGE:p.215		BENEFIT:A night hag can visit the dreams of chaotic or evil targets by using a special periapt known as a heartstone to become ethereal, then hovering over the creature. Once it does so, it rides on the victimÕs back until dawn. The sleeper suffers tormenting dreams and takes 1 point of Constitution drain upon awakening. Only another ethereal being can stop these nocturnal intrusions by confronting and defeating the night hag.
+
 
 #
 # End
