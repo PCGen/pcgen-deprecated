@@ -169,6 +169,21 @@ FEAT:Dodge
 FEAT:Improved Initiative
 
 
+STARTPACK:Minotaur Default	PREMULT:1,[PRERACE:1,Minotaur],[!PRERACE:1,%]	VISIBLE:QUALIFY	EQUIPBUY:0	SOURCEPAGE:p.206
+ALIGN:CE
+RACE:Minotaur	!PRERACE:1,%
+NAME:Minotaur
+SKILL:Intimidate		RANK:3
+SKILL:Perception		RANK:3
+SKILL:Stealth		RANK:3
+SKILL:Survival		RANK:3
+FEAT:Great Fortitude
+FEAT:Improved Bull Rush
+FEAT:Power Attack
+STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=10
+GEAR:Greataxe	LOCATION:Equipped	SIZE:L
+
+
 STARTPACK:Morlock Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Morlock]	SOURCEPAGE:209
 RACE:Morlock	!PRERACE:1,%
 NAME:Morlock

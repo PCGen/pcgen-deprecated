@@ -54,3 +54,22 @@ FEAT:Skill Focus (Perception)
 STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 TEMPLATE:Half-Dragon
 ABILITY:CATEGORY=Half-Dragon Type|Black Half-Dragon
+
+
+STARTPACK:Half-Fiend Minotaur	PREMULT:1,[PRERACE:1,Minotaur],[!PRERACE:1,%]	VISIBLE:QUALIFY	EQUIPBUY:0	SOURCEPAGE:p.171
+ALIGN:CE
+RACE:Minotaur	!PRERACE:1,%
+NAME:Half-Fiend Minotaur
+SKILL:Intimidate		RANK:3
+SKILL:Perception		RANK:3
+SKILL:Stealth		RANK:3
+SKILL:Survival		RANK:3
+FEAT:Great Fortitude
+FEAT:Improved Bull Rush
+FEAT:Power Attack
+STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=10
+TEMPLATE:Half-Fiend
+ABILITY:CATEGORY=Half-Fiend Ability Bonus|+2 Strength ~ Template
+ABILITY:CATEGORY=Half-Fiend Ability Bonus|+2 Constitution ~ Template
+ABILITY:CATEGORY=Half-Fiend Ability Bonus|+2 Dexterity ~ Template
+GEAR:Greataxe	LOCATION:Equipped	SIZE:L
