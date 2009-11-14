@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Nov 13 21:19:11 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sat Nov 14 12:21:48 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Gargoyle Default	TYPE:DefaultMonster.MonstrousHumanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Gargoyle],[!PRERACE:1,%]	SOURCEPAGE:p.137
@@ -576,6 +576,54 @@ FEAT:Skill Focus (Survival)
 FEAT:Weapon Focus (Bite)
 STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
 GEAR:Chainmail	SIZE:L	LOCATION:Equipped
+
+
+STARTPACK:Herd Animal (Aurochs) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Herd Animal (Aurochs)],[!PRERACE:1,%]	SOURCEPAGE:p.174
+ALIGN:TN
+RACE:Herd Animal (Aurochs)	!PRERACE:1,%
+NAME:Aurochs
+SKILL:Perception	RANK:3
+FEAT:Endurance
+FEAT:Skill Focus (Perception)
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=11|CHA=10
+
+
+STARTPACK:Herd Animal (Bison) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Herd Animal (Bison)],[!PRERACE:1,%]	SOURCEPAGE:p.174
+ALIGN:TN
+RACE:Herd Animal (Bison)	!PRERACE:1,%
+NAME:Bison
+SKILL:Perception	RANK:5
+FEAT:Endurance
+FEAT:Improved Bull Rush
+FEAT:Power Attack
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=11|CHA=10
+
+
+STARTPACK:Hobgoblin Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hobgoblin],[!PRERACE:1,%]	SOURCEPAGE:p.175
+ALIGN:LE
+RACE:Hobgoblin	!PRERACE:1,%
+NAME:Hobgoblin
+CLASS:Fighter	LEVEL:1
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:1
+FEAT:Toughness
+ABILITY:CATEGORY=Fighter Bonus Feat|Weapon Focus (Longsword)
+STAT:STR=15|DEX=13|CON=14|INT=10|WIS=12|CHA=8
+GEAR:Longsword			LOCATION:Primary Hand
+GEAR:Shield (Light/Steel)	LOCATION:Equipped
+GEAR:Studded Leather		LOCATION:Equipped
+GEAR:Longbow			LOCATION:Carried
+GEAR:Arrows (20)			LOCATION:Carried
+
+
+STARTPACK:Homunculus Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Homunculus],[!PRERACE:1,%]	SOURCEPAGE:p.176
+ALIGN:LG|NG|CG|LN|TN|CN|LE|NE|CE
+RACE:Homunculus	!PRERACE:1,%
+NAME:Homunculus
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+FEAT:Lightning Reflexes
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=10|CHA=11
 
 
 STARTPACK:Horse Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Horse]	SOURCEPAGE:p.177

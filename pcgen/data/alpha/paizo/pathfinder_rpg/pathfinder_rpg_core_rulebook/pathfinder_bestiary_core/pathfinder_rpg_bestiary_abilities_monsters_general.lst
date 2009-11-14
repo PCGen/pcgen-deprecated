@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Nov 13 20:39:45 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sat Nov 14 10:06:36 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 #-----------------------------------------------------
@@ -210,11 +210,12 @@ Whirlwind																	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatur
 
 
 ###Block: Additional Abilities used by multiple creatures
-# Ability Name	Category of Ability		Type							Description														Bonus to skill					Source Page
-All-Around Vision	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense	DESC:You can see in all directions at once. You cannot be flanked.				BONUS:SKILL|Perception|4|TYPE=Racial	SOURCEPAGE:p.153,201
+# Ability Name	Category of Ability		Type							Description																				Bonus to skill					Source Page			Aspects							Description of the Benefits
+All-Around Vision	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense	DESC:You can see in all directions at once. You cannot be flanked.										BONUS:SKILL|Perception|4|TYPE=Racial	SOURCEPAGE:p.153,201
 
 Can't Be Tripped	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary		DESC:A creature with this ability cannot be tripped.
 Cannot Speak	CATEGORY:Special Ability	TYPE:Communicate					DESC:A creature with this ability may understand one of more languages but cannot speak.
+Stampede		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary		DESC:A stampede occurs if three or more creatures with stampede make a trample attack while remaining adjacent to each other.								SOURCEPAGE:p.174		ASPECT:Ability Benefit|(DC %1)|TrampleDC+2	BENEFIT:A stampede occurs if three or more creatures with stampede make a trample attack while remaining adjacent to each other. While stampeding, the creatures can trample foes of their size or smaller, and the trample's save DC increases by +2.
 
 
 #

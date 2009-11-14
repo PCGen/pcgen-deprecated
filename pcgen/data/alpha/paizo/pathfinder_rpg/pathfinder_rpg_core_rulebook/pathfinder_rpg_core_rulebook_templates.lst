@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Nov  3 15:50:04 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sat Nov 14 12:58:00 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original RSRD Entry by: PCGen Data Team
 # Pathfinder RPG Entry by: Stefan Radermacher
@@ -36,3 +36,7 @@ Eighth Hitdie	HITDIE:%/8|CLASS.TYPE=Monster	VISIBLE:NO
 # Template Name					Visible		Damage Reduction	Required Ability									Req. Known Spell			Description
 Righteous Might (Damage Reduction/Evil)	VISIBLE:DISPLAY	DR:0/Evil		PREABILITY:1,CATEGORY=Special Ability,Channel Positive Energy	PRESPELL:1,Righteous Might	DESC:This Template provides the Damage Reduction to a character when Righteous Might is cast.
 Righteous Might (Damage Reduction/Good)	VISIBLE:DISPLAY	DR:0/Good		PREABILITY:1,CATEGORY=Special Ability,Channel Negative Energy	PRESPELL:1,Righteous Might	DESC:This Template provides the Damage Reduction to a character when Righteous Might is cast.
+
+###Block: Trained Animal
+# Template Name	Visible		Required Race			Bonus to Ability Pool
+Trained Animal	VISIBLE:DISPLAY	PRERACE:1,RACETYPE=Animal	BONUS:ABILITYPOOL|Animal Trick|3	BONUS:ABILITYPOOL|Animal Trick|3|PRESTAT:1,INT=2
