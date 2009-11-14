@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Nov 13 13:07:31 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Nov 13 21:59:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Gargoyle abilities
@@ -136,6 +136,15 @@ Telepathy		KEY:Telepathy ~ Id Ooze			CATEGORY:Special Ability	TYPE:SpecialQualit
 # Ability Name	Unique Key				Category of Ability		Type						Define					Description													Source Page		Aspects						Description of the Benefits
 Weakness		KEY:Weakness ~ Green Hag	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:WeaknessDC|10+(HD/2)+CHA	DESC:A green hag's claws sap strength from those she strikes.				SOURCEPAGE:p.167	ASPECT:Ability Benefit|(DC %1)|WeaknessDC	BENEFIT:A green hag's claws sap strength from those she strikes. Each time a green hag hits a foe with her claw attack, the victim takes 2 points of Strength damage unless he resists the weakness with a DC %1 Fortitude save. Alternatively, a green hag can attempt to inflict even greater weakness on a foe by making a touch attack--this variant requires a standard action, and cannot be attempted in the same round the hag makes claw attacks. The opponent touched must succeed on a DC %1 Fortitude save or take 2d4 points of Strength damage.|WeaknessDC
 Mimicry		KEY:Mimicry ~ Green Hag		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary							DESC:A green hag can imitate the sounds of almost any animal found near its lair.	SOURCEPAGE:p.167
+
+###Block: Harpy Abilities
+# Ability Name	Unique Key				Category of Ability		Type						Define						Description																		Source Page		Aspects								Description of the Benefits
+Captivating Song	KEY:Captivating Song ~ Harpy	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:CaptivatingSongDC|10+(HD/2)+CHA	DESC:A harpy's song has the power to infect the minds of those that hear it, calling them to the harpy's side.	SOURCEPAGE:p.172	ASPECT:Ability Benefit|(DC %1)|CaptivatingSongDC	BENEFIT:A harpy's song has the power to infect the minds of those that hear it, calling them to the harpy's side. When a harpy sings, all creatures aside from other harpies within a 300-foot spread must succeed on a DC %1 Will saving throw or become captivated. A creature that successfully saves is not subject to the same harpy's song for 24 hours. A victim under the effects of the captivating song moves toward the harpy using the most direct means available. If the path leads them into a dangerous area such as through fire or off a cliff, that creature receives a second saving throw to end the effect before moving into peril. Captivated creatures can take no actions other than to defend themselves. A victim within 5 feet of the harpy simply stands and offers no resistance to the harpy's attacks. This effect continues for as long as the harpy sings and for 1 round thereafter. This is a sonic mind-affecting charm effect.|CaptivatingSongDC
+
+###Block: Hell Hound Abilities
+# Ability Name	Unique Key					Category of Ability		Type						Define																				Description																								Source Page		Aspects
+Breath Weapon	KEY:Breath Weapon ~ Hell Hound	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:BreathWeaponDC|10+(HD/2)+CON	DEFINE:BreathWeaponDice|0	DEFINE:BreathWeaponCone|0	DEFINE:BreathWeaponTimes|0	DESC:%1-ft. cone, once every %2d4 rounds, %3d6 fire damage, Reflex DC %4 for half.|BreathWeaponCone|BreathWeaponTimes|BreathWeaponDice|BreathWeaponDC	SOURCEPAGE:p.173	ASPECT:Ability Benefit|(%1-ft. cone, once every %2d4 rounds, %3d6 fire damage, Reflex DC %4 for half)|BreathWeaponCone|BreathWeaponTimes|BreathWeaponDice|BreathWeaponDC
+Fire			KEY:Fire ~ Hell Hound			CATEGORY:Special Ability	TYPE:SpecialAttack			DEFINE:HellHoundDice|1																		DESC:A Hell Hound's bite deals an additional %1d6 fire damage.|HellHoundDice													SOURCEPAGE:p.173	ASPECT:Ability Benefit|(%1d6/bite)|HellHoundDice
 
 ###Block: Horse abilities
 # Ability Name	Unique Key			Category of Ability		Type						Visible	Description															Source Page

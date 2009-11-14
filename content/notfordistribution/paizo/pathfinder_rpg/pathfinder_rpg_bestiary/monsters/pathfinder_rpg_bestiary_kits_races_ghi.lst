@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Nov 11 11:46:34 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Nov 13 21:19:11 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Gargoyle Default	TYPE:DefaultMonster.MonstrousHumanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Gargoyle],[!PRERACE:1,%]	SOURCEPAGE:p.137
@@ -527,6 +527,55 @@ SKILL:Perception	RANK:1
 FEAT:Iron Will
 FEAT:Skill Focus (Perception)
 FEAT:Weapon Focus (Bite)
+
+
+STARTPACK:Harpy Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Harpy],[!PRERACE:1,%]	SOURCEPAGE:p.172
+ALIGN:CE
+RACE:Harpy	!PRERACE:1,%
+NAME:Harpy
+SKILL:Bluff			RANK:1
+SKILL:Fly			RANK:7
+SKILL:Intimidate		RANK:1
+SKILL:Perception		RANK:3
+SKILL:Perform (Sing)	RANK:2
+FEAT:Dodge
+FEAT:Flyby Attack
+FEAT:Great Fortitude
+FEAT:Skill Focus (Bluff)
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=10|CHA=11
+GEAR:Morningstar	SIZE:M	LOCATION:Equipped
+GEAR:Leather	SIZE:M	LOCATION:Equipped
+
+
+STARTPACK:Hell Hound Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hell Hound],[!PRERACE:1,%]	SOURCEPAGE:p.173
+ALIGN:LE
+RACE:Hell Hound	!PRERACE:1,%
+NAME:Hell Hound
+SKILL:Acrobatics	RANK:4
+SKILL:Perception	RANK:4
+SKILL:Stealth	RANK:4
+SKILL:Survival	RANK:4
+FEAT:Improved Initiative
+FEAT:Run
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
+
+STARTPACK:Hell Hound (Nessian) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hell Hound (Nessian)],[!PRERACE:1,%]	SOURCEPAGE:p.173
+ALIGN:LE
+RACE:Hell Hound (Nessian)	!PRERACE:1,%
+NAME:Nessian Warhound
+SKILL:Acrobatics	RANK:12
+SKILL:Perception	RANK:6
+SKILL:Stealth	RANK:12
+SKILL:Survival	RANK:6
+FEAT:Alertness
+FEAT:Improved Critical (Bite)
+FEAT:Improved Initiative
+FEAT:Skill Focus (Stealth)
+FEAT:Skill Focus (Survival)
+FEAT:Weapon Focus (Bite)
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+GEAR:Chainmail	SIZE:L	LOCATION:Equipped
 
 
 STARTPACK:Horse Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Horse]	SOURCEPAGE:p.177
