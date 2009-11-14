@@ -54,6 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.util.DoubleKeyMap;
+import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.FixedStringList;
 import pcgen.base.util.HashMapToList;
 import pcgen.base.util.NamedValue;
@@ -17748,6 +17749,20 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		HashMapToList<CDOMList<Spell>, Integer> newhml = new HashMapToList<CDOMList<Spell>, Integer>();
 		newhml.addAllLists(hml);
 		return newhml;
+	}
+
+	public DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> getPCBasedLevelInfo()
+	{
+		DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> map =
+				cache.get(ObjectKey.SPELL_PC_INFO);
+		if (map == null)
+		{
+			map = SpellLevel.getPCBasedLevelInfo(this);
+			cache.put(ObjectKey.SPELL_PC_INFO, map);
+		}
+		DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> newmap = new DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer>();
+		newmap.addAll(map);
+		return newmap;
 	}
 
 	/**

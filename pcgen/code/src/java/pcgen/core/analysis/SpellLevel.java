@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -249,6 +250,50 @@ public class SpellLevel
 				}
 			}
 
+		}
+		return levelInfo;
+	}
+
+	public static DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> getPCBasedLevelInfo(PlayerCharacter pc)
+	{
+		DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> levelInfo = new DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer>();
+		for (CDOMObject cdo : pc.getCDOMObjectList())
+		{
+			Collection<CDOMReference<? extends CDOMList<? extends PrereqObject>>> listrefs = cdo
+					.getModifiedLists();
+			for (CDOMReference<? extends CDOMList<? extends PrereqObject>> ref : listrefs)
+			{
+				Collection<? extends CDOMList> lists = ref
+						.getContainedObjects();
+				for (CDOMList<Spell> list : lists)
+				{
+					if (list instanceof ClassSpellList
+							|| list instanceof DomainSpellList)
+					{
+						CDOMReference<? extends CDOMList<Spell>> spelllistref = (CDOMReference<? extends CDOMList<Spell>>) ref;
+						Collection<CDOMReference<Spell>> mods = cdo
+								.getListMods(spelllistref);
+						for (CDOMReference<Spell> spellref : mods)
+						{
+							Collection<AssociatedPrereqObject> listAssocs = cdo
+									.getListAssociations(spelllistref, spellref);
+							for (AssociatedPrereqObject apo : listAssocs) {
+								// TODO This null for source is
+								// incorrect!
+								if (PrereqHandler.passesAll(apo
+										.getPrerequisiteList(), pc, null)) {
+									Integer lvl = apo
+											.getAssociation(AssociationKey.SPELL_LEVEL);
+									for (Spell sp : spellref.getContainedObjects())
+									{
+										levelInfo.addToListFor(sp, list, lvl);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 		return levelInfo;
 	}

@@ -34,6 +34,8 @@ import java.util.Map;
 
 import pcgen.base.formula.Formula;
 import pcgen.base.util.CaseInsensitiveMap;
+import pcgen.base.util.DoubleKeyMapToList;
+import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMListObject;
 import pcgen.cdom.base.Category;
 import pcgen.cdom.base.PersistentTransitionChoice;
@@ -292,6 +294,8 @@ public class ObjectKey<T>
 	public static final ObjectKey<GameMode> GAME_MODE = new ObjectKey<GameMode>(null);
 
 	public static final ObjectKey<PersistentTransitionChoice<AbilitySelection>> TEMPLATE_FEAT = new ObjectKey<PersistentTransitionChoice<AbilitySelection>>(null);
+
+	public static final ObjectKey<DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer>> SPELL_PC_INFO = new ObjectKey<DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer>>(null);
 
 	/*
 	 * TODO Okay, this is a hack.

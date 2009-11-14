@@ -51,6 +51,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 
+import pcgen.base.util.DoubleKeyMapToList;
 import pcgen.base.util.HashMapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
@@ -1547,19 +1548,21 @@ public final class Globals
 						}
 					}
 				}
-				HashMapToList<CDOMList<Spell>, Integer> pcli = currentPC
-						.getPCBasedLevelInfo(spell);
-				for (CDOMList<Spell> list : pcli.getKeySet())
+			}
+		}
+		DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> dkmtl = currentPC
+				.getPCBasedLevelInfo();
+		for (Spell spell : dkmtl.getKeySet())
+		{
+			for (CDOMList<Spell> list : dkmtl.getSecondaryKeySet(spell))
+			{
+				if (spellLists.contains(list))
 				{
-					if (spellLists.contains(list))
+					List<Integer> levels = dkmtl.getListFor(spell, list);
+					if (levels != null && (allLevels || levels.contains(level)))
 					{
-						List<Integer> levels = pcli.getListFor(list);
-						if (levels != null
-								&& (allLevels || levels.contains(level)))
-						{
-							spellList.add(spell);
-							break;
-						}
+						spellList.add(spell);
+						break;
 					}
 				}
 			}
