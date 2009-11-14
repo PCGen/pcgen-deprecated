@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Nov 11 12:50:30 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Nov 13 20:48:35 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 ###Block: Genie Custom Spells
@@ -12,10 +12,10 @@ Teleport (Greater/Within its forest territory)								SCHOOL:Conjuration	SUBSCHO
 Veil (self only)													SCHOOL:Illusion		SUBSCHOOL:Glamer					TYPE:Arcane			COMPS:V, S		CASTTIME:1 standard action	RANGE:Long						TARGETAREA:One or more creatures, no two of which can be more than 30 ft. apart				DURATION:Concentration + (CASTERLEVEL) hours [D]	SAVEINFO:Will negates; see text							SPELLRES:Yes; see text						DESC:You instantly change the appearance of the subjects and then maintain that appearance for the spell's duration.					SOURCEPAGE:p.364
 
 ###Block: Spells with restrictions as used in spell-like abilities
-# Spell Name				School			Sub-School			Spell Descriptors	Type		Components		Casting Time	Range		Target Area or Effect												Duration					Save Info		Spell Resistance	Description									Source Page
-Quickened Suggestion		SCHOOL:Enchantment	SUBSCHOOL:Compulsion			DESCRIPTOR:Language-Dependent|Mind-Affecting						TYPE:Arcane.Divine	COMPS:-				CASTTIME:1 swift action	RANGE:Close						TARGETAREA:One living creature															DURATION:(CASTERLEVEL) hours or until completed									SAVEINFO:Will negates											SPELLRES:Yes					DESC:You influence the actions of the target creature by suggesting a course of activity.																									SOURCEPAGE:p.350
-Summon Monster IX (Celestials Only)	SCHOOL:Conjuration	SUBSCHOOL:Summoning	DESCRIPTOR:Good	TYPE:Divine	COMPS:V, S, DF	CASTTIME:1 round	RANGE:Close	TARGETAREA:One or more summoned creatures, no two of which can be more than 30 ft. apart	DURATION:(CASTERLEVEL) rounds [D]	SAVEINFO:None	SPELLRES:No		DESC:Calls good extraplanar creature to fight for you.	SOURCEPAGE:p.277
-Summon Monster IX (Fiends Only)	SCHOOL:Conjuration	SUBSCHOOL:Summoning	DESCRIPTOR:Evil	TYPE:Divine	COMPS:V, S, DF	CASTTIME:1 round	RANGE:Close	TARGETAREA:One or more summoned creatures, no two of which can be more than 30 ft. apart	DURATION:(CASTERLEVEL) rounds [D]	SAVEINFO:None	SPELLRES:No		DESC:Calls evil extraplanar creature to fight for you.	SOURCEPAGE:p.277
+# Spell Name				School			Sub-School			Spell Descriptors						Type				Components		Casting Time		Range		Target Area or Effect												Duration							Save Info			Spell Resistance	Description														Source Page
+Quickened Suggestion			SCHOOL:Enchantment	SUBSCHOOL:Compulsion	DESCRIPTOR:Language-Dependent|Mind-Affecting	TYPE:Arcane.Divine	COMPS:V		CASTTIME:1 swift action	RANGE:Close	TARGETAREA:One living creature										DURATION:(CASTERLEVEL) hours or until completed	SAVEINFO:Will negates	SPELLRES:Yes	DESC:You influence the actions of the target creature by suggesting a course of activity.	SOURCEPAGE:p.350
+Summon Monster IX (Celestials Only)	SCHOOL:Conjuration	SUBSCHOOL:Summoning	DESCRIPTOR:Good						TYPE:Divine			COMPS:V, S, DF	CASTTIME:1 round		RANGE:Close	TARGETAREA:One or more summoned creatures, no two of which can be more than 30 ft. apart	DURATION:(CASTERLEVEL) rounds [D]			SAVEINFO:None		SPELLRES:No		DESC:Calls good extraplanar creature to fight for you.						SOURCEPAGE:p.277
+Summon Monster IX (Fiends Only)	SCHOOL:Conjuration	SUBSCHOOL:Summoning	DESCRIPTOR:Evil						TYPE:Divine			COMPS:V, S, DF	CASTTIME:1 round		RANGE:Close	TARGETAREA:One or more summoned creatures, no two of which can be more than 30 ft. apart	DURATION:(CASTERLEVEL) rounds [D]			SAVEINFO:None		SPELLRES:No		DESC:Calls evil extraplanar creature to fight for you.						SOURCEPAGE:p.277
 
 
 #
