@@ -719,15 +719,6 @@ Unholy Aura.MOD			BONUS:CHECKS|ALL|4|TYPE=Resistance|PREAPPLY:ANYPC	BONUS:COMBAT
 # Spell Name		Combat bonus																Damage reduction																																																Adjust PC Size											Stat bonus																																																							Weapon prof. bonus
 Righteous Might.MOD	BONUS:COMBAT|AC|4|TYPE=NaturalArmorEnhancement|PREAPPLY:PC	BONUS:COMBAT|AC|-1|PRESIZEGTEQ:C|PREAPPLY:PC	BONUS:DR|Evil|5|TYPE=Temporary|PREAPPLY:PC|TYPE=Temporary	BONUS:DR|Good|5|TYPE=Temporary|PREAPPLY:PC	BONUS:DR|Evil|10|TYPE=Temporary|PREVARGTEQ:var("CL=Cleric")+var("BL=Cleric"),15|PREAPPLY:PC	BONUS:DR|Good|10|TYPE=Temporary|PREVARGTEQ:var("CL=Cleric")+var("BL=Cleric"),15|PREAPPLY:PC	BONUS:SIZEMOD|NUMBER|1|PREAPPLY:PCBONUS:STAT|STR|4|TYPE=Size|PREAPPLY:PC	BONUS:STAT|STR|-2|PRESIZEGTEQ:T|PREAPPLY:PC	BONUS:STAT|STR|-2|PRESIZEGTEQ:S|PREAPPLY:PC	BONUS:STAT|STR|-4|PRESIZEGTEQ:L|PREAPPLY:PC	BONUS:STAT|CON|4|TYPE=Size|PREAPPLY:PC	BONUS:STAT|CON|-2|PRESIZEGTEQ:M|PREAPPLY:PC	BONUS:STAT|CON|-2|PRESIZEGTEQ:L|PREAPPLY:PC	BONUS:STAT|DEX|2|TYPE=Size|PRESIZELTEQ:H|PREAPPLY:PC	BONUS:WEAPONPROF=TYPE.Simple|DAMAGESIZE|1|TYPE=Size|PREAPPLY:PC	BONUS:WEAPONPROF=TYPE.Martial|DAMAGESIZE|1|TYPE=Size|PREAPPLY:PC	BONUS:WEAPONPROF=TYPE.Exotic|DAMAGESIZE|1|TYPE=Size|PREAPPLY:PC
 
-
-
-
-
-
-###Block: Continuous Spell-like Abilities
-# Spell Name							School			Sub-School					Spell Descriptors						Spell Variations			Type				Components				Casting Time			Range							Item		Target Area or Effect																	Duration															Save Info													Spell Resistance					Description																																						Source Page
-Quickened Suggestion					SCHOOL:Enchantment	SUBSCHOOL:Compulsion			DESCRIPTOR:Language-Dependent|Mind-Affecting						TYPE:Arcane.Divine	COMPS:-				CASTTIME:1 swift action	RANGE:Close						ITEM:Potion	TARGETAREA:One living creature															DURATION:(CASTERLEVEL) hours or until completed									SAVEINFO:Will negates											SPELLRES:Yes					DESC:You influence the actions of the target creature by suggesting a course of activity.																									SOURCEPAGE:p.214
-
 #
 # End
 #
