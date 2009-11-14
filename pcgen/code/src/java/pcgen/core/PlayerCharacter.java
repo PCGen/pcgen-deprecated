@@ -377,6 +377,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	private HashMapToList<CDOMObject, PCTemplate> templatesAdded =
 			new HashMapToList<CDOMObject, PCTemplate>();
 
+	private Map<String, String> checkpointMap;
+
 	// /////////////////////////////////////
 	// operations
 	/**
@@ -8646,6 +8648,16 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		return AC;
 	}
 
+	public void checkpointBonusMap()
+ 	{
+		checkpointMap = activeBonusMap;
+ 	}
+
+	public boolean compareToCheckpoint()
+	{
+		return checkpointMap != null && checkpointMap.equals(activeBonusMap);
+	}
+	
 	/**
 	 * Creates the activeBonusList which is used to calculate all the bonuses to
 	 * a PC
@@ -8666,32 +8678,14 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		// that depends on variable B that will not be the correct
 		// value until after the map has been completely created.
 
-		// Get the original value of the map.
-		// String origMapVal = theBonusMap.toString();
-		String origMapVal = activeBonusMap.toString();
-
-		// ensure that the values for the looked up variables are the most up to
-		// date
-		setDirty(true);
-		calcActiveBonusLoop();
-
-		// Get the new contents of the map
-		// String mapVal = theBonusMap.toString();
-		String mapVal = activeBonusMap.toString();
-
-		// As the map is a TreeMap we know that the contents will be in
-		// alphabetical order, so doing a straight string compare is
-		// the easiest way to compare the whole tree.
-		while (!mapVal.equals(origMapVal))
-		{
-			// If the newly calculated bonus map is different to the old one
-			// loop again until they are the same.
+		do {
+			checkpointBonusMap();
 			setDirty(true);
 			calcActiveBonusLoop();
-			origMapVal = mapVal;
-			// mapVal = theBonusMap.toString();
-			mapVal = activeBonusMap.toString();
 		}
+		while (!compareToCheckpoint());
+		// If the newly calculated bonus map is different to the old one
+		// loop again until they are the same.
 	}
 
 	private List<BonusObj> getAllActiveBonuses()
@@ -12921,7 +12915,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	private void buildActiveBonusMap()
 	{
-		clearActiveBonusMap();
+		activeBonusMap = new ConcurrentHashMap<String, String>();
 		Set<BonusObj> processedBonuses =
 				new WrappedMapSet<BonusObj>(IdentityHashMap.class);
 
@@ -13129,11 +13123,6 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		save += (int) race.bonusTo("CHECKS", sString, this, this);
 
 		return save;
-	}
-
-	private void clearActiveBonusMap()
-	{
-		activeBonusMap.clear();
 	}
 
 	/**
@@ -14020,14 +14009,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		final List<String> aList = new ArrayList<String>();
 
-		// There is a risk that the active bonus map may be modified by other
-		// threads, so we use a for loop rather than an iterator so that we
-		// still get an answer.
-		Object[] keys = getActiveBonusMap().keySet().toArray();
-		for (int i = 0; i < keys.length; i++)
+		for (String aKey : activeBonusMap.keySet())
 		{
-			final String aKey = (String) keys[i];
-
 			// aKey is either of the form:
 			// COMBAT.AC
 			// or
