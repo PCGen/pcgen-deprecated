@@ -317,7 +317,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	private int freeLangs = 0;
 	private int heightInInches = 0; // in inches
 
-	// pool of stats remaining to distribute
+	// pool of stats allowed to distribute
 	private int poolAmount = 0;
 
 	// order in which the skills will be output.
@@ -1026,7 +1026,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	}
 
 	/**
-	 * Set the cost pool
+	 * Set the cost pool, which is the number of points the character has spent. 
 	 * 
 	 * @param i
 	 */
@@ -1036,7 +1036,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	}
 
 	/**
-	 * Get the cost pool
+	 * Get the cost pool, which is the number of points the character has spent.
 	 * 
 	 * @return costPool
 	 */
@@ -4176,6 +4176,11 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	}
 
 	public int getPointBuyPoints()
+	{
+		return pointBuyPoints;
+	}
+
+	public int getTotalPointBuyPoints()
 	{
 		return pointBuyPoints + (int) getTotalBonusTo("POINTBUY", "POINTS");
 	}
@@ -13921,11 +13926,17 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 			currentStat.setBaseScore(roll);
 		}
 
-		this.setPoolAmount(0);
-		this.costPool = 0;
+		if (method != Constants.CHARACTERSTATMETHOD_PURCHASE)
+		{
+			this.setPoolAmount(0);
+			this.costPool = 0;
+		}
 		languages.clear();
 		getAutoLanguages();
-		setPoolAmount(0);
+		if (method != Constants.CHARACTERSTATMETHOD_PURCHASE)
+		{
+			setPoolAmount(0);
+		}
 	}
 
 	/**

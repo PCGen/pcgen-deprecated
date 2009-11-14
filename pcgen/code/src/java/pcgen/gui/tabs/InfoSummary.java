@@ -1218,7 +1218,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		if ((pc.getTotalLevels() == 0) && (levels > 0))
 		{
 			if (SettingsHandler.getGame().isPurchaseStatMode()
-				&& (pc.getPointBuyPoints() > getUsedStatPool(pc)))
+				&& (pc.getTotalPointBuyPoints() > getUsedStatPool(pc)))
 			{
 				int proceed =
 						JOptionPane
@@ -2739,7 +2739,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 		{
 			final String bString = Integer.toString(pc.getCostPool());
 			//			int availablePool = SettingsHandler.getPurchaseModeMethodPool();
-			int availablePool = pc.getPointBuyPoints();
+			int availablePool = pc.getTotalPointBuyPoints();
 			if (availablePool < 0)
 			{
 				availablePool =
@@ -2820,7 +2820,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 
 		// Non-purchase mode for stats
 		if (!SettingsHandler.getGame().isPurchaseStatMode()
-			|| (pc.getPointBuyPoints() == 0))
+			|| (pc.getTotalPointBuyPoints() == 0))
 		{
 			poolLabel.setText(PropertyFactory.getString("in_sumStatTotal")); //$NON-NLS-1$
 

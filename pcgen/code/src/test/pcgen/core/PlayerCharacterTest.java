@@ -751,6 +751,7 @@ public class PlayerCharacterTest extends AbstractCharacterTestCase
 		PCClass c = character.getClassKeyed(pcClass.getKeyName());
 		List<CharacterSpell> aList =
 				character.getCharacterSpells(c, null, spellBookName, 1);
+		assertEquals("Should be one spell in the spell list", 1, aList.size());
 		CharacterSpell addedSpell = aList.get(0);
 		response =
 				character.delSpell(addedSpell.getSpellInfoFor(spellBookName, 1,
@@ -764,6 +765,97 @@ public class PlayerCharacterTest extends AbstractCharacterTestCase
 				character.delSpell(addedSpell.getSpellInfoFor(spellBookName, 1,
 					-1), giantClass, spellBookName);
 		assertEquals("Delete spell should not be rejected.", "", response);
+	}
+
+	/**
+	 * Tests deleting a spell.
+	 */
+	public void testDelSpells()
+	{
+		Globals.getContext().resolveReferences();
+		final PlayerCharacter character = new PlayerCharacter();
+		character.setRace(human);
+		character.incrementClassLevel(1, pcClass, true);
+
+		final List<Ability> none = Collections.emptyList();
+
+		Spell spell = new Spell();
+		spell.setName("test spell 1");
+		CharacterSpell charSpell = new CharacterSpell(pcClass, spell);
+
+		// Add a spell to a spellbook
+		String spellBookName1 = "First book";
+		character.addSpellBook(spellBookName1);
+		SpellBook book1 = character.getSpellBookByName(spellBookName1);
+		character.addSpellBook(spellBookName1);
+		book1.setType(SpellBook.TYPE_SPELL_BOOK);
+		book1.setPageFormula(FormulaFactory.getFormulaFor("SPELLLEVEL"));
+		book1.setNumPages(3);
+		character.addSpellBook(spellBookName1);
+		String response =
+				character.addSpell(charSpell, none, pcClass.getKeyName(),
+					spellBookName1, 1, 1);
+		assertEquals("Add spell should not be rejected.", "", response);
+		// Add a second time to cover multiples
+		response =
+				character.addSpell(charSpell, none, pcClass.getKeyName(),
+					spellBookName1, 1, 1);
+		assertEquals("Add spell should not be rejected.", "", response);
+
+		// Add the spell to a second spellbook
+		String spellBookName2 = "Second book";
+		character.addSpellBook(spellBookName2);
+		SpellBook book2 = character.getSpellBookByName(spellBookName2);
+		character.addSpellBook(spellBookName2);
+		book2.setType(SpellBook.TYPE_SPELL_BOOK);
+		book2.setPageFormula(FormulaFactory.getFormulaFor("SPELLLEVEL"));
+		book2.setNumPages(5);
+		character.addSpellBook(spellBookName2);
+		response =
+				character.addSpell(charSpell, none, pcClass.getKeyName(),
+					spellBookName2, 1, 1);
+		assertEquals("Add spell should not be rejected.", "", response);
+
+		// Remove one instance of the spell from the first book
+		PCClass c = character.getClassKeyed(pcClass.getKeyName());
+		List<CharacterSpell> aList =
+				character.getCharacterSpells(c, null, spellBookName1, 1);
+		assertEquals("Should be one spell in the spell list", 1, aList.size());
+		CharacterSpell addedSpell = aList.get(0);
+		assertEquals("Should be two sets of spell info for the two books", 2,
+			addedSpell.getInfoList().size());
+		
+		response =
+				character.delSpell(addedSpell.getSpellInfoFor(spellBookName1, 1,
+					-1, none), pcClass, spellBookName1);
+		assertEquals("Delete spell should not be rejected.", "", response);
+		aList =
+			character.getCharacterSpells(c, null, spellBookName1, 1);
+		assertEquals("Should still be one spell in the spell list", 1, aList.size());
+		addedSpell = aList.get(0);
+		assertEquals("Should be two sets of spell info for the two books", 2,
+			addedSpell.getInfoList().size());
+
+		// Remove the spell from the second book
+		response =
+			character.delSpell(addedSpell.getSpellInfoFor(spellBookName2, 1,
+				-1, none), pcClass, spellBookName2);
+		assertEquals("Delete spell should not be rejected.", "", response);
+		aList =
+			character.getCharacterSpells(c, null, spellBookName1, 1);
+		assertEquals("Should still be one spell in the spell list", 1, aList.size());
+		addedSpell = aList.get(0);
+		assertEquals("Should be one set of spell info for the remaining book", 1,
+			addedSpell.getInfoList().size());
+
+		// Remove the last spell from the first book 
+		response =
+			character.delSpell(addedSpell.getSpellInfoFor(spellBookName1, 1,
+				-1, none), pcClass, spellBookName1);
+		assertEquals("Delete spell should not be rejected.", "", response);
+		aList =
+			character.getCharacterSpells(c, null, spellBookName1, 1);
+		assertEquals("Should still be no spells in the spell list", 0, aList.size());
 	}
 
 	/**
