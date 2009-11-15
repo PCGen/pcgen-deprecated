@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Nov 14 12:21:48 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Nov 15 00:48:17 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Gargoyle Default	TYPE:DefaultMonster.MonstrousHumanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Gargoyle],[!PRERACE:1,%]	SOURCEPAGE:p.137
@@ -642,6 +642,125 @@ ALIGN:TN
 STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
 SKILL:Perception	RANK:2
 FEAT:Endurance
+
+
+STARTPACK:Hydra Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hydra],[!PRERACE:1,%]	SOURCEPAGE:p.178
+ALIGN:TN
+RACE:Hydra	!PRERACE:1,%
+NAME:Hydra
+SKILL:Perception	RANK:5
+FEAT:Combat Reflexes
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Hydra (Cryohydra) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hydra (Cryohydra)],[!PRERACE:1,%]	SOURCEPAGE:p.178
+ALIGN:TN
+RACE:Hydra (Cryohydra)	!PRERACE:1,%
+NAME:Cryohydra
+SKILL:Perception	RANK:5
+FEAT:Combat Reflexes
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Hydra (Pyrohydra) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hydra (Pyrohydra)],[!PRERACE:1,%]	SOURCEPAGE:p.178
+ALIGN:TN
+RACE:Hydra (Pyrohydra)	!PRERACE:1,%
+NAME:Pyrohydra
+SKILL:Perception	RANK:5
+FEAT:Combat Reflexes
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Hyena Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hyena],[!PRERACE:1,%]	SOURCEPAGE:p.179
+ALIGN:TN
+RACE:Hyena	!PRERACE:1,%
+NAME:Hyena
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:1
+FEAT:Alertness
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=11|CHA=10
+
+
+STARTPACK:Hyena (Dire) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Hyena (Dire)],[!PRERACE:1,%]	SOURCEPAGE:p.179
+ALIGN:TN
+RACE:Hyena (Dire)	!PRERACE:1,%
+NAME:Dire Hyena
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:3
+FEAT:Skill Focus (Perception)
+FEAT:Skill Focus (Stealth)
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=11|CHA=10
+
+
+STARTPACK:Intellect Devourer Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Intellect Devourer],[!PRERACE:1,%]	SOURCEPAGE:p.180
+ALIGN:CE
+RACE:Intellect Devourer	!PRERACE:1,%
+NAME:Intellect Devourer
+SKILL:Bluff			RANK:8
+SKILL:Disguise		RANK:8
+SKILL:Knowledge (Local)	RANK:8
+SKILL:Perception		RANK:8
+SKILL:Sense Motive	RANK:8
+SKILL:Stealth		RANK:8
+SKILL:Use Magic Device	RANK:8
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Toughness
+FEAT:Weapon Finesse
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+
+
+STARTPACK:Invisible Stalker Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Invisible Stalker],[!PRERACE:1,%]	SOURCEPAGE:p.181
+ALIGN:TN
+RACE:Invisible Stalker	!PRERACE:1,%
+NAME:Invisible Stalker
+SKILL:Acrobatics			RANK:7
+SKILL:Bluff				RANK:7
+SKILL:Fly				RANK:7
+SKILL:Knowledge (Planes)	RANK:7
+SKILL:Perception			RANK:7
+SKILL:Sense Motive		RANK:7
+SKILL:Stealth			RANK:7
+SKILL:Survival			RANK:7
+FEAT:Combat Reflexes
+FEAT:Improved Initiative
+FEAT:Lightning Reflexes
+FEAT:Weapon Focus (Slam)
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Iron Cobra Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Iron Cobra],[!PRERACE:1,%]	SOURCEPAGE:p.182
+ALIGN:TN
+RACE:Iron Cobra	!PRERACE:1,%
+NAME:Iron Cobra
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Iron Cobra (Adamantine Cobra) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Iron Cobra (Adamantine Cobra) Cobra],[!PRERACE:1,%]	SOURCEPAGE:p.182
+ALIGN:TN
+RACE:Iron Cobra (Adamantine Cobra)	!PRERACE:1,%
+NAME:Adamantine Cobra
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Iron Cobra (Darkwood Cobra) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Iron Cobra (Darkwood Cobra)],[!PRERACE:1,%]	SOURCEPAGE:p.182
+ALIGN:TN
+RACE:Iron Cobra (Darkwood Cobra)	!PRERACE:1,%
+NAME:Darkwood Cobra
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Iron Cobra (Mithral Cobra) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Iron Cobra (Mithral Cobra)],[!PRERACE:1,%]	SOURCEPAGE:p.182
+ALIGN:TN
+RACE:Iron Cobra (Mithral Cobra)	!PRERACE:1,%
+NAME:Mithral Cobra
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
 
 #
 # End
