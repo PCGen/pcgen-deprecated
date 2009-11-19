@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Nov 11 17:52:09 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Nov 18 21:54:56 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.8
@@ -96,6 +96,45 @@ FEAT:Iron Will
 FEAT:Skill Focus (Perception)
 
 
+STARTPACK:Barghest Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Barghest],[!PRERACE:1,%]	SOURCEPAGE:p.27
+ALIGN:LE
+RACE:Barghest	!PRERACE:1,%
+NAME:Barghest
+SKILL:Acrobatics		RANK:6
+SKILL:Bluff			RANK:6
+SKILL:Diplomacy		RANK:6
+SKILL:Intimidate		RANK:6
+SKILL:Perception		RANK:6
+SKILL:Sense Motive	RANK:6
+SKILL:Stealth		RANK:6
+SKILL:Survival		RANK:6
+FEAT:Combat Reflexes
+FEAT:Improved Initiative
+FEAT:Great Fortitude
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
+
+STARTPACK:Barghest (Greater) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Barghest (Greater)],[!PRERACE:1,%]	SOURCEPAGE:p.27
+ALIGN:LE
+RACE:Barghest (Greater)	!PRERACE:1,%
+NAME:Greater Barghest
+SKILL:Acrobatics		RANK:9
+SKILL:Bluff			RANK:9
+SKILL:Climb			RANK:9
+SKILL:Diplomacy		RANK:9
+SKILL:Intimidate		RANK:9
+SKILL:Perception		RANK:9
+SKILL:Sense Motive	RANK:9
+SKILL:Stealth		RANK:9
+SKILL:Survival		RANK:9
+SKILL:Swim			RANK:9
+FEAT:Combat Casting
+FEAT:Combat Reflexes
+FEAT:Improved Initiative
+FEAT:Great Fortitude
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
+
 STARTPACK:Basilisk Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Basilisk],[!PRERACE:1,%]	SOURCEPAGE:p.29
 ALIGN:TN
 RACE:Basilisk	!PRERACE:1,%
@@ -136,6 +175,22 @@ RACE:Beetle (Fire)	!PRERACE:1,%
 NAME:Fire Beetle
 ALIGN:TN
 STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+
+
+STARTPACK:Bugbear Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Bugbear],[!PRERACE:1,%]	SOURCEPAGE:p.38
+ALIGN:CE
+RACE:Bugbear	!PRERACE:1,%
+NAME:Bugbear
+SKILL:Intimidate	RANK:2
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+FEAT:Intimidating Prowess
+FEAT:Skill Focus (Perception)
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+GEAR:Morningstar				LOCATION:Primary Hand
+GEAR:Javelin			QTY:3	LOCATION:Carried
+GEAR:Leather				LOCATION:Equipped
+GEAR:Shield (Light/Wooden)		LOCATION:Equipped
 
 
 STARTPACK:Centipede (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Centipede (Giant)]	SOURCEPAGE:p.43
