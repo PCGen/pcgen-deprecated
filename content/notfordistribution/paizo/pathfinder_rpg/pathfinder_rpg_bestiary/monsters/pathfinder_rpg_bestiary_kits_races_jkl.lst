@@ -1,5 +1,63 @@
-# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Thu Nov 19 23:27:04 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+
+
+STARTPACK:Kobold Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Kobold],[!PRERACE:1,%]	SOURCEPAGE:p.183
+ALIGN:LE
+RACE:Kobold	!PRERACE:1,%
+NAME:Kobold
+CLASS:Warrior	LEVEL:1
+ABILITY:CATEGORY=Favored Class|Warrior
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+SKILL:Craft (Traps)	RANK:1
+SKILL:Stealth		RANK:1
+FEAT:Skill Focus (Perception)
+STAT:STR=13|DEX=11|CON=12|INT=10|WIS=9|CHA=8
+GEAR:Longspear	SIZE:S	LOCATION:Both Hands
+GEAR:Sling		SIZE:S	LOCATION:Carried
+GEAR:Leather	SIZE:S	LOCATION:Equipped
+
+
+STARTPACK:Kraken Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Kraken],[!PRERACE:1,%]	SOURCEPAGE:p.184
+ALIGN:NE
+RACE:Kraken	!PRERACE:1,%
+NAME:Kraken
+SKILL:Intimidate			RANK:20
+SKILL:Knowledge (Geography)	RANK:20
+SKILL:Knowledge (Nature)	RANK:20
+SKILL:Perception			RANK:20
+SKILL:Stealth			RANK:20
+SKILL:Swim				RANK:20
+SKILL:Use Magic Device		RANK:20
+FEAT:Bleeding Critical
+FEAT:Blind-Fight
+FEAT:Cleave
+FEAT:Combat Expertise
+FEAT:Critical Focus
+FEAT:Improved Critical (Arm)
+FEAT:Improved Initiative
+FEAT:Improved Trip
+FEAT:Multiattack
+FEAT:Power Attack
+STAT:STR=10|DEX=10|CON=11|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Kyton Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Kyton],[!PRERACE:1,%]	SOURCEPAGE:p.185
+ALIGN:LE
+RACE:Kyton	!PRERACE:1,%
+NAME:Kyton
+SKILL:Acrobatics			RANK:8
+SKILL:Climb				RANK:8
+SKILL:Craft (Blacksmithing)	RANK:8
+SKILL:Escape Artist		RANK:8
+SKILL:Intimidate			RANK:8
+SKILL:Perception			RANK:8
+FEAT:Alertness
+FEAT:Blind-Fight
+FEAT:Improved Initiative
+FEAT:Weapon Focus (Chains)
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+
 
 STARTPACK:Linnorm (Crag) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Linnorm (Crag)]	SOURCEPAGE:p.20
 STAT:STR=10|DEX=10|CON=11|INT=11|WIS=10|CHA=11
