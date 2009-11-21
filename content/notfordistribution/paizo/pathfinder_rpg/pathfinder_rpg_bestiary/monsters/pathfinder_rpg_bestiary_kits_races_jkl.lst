@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Nov 19 23:27:04 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Nov 20 17:14:25 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 
@@ -59,7 +59,42 @@ FEAT:Weapon Focus (Chains)
 STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=10
 
 
-STARTPACK:Linnorm (Crag) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Linnorm (Crag)]	SOURCEPAGE:p.20
+STARTPACK:Lamia Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Lamia],[!PRERACE:1,%]	SOURCEPAGE:p.186
+ALIGN:CE
+RACE:Lamia	!PRERACE:1,%
+NAME:Lamia
+SKILL:Bluff				RANK:4
+SKILL:Diplomacy			RANK:3
+SKILL:Disguise			RANK:5
+SKILL:Intimidate			RANK:6
+SKILL:Knowledge (Religion)	RANK:3
+SKILL:Perception			RANK:9
+SKILL:Stealth			RANK:9
+SKILL:Survival			RANK:6
+FEAT:Dodge
+FEAT:Great Fortitude
+FEAT:Iron Will
+FEAT:Mobility
+FEAT:Spring Attack
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+GEAR:Dagger	SIZE:M	LOCATION:Primary Hand
+
+
+STARTPACK:Leech (Giant) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Leech (Giant)],[!PRERACE:1,%]	SOURCEPAGE:p.187
+ALIGN:TN
+RACE:Leech (Giant)	!PRERACE:1,%
+NAME:Giant Leech
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=11
+
+
+STARTPACK:Leech Swarm Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Leech Swarm],[!PRERACE:1,%]	SOURCEPAGE:p.187
+ALIGN:TN
+RACE:Leech Swarm	!PRERACE:1,%
+NAME:Leech Swarm
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=10|CHA=10
+
+
+STARTPACK:Linnorm (Crag) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Linnorm (Crag)]	SOURCEPAGE:p.190
 STAT:STR=10|DEX=10|CON=11|INT=11|WIS=10|CHA=11
 RACE:Linnorm (Crag)	!PRERACE:1,%
 NAME:Crag Linnorm

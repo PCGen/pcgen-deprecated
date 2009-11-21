@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Nov 12 21:59:46 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Nov 20 20:54:31 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Ghost Template
@@ -65,6 +65,10 @@ Green Half-Dragon		VISIBLE:NO	SUBRACE:Half-Green Dragon
 Red Half-Dragon		VISIBLE:NO	SUBRACE:Half-Red Dragon
 Silver Half-Dragon	VISIBLE:NO	SUBRACE:Half-Silver Dragon
 White Half-Dragon		VISIBLE:NO	SUBRACE:Half-White Dragon
+
+###Block: Lich template
+# Template Name	Hit Dice Size			Challenge Rating	Damage Reduction			Template		Source Page		Required AL		Prohibited Race			Combat bonus				Bonus to skill								Stat bonus				Modify VAR				Weapon prof. bonus					Class Skill																			Ability																												Main Race Type	Vision			Natural Attacks
+Lich			HITDIE:8|CLASS.TYPE=Monster	CR:2			DR:15/Bludgeoning	DR:15/Magic	TEMPLATE:Undead	SOURCEPAGE:p.189	PREALIGN:LE,NE,CE	!PRERACE:1,RACETYPE=Undead	BONUS:COMBAT|AC|5|TYPE=NaturalArmor	BONUS:SKILL|Perception,Sense Motive,Stealth|8|TYPE=Racial	BONUS:STAT|INT,WIS,CHA|2	BONUS:VAR|ChannelResistance|4	BONUS:WEAPONPROF=Touch|DAMAGE|floor(TL/2)-STR	CSKILL:Climb|Disguise|Fly|Intimidate|Knowledge (Arcana)|Knowledge (Religion)|Perception|Sense Motive|Spellcraft|Stealth	ABILITY:Special Ability|AUTOMATIC|Channel Resistance|Immunity to Cold|Immunity to Electricity|Undead Traits|Rejuvenation ~ Lich|Fear Aura ~ Lich|Paralyzing Touch ~ Lich	RACETYPE:Undead	VISION:Darkvision (60')	NATURALATTACKS:Touch,Weapon.Natural.Melee.Finesseable,*1,1d8
 
 #
 # End
