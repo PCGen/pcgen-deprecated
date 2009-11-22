@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Nov 22 00:47:36 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Nov 22 13:38:50 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 
@@ -178,6 +178,44 @@ FEAT:Run
 FEAT:Skill Focus (Perception)
 FEAT:Weapon Focus (Claw)
 STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
+
+STARTPACK:Lizard (Monitor) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Lizard (Monitor)],[!PRERACE:1,%]	SOURCEPAGE:p.194
+ALIGN:TN
+RACE:Lizard (Monitor)	!PRERACE:1,%
+NAME:Monitor Lizard
+SKILL:Climb		RANK:1
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:1
+FEAT:Great Fortitude
+FEAT:Skill Focus (Perception)
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
+
+STARTPACK:Lizard (Giant Frilled) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Lizard (Giant Frilled)],[!PRERACE:1,%]	SOURCEPAGE:p.194
+ALIGN:TN
+RACE:Lizard (Giant Frilled)	!PRERACE:1,%
+NAME:Giant Frilled Lizard
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:4
+FEAT:Great Fortitude
+FEAT:Improved Initiative
+FEAT:Lightning Reflexes
+FEAT:Skill Focus (Perception)
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
+
+STARTPACK:Lizardfolk Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Lizardfolk],[!PRERACE:1,%]	SOURCEPAGE:p.195
+ALIGN:TN
+RACE:Lizardfolk	!PRERACE:1,%
+NAME:Lizardfolk
+SKILL:Perception	RANK:1
+SKILL:Swim		RANK:1
+FEAT:Multiattack
+STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=10
+GEAR:Morningstar				LOCATION:Primary Hand
+GEAR:Javelin			QTY:3	LOCATION:Carried
+GEAR:Shield (Heavy/Wooden)		LOCATION:Equipped
 
 
 #

@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Nov 21 22:50:44 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Nov 22 13:33:38 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Kobold Abilities
@@ -56,6 +56,18 @@ Poison		KEY:Poison ~ Ice Linnorm		CATEGORY:Special Ability	TYPE:SpecialAttack.Su
 Breath Weapon	KEY:Breath Weapon ~ Tarn Linnorm	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:BreathWeaponLine|0	DEFINE:BreathWeaponCone|0	DEFINE:BreathWeaponDice|0	DEFINE:BreathWeaponDamageDie|0	DEFINE:BreathWeaponDC|10+(HD/2)+CON	DESC:Once every 1d4 rounds as a standard action, a tarn linnorm can expel a %1-foot line or a %2-foot cone of acid, dealing %3d%4 points of acid damage to all creatures struck (Reflex DC %5 halves).|BreathWeaponLine|BreathWeaponCone|BreathWeaponDice|BreathWeaponDamageDie|BreathWeaponDC	BONUS:VAR|BreathWeaponDC|2|PREFEAT:1,Ability Focus(Breath Weapon)	SOURCEPAGE:p.192	ASPECT:Ability Benefit|(%1' Line or %2 Cone of acid %3d%4, DC %5)|BreathWeaponLine|BreathWeaponCone|BreathWeaponDice|BreathWeaponDamageDie|BreathWeaponDC	BENEFIT:Once every 1d4 rounds as a standard action, a tarn linnorm can expel a %1-foot line or a %2-foot cone of acid, dealing %3d%4 points of acid damage to all creatures struck (Reflex DC %5 halves). This acid creates toxic fumes when it consumes organic material--on the round after a creature takes acid damage from this attack, it must make a DC %5 Fortitude save or take 2d6 points of Strength damage from the poisonous fumes (this secondary effect is a poison effect). As a full-round action, the linnorm may breathe acid with one head and bite with the other (but not use its other weapons). Alternatively, as a full-round action, it can breathe acid from both heads to create two adjacent 60-footlong cones or two separate 120-foot-long lines. In this case it cannot use its breath weapon again for 2d4 rounds.|BreathWeaponLine|BreathWeaponCone|BreathWeaponDice|BreathWeaponDamageDie|BreathWeaponDC
 Death Curse		KEY:Death Curse ~ Tarn Linnorm	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatrual	DEFINE:DeathCurseDC|0																								DESC:When a creature slays a tarn linnorm, the slayer is affected by the curse of death. Curse of Death: save Will DC 29; effect creature can no longer be affected by healing spells and does not heal damage naturally from rest.|DeathCurseDC								BONUS:VAR|DeathCurseDC|10+(HD/2)+CHA					SOURCEPAGE:p.192
 Poison		KEY:Poison ~ Tarn Linnorm		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatrual	DEFINE:PoisonDC|0																									DESC:Bite--injury; save Fort DC %1; frequency 1/round for 10 rounds; effect 6d6 acid damage and 1d8 Con drain; cure 3 consecutive saves|PoisonDC																								BONUS:VAR|PoisonDC|10+(HD/2)+CON						SOURCEPAGE:p.192	ASPECT:Ability Benefit|(DC %1)|PoisonDC
+
+###Block: Lizard Monitor Lizard Abilities
+# Ability Name	Unique Key				Category of Ability		Type						Define				Description																						Source Page		Aspects
+Poison		KEY:Poison ~ Lizard Monitor	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:PoisonDC|10+(HD/2)+CON	DESC:Bite--injury; save Fort DC %1; onset 1 minute; frequency 1/hour for 6 hours; effect 1d2 Dexterity damage; cure 1 save.|PoisonDC	SOURCEPAGE:p.194	ASPECT:Ability Benefit|(DC %1)|PoisonDC
+
+###Block: Giant Frilled Lizard Abilities
+# Ability Name		Unique Key							Category of Ability		Type						Define						Description																																																									Source Page		Aspects
+Intimidating Charge	KEY:Intimidating Charge ~ Giant Frilled Lizard	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:IntimidatingChargeDC|10+(HD/2)+CHA	DESC:When a giant frilled lizard charges, it hisses ferociously, extends its neck frills, and darts forward on its hind legs, increasing its base speed to 50 feet for that round. In addition to the normal effects of a charge, the creature charged must make a DC %1 Will save or be shaken for 1d6 rounds. This is a fear effect.|IntimidatingChargeDC	SOURCEPAGE:p.194	ASPECT:Ability Benefit|(DC %1)|IntimidatingChargeDC
+
+###Block: Lizardfolk Abilities
+# Ability Name	Unique Key				Category of Ability		Type						Description														Source Page
+Hold Breath		KEY:Hold Breath ~ Lizardfolk	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:A lizardfolk can hold its breath for %1 rounds before it risks drowning.|CONSCORE*4	SOURCEPAGE:p.195
 
 #
 # End
