@@ -13,13 +13,11 @@ FEAT:Flyby Attack
 FEAT:Hover
 FEAT:Weapon Focus (Spikes)
 
-
 STARTPACK:Mantis (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mantis (Giant)]	SOURCEPAGE:p.200
 RACE:Mantis (Giant)	!PRERACE:1,%
 NAME:Giant Mantis
 ALIGN:TN
 STAT:STR=10|DEX=11|CON=10|INT=11|WIS=10|CHA=11
-
 
 STARTPACK:Medusa Default	TYPE:DefaultMonster.MonstrousHumanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Medusa]	SOURCEPAGE:p.201
 RACE:Medusa	!PRERACE:1,%
@@ -38,7 +36,6 @@ FEAT:Weapon Finesse
 GEAR:Dagger		SIZE:PC	LOCATION:Primary Hand
 GEAR:Longbow	SIZE:PC	LOCATION:Carried		EQMOD:MWORKW
 
-
 STARTPACK:Mephit (Air) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Air)]	SOURCEPAGE:p.202
 RACE:Mephit (Air)	!PRERACE:1,%
 NAME:Air Mephit
@@ -50,7 +47,6 @@ SKILL:Perception	RANK:3
 SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
-
 
 STARTPACK:Mephit (Dust) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Dust)]	SOURCEPAGE:p.202
 RACE:Mephit (Dust)	!PRERACE:1,%
@@ -64,7 +60,6 @@ SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
-
 STARTPACK:Mephit (Earth) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Earth)]	SOURCEPAGE:p.202
 RACE:Mephit (Earth)	!PRERACE:1,%
 NAME:Earth Mephit
@@ -76,7 +71,6 @@ SKILL:Perception	RANK:3
 SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
-
 
 STARTPACK:Mephit (Fire) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Fire)]	SOURCEPAGE:p.202
 RACE:Mephit (Fire)	!PRERACE:1,%
@@ -90,7 +84,6 @@ SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
-
 STARTPACK:Mephit (Ice) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Ice)]	SOURCEPAGE:p.202
 RACE:Mephit (Ice)	!PRERACE:1,%
 NAME:Ice Mephit
@@ -102,7 +95,6 @@ SKILL:Perception	RANK:3
 SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
-
 
 STARTPACK:Mephit (Magma) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Magma)]	SOURCEPAGE:p.202
 RACE:Mephit (Magma)	!PRERACE:1,%
@@ -116,7 +108,6 @@ SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
-
 STARTPACK:Mephit (Ooze) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Ooze)]	SOURCEPAGE:p.202
 RACE:Mephit (Ooze)	!PRERACE:1,%
 NAME:Ooze Mephit
@@ -128,7 +119,6 @@ SKILL:Perception	RANK:3
 SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
-
 
 STARTPACK:Mephit (Salt) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Salt)]	SOURCEPAGE:p.202
 RACE:Mephit (Salt)	!PRERACE:1,%
@@ -142,7 +132,6 @@ SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
-
 STARTPACK:Mephit (Steam) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Steam)]	SOURCEPAGE:p.202
 RACE:Mephit (Steam)	!PRERACE:1,%
 NAME:Steam Mephit
@@ -154,7 +143,6 @@ SKILL:Perception	RANK:3
 SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
-
 
 STARTPACK:Mephit (Water) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mephit (Water)]	SOURCEPAGE:p.202
 RACE:Mephit (Water)	!PRERACE:1,%
@@ -168,11 +156,11 @@ SKILL:Stealth	RANK:3
 FEAT:Dodge
 FEAT:Improved Initiative
 
-
-STARTPACK:Minotaur Default	PREMULT:1,[PRERACE:1,Minotaur],[!PRERACE:1,%]	VISIBLE:QUALIFY	EQUIPBUY:0	SOURCEPAGE:p.206
-ALIGN:CE
+STARTPACK:Minotaur Default	TYPE:DefaultMonster.MonstrousHumanoid	VISIBLE:QUALIFY	EQUIPBUY:0PREMULT:1,[PRERACE:1,Minotaur],[!PRERACE:1,%]	SOURCEPAGE:p.206
 RACE:Minotaur	!PRERACE:1,%
 NAME:Minotaur
+ALIGN:CE
+STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=10
 SKILL:Intimidate		RANK:3
 SKILL:Perception		RANK:3
 SKILL:Stealth		RANK:3
@@ -180,9 +168,7 @@ SKILL:Survival		RANK:3
 FEAT:Great Fortitude
 FEAT:Improved Bull Rush
 FEAT:Power Attack
-STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=10
 GEAR:Greataxe	LOCATION:Equipped	SIZE:L
-
 
 STARTPACK:Morlock Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Morlock]	SOURCEPAGE:209
 RACE:Morlock	!PRERACE:1,%
@@ -195,6 +181,27 @@ SKILL:Stealth	RANK:1
 FEAT:Improved Initiative
 FEAT:Lightning Reflexes
 GEAR:Club	SIZE:M	LOCATION:Primary Hand
+
+STARTPACK:Mummy Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mummy]	SOURCEPAGE:210
+RACE:Mummy		!PRERACE:1,%
+NAME:Mummy
+ALIGN:LE
+STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+SKILL:Perception		RANK:8
+SKILL:Stealth			RANK:8
+FEAT:Power Attack
+FEAT:Skill Focus (Perception)
+FEAT:Toughness
+FEAT:Weapon Focus (Slam)
+## Damage on Slam is incorrect. (+7 vs +10 in the Bestiary)
+
+#STARTPACK:Naga (Dark) Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Dark Naga]	SOURCEPAGE:211
+#RACE:Dark Naga		!PRERACE:1,%
+#NAME:Dark Naga
+#ALIGN:LE
+#STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
 
 
 STARTPACK:Ogre Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre]	SOURCEPAGE:220
