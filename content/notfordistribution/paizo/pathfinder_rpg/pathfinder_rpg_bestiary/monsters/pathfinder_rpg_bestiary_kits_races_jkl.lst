@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Nov 20 17:14:25 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Nov 22 00:47:36 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 
@@ -110,6 +110,75 @@ FEAT:Improved Critical (Bite)
 FEAT:Improved Initiative
 FEAT:Lightning Reflexes
 FEAT:Power Attack
+
+
+STARTPACK:Linnorm (Ice) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Linnorm (Ice)],[!PRERACE:1,%]	SOURCEPAGE:p.191
+ALIGN:CE
+RACE:Linnorm (Ice)	!PRERACE:1,%
+NAME:Ice Linnorm
+SKILL:Climb		RANK:18
+SKILL:Fly		RANK:18
+SKILL:Perception	RANK:18
+FEAT:Blind-Fight
+FEAT:Combat Reflexes
+FEAT:Improved Bull Rush
+FEAT:Improved Critical (Bite)
+FEAT:Improved Initiative
+FEAT:Vital Strike
+FEAT:Improved Vital Strike
+FEAT:Lightning Reflexes
+FEAT:Power Attack
+STAT:STR=10|DEX=10|CON=11|INT=11|WIS=10|CHA=11
+
+
+STARTPACK:Linnorm (Tarn) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Linnorm (Tarn)],[!PRERACE:1,%]	SOURCEPAGE:p.192
+ALIGN:CE
+RACE:Linnorm (Tarn)	!PRERACE:1,%
+NAME:Tarn Linnorm
+SKILL:Fly		RANK:22
+SKILL:Perception	RANK:22
+SKILL:Stealth	RANK:22
+SKILL:Swim		RANK:22
+FEAT:Awesome Blow
+FEAT:Blind-Fight
+FEAT:Combat Reflexes
+FEAT:Improved Bull Rush
+FEAT:Improved Critical (Bite)
+FEAT:Improved Initiative
+FEAT:Improved Overrun
+FEAT:Improved Vital Strike
+FEAT:Lightning Reflexes
+FEAT:Power Attack
+FEAT:Vital Strike
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+
+
+STARTPACK:Lion Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Lion],[!PRERACE:1,%]	SOURCEPAGE:p.193
+ALIGN:TN
+RACE:Lion	!PRERACE:1,%
+NAME:Lion
+SKILL:Acrobatics	RANK:1
+SKILL:Perception	RANK:2
+SKILL:Stealth	RANK:2
+FEAT:Improved Initiative
+FEAT:Run
+FEAT:Skill Focus (Perception)
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
+
+STARTPACK:Lion (Dire) Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Lion (Dire)],[!PRERACE:1,%]	SOURCEPAGE:p.193
+ALIGN:TN
+RACE:Lion (Dire)	!PRERACE:1,%
+NAME:Dire Lion
+SKILL:Acrobatics	RANK:2
+SKILL:Perception	RANK:4
+SKILL:Stealth	RANK:2
+FEAT:Improved Initiative
+FEAT:Run
+FEAT:Skill Focus (Perception)
+FEAT:Weapon Focus (Claw)
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+
 
 #
 # End
