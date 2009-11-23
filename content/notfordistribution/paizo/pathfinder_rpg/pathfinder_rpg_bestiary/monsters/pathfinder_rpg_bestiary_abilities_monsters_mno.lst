@@ -88,18 +88,21 @@ Mummy Rot		KEY:Mummy Rot ~ Mummy	CATEGORY:Special Ability	TYPE:SpecialAttack.Sup
 ###Block: Naga, Dark abilities
 # Ability Name	Unique Key					Category of Ability		Type						Innate Spells										Description											Source Page		Description of the Benefits
 Detect Thoughts	KEY:Detect Thoughts ~ Dark Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	SPELLS:Dark Naga|TIMES=ATWILL|CASTERLEVEL=9|Detect Thoughts,15+CHA	DESC:A dark naga can continuously use detect thoughts as per the spell.	SOURCEPAGE:p.211	BENEFIT:A dark naga can continuously use detect thoughts as per the spell (caster level 9th; Will DC 18 negates). The save DC is Charisma-based.
-Guarded Thoughts	KEY:Guarded Thoughts ~ Dark Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary													DESC:Dark nagas are immune to any form of mind reading.			SOURCEPAGE:p.213	BENEFIT:Dark nagas are immune to any form of mind reading, such as that granted by detect thoughts. This ability also grants a +2 racial bonus on all saves against charm effects.
-Poison		KEY:Poison ~ Dark Naga			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary																									SOURCEPAGE:p.215	BENEFIT:Sting-injury; save Fort DC 19; frequency 1 round; effect sleep for 2d4 minutes; cure 1 save.
+Guarded Thoughts	KEY:Guarded Thoughts ~ Dark Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary								DESC:Dark nagas are immune to any form of mind reading.			SOURCEPAGE:p.211	BENEFIT:Dark nagas are immune to any form of mind reading, such as that granted by detect thoughts. This ability also grants a +2 racial bonus on all saves against charm effects.
+Poison		KEY:Poison ~ Dark Naga			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary							DESC:Sting-injury; save Fort DC 19; frequency 1 round; effect sleep for 2d4 minutes; cure 1 save.		SOURCEPAGE:p.211
+Spells		KEY:Spells ~ Dark Naga		CATEGORY:Special ability	TYPE:SpecialQuality.Spells									DESC:Dark nagas cast spells as 7th-level sorcerers.		SOURCEPAGE:p.211
 
 ###Block: Naga, Guardian abilities
 # Ability Name	Unique Key				Category of Ability		Type						Source Page		Description of the Benefits
-Spit			KEY:Spit ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	BENEFIT:Bite-injury or spit-contact; save Fort DC 19; frequency 1/round for 6 rounds; effect 1d4 Con damage; cure 2 consecutive saves. The save DC is Constitution-based.
-Poison		KEY:Poison ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	BENEFIT:Sting-injury; save Fort DC 19; frequency 1 round; effect sleep for 2d4 minutes; cure 1 save.
+Poison			KEY:Poison ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	DESC:Bite-injury or spit-contact; save Fort DC 19; frequency 1/round for 6 rounds; effect 1d4 Con damage; cure 2 consecutive saves. The save DC is Constitution-based.
+Spit			KEY:Spit ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	SOURCEPAGE:p.215	DESC:A guardian naga can spit its venom up to 30 feet as a standard action. This is a ranged touch attack with no range increment. Opponents hit by this attack must make successful saves (see above) to avoid the effect.
+Spells			KEY:Spells ~ Guardian Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Spells			SOURCEPAGE:p.215	DESC:A guardian naga casts spells as a 9th-level sorcerer, and can cast spells from the cleric list as well as those normally available to a sorcerer. Cleric spells are considered arcane spells for a guardian naga.
 
 ###Block: Naga, Spirit abilities
 # Ability Name	Unique Key					Category of Ability		Type						Description													Source Page		Description of the Benefits
 Charming Gaze	KEY:Charming Gaze ~ Spirit Naga		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DESC:As charm person, 30 feet, Will DC 20 negates. The save DC is Charisma-based.	SOURCEPAGE:p.213
-Poison		KEY:Poison ~ Spirit Naga		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary															SOURCEPAGE:p.213	BENEFIT:Bite-injury; save Fort DC 20; frequency 1/round for 6 rounds; effect 1d4 Con damage; cure 1 save.
+Poison		KEY:Poison ~ Spirit Naga		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary															SOURCEPAGE:p.213	DESC:Bite-injury; save Fort DC 20; frequency 1/round for 6 rounds; effect 1d4 Con damage; cure 1 save.
+Spells			KEY:Spells ~ Spirit Naga	CATEGORY:Special Ability	TYPE:SpecialQuality.Spells			SOURCEPAGE:p.213	DESC:A spirit naga casts spells as a 7th-level sorcerer, and can cast spells from the cleric list as well as those normally available to a sorcerer. Cleric spells are considered arcane spells for a spirit naga.
 
 ###Block: Neothelid abilities
 # Ability Name	Unique Key						Category of Ability			Type								Define											Description																																																										Source Page							Description of the Benefits
