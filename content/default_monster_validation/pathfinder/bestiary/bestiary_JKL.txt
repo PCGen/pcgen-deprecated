@@ -1,0 +1,7 @@
+Bestiary J,K & L
+
+Lizard (Monitor): Poison (Su)? shouldn't a normal animals poison be Extrodinary?
+Lizard (Giant Frilled): IN AC +8 is listed as Armor, shouldn't this be listed as Natural?
+Lizardfolk: The Swim skill bonus does not reflect the shield penalty (understandably)
+
+
