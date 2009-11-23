@@ -266,12 +266,121 @@ FEAT:Combat Casting
 FEAT:Lightning Reflexes
 FEAT:Skill Focus (Perception)
 FEAT:Stealthy
-SPELLS:Cure Minor Wounds|Daze|Detect Magic|Mage Hand|Open/Close|Ray of Frost|Read Magic
+SPELLS:Daze|Detect Magic|Mage Hand|Open/Close|Ray of Frost|Read Magic|Stabilize
 SPELLS:Charm Person|Cure Light Wounds|Divine Favor|Magic Missile|Shield of Faith
 SPELLS:Cat's Grace|Invisibility|Summon Swarm
 SPELLS:Displacement|Fireball
 ## Not sure how to fix the Divine spell as Arcane magic issue.
-## Cure Minor Wounds doesn seem to exist.
+
+STARTPACK:Neothelid Default		TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Neothelid]	SOURCEPAGE:212
+RACE:Neothelid		!PRERACE:1,%
+NAME:Neothelid
+ALIGN:CE
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+SKILL:Bluff		RANK:20
+SKILL:Climb		RANK:20
+SKILL:Diplomacy		RANK:20
+SKILL:Intimidate		RANK:20
+SKILL:Knowledge (Arcana)		RANK:20
+SKILL:Perception		RANK:20
+SKILL:Spellcraft		RANK:20
+FEAT:Improved Initiative
+FEAT:Improved Critical (Tongue)
+FEAT:Iron Will
+FEAT:Great Fortitude
+FEAT:Power Attack
+FEAT:Cleave
+FEAT:Great Cleave
+FEAT:Improved Bull Rush
+FEAT:Improved Overrun
+FEAT:Quicken Spell Like Ability (Suggestion)
+
+STARTPACK:Night Hag Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Night Hag]	SOURCEPAGE:212
+RACE:Night Hag		!PRERACE:1,%
+NAME:Night Hag
+GENDER:Female
+ALIGN:NE
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
+SKILL:Bluff		RANK:8
+SKILL:Diplomacy		RANK:8
+SKILL:Disguise		RANK:8
+SKILL:Intimidate		RANK:8
+SKILL:Knowledge (Arcana)		RANK:8
+SKILL:Knowledge (Planes)		RANK:8
+SKILL:Perception		RANK:8
+SKILL:Ride		RANK:8
+SKILL:Sense Motive		RANK:8
+SKILL:Stealth		RANK:8
+FEAT:Alertness
+FEAT:Combat Casting
+FEAT:Deceitful
+FEAT:Mounted Combat
+GEAR:Heartstone (Night Hag)		LOCATION:Equipped
+
+STARTPACK:Nightmare Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare]	SOURCEPAGE:212
+RACE:Nightmare		!PRERACE:1,%
+NAME:Nightmare
+ALIGN:NE
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=11|CHA=10
+SKILL:Fly		RANK:6
+SKILL:Intimidate		RANK:6
+SKILL:Knowledge (Planes)		RANK:6
+SKILL:Perception		RANK:6
+SKILL:Sense Motive		RANK:6
+SKILL:Stealth		RANK:6
+SKILL:Survival		RANK:6
+FEAT:Alertness
+FEAT:Improved Initiative
+FEAT:Run
+
+STARTPACK:Nightmare (Cauchemar) Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare (Cauchemar)]	SOURCEPAGE:212
+RACE:Nightmare (Cauchemar)		!PRERACE:1,%
+NAME:Cauchemar Nightmare
+ALIGN:NE
+STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
+SKILL:Acrobatics		RANK:14
+SKILL:Bluff		RANK:14
+SKILL:Fly		RANK:14
+SKILL:Intimidate		RANK:14
+SKILL:Knowledge (Arcana)		RANK:14
+SKILL:Knowledge (Planes)		RANK:14
+SKILL:Perception		RANK:14
+SKILL:Sense Motive		RANK:14
+SKILL:Stealth		RANK:14
+FEAT:Alertness
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Power Attack
+FEAT:Cleave
+FEAT:Improved Overrun
+FEAT:Run
+
+STARTPACK:Nymph Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nymph]	SOURCEPAGE:212
+RACE:Nymph		!PRERACE:1,%
+NAME:Nymph
+ALIGN:CG
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+SKILL:Diplomacy		RANK:8
+SKILL:Escape Artist		RANK:8
+SKILL:Handle Animal		RANK:5
+SKILL:Heal		RANK:5
+SKILL:Knowledge (Nature)		RANK:8
+SKILL:Perception		RANK:8
+SKILL:Sense Motive		RANK:8
+SKILL:Stealth		RANK:8
+SKILL:Swim		RANK:8
+FEAT:Agile Maneuvers
+FEAT:Combat Casting
+FEAT:Dodge
+FEAT:Weapon Finesse
+GEAR:Dagger		LOCATION:Equipped		EQMOD:MWORKW
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Detect Magic|Guidance|Light|Stabilize
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Charm Animal|Endure Elements|Entangle|Obscuring Mist|Produce Flame
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Barkskin|Flame Blade|Resist Energy|Tree Shape
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Call Lightning|Cure Moderate Wounds|Water Breathing
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Summon Nature's Ally IV
+
+
 
 STARTPACK:Ogre Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre]	SOURCEPAGE:220
 RACE:Ogre	!PRERACE:1,%
