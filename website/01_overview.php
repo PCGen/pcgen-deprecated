@@ -33,10 +33,10 @@ require_once('include/header.php.inc');
 
         <ul>
             <li>Allows you to Create and Maintain multiple Characters.</li>
-            <li>Is FREE and works on all major operating systems (Windows, Linux, UNIX, Mac OS</li>
-            <li>Data and character files are operating system independent</li>
-            <li>Supports d20 based Game Systems including D&amp;D (3E, 3.5E, 4E), d20 Modern, Pathfinder, d20 Modern</li>
-            <li>Supports Tons of Publishers and their products (see here for a full list)</li>
+            <li>Is FREE and works on all major operating systems (Windows, Linux, UNIX, Mac OS).</li>
+            <li>Data and character files are operating system independent.</li>
+            <li>Supports d20 based Game Systems including D&amp;D (3E, 3.5E, 4E), d20 Modern, Pathfinder, d20 Modern.</li>
+            <li>Supports Tons of Publishers and their products.</li>
             <li>Is highly configurable, allowing the user to add or remove races, classes, feats, and house rules such as unusual class or race restrictions.</li>
             <li>Supports level advancement, with configurable progressions of feats, skills and ability score bonuses.</li>
             <li>Produces numerous customized character and party sheets in HTML, TEXT and PDF formats.</li>
