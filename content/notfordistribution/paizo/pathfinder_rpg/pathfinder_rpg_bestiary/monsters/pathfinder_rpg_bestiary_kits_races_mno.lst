@@ -247,7 +247,7 @@ SPELLS:Cure Serious Wounds|Dispel Magic|Lightning Bolt
 SPELLS:Divine Power|Invisibility (Greater)
 ## Not sure how to fix the Divine spell as Arcane magic issue.
 
-STARTPACK:Naga (Spirit) Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Spirit)]	SOURCEPAGE:212
+STARTPACK:Naga (Spirit) Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Spirit)]	SOURCEPAGE:213
 RACE:Naga (Spirit)		!PRERACE:1,%
 NAME:Spirit Naga
 ALIGN:CE
@@ -272,7 +272,7 @@ SPELLS:Cat's Grace|Invisibility|Summon Swarm
 SPELLS:Displacement|Fireball
 ## Not sure how to fix the Divine spell as Arcane magic issue.
 
-STARTPACK:Neothelid Default		TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Neothelid]	SOURCEPAGE:212
+STARTPACK:Neothelid Default		TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Neothelid]	SOURCEPAGE:214
 RACE:Neothelid		!PRERACE:1,%
 NAME:Neothelid
 ALIGN:CE
@@ -295,7 +295,7 @@ FEAT:Improved Bull Rush
 FEAT:Improved Overrun
 FEAT:Quicken Spell Like Ability (Suggestion)
 
-STARTPACK:Night Hag Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Night Hag]	SOURCEPAGE:212
+STARTPACK:Night Hag Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Night Hag]	SOURCEPAGE:215
 RACE:Night Hag		!PRERACE:1,%
 NAME:Night Hag
 GENDER:Female
@@ -317,7 +317,7 @@ FEAT:Deceitful
 FEAT:Mounted Combat
 GEAR:Heartstone (Night Hag)		LOCATION:Equipped
 
-STARTPACK:Nightmare Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare]	SOURCEPAGE:212
+STARTPACK:Nightmare Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare]	SOURCEPAGE:216
 RACE:Nightmare		!PRERACE:1,%
 NAME:Nightmare
 ALIGN:NE
@@ -333,7 +333,7 @@ FEAT:Alertness
 FEAT:Improved Initiative
 FEAT:Run
 
-STARTPACK:Nightmare (Cauchemar) Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare (Cauchemar)]	SOURCEPAGE:212
+STARTPACK:Nightmare (Cauchemar) Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare (Cauchemar)]	SOURCEPAGE:216
 RACE:Nightmare (Cauchemar)		!PRERACE:1,%
 NAME:Cauchemar Nightmare
 ALIGN:NE
@@ -355,7 +355,7 @@ FEAT:Cleave
 FEAT:Improved Overrun
 FEAT:Run
 
-STARTPACK:Nymph Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nymph]	SOURCEPAGE:212
+STARTPACK:Nymph Default		TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nymph]	SOURCEPAGE:217
 RACE:Nymph		!PRERACE:1,%
 NAME:Nymph
 ALIGN:CG
@@ -380,7 +380,23 @@ SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Barkskin|Flame Blade|Resist Energy|
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Call Lightning|Cure Moderate Wounds|Water Breathing
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Summon Nature's Ally IV
 
+#STARTPACK:Ocher Jelly Default		TYPE:DefaultMonster.Ooze	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ocher Jelly]	SOURCEPAGE:218
+#RACE:Ocher Jelly		!PRERACE:1,%
+#NAME:Ocher Jelly
+#ALIGN:TN
+#STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
 
+STARTPACK:Octopus Default		TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Octopus]	SOURCEPAGE:219
+RACE:Octopus		!PRERACE:1,%
+NAME:Octopus
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+
+STARTPACK:Octopus (Giant) Default		TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Octopus (Giant)]	SOURCEPAGE:219
+RACE:Octopus (Giant)		!PRERACE:1,%
+NAME:Octopus (Giant)
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
 
 STARTPACK:Ogre Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre]	SOURCEPAGE:220
 RACE:Ogre	!PRERACE:1,%
@@ -394,6 +410,30 @@ FEAT:Toughness
 GEAR:Greatclub		SIZE:L	LOCATION:Both Hands
 GEAR:Hide			SIZE:L	LOCATION:Equipped
 GEAR:Javelin	QTY:4	SIZE:L	LOCATION:Carried
+
+STARTPACK:Ogre Mage Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre Mage]	SOURCEPAGE:221
+RACE:Ogre Mage		!PRERACE:1,%
+NAME:Ogre Mage
+ALIGN:LE
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+
+STARTPACK:Orc Default		TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Orc]	SOURCEPAGE:222
+RACE:Orc		!PRERACE:1,%
+NAME:Orc
+ALIGN:CE
+STAT:STR=10|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+
+STARTPACK:Otyugh Default		TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Otyugh]	SOURCEPAGE:223
+RACE:Otyugh		!PRERACE:1,%
+NAME:Otyugh
+ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=11|WIS=11|CHA=10
+
+STARTPACK:Owlbear Default		TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Owlbear]	SOURCEPAGE:224
+RACE:Owlbear		!PRERACE:1,%
+NAME:Owlbear
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
 #
 # End
