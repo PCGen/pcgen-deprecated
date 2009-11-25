@@ -447,8 +447,8 @@ public class NPCGenerator
 			if (existingDomain == null)
 			{
 				Domain newDomain = aCD.setDomain(domain, aPC);
-				DomainApplication.applyDomain(aPC, newDomain);
 				aPC.addCharacterDomain(aCD);
+				DomainApplication.applyDomain(aPC, newDomain);
 
 				aPC.calcActiveBonuses();
 			}
