@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Nov 29 02:47:40 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Nov 29 12:28:37 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Andrew Maitland
 
@@ -51,27 +51,27 @@ FOLLOWER:CompLevel=20	TYPE:Animal Companion	HD:1																															B
 ###CLARIFY:Does this mean Size Increase as well?
 
 ###Block:Special Mount - Same Table but slightly different animal list was warranted plus INT needs to be locked at 6
-# Class of the Master	Type				Hit Dice	Ability									Automatically Gained Feat	Define						Bonus to Ability Pool					Combat bonus						Stat bonus			Modify VAR			Main Race Type		Template
-FOLLOWER:SMLevel=1	TYPE:Special Mount			ABILITY:Special Ability|AUTOMATIC|Link|Share Spells							DEFINE:MasterLevel|0	DEFINE:LOCK.INT|6																					BONUS:VAR|MasterLevel|1	RACETYPE:Animal
-FOLLOWER:SMLevel=2	TYPE:Special Mount	HD:1																																												BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=3	TYPE:Special Mount			ABILITY:Special Ability|AUTOMATIC|Evasion																								BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=4	TYPE:Special Mount	HD:1		ABILITY:Special Ability|AUTOMATIC|Fourth Level Advancement													BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=5	TYPE:Special Mount	HD:1																																												BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=6	TYPE:Special Mount	HD:1		ABILITY:Special Ability|AUTOMATIC|Devotion																							BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=7	TYPE:Special Mount			ABILITY:Special Ability|AUTOMATIC|Seventh Level Advancement																																	BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=8	TYPE:Special Mount	HD:1																																												BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=9	TYPE:Special Mount	HD:1												AUTO:FEAT|Multiattack									BONUS:ABILITYPOOL|Companion Stat Increase|1	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=10	TYPE:Special Mount	HD:1																																												BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=11	TYPE:Special Mount																																													BONUS:VAR|MasterLevel|1	RACETYPE:Magical Beast	TEMPLATE:Celestial Creature
-FOLLOWER:SMLevel=12	TYPE:Special Mount	HD:1																																BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=13	TYPE:Special Mount	HD:1																																												BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=14	TYPE:Special Mount	HD:1																								BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=15	TYPE:Special Mount																																	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=16	TYPE:Special Mount	HD:1		ABILITY:Special Ability|AUTOMATIC|Improved Evasion																																		BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=17	TYPE:Special Mount	HD:1																																												BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=18	TYPE:Special Mount	HD:1																																BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=19	TYPE:Special Mount																																													BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=20	TYPE:Special Mount	HD:1																								BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
+# Class of the Master	Type				Hit Dice	Spell Res.		Ability									Automatically Gained Feat	Define						Bonus to Ability Pool					Combat bonus						Stat bonus			Modify VAR			Main Race Type		Template
+FOLLOWER:SMLevel=1	TYPE:Special Mount						ABILITY:Special Ability|AUTOMATIC|Link|Share Spells							DEFINE:MasterLevel|0	DEFINE:LOCK.INT|6																					BONUS:VAR|MasterLevel|1	RACETYPE:Animal
+FOLLOWER:SMLevel=2	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=3	TYPE:Special Mount						ABILITY:Special Ability|AUTOMATIC|Evasion																								BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=4	TYPE:Special Mount	HD:1					ABILITY:Special Ability|AUTOMATIC|Fourth Level Advancement													BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=5	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=6	TYPE:Special Mount	HD:1					ABILITY:Special Ability|AUTOMATIC|Devotion																							BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=7	TYPE:Special Mount						ABILITY:Special Ability|AUTOMATIC|Seventh Level Advancement																																	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=8	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=9	TYPE:Special Mount	HD:1															AUTO:FEAT|Multiattack									BONUS:ABILITYPOOL|Companion Stat Increase|1	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=10	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=11	TYPE:Special Mount																																																BONUS:VAR|MasterLevel|1	RACETYPE:Magical Beast	TEMPLATE:Celestial Creature
+FOLLOWER:SMLevel=12	TYPE:Special Mount	HD:1																																			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=13	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=14	TYPE:Special Mount	HD:1																											BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=15	TYPE:Special Mount			SR:MasterLevel+11																															BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=16	TYPE:Special Mount	HD:1					ABILITY:Special Ability|AUTOMATIC|Improved Evasion																																		BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=17	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=18	TYPE:Special Mount	HD:1																																			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR,DEX|1	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=19	TYPE:Special Mount																																																BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=20	TYPE:Special Mount	HD:1																											BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
 
 ###Block:Familiar - No apparent changes from RSRD
 # Class of the Master	Type			Spell Res.	Ability										Copy Masters BAB		Copy Masters Checks	HP formula based on Master	Use Masters skills?	Define			Combat bonus						Main Race Type
