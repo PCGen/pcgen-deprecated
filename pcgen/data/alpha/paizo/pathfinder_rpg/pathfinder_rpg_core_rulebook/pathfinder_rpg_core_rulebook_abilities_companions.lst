@@ -23,9 +23,9 @@ Spell Resistance				KEY:Spell Resistance ~ Familiar	CATEGORY:Special Ability	TYP
 Fourth Level Advancement								CATEGORY:Special Ability	TYPE:Special
 Seventh Level Advancement								CATEGORY:Special Ability	TYPE:Special
 #
-Companion Bonus Choice									CATEGORY:Special Ability	TYPE:Special																																							BONUS:ABILITYPOOL|Companion Level Increase Choice|1
-Stat Increase				KEY:Companion Choice ~ Stat		CATEGORY:Special Ability	TYPE:CompChoice
-Regular Progression			KEY:Companion Choice ~ Regular	CATEGORY:Special Ability	TYPE:CompChoice
+#Companion Bonus Choice									CATEGORY:Special Ability	TYPE:Special																																							BONUS:ABILITYPOOL|Companion Level Increase Choice|1
+#Stat Increase				KEY:Companion Choice ~ Stat		CATEGORY:Special Ability	TYPE:CompChoice
+#Regular Progression			KEY:Companion Choice ~ Regular	CATEGORY:Special Ability	TYPE:CompChoice
 
 Companion Skills										CATEGORY:Special Ability	TYPE:Special																																																CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|Perception|Stealth|Survival|Swim
 War Trained											CATEGORY:Special Ability	TYPE:SpecialQuality
