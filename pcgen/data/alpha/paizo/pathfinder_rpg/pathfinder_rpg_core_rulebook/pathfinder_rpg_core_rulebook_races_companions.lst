@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Nov 29 02:39:09 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Nov 29 13:40:18 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Andrew Maitland
 
@@ -85,6 +85,5 @@ Familiar (Weasel)			OUTPUTNAME:[NAME]	STARTFEATS:1	SIZE:T	MOVE:Walk,20,Climb,20	
 
 
 ###Block: Shadowdancer Companion
-# COMMENT: Animal 1 instead of undead 3 since it makes no difference for the creature. Only has 1/2 master HP.
-# Race Name			Output Name		Starting Feats	Size		Move		Vision			Modify VAR				Ability															Natural Attacks										Monster Class Name and Starting Level	Main Race Type	Race Subtype		Template			Challenge Rating	Source Page
-Companion (Shadow)	OUTPUTNAME:[NAME]	STARTFEATS:1	SIZE:M	MOVE:Fly,40	VISION:Darkvision (60')	BONUS:VAR|ChannelResistance|2	ABILITY:Special ABility|AUTOMATIC|Channel Resistance|Strength Damage|Companion Shadow Benefits	NATURALATTACKS:Incorporeal Touch,Melee.Natural.Weapon.Touch,*1,1d6	MONSTERCLASS:Companion:1			RACETYPE:Undead	RACESUBTYPE:Incorporeal	TEMPLATE:Incorporeal	CR:3			SOURCEPAGE:p.245
+# Race Name			Output Name		Starting Feats	Size		Move		Vision			Stat bonus											Modify VAR									Ability																							Natural Attacks										Monster Class Name and Starting Level	Main Race Type	Race Subtype		Template				Challenge Rating	Source Page		Apply Kit
+Companion (Shadow)	OUTPUTNAME:[NAME]	STARTFEATS:1	SIZE:M	MOVE:Fly,40	VISION:Darkvision (60')	BONUS:STAT|DEX|4	BONUS:STAT|INT|-4	BONUS:STAT|WIS|2	BONUS:STAT|CHA|4	BONUS:VAR|ChannelResistance|2	BONUS:VAR|Maneuverability|4	ABILITY:Special Ability|AUTOMATIC|Channel Resistance|Strength Damage|Shadow Companion Saves|Shadow Companion Resistance|Flight Maneuverability	NATURALATTACKS:Incorporeal Touch,Melee.Natural.Weapon.Touch,*1,1d6	MONSTERCLASS:Undead:3				RACETYPE:Undead	RACESUBTYPE:Incorporeal	TEMPLATE:Incorporeal|Undead	CR:3			SOURCEPAGE:p.245	KIT:1|Companion (Shadow)

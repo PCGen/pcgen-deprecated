@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Aug 24 09:47:39 2009 -- reformated by prettylst.pl v1.38 (build 7302)
+# CVS $Revision$ $Author$ -- Sun Nov 29 14:40:29 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
 # Original Entry by: Andrew Maitland
 
@@ -145,6 +145,15 @@ RACE:Familiar (Weasel)	!PRERACE:1,%
 #FEAT:Weapon Finesse
 STAT:STR=11|DEX=11|CHA=11|CON=10|INT=10|WIS=10
 
+
+STARTPACK:Companion (Shadow)	TYPE:Companion	VISIBLE:NO
+RACE:Companion (Shadow)	!PRERACE:1,%
+STAT:STR=10|DEX=10|CON=10|INT=10|WIS=10|CHA=11
+FEAT:Dodge
+FEAT:Skill Focus (Perception)
+SKILL:Fly		RANK:2
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:3
 
 ###Block: Alignment Kits ------------------
 STARTPACK:LG	VISIBLE:NO	APPLY:INSTANT
