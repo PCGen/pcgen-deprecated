@@ -101,3 +101,6 @@ HIDETYPE:FEAT|WizardBonus|SkillFocus|WeaponFocus
 HIDETYPE:FEAT|AberrantBloodline|AbyssalBloodline|ArcaneBloodline|CelestialBloodline|DestinedBloodline|DraconicBloodline|ElementalBloodline|FeyBloodline|InfernalBloodline|UndeadBloodline
 
 BONUS:ABILITYPOOL|Favored Class|1|PREPCLEVEL:MIN=1
+
+COMPANIONLIST:Mount|ANY
+COMPANIONLIST:Follower|ANY
