@@ -37,6 +37,29 @@ SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http:/
 # Not listed in the Book but referenced in the Core for Ranger
 Companion (Dire Rat)			OUTPUTNAME:[NAME]				STARTFEATS:1	SIZE:S	MOVE:Walk,40,Climb,20,Swim,20		FACE:5	REACH:5	VISION:Low-light																																											BONUS:SKILL|Climb,Swim|DEX-STR|TYPE=Racial	BONUS:STAT|DEX|6|TYPE=Racial	BONUS:STAT|CON,WIS|2|TYPE=Racial	BONUS:STAT|INT|-8|TYPE=Racial	BONUS:STAT|CHA|-6|TYPE=Racial	BONUS:STAT|STR,CON|2|TYPE=RacialAdvancement|PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular	BONUS:STAT|DEX,CON|2|TYPE=RacialAdvancement|PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Stat			BONUS:VAR|CompAdvancementLvlA|1						BONUS:WEAPONPROF=Bite|DAMAGE|max(0,(STR/2))	ABILITY:Special Ability|AUTOMATIC|Scent	ABILITY:Special Ability|AUTOMATIC|Disease ~ Dire Rat|PREABILITY:1,CATEGORY=Special Ability,Companion Choice ~ Regular									LEGS:4			NATURALATTACKS:Bite,Weapon.Natural.Melee.Finesseable.Bludgeoning.Piercing.Slashing.Disease,*1,1d4										MONSTERCLASS:Companion:2			RACETYPE:Companion	SOURCEPAGE:p.232	KIT:1|Companion ~ Dire Rat
 
+#Ankylosaurus 83
+#Aurochs 174
+#Bison 174
+#Brachiosaurus 83
+#Dire bat 30
+#Orca 88
+#Dolphin 88
+#Elasmosaurus 84
+#Electric eel 119
+#Elephant 128
+#Giant frog 135
+#Giant moray eel 119
+#Goblin dog 157
+#Hyena 179
+#Monitor lizard 194
+#Octopus 219
+#Pteranodon 85
+#Rhinoceros 235
+#Roc 236
+#Squid 259
+#Stegosaurus 85
+#Triceratops 86
+#Tyrannosaurus 86
 
 
 
