@@ -4,24 +4,25 @@ SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:
 
 ###Block:Companion for Druid and Ranger - Paladin uses same table but has separate entry
 # Class of the Master	Type				Hit Dice	Ability																								Virtual Feat				Automatically Gained Feat	Define			Bonus to Ability Pool					Combat bonus						Adjust PC Size							Stat bonus					Modify VAR
-FOLLOWER:CompLevel=1	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Link|Share Spells|Bonus Tricks|Companion Skills|Animal Tricks and Training																		DEFINE:BonusTricks|0																																BONUS:VAR|BonusTricks|1	RACETYPE:Animal
-FOLLOWER:CompLevel=2	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=3	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Evasion																																										BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE										BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
-FOLLOWER:CompLevel=4	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Fourth Level Advancement	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice|PREVAREQ:CompAdvancementLvlA,1																BONUS:ABILITYPOOL|Companion Stat Increase|1
-FOLLOWER:CompLevel=5	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=6	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Devotion																																									BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE										BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
-FOLLOWER:CompLevel=7	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Seventh Level Advancement	ABILITY:Special Ability|AUTOMATIC|Companion Bonus Choice|PREVAREQ:CompAdvancementLvlB,1																																BONUS:SIZEMOD|NUMBER|1|PREVAREQ:CompAdvancementLvlB,1
-FOLLOWER:CompLevel=8	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=9	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Multiattack																		VFEAT:Multiattack|PREHANDSGTEQ:3	AUTO:FEAT|Multiattack						BONUS:ABILITYPOOL|Companion Stat Increase|1	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE										BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
-FOLLOWER:CompLevel=10	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=12	TYPE:Animal Companion	HD:1																																																		BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE										BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
-FOLLOWER:CompLevel=13	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=14	TYPE:Animal Companion	HD:1																																										BONUS:ABILITYPOOL|Companion Stat Increase|1
-FOLLOWER:CompLevel=15	TYPE:Animal Companion																																																			BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE										BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
-FOLLOWER:CompLevel=16	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Improved Evasion
-FOLLOWER:CompLevel=17	TYPE:Animal Companion	HD:1
-FOLLOWER:CompLevel=18	TYPE:Animal Companion	HD:1																																																		BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE										BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|BonusTricks|1
-FOLLOWER:CompLevel=20	TYPE:Animal Companion	HD:1																																										BONUS:ABILITYPOOL|Companion Stat Increase|1
+FOLLOWER:CompLevel=1	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Link|Share Spells|Bonus Tricks|Animal Tricks and Training						DEFINE:MasterLevel|0	DEFINE:BonusTricks|0																							BONUS:VAR|MasterLevel|1	BONUS:VAR|BonusTricks|1	RACETYPE:Animal
+FOLLOWER:CompLevel=2	TYPE:Animal Companion	HD:1																																																					BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=3	TYPE:Animal Companion			ABILITY:Special Ability|AUTOMATIC|Evasion																															BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|MasterLevel|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=4	TYPE:Animal Companion	HD:1																															BONUS:ABILITYPOOL|Companion Stat Increase|1															BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=5	TYPE:Animal Companion	HD:1																																																					BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=6	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Devotion																														BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|MasterLevel|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=7	TYPE:Animal Companion																																																						BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=8	TYPE:Animal Companion	HD:1																																																					BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=9	TYPE:Animal Companion	HD:1																		AUTO:FEAT|Multiattack										BONUS:ABILITYPOOL|Companion Stat Increase|1	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|MasterLevel|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=10	TYPE:Animal Companion	HD:1																																																					BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=12	TYPE:Animal Companion	HD:1																																							BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|MasterLevel|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=13	TYPE:Animal Companion	HD:1																																																					BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=14	TYPE:Animal Companion	HD:1																															BONUS:ABILITYPOOL|Companion Stat Increase|1															BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=15	TYPE:Animal Companion																																								BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|MasterLevel|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=16	TYPE:Animal Companion	HD:1		ABILITY:Special Ability|AUTOMATIC|Improved Evasion																																											BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=17	TYPE:Animal Companion	HD:1																																																					BONUS:VAR|MasterLevel|1
+FOLLOWER:CompLevel=18	TYPE:Animal Companion	HD:1																																							BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:STAT|STR|1	BONUS:STAT|DEX|1	BONUS:VAR|MasterLevel|1	BONUS:VAR|BonusTricks|1
+FOLLOWER:CompLevel=20	TYPE:Animal Companion	HD:1																															BONUS:ABILITYPOOL|Companion Stat Increase|1															BONUS:VAR|MasterLevel|1
+
 
 
 

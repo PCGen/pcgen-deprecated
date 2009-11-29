@@ -47,6 +47,34 @@ Hold Breath							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VIS
 # Ability Name			Unique Key			Category of Ability		Type						Visible	Define			Description																																	Modify VAR					Source Page
 Disease				KEY:Disease ~ Dire Rat	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:DiseaseDC|0	DESC:Filth Fever: Bite injury; Save Fort DC %1; Onset 1d3 days; Frequency 1/day; Effect 1d3 Dex damage and 1d3 Con damage; Cure 2 consecutive saves.|DiseaseDC								BONUS:VAR|DiseaseDC|10+(TL/2)+CON	SOURCEPAGE:p.232
 
+###Block: Companion Advancement abilities
+# Ability Name						Category of Ability		Type			Visible		Required Race												Ability													Combat bonus						Adjust PC Size		Stat bonus
++2 to Dexterity and Constitution			CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY																																									BONUS:STAT|DEX,CON|2|TYPE=Racial
+Companion Advancement (Ape)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Ape)																								BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Badger (Wolverine))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Badger (Wolverine))																														BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Bear)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Bear)																																BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Bird)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Bird (Eagle)),Companion (Bird (Hawk)),Companion (Bird (Owl))																											BONUS:STAT|STR,CON|2|TYPE=Racial
+Companion Advancement (Boar)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Boar)										ABILITY:Special Ability|AUTOMATIC|Ferocity															BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Camel)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Camel)																																BONUS:SIZEMOD|NUMBER|1	BONUS:STAT|STR,CON|2|TYPE=Racial
+Companion Advancement (Cat (Small (Cheetah)))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Cat (Small (Cheetah)))							ABILITY:Special Ability|AUTOMATIC|Sprint																BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Cat (Small (Leopard)))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Cat (Small (Leopard)))							ABILITY:Special Ability|AUTOMATIC|Sprint																BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Crocodile (Alligator))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Crocodile (Alligator))							ABILITY:Special Ability|AUTOMATIC|Tail Slap ~ Crocodile|Death Roll|Grab|Sprint									BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Dog)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Dog)																								BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Horse)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Horse)										ABILITY:Special Ability|AUTOMATIC|War Trained
+Companion Advancement (Pony)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Pony)										ABILITY:Special Ability|AUTOMATIC|War Trained
+Companion Advancement (Shark)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Shark)										ABILITY:Special Ability|AUTOMATIC|Blindsense															BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Snake (Constrictor))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Snake (Constrictor))								ABILITY:Special Ability|AUTOMATIC|Constrict							BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Snake (Viper))		CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Snake (Viper))																															BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Dire Rat)			CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Dire Rat)									ABILITY:Special Ability|AUTOMATIC|Disease ~ Dire Rat																		BONUS:STAT|STR,CON|2|TYPE=Racial
+
+# Advances at level 7
+Companion Advancement (Cat (Big (Lion)))		CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Cat (Big (Lion)))								ABILITY:Special Ability|AUTOMATIC|Grab|Pounce							BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Cat (Big (Tiger)))		CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Cat (Big (Tiger)))								ABILITY:Special Ability|AUTOMATIC|Grab|Pounce							BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Dinosaur (Deinonychus))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Dinosaur (Deinonychus))																					BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Dinosaur (Velociraptor))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Dinosaur (Velociraptor))																					BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
+Companion Advancement (Wolf)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Wolf)																																BONUS:SIZEMOD|NUMBER|1
+
+
 # Shadowdancer -
 Companion Shadow Benefits					CATEGORY:Special Ability	TYPE:SpecialQuality									DESC:+4 bonus on Will saves made to halve the damage from positive channeled energy and the shadow cannot be turned or commanded.
 Strength Damage							CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural							DESC:A shadow's touch deals 1d6 points of Strength damage to a living creature. This is a negative energy effect. A creature dies if this Strength damage equals or exceeds its actual Strength score.
