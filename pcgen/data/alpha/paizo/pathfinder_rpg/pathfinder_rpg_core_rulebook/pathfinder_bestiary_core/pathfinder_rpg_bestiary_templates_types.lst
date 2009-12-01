@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Dec  1 14:06:49 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Tue Dec  1 17:32:02 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-09
 
 ###Block: Creature Types
@@ -7,19 +7,36 @@ Construct		VISIBLE:NO	DEFINE:LOCK.CON|10							BONUS:HP|CURRENTMAX|max(SIZE-2,0)
 Undead		VISIBLE:NO	DEFINE:LOCK.CON|10	BONUS:CHECKS|BASE.Fortitude|CHA	BONUS:HP|CURRENTMAX|TL*CHA
 
 ###Block: Creature Subtypes
-# Template Name	Visible	Source Page		Define							Combat bonus											Modify VAR									Class Skill				Ability																																Vision
-Air			VISIBLE:NO	SOURCEPAGE:p.310																																CSKILL:Fly
-Angel			VISIBLE:NO	SOURCEPAGE:p.310																						BONUS:VAR|ElectricityResistanceBonus,FireResistanceBonus|10						ABILITY:Special Ability|AUTOMATIC|Immunity to Acid|Immunity to Cold|Immunity to Petrification|Resistance to Electricity|Resistance to Fire|Save vs Poison|Protective Aura ~ Angel|Truespeech ~ Angel	VISION:Darkvision (60')|Low-light
+# Template Name	Visible	Source Page		Define							Combat bonus											Modify VAR												Class Skill				Ability																																Automatic Languages				Vision
+Air			VISIBLE:NO	SOURCEPAGE:p.310																																			CSKILL:Fly
+Angel			VISIBLE:NO	SOURCEPAGE:p.310																						BONUS:VAR|ElectricityResistanceBonus,FireResistanceBonus|10									ABILITY:Special Ability|AUTOMATIC|Immunity to Acid|Immunity to Cold|Immunity to Petrification|Resistance to Electricity|Resistance to Fire|Save vs Poison|Protective Aura ~ Angel|Truespeech ~ Angel								VISION:Darkvision (60')|Low-light
 Aquatic		VISIBLE:NO	SOURCEPAGE:p.310
-Archon		VISIBLE:NO	SOURCEPAGE:p.310																																					ABILITY:Special Ability|AUTOMATIC|Immunity to Electricity|Immunity to Petrification|Save vs Poison|Aura of Menace ~ Archon|Teleport ~ Archon|Truespeech ~ Archon							VISION:Darkvision (60')|Low-light
-Cold			VISIBLE:NO	SOURCEPAGE:p.310																																					ABILITY:Special Ability|AUTOMATIC|Immunity to Cold|Vulnerability to Fire
-Earth			VISIBLE:NO	SOURCEPAGE:p.310
-Elemental		VISIBLE:NO	SOURCEPAGE:p.311
-Fire			VISIBLE:NO	SOURCEPAGE:p.312																																					ABILITY:Special Ability|AUTOMATIC|Immunity to Fire|Vulnerability to Cold
-Giant			VISIBLE:NO	SOURCEPAGE:p.312																																CSKILL:Intimidate|Perception																																		VISION:Low-light
-Goblinoid		VISIBLE:NO	SOURCEPAGE:p.312																																CSKILL:Stealth
-Incorporeal		VISIBLE:NO	SOURCEPAGE:p.312	DEFINE:LOCK.STR|10	DEFINE:CanNotGrapple|1	BONUS:COMBAT|AC|max(1,CHA)|TYPE=Deflection	BONUS:COMBAT|TOHIT.MELEE|DEX																ABILITY:Special Ability|AUTOMATIC|Incorporeal
-Swarm			VISIBLE:NO	SOURCEPAGE:p.312																																					ABILITY:Special Ability|AUTOMATIC|Swarm Traits|Distraction ~ Swarm
+Archon		VISIBLE:NO	SOURCEPAGE:p.310																																								ABILITY:Special Ability|AUTOMATIC|Immunity to Electricity|Immunity to Petrification|Save vs Poison|Aura of Menace ~ Archon|Teleport ~ Archon|Truespeech ~ Archon														VISION:Darkvision (60')|Low-light
+Azata			VISIBLE:NO	SOURCEPAGE:p.311																																								ABILITY:Special Ability|AUTOMATIC|Immunity to Electricity|Immunity to Petrification|Truespeech ~ Azata																							VISION:Darkvision (60')|Low-light
+Chaotic		VISIBLE:NO	SOURCEPAGE:p.311																																								ABILITY:Special Ability|AUTOMATIC|Aligned (Chaotic)
+Cold			VISIBLE:NO	SOURCEPAGE:p.311																																								ABILITY:Special Ability|AUTOMATIC|Immunity to Cold|Vulnerability to Fire
+Demon			VISIBLE:NO	SOURCEPAGE:p.311																						BONUS:VAR|AcidResistanceBonus,ColdResistanceBonus,FireResistanceBonus|10						ABILITY:Special Ability|AUTOMATIC|Immunity to Electricity|Immunity to Poison|Resistance to Acid|Resistance to Cold|Resistance to Fire|Telepathy|Aligned (Chaotic)|Aligned (Evil)				LANGAUTO:Abyssal,Celestial,Draconic
+Devil			VISIBLE:NO	SOURCEPAGE:p.311																						BONUS:VAR|AcidResistanceBonus,ColdResistanceBonus|10										ABILITY:Special Ability|AUTOMATIC|Immunity to Fire|Immunity to Poison|Resistance to Acid|Resistance to Cold|Telepathy|See in Darkness ~ Devil|Aligned (Lawful)|Aligned (Evil)					LANGAUTO:Infernal,Celestial,Draconic
+Dwarf			VISIBLE:NO	SOURCEPAGE:p.311																																																																																VISION:Darkvision (60')
+Earth			VISIBLE:NO	SOURCEPAGE:p.311
+Elemental		VISIBLE:NO	SOURCEPAGE:p.311																																								ABILITY:Special Ability|AUTOMATIC|Elemental Traits
+Elf			VISIBLE:NO	SOURCEPAGE:p.311																																																																																VISION:Low-light
+Evil			VISIBLE:NO	SOURCEPAGE:p.312																																								ABILITY:Special Ability|AUTOMATIC|Aligned (Evil)
+Extraplanar		VISIBLE:NO	SOURCEPAGE:p.312
+Fire			VISIBLE:NO	SOURCEPAGE:p.312																																								ABILITY:Special Ability|AUTOMATIC|Immunity to Fire|Vulnerability to Cold
+Giant			VISIBLE:NO	SOURCEPAGE:p.312																																			CSKILL:Intimidate|Perception																																									VISION:Low-light
+Gnome			VISIBLE:NO	SOURCEPAGE:p.312																																																																																VISION:Low-light
+Goblinoid		VISIBLE:NO	SOURCEPAGE:p.312																																			CSKILL:Stealth
+Good			VISIBLE:NO	SOURCEPAGE:p.312																																								ABILITY:Special Ability|AUTOMATIC|Aligned (Good)
+Halfling		VISIBLE:NO	SOURCEPAGE:p.312
+Human			VISIBLE:NO	SOURCEPAGE:p.312
+Incorporeal		VISIBLE:NO	SOURCEPAGE:p.312	DEFINE:LOCK.STR|10	DEFINE:CanNotGrapple|1	BONUS:COMBAT|AC|max(1,CHA)|TYPE=Deflection	BONUS:COMBAT|TOHIT.MELEE|DEX																			ABILITY:Special Ability|AUTOMATIC|Incorporeal
+Lawful		VISIBLE:NO	SOURCEPAGE:p.312																																								ABILITY:Special Ability|AUTOMATIC|Aligned (Lawful)
+Native		VISIBLE:NO	SOURCEPAGE:p.312
+Orc			VISIBLE:NO	SOURCEPAGE:p.312																																								ABILITY:Special Ability|AUTOMATIC|Light Sensitivity																																VISION:Darkvision (60')
+Reptilian		VISIBLE:NO	SOURCEPAGE:p.312
+Shapechanger	VISIBLE:NO	SOURCEPAGE:p.312
+Swarm			VISIBLE:NO	SOURCEPAGE:p.312																																								ABILITY:Special Ability|AUTOMATIC|Swarm Traits|Distraction ~ Swarm
 Water			VISIBLE:NO	SOURCEPAGE:p.313
 
 ###Block: Variable Type Traits
