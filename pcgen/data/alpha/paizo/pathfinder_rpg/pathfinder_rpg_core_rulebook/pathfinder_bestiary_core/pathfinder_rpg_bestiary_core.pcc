@@ -52,3 +52,4 @@ LANGUAGE:pathfinder_rpg_bestiary_languages.lst
 SKILL:pathfinder_rpg_bestiary_skills_conditional.lst
 SPELL:pathfinder_rpg_bestiary_spells.lst
 TEMPLATE:pathfinder_rpg_bestiary_templates_types.lst
+TEMPLATE:pathfinder_rpg_bestiary_templates_simple.lst
