@@ -1,0 +1,16 @@
+# CVS $Revision$ $Author$ -- Tue Dec  1 13:32:12 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+
+
+###Block: .MOD Companions
+# Ability Name									Allowed Companions
+#CATEGORY=Special Ability|Nature's Bond ~ Animal Companion.MOD	COMPANIONLIST:Animal Companion|Companion (Goblin Dog)
+#CATEGORY=Special Ability|Companion ~ Hunter's Bond.MOD		COMPANIONLIST:Animal Companion|Companion (Goblin Dog)
+
+# Ability Name						Category of Ability		Type			Visible		Required Race						Ability								Combat bonus						Adjust PC Size		Stat bonus				Modify VAR
+Companion Advancement (Goblin Dog)			CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Goblin Dog)												BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1	BONUS:STAT|CON|2|TYPE=Racial
+Companion Advancement (Herd Animal (Aurochs))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Herd Animal (Aurochs))	ABILITY:Special Ability|AUTOMATIC|Trample|Stampede	BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1						BONUS:VAR|TrampleDamageDice|1	BONUS:VAR|TrampleDamageDieSize|6
+
+#
+# End
+#
