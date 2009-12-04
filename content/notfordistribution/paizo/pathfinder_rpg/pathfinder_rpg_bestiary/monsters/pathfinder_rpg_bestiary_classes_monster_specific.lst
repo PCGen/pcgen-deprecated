@@ -1,12 +1,12 @@
-# CVS $Revision$ $Author$ -- Thu Nov 12 12:30:11 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Mon Nov 30 13:01:49 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 # Class Name	Hit Dice	Type			Max Level		Source Page		Ability					Save checks bonus											Combat bonus
 CLASS:Dark Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.211	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name	Required Race		Reg. Race Type
 CLASS:Dark Naga	PRERACE:1,Naga (Dark)	PRERACETYPE:Aberration
-# Class Name	Skill Pts/Lvl	Add INT to Skill Points?
-CLASS:Dark Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
+# Class Name	Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
+CLASS:Dark Naga	STARTSKILLPTS:4	MODTOSKILLS:YES			CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
 1						ADD:SPELLCASTER|1|Sorcerer
 3	BONUS:PCLEVEL|Sorcerer|1
 4	BONUS:PCLEVEL|Sorcerer|1
@@ -19,8 +19,8 @@ CLASS:Dark Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Escape 
 CLASS:Guardian Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.213	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name		Required Race			Reg. Race Type
 CLASS:Guardian Naga	PRERACE:1,Naga (Guardian)	PRERACETYPE:Aberration
-# Class Name		Skill Pts/Lvl	Add INT to Skill Points?
-CLASS:Guardian Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
+# Class Name		Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
+CLASS:Guardian Naga	STARTSKILLPTS:4	MODTOSKILLS:YES			CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
 1						ADD:SPELLCASTER|1|Sorcerer
 2	BONUS:PCLEVEL|Sorcerer|1
 3	BONUS:PCLEVEL|Sorcerer|1
@@ -35,8 +35,8 @@ CLASS:Guardian Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Esc
 CLASS:Spirit Naga	HD:8		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.215	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name	Required Race		Reg. Race Type
 CLASS:Spirit Naga	PRERACE:1,Naga (Spirit)	PRERACETYPE:Aberration
-# Class Name	Skill Pts/Lvl	Add INT to Skill Points?
-CLASS:Spirit Naga	STARTSKILLPTS:4	MODTOSKILLS:YES		CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
+# Class Name	Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
+CLASS:Spirit Naga	STARTSKILLPTS:4	MODTOSKILLS:YES			CSKILL:Acrobatics|Climb|Escape Artist|Fly|Intimidate|TYPE.Knowledge|Perception|Spellcraft|Stealth|Survival|Swim
 1						ADD:SPELLCASTER|1|Sorcerer
 3	BONUS:PCLEVEL|Sorcerer|1
 4	BONUS:PCLEVEL|Sorcerer|1
@@ -51,7 +51,7 @@ CLASS:Nymph		HD:6		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.217	ABILITY:FEAT|A
 CLASS:Nymph		PRERACETYPE:Fey
 # Class Name	Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
 CLASS:Nymph		STARTSKILLPTS:6	MODTOSKILLS:YES			CSKILL:Acrobatics|Bluff|Climb|TYPE.Craft|Diplomacy|Disguise|Escape Artist|Fly|Knowledge (Geography)|Knowledge (Local)|Knowledge (Nature)|Perception|TYPE.Perform|Sense Motive|Sleight of Hand|Stealth|Swim|Use Magic Device
-1							ADD:SPELLCASTER|1|Druid
+1					ADD:SPELLCASTER|1|Druid
 2	BONUS:PCLEVEL|Druid|1
 2	BONUS:PCLEVEL|Druid|1
 3	BONUS:PCLEVEL|Druid|1
