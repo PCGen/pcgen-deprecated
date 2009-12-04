@@ -25,11 +25,6 @@ Telekinesis		CATEGORY:Special Ability	TYPE:SpecialAttack.GhostAbility.AttackOpti
 Smite Evil		KEY:Smite Evil ~ Half-Celestial	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:SmiteEvilDamageBonus|0	DESC:Once per day you can add %1 extra damage against an evil foe.|SmiteEvilDamageBonus	BONUS:VAR|SmiteEvilDamageBonus|min(TL,20)	SOURCEPAGE:p.169
 Smite Good		KEY:Smite Good ~ Half-Fiend		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:SmiteGoodDamageBonus|0	DESC:Once per day you can add %1 extra damage against a good foe.|SmiteGoodDamageBonus	BONUS:VAR|SmiteGoodDamageBonus|min(TL,20)	SOURCEPAGE:p.171
 
-###Block: Simple Template Abilities
-# Ability Name	Unique Key					Category of Ability		Type						Define													Description																																				Modify VAR																	Source Page
-Smite Evil		KEY:Smite Evil ~ Celestial Creature	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:SmiteEvilTimes|0	DEFINE:SmiteEvilAttackBonus|0	DEFINE:SmiteEvilDamageBonus|0	DESC:%1/day as a swift action. Add +%2 to attack rolls and +%3 damage bonus against evil foes; smite persists until target is dead or the celestial creature rests.|SmiteEvilTimes|SmiteEvilAttackBonus|SmiteEvilDamageBonus	BONUS:VAR|SmiteEvilTimes|1	BONUS:VAR|SmiteEvilAttackBonus|max(CHA,0)	BONUS:VAR|SmiteEvilDamageBonus|HD	SOURCEPAGE:p.294
-Smite Good		KEY:Smite Good ~ Fiendish Creature	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:SmiteGoodTimes|0	DEFINE:SmiteGoodAttackBonus|0	DEFINE:SmiteGoodDamageBonus|0	DESC:%1/day as a swift action. Add +%2 to attack rolls and +%3 damage bonus against good foes; smite persists until target is dead or the fiendish creature rests.|SmiteGoodTimes|SmiteGoodAttackBonus|SmiteGoodDamageBonus	BONUS:VAR|SmiteGoodTimes|1	BONUS:VAR|SmiteGoodAttackBonus|max(CHA,0)	BONUS:VAR|SmiteGoodDamageBonus|HD	SOURCEPAGE:p.294
-
 ###Block: Half-Dragon Abilities
 # Ability Name		Category of Ability	Type				Visible		Template				Ability															Modify VAR															Source Page
 Black Half-Dragon		CATEGORY:Internal		TYPE:HalfDragonType	VISIBLE:DISPLAY	TEMPLATE:Black Half-Dragon	ABILITY:Special Ability|AUTOMATIC|Immunity to Acid|Breath Weapon ~ Line of Acid			BONUS:VAR|BreathWeaponDice|HD	BONUS:VAR|BreathWeaponDamageDie|6	BONUS:VAR|BreathWeaponLine|60	SOURCEPAGE:p.170
