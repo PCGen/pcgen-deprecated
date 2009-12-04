@@ -2,7 +2,7 @@
 SOURCELONG:Pathfinder Roleplaying Game Bonus Bestiary	SOURCESHORT:PFBB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy87f9	SOURCEDATE:2009-06
 
 STARTPACK:Allip Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Allip]	SOURCEPAGE:p.4
-STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=10
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=10
 RACE:Allip	!PRERACE:1,%
 NAME:Allip
 ALIGN:CE
