@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Nov 12 12:46:11 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Dec  4 22:24:48 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Manticore Default	TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Manticore]	SOURCEPAGE:p.199
@@ -161,14 +161,14 @@ RACE:Minotaur	!PRERACE:1,%
 NAME:Minotaur
 ALIGN:CE
 STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=10
-SKILL:Intimidate		RANK:3
-SKILL:Perception		RANK:3
-SKILL:Stealth		RANK:3
-SKILL:Survival		RANK:3
+SKILL:Intimidate	RANK:3
+SKILL:Perception	RANK:3
+SKILL:Stealth	RANK:3
+SKILL:Survival	RANK:3
 FEAT:Great Fortitude
 FEAT:Improved Bull Rush
 FEAT:Power Attack
-GEAR:Greataxe	LOCATION:Equipped	SIZE:L
+GEAR:Greataxe	SIZE:L	LOCATION:Equipped
 
 STARTPACK:Morlock Default	TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Morlock]	SOURCEPAGE:209
 RACE:Morlock	!PRERACE:1,%
@@ -182,33 +182,33 @@ FEAT:Improved Initiative
 FEAT:Lightning Reflexes
 GEAR:Club	SIZE:M	LOCATION:Primary Hand
 
-STARTPACK:Mummy Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mummy]	SOURCEPAGE:210
-RACE:Mummy		!PRERACE:1,%
+STARTPACK:Mummy Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Mummy]	SOURCEPAGE:210
+RACE:Mummy	!PRERACE:1,%
 NAME:Mummy
 ALIGN:LE
 STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=11
-SKILL:Perception		RANK:8
-SKILL:Stealth			RANK:8
+SKILL:Perception	RANK:8
+SKILL:Stealth	RANK:8
 FEAT:Power Attack
 FEAT:Skill Focus (Perception)
 FEAT:Toughness
 FEAT:Weapon Focus (Slam)
 ## Damage on Slam is incorrect. (+7 vs +10 in the Bestiary)
 
-STARTPACK:Naga (Dark) Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Dark)]	SOURCEPAGE:211
-RACE:Naga (Dark)		!PRERACE:1,%
+STARTPACK:Naga (Dark) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Dark)]	SOURCEPAGE:211
+RACE:Naga (Dark)	!PRERACE:1,%
 NAME:Dark Naga
 ALIGN:LE
 STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=11
-SKILL:Bluff		RANK:7
-SKILL:Diplomacy	RANK:6
-SKILL:Disguise	RANK:6
-SKILL:Escape Artist	RANK:3
+SKILL:Bluff				RANK:7
+SKILL:Diplomacy			RANK:6
+SKILL:Disguise			RANK:6
+SKILL:Escape Artist		RANK:3
 SKILL:Knowledge (Arcana)	RANK:6
-SKILL:Perception	RANK:10
-SKILL:Sense Motive	RANK:6
-SKILL:Spellcraft	RANK:6
-SKILL:Stealth	RANK:10
+SKILL:Perception			RANK:10
+SKILL:Sense Motive		RANK:6
+SKILL:Spellcraft			RANK:6
+SKILL:Stealth			RANK:10
 ## 3 extra skill points
 FEAT:Alertness
 FEAT:Combat Casting
@@ -221,18 +221,18 @@ SPELLS:Cat's Grace|Invisibility|Scorching Ray
 SPELLS:Displacement|Lightning Bolt
 ## One 1st Level Spell Slot left open.
 
-STARTPACK:Naga (Guardian) Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Guardian)]	SOURCEPAGE:212
-RACE:Naga (Guardian)		!PRERACE:1,%
+STARTPACK:Naga (Guardian) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Guardian)]	SOURCEPAGE:212
+RACE:Naga (Guardian)	!PRERACE:1,%
 NAME:Guardian Naga
 ALIGN:LG
 STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
-SKILL:Bluff		RANK:9
-SKILL:Diplomacy	RANK:12
+SKILL:Bluff				RANK:9
+SKILL:Diplomacy			RANK:12
 SKILL:Knowledge (Arcana)	RANK:12
-SKILL:Perception	RANK:12
-SKILL:Sense Motive	RANK:12
-SKILL:Spellcraft	RANK:12
-SKILL:Stealth	RANK:12
+SKILL:Perception			RANK:12
+SKILL:Sense Motive		RANK:12
+SKILL:Spellcraft			RANK:12
+SKILL:Stealth			RANK:12
 ## 3 extra skill points
 FEAT:Alertness
 FEAT:Blind-Fight
@@ -247,19 +247,19 @@ SPELLS:Cure Serious Wounds|Dispel Magic|Lightning Bolt
 SPELLS:Divine Power|Invisibility (Greater)
 ## Not sure how to fix the Divine spell as Arcane magic issue.
 
-STARTPACK:Naga (Spirit) Default		TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Spirit)]	SOURCEPAGE:213
-RACE:Naga (Spirit)		!PRERACE:1,%
+STARTPACK:Naga (Spirit) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Naga (Spirit)]	SOURCEPAGE:213
+RACE:Naga (Spirit)	!PRERACE:1,%
 NAME:Spirit Naga
 ALIGN:CE
 STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
-SKILL:Bluff		RANK:7
-SKILL:Escape Artist	RANK:3
-SKILL:Intimidate	RANK:3
+SKILL:Bluff				RANK:7
+SKILL:Escape Artist		RANK:3
+SKILL:Intimidate			RANK:3
 SKILL:Knowledge (Arcana)	RANK:10
-SKILL:Perception	RANK:10
-SKILL:Spellcraft	RANK:7
-SKILL:Stealth	RANK:9
-SKILL:Swim		RANK:1
+SKILL:Perception			RANK:10
+SKILL:Spellcraft			RANK:7
+SKILL:Stealth			RANK:9
+SKILL:Swim				RANK:1
 ## Swim has 4 bonus points extra.
 FEAT:Ability Focus (Charming Gaze)
 FEAT:Combat Casting
@@ -272,18 +272,18 @@ SPELLS:Cat's Grace|Invisibility|Summon Swarm
 SPELLS:Displacement|Fireball
 ## Not sure how to fix the Divine spell as Arcane magic issue.
 
-STARTPACK:Neothelid Default		TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Neothelid]	SOURCEPAGE:214
-RACE:Neothelid		!PRERACE:1,%
+STARTPACK:Neothelid Default	TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Neothelid]	SOURCEPAGE:214
+RACE:Neothelid	!PRERACE:1,%
 NAME:Neothelid
 ALIGN:CE
 STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
-SKILL:Bluff		RANK:20
-SKILL:Climb		RANK:20
-SKILL:Diplomacy		RANK:20
-SKILL:Intimidate		RANK:20
-SKILL:Knowledge (Arcana)		RANK:20
-SKILL:Perception		RANK:20
-SKILL:Spellcraft		RANK:20
+SKILL:Bluff				RANK:20
+SKILL:Climb				RANK:20
+SKILL:Diplomacy			RANK:20
+SKILL:Intimidate			RANK:20
+SKILL:Knowledge (Arcana)	RANK:20
+SKILL:Perception			RANK:20
+SKILL:Spellcraft			RANK:20
 FEAT:Improved Initiative
 FEAT:Improved Critical (Tongue)
 FEAT:Iron Will
@@ -295,58 +295,58 @@ FEAT:Improved Bull Rush
 FEAT:Improved Overrun
 FEAT:Quicken Spell Like Ability (Suggestion)
 
-STARTPACK:Night Hag Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Night Hag]	SOURCEPAGE:215
-RACE:Night Hag		!PRERACE:1,%
+STARTPACK:Night Hag Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Night Hag]	SOURCEPAGE:215
+RACE:Night Hag	!PRERACE:1,%
 NAME:Night Hag
 GENDER:Female
 ALIGN:NE
 STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
-SKILL:Bluff		RANK:8
-SKILL:Diplomacy		RANK:8
-SKILL:Disguise		RANK:8
-SKILL:Intimidate		RANK:8
-SKILL:Knowledge (Arcana)		RANK:8
-SKILL:Knowledge (Planes)		RANK:8
-SKILL:Perception		RANK:8
-SKILL:Ride		RANK:8
+SKILL:Bluff				RANK:8
+SKILL:Diplomacy			RANK:8
+SKILL:Disguise			RANK:8
+SKILL:Intimidate			RANK:8
+SKILL:Knowledge (Arcana)	RANK:8
+SKILL:Knowledge (Planes)	RANK:8
+SKILL:Perception			RANK:8
+SKILL:Ride				RANK:8
 SKILL:Sense Motive		RANK:8
-SKILL:Stealth		RANK:8
+SKILL:Stealth			RANK:8
 FEAT:Alertness
 FEAT:Combat Casting
 FEAT:Deceitful
 FEAT:Mounted Combat
-GEAR:Heartstone (Night Hag)		LOCATION:Equipped
+GEAR:Heartstone (Night Hag)	LOCATION:Equipped
 
-STARTPACK:Nightmare Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare]	SOURCEPAGE:216
-RACE:Nightmare		!PRERACE:1,%
+STARTPACK:Nightmare Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare]	SOURCEPAGE:216
+RACE:Nightmare	!PRERACE:1,%
 NAME:Nightmare
 ALIGN:NE
 STAT:STR=10|DEX=11|CON=10|INT=11|WIS=11|CHA=10
-SKILL:Fly		RANK:6
-SKILL:Intimidate		RANK:6
-SKILL:Knowledge (Planes)		RANK:6
-SKILL:Perception		RANK:6
+SKILL:Fly				RANK:6
+SKILL:Intimidate			RANK:6
+SKILL:Knowledge (Planes)	RANK:6
+SKILL:Perception			RANK:6
 SKILL:Sense Motive		RANK:6
-SKILL:Stealth		RANK:6
-SKILL:Survival		RANK:6
+SKILL:Stealth			RANK:6
+SKILL:Survival			RANK:6
 FEAT:Alertness
 FEAT:Improved Initiative
 FEAT:Run
 
-STARTPACK:Nightmare (Cauchemar) Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare (Cauchemar)]	SOURCEPAGE:216
-RACE:Nightmare (Cauchemar)		!PRERACE:1,%
+STARTPACK:Nightmare (Cauchemar) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nightmare (Cauchemar)]	SOURCEPAGE:216
+RACE:Nightmare (Cauchemar)	!PRERACE:1,%
 NAME:Cauchemar Nightmare
 ALIGN:NE
 STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
-SKILL:Acrobatics		RANK:14
-SKILL:Bluff		RANK:14
-SKILL:Fly		RANK:14
-SKILL:Intimidate		RANK:14
-SKILL:Knowledge (Arcana)		RANK:14
-SKILL:Knowledge (Planes)		RANK:14
-SKILL:Perception		RANK:14
+SKILL:Acrobatics			RANK:14
+SKILL:Bluff				RANK:14
+SKILL:Fly				RANK:14
+SKILL:Intimidate			RANK:14
+SKILL:Knowledge (Arcana)	RANK:14
+SKILL:Knowledge (Planes)	RANK:14
+SKILL:Perception			RANK:14
 SKILL:Sense Motive		RANK:14
-SKILL:Stealth		RANK:14
+SKILL:Stealth			RANK:14
 FEAT:Alertness
 FEAT:Improved Initiative
 FEAT:Iron Will
@@ -355,25 +355,25 @@ FEAT:Cleave
 FEAT:Improved Overrun
 FEAT:Run
 
-STARTPACK:Nymph Default		TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nymph]	SOURCEPAGE:217
-RACE:Nymph		!PRERACE:1,%
+STARTPACK:Nymph Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Nymph]	SOURCEPAGE:217
+RACE:Nymph	!PRERACE:1,%
 NAME:Nymph
 ALIGN:CG
 STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
-SKILL:Diplomacy		RANK:8
+SKILL:Diplomacy			RANK:8
 SKILL:Escape Artist		RANK:8
 SKILL:Handle Animal		RANK:5
-SKILL:Heal		RANK:5
-SKILL:Knowledge (Nature)		RANK:8
-SKILL:Perception		RANK:8
+SKILL:Heal				RANK:5
+SKILL:Knowledge (Nature)	RANK:8
+SKILL:Perception			RANK:8
 SKILL:Sense Motive		RANK:8
-SKILL:Stealth		RANK:8
-SKILL:Swim		RANK:8
+SKILL:Stealth			RANK:8
+SKILL:Swim				RANK:8
 FEAT:Agile Maneuvers
 FEAT:Combat Casting
 FEAT:Dodge
 FEAT:Weapon Finesse
-GEAR:Dagger		LOCATION:Equipped		EQMOD:MWORKW
+GEAR:Dagger	LOCATION:Equipped	EQMOD:MWORKW
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Detect Magic|Guidance|Light|Stabilize
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Charm Animal|Endure Elements|Entangle|Obscuring Mist|Produce Flame
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Barkskin|Flame Blade|Resist Energy|Tree Shape
@@ -386,14 +386,14 @@ SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Summon Nature's Ally IV
 #ALIGN:TN
 #STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
 
-STARTPACK:Octopus Default		TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Octopus]	SOURCEPAGE:219
-RACE:Octopus		!PRERACE:1,%
+STARTPACK:Octopus Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Octopus]	SOURCEPAGE:219
+RACE:Octopus	!PRERACE:1,%
 NAME:Octopus
 ALIGN:TN
 STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
 
-STARTPACK:Octopus (Giant) Default		TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Octopus (Giant)]	SOURCEPAGE:219
-RACE:Octopus (Giant)		!PRERACE:1,%
+STARTPACK:Octopus (Giant) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Octopus (Giant)]	SOURCEPAGE:219
+RACE:Octopus (Giant)	!PRERACE:1,%
 NAME:Octopus (Giant)
 ALIGN:TN
 STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
@@ -411,29 +411,29 @@ GEAR:Greatclub		SIZE:L	LOCATION:Both Hands
 GEAR:Hide			SIZE:L	LOCATION:Equipped
 GEAR:Javelin	QTY:4	SIZE:L	LOCATION:Carried
 
-STARTPACK:Ogre Mage Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre Mage]	SOURCEPAGE:221
-RACE:Ogre Mage		!PRERACE:1,%
-NAME:Ogre Mage
-ALIGN:LE
-STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+#STARTPACK:Ogre Mage Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre Mage]	SOURCEPAGE:221
+#RACE:Ogre Mage		!PRERACE:1,%
+#NAME:Ogre Mage
+#ALIGN:LE
+#STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
 
-STARTPACK:Orc Default		TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Orc]	SOURCEPAGE:222
-RACE:Orc		!PRERACE:1,%
-NAME:Orc
-ALIGN:CE
-STAT:STR=10|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+#STARTPACK:Orc Default		TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Orc]	SOURCEPAGE:222
+#RACE:Orc		!PRERACE:1,%
+#NAME:Orc
+#ALIGN:CE
+#STAT:STR=10|DEX=11|CON=10|INT=11|WIS=10|CHA=10
 
-STARTPACK:Otyugh Default		TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Otyugh]	SOURCEPAGE:223
-RACE:Otyugh		!PRERACE:1,%
-NAME:Otyugh
-ALIGN:TN
-STAT:STR=10|DEX=10|CON=11|INT=11|WIS=11|CHA=10
+#STARTPACK:Otyugh Default		TYPE:DefaultMonster.Aberation	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Otyugh]	SOURCEPAGE:223
+#RACE:Otyugh		!PRERACE:1,%
+#NAME:Otyugh
+#ALIGN:TN
+#STAT:STR=10|DEX=10|CON=11|INT=11|WIS=11|CHA=10
 
-STARTPACK:Owlbear Default		TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Owlbear]	SOURCEPAGE:224
-RACE:Owlbear		!PRERACE:1,%
-NAME:Owlbear
-ALIGN:TN
-STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+#STARTPACK:Owlbear Default		TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Owlbear]	SOURCEPAGE:224
+#RACE:Owlbear		!PRERACE:1,%
+#NAME:Owlbear
+#ALIGN:TN
+#STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
 #
 # End
