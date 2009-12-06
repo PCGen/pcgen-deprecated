@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Dec  5 00:10:54 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sat Dec  5 23:38:45 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Xill Abilities
@@ -11,6 +11,25 @@ Paralysis			KEY:Paralysis ~ Xill			CATEGORY:Special Ability	TYPE:SpecialAttack.E
 ###Block: Xorn Abilities
 # Ability Name	Unique Key			Category of Ability		Type									Description																	Source Page		Description of the Benefits
 Earth Glide		KEY:Earth Glide ~ Xorn	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyMovement	DESC:A xorn can glide through any sort of natural earth or stone as easily as a fish swims through water.	SOURCEPAGE:p.284	BENEFIT:A xorn can glide through any sort of natural earth or stone as easily as a fish swims through water. Its burrowing leaves no sign of its passage nor hint at its presence to creatures that don't possess tremorsense. A move earth spell cast on an area containing a xorn moves the xorn back 30 feet, stunning the creature for 1 round unless it succeeds on a DC 15 Fortitude save.
+
+###Block: Yellow Musk Creeper Abilities
+# Ability Name			Unique Key						Category of Ability		Type						Define					Description																													Source Page		Aspects							Description of the Benefits
+Create Yellow Musk Zombie								CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural							DESC:As a full-round action, a yellow musk creeper can bore dozens of tendrils into the brain of a helpless creature within reach, such as a creature entranced by its pollen.	SOURCEPAGE:p.285									BENEFIT:As a full-round action, a yellow musk creeper can bore dozens of tendrils into the brain of a helpless creature within reach, such as a creature entranced by its pollen. This attack inflicts 1d4 points of Intelligence damage per round. When a creature is reduced to 0 Intelligence, it dies, and the tendrils break off inside its brain. One hour later, the creature animates as a yellow musk zombie.
+Pollen Spray			KEY:Pollen Spray ~ Yellow Musk Zombie	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:PollenSprayDC|10+(HD/2)+CON	DESC:As a standard action, a yellow musk creeper can spray a cloud of pollen at a single creature within 30 feet.												SOURCEPAGE:p.285	ASPECT:Ability Benefit|(DC %1)|PollenSprayDC	BENEFIT:As a standard action, a yellow musk creeper can spray a cloud of pollen at a single creature within 30 feet. It must make a +4 ranged touch attack to strike the target, who must then succeed on a DC %1 Will save or be entranced for 1d6 rounds. An entranced creature can take no action other than to move at its normal speed into a space within the yellow musk creeper's reach, at which point an entranced creature remains motionless and allows the creeper to insert tendrils into its brain.|PollenSprayDC
+
+###Block: Yeth Hound Abilities
+# Ability Name	Unique Key					Category of Ability		Type						Define					Description																														Source Page		Aspects							Description of the Benefits
+Bay			KEY:Bay ~ Yeth Hound			CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:BayDC|10+(HD/2)+CON		DESC:When a yeth hound howls or barks, all creatures except other evil outsiders within a 300-foot spread must succeed on a DC %1 Will save or become panicked for 2d4 rounds.|BayDC	SOURCEPAGE:p.286	ASPECT:Ability Benefit|(DC %1)|BayDC		BENEFIT:When a yeth hound howls or barks, all creatures except other evil outsiders within a 300-foot spread must succeed on a DC %1 Will save or become panicked for 2d4 rounds. This is a sonic mindaffecting fear effect. Whether or not the save is successful, an affected creature is immune to the same hound's bay for 24 hours.|BayDC
+Sinister Bite	KEY:Sinister Bite ~ Yeth Hound	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:SinisterBiteDC|10+(HD/2)+CON	DESC:A yeth hound's bite is treated as evil-aligned for the purpose of overcoming damage reduction.															SOURCEPAGE:p.286	ASPECT:Ability Benefit|(DC %1)|SinisterBiteDC	BENEFIT:A yeth hound's bite is treated as evil-aligned for the purpose of overcoming damage reduction. In addition, a good-aligned creature bitten by a yeth hound must make a DC %1 Will save or be shaken for 1 round. If the victim is already suffering from a fear effect (such as the hound's bay attack), the victim is instead completely overcome with fear and can do nothing but cower for 1 round. This is a mind-affecting fear effect.|SinisterBiteDC
+
+###Block: Yeti Abilities
+# Ability Name	Unique Key				Category of Ability		Type						Define						Description																																		Source Page		Aspects							Description of the Benefits
+Cold			KEY:Cold ~ Yeti			CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural								DESC:A yeti's body generates intense cold, dealing 1d6 points of cold damage to any creature that contacts it with a natural attack or unarmed strike, or whenever it hits a foe with its claws or rend attack.	SOURCEPAGE:p.287
+Frightful Gaze	KEY:Frightful Gaze ~ Yeti	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:FrightfulGazeDC|10+(HD/2)+CON	DESC:Creatures within 30 feet that meet a yeti's gaze must succeed on a DC %1 Will save or stand paralyzed in fear for 1 round.|FrightfulGazeDC												SOURCEPAGE:p.287	ASPECT:Ability Benefit|(DC %1)|FrightfulGazeDC	BENEFIT:Creatures within 30 feet that meet a yeti's gaze must succeed on a DC 13 Will save or stand paralyzed in fear for 1 round. This is a mind-affecting fear paralysis effect. A creature that successfully saves cannot be affected again by the frightful gaze of that yeti for 1 day.|FrightfulGazeDC
+
+###Block: Zombie Abilities
+# Ability Name	Unique Key			Category of Ability		Type						Description																															Source Page
+Staggered		KEY:Staggered ~ Zombie	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Zombies have poor reflexes and can only perform a single move action or standard action each round. A zombie can move up to its speed and attack in the same round as a charge action.	SOURCEPAGE:p.289
 
 #
 # End
