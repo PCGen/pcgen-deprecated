@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Dec  5 23:38:45 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sun Dec  6 00:27:06 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Xill Abilities
@@ -28,8 +28,11 @@ Cold			KEY:Cold ~ Yeti			CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatura
 Frightful Gaze	KEY:Frightful Gaze ~ Yeti	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:FrightfulGazeDC|10+(HD/2)+CON	DESC:Creatures within 30 feet that meet a yeti's gaze must succeed on a DC %1 Will save or stand paralyzed in fear for 1 round.|FrightfulGazeDC												SOURCEPAGE:p.287	ASPECT:Ability Benefit|(DC %1)|FrightfulGazeDC	BENEFIT:Creatures within 30 feet that meet a yeti's gaze must succeed on a DC 13 Will save or stand paralyzed in fear for 1 round. This is a mind-affecting fear paralysis effect. A creature that successfully saves cannot be affected again by the frightful gaze of that yeti for 1 day.|FrightfulGazeDC
 
 ###Block: Zombie Abilities
-# Ability Name	Unique Key			Category of Ability		Type						Description																															Source Page
-Staggered		KEY:Staggered ~ Zombie	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Zombies have poor reflexes and can only perform a single move action or standard action each round. A zombie can move up to its speed and attack in the same round as a charge action.	SOURCEPAGE:p.289
+# Ability Name	Unique Key				Category of Ability		Type						Define							Description																																				Source Page		Aspects																					Description of the Benefits
+Staggered		KEY:Staggered ~ Zombie		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary									DESC:Zombies have poor reflexes and can only perform a single move action or standard action each round. A zombie can move up to its speed and attack in the same round as a charge action.						SOURCEPAGE:p.289
+Quick Strikes	KEY:Quick Strikes ~ Zombie	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary									DESC:Whenever a fast zombie takes a fullattack action, it can make one additional slam attack at its highest base attack bonus.																SOURCEPAGE:p.289
+Death Burst		KEY:Death Burst ~ Zombie	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary									DESC:When a plague zombie dies, it explodes in a burst of decay. All creatures adjacent to the plague zombie are exposed to its plague as if struck by a slam attack and must make a Fortitude save or contract zombie rot.	SOURCEPAGE:p.289
+Disease		KEY:Disease ~ Plague Zombie	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:PlagueZombieDiseaseDC|10+(HD/2)+CHA	DESC:The slam attack--as well as any other natural attacks--of a plague zombie carries the zombie rot disease.																			SOURCEPAGE:p.289	ASPECT:Ability Benefit|(Zombie rot: slam; save Fort DC %1; onset 1d4 days; frequency 1/day; effect 1d2 Con)|PlagueZombieDiseaseDC	BENEFIT:The slam attack--as well as any other natural attacks--of a plague zombie carries the zombie rot disease. Zombie rot: slam; save Fort DC %1; onset 1d4 days; frequency 1/day; effect 1d2 Con, this damage cannot be healed while the creature is infected; cure 2 consecutive saves. Anyone who dies while infected rises as a plague zombie in 2d6 hours.|PlagueZombieDiseaseDC
 
 #
 # End
