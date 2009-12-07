@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Dec  6 00:27:06 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Mon Dec  7 13:30:53 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Ghost Template
@@ -97,6 +97,35 @@ Wererat_CON		VISIBLE:NO	DEFINE:LOCK.CON|15	!PRESTAT:1,CON=15
 Werewolf_STR	VISIBLE:NO	DEFINE:LOCK.STR|15	!PRESTAT:1,STR=15
 Werewolf_DEX	VISIBLE:NO	DEFINE:LOCK.DEX|15	!PRESTAT:1,DEX=15
 Werewolf_CON	VISIBLE:NO	DEFINE:LOCK.CON|17	!PRESTAT:1,CON=17
+
+
+###Block: Vampire
+# Template Name	Hit Dice Size			Challenge Rating	Damage Reduction			Template																																																															Source Page		Define			Required AL		Prohibited Race						Var. Min. Value	Combat bonus						Bonus to skill									Stat bonus										Modify VAR														Ability																																																							Automatically Gained Feat
+Vampire		HITDIE:8|CLASS.TYPE=Monster	CR:2			DR:10/Silver	DR:10/Magic	TEMPLATE:Undead	TEMPLATE:CHOOSE:Vampire ~ Tiny|Vampire ~ Small|Vampire ~ Medium|Vampire ~ Large|Vampire ~ Huge|Vampire ~ Gargantuan|Vampire ~ Colossal	TEMPLATE:CHOOSE:Vampire ~ Aberration|Vampire ~ Animal|Vampire ~ Dragon|Vampire ~ Fey|Vampire ~ Humanoid|Vampire ~ Magical Beast|Vampire ~ Monstrous Humanoid|Vampire ~ Ooze|Vampire ~ Outsider|Vampire ~ Plant|Vampire ~ Vermin	SOURCEPAGE:p.270	DEFINE:NoTypeTraits|1	PREALIGN:LE,NE,CE	!PRERACE:1,RACETYPE=Undead,RACETYPE=Construct	PREVARGTEQ:TL,5	BONUS:COMBAT|AC|6|TYPE=NaturalArmor.REPLACE	BONUS:SKILL|Bluff,Perception,Sense Motive,Stealth|8|TYPE=Racial	BONUS:STAT|STR|6	BONUS:STAT|DEX,CHA|4	BONUS:STAT|INT,WIS|2	BONUS:VAR|ColdResistanceBonus,ElectricityResistanceBonus|10	BONUS:VAR|FastHealingRate|5	ABILITY:Special Ability|AUTOMATIC|Undead Traits|Resistance to Cold|Resistance to Electricity|Fast Healing|Blood Drain ~ Vampire|Children of the Night ~ Vampire|Create Spawn ~ Vampire|Dominate ~ Vampire|Energy Drain ~ Vampire|Change Shape ~ Vampire|Gaseous Form ~ Vampire|Shadowless ~ Vampire|Spider Climb ~ Vampire|Vampire Weaknesses	AUTO:FEAT|Alertness|Combat Reflexes|Dodge|Improved Initiative|Lightning Reflexes|Toughness
+
+###Block: Vampire Attacks
+# Template Name		Visible	Required Size	Natural Attacks
+Vampire ~ Tiny		VISIBLE:YES	PRESIZEEQ:T		NATURALATTACKS:Slam,Weapon.Natural.Melee.Finesseable.Bludgeoning.EnergyDrain,*1,1d2
+Vampire ~ Small		VISIBLE:YES	PRESIZEEQ:S		NATURALATTACKS:Slam,Weapon.Natural.Melee.Finesseable.Bludgeoning.EnergyDrain,*1,1d3
+Vampire ~ Medium		VISIBLE:YES	PRESIZEEQ:M		NATURALATTACKS:Slam,Weapon.Natural.Melee.Finesseable.Bludgeoning.EnergyDrain,*1,1d4
+Vampire ~ Large		VISIBLE:YES	PRESIZEEQ:L		NATURALATTACKS:Slam,Weapon.Natural.Melee.Finesseable.Bludgeoning.EnergyDrain,*1,1d6
+Vampire ~ Huge		VISIBLE:YES	PRESIZEEQ:H		NATURALATTACKS:Slam,Weapon.Natural.Melee.Finesseable.Bludgeoning.EnergyDrain,*1,1d8
+Vampire ~ Gargantuan	VISIBLE:YES	PRESIZEEQ:G		NATURALATTACKS:Slam,Weapon.Natural.Melee.Finesseable.Bludgeoning.EnergyDrain,*1,2d6
+Vampire ~ Colossal	VISIBLE:YES	PRESIZEEQ:C		NATURALATTACKS:Slam,Weapon.Natural.Melee.Finesseable.Bludgeoning.EnergyDrain,*1,2d8
+
+###Block: Vampire Augmented Type
+# Template Name			Visible	Required Race					Main Race Type	Race Subtype
+Vampire ~ Aberration		VISIBLE:YES	PRERACE:1,RACETYPE=Aberration			RACETYPE:Undead	RACESUBTYPE:Augmented Aberration
+Vampire ~ Animal			VISIBLE:YES	PRERACE:1,RACETYPE=Animal			RACETYPE:Undead	RACESUBTYPE:Augmented Animal
+Vampire ~ Dragon			VISIBLE:YES	PRERACE:1,RACETYPE=Dragon			RACETYPE:Undead	RACESUBTYPE:Augmented Dragon
+Vampire ~ Fey			VISIBLE:YES	PRERACE:1,RACETYPE=Fey				RACETYPE:Undead	RACESUBTYPE:Augmented Fey
+Vampire ~ Humanoid		VISIBLE:YES	PRERACE:1,RACETYPE=Humanoid			RACETYPE:Undead	RACESUBTYPE:Augmented Humanoid
+Vampire ~ Magical Beast		VISIBLE:YES	PRERACE:1,RACETYPE=Magical Beast		RACETYPE:Undead	RACESUBTYPE:Augmented Magical Beast
+Vampire ~ Monstrous Humanoid	VISIBLE:YES	PRERACE:1,RACETYPE=Monstrous Humanoid	RACETYPE:Undead	RACESUBTYPE:Augmented Monstrous Humanoid
+Vampire ~ Ooze			VISIBLE:YES	PRERACE:1,RACETYPE=Ooze				RACETYPE:Undead	RACESUBTYPE:Augmented Ooze
+Vampire ~ Outsider		VISIBLE:YES	PRERACE:1,RACETYPE=Outsider			RACETYPE:Undead	RACESUBTYPE:Augmented Outsider
+Vampire ~ Plant			VISIBLE:YES	PRERACE:1,RACETYPE=Plant			RACETYPE:Undead	RACESUBTYPE:Augmented Plant
+Vampire ~ Vermin			VISIBLE:YES	PRERACE:1,RACETYPE=Vermin			RACETYPE:Undead	RACESUBTYPE:Augmented Vermin
 
 ###Block: Zombie
 # Template Name	Damage Reduction	Template																								Source Page		Define			Add to base move			Stat bonus					Ability																		Automatically Gained Feat	Apply Kit	Subrace

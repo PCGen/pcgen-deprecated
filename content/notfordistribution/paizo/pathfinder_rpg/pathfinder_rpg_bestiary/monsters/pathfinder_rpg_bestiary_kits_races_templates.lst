@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Nov 24 15:04:03 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Mon Dec  7 13:28:14 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Human Ghost Aristocrat	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Human],[!PRERACE:1,%]	SOURCEPAGE:p.144
@@ -245,3 +245,62 @@ GEAR:Bolt (Crossbow)	QTY:20	LOCATION:Carried
 STARTPACK:Lycanthrope (Werewolf/Hybrid Form)	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Human],[!PRERACE:1,%]	SOURCEPAGE:p.198
 KIT:Lycanthrope (Werewolf/Human Form)
 TEMPLATE:Lycanthrope (Hybrid Form)
+
+
+STARTPACK:Vampire (Female Human Sorcerer)	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Human],[!PRERACE:1,%]	SOURCEPAGE:p.270
+ALIGN:CE
+NAME:Female Human Vampire Sorcerer
+RACE:Human	!PRERACE:1,%
+GENDER:Female
+TEMPLATE:Vampire
+CLASS:Sorcerer	LEVEL:8
+ABILITY:CATEGORY=Ability Bonus|+2 Charisma
+ABILITY:CATEGORY=Sorcerer Bloodline|Undead Bloodline
+ABILITY:CATEGORY=Favored Class|Sorcerer
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
+SKILL:Bluff				RANK:8
+SKILL:Knowledge (Arcana)	RANK:8
+SKILL:Knowledge (Religion)	RANK:8
+SKILL:Spellcraft			RANK:8
+SKILL:Use Magic Device		RANK:8
+FEAT:Combat Casting
+FEAT:Eschew Materials
+FEAT:Extend Spell
+FEAT:Silent Spell
+FEAT:Weapon Finesse
+FEAT:Blind-Fight		FREE:YES
+ABILITY:CATEGORY=Undead Bloodline Feat|Still Spell
+STAT:STR=10|DEX=14|CON=10|INT=12|WIS=14|CHA=16
+LANGBONUS:Abyssal|Draconic
+GEAR:Cloak of Resistance +3			LOCATION:Equipped
+GEAR:Headband of Alluring Charisma +4	LOCATION:Equipped
+GEAR:Ring of Protection +2			LOCATION:Equipped
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Invisibility (Greater)
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Dispel Magic
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Fireball
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Vampiric Touch
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|False Life
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Invisibility
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Scorching Ray
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Web
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Burning Hands
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Chill Touch
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Disguise Self
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Expeditious Retreat
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Mage Armor
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Magic Missile
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Acid Splash
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Detect Magic
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Light
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Mage Hand
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Mending
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Message
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Open/Close
+SPELLS:SPELLBOOK=Known Spells|CLASS=Sorcerer|Read Magic
