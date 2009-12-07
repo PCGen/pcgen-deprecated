@@ -380,11 +380,11 @@ SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Barkskin|Flame Blade|Resist Energy|
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Call Lightning|Cure Moderate Wounds|Water Breathing
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Druid|Summon Nature's Ally IV
 
-#STARTPACK:Ocher Jelly Default		TYPE:DefaultMonster.Ooze	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ocher Jelly]	SOURCEPAGE:218
-#RACE:Ocher Jelly		!PRERACE:1,%
-#NAME:Ocher Jelly
-#ALIGN:TN
-#STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+STARTPACK:Ochre Jelly Default		TYPE:DefaultMonster.Ooze	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ochre Jelly]	SOURCEPAGE:218
+RACE:Ochre Jelly		!PRERACE:1,%
+NAME:Ochre Jelly
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
 
 STARTPACK:Octopus Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Octopus]	SOURCEPAGE:219
 RACE:Octopus	!PRERACE:1,%
@@ -411,11 +411,27 @@ GEAR:Greatclub		SIZE:L	LOCATION:Both Hands
 GEAR:Hide			SIZE:L	LOCATION:Equipped
 GEAR:Javelin	QTY:4	SIZE:L	LOCATION:Carried
 
-#STARTPACK:Ogre Mage Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ogre Mage]	SOURCEPAGE:221
-#RACE:Ogre Mage		!PRERACE:1,%
-#NAME:Ogre Mage
-#ALIGN:LE
-#STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+STARTPACK:Oni (Ogre Mage) Default		TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Oni (Ogre Mage)]	SOURCEPAGE:221
+RACE:Oni (Ogre Mage)		!PRERACE:1,%
+NAME:Oni (Ogre Mage)
+ALIGN:LE
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+SKILL:Bluff		RANK:8
+SKILL:Disguise	RANK:8
+SKILL:Intimidate	RANK:8
+SKILL:Knowledge (Arcana)	RANK:8
+SKILL:Perception	RANK:8
+SKILL:Sense Motive	RANK:8
+SKILL:Spellcraft	RANK:8
+SKILL:Use Magic Device	RANK:8
+FEAT:Combat Expertise
+FEAT:Combat Reflexes
+FEAT:Improved Initiative
+FEAT:Iron Will
+GEAR:Chain Shirt	SIZE:PC	LOCATION:Equipped
+GEAR:Greatsword		SIZE:PC	LOCATION:Both Hands
+GEAR:Longbow (Composite)	SIZE:PC	EQMOD:BOWSTR|+7	LOCATION:Carried
+GEAR:Arrows (20)		SIZE:PC	LOCATION:Equipped
 
 #STARTPACK:Orc Default		TYPE:DefaultMonster.Humanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Orc]	SOURCEPAGE:222
 #RACE:Orc		!PRERACE:1,%
