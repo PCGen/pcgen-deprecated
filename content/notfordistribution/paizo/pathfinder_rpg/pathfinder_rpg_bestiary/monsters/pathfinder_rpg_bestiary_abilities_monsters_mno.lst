@@ -151,6 +151,10 @@ Jet			KEY:Jet ~ Octopus			CATEGORY:Special Ability	TYPE:SpecialDefence.Extraordi
 Poison		KEY:Poison ~ Octopus		CATEGORY:Special Ability	TYPE:SpecialDefence.Extraordinary	DESC:Bite-injury; save Fort DC 13; frequency 1/round for 6 rounds; effect 1 Str; cure 1 save.																						SOURCEPAGE:p.219
 Poison		KEY:Poison ~ Giant Octopus	CATEGORY:Special Ability	TYPE:SpecialDefence.Extraordinary	DESC:Bite-injury; save Fort DC 13; frequency 1/round for 6 rounds; effect 1 Str; cure 1 save.																						SOURCEPAGE:p.219
 
+###Block: Octopus abilities
+# Ability Name	Unique Key				Category of Ability			Type								Description																																	Move			Source Page
+Disease			KEY:Disease ~ Otyugh	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:You can cause disease in those you contact.												SOURCEPAGE:p.223		BENEFIT:Filth fever: Bite-injury; save Fortitude DC 14; onset 1d3 days; frequency 1/day; effect 1d3 Dex damage and 1d3 Con damage; cure 2 consecutive saves. The save DC is Constitution-based.
+
 #
 # End
 #

@@ -16,6 +16,10 @@ Weapon Familiarity	KEY:Weapon Familiarity ~ Drow	CATEGORY:Special Ability	TYPE:S
 # Ability Name	Unique Key			Category of Ability		Type						Description										Bonus to skill					Source Page
 Skilled		KEY:Skilled ~ Goblin	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Goblins gain a +4 racial bonus on Ride and Stealth checks.	BONUS:SKILL|Ride,Stealth|4|TYPE=Racial	SOURCEPAGE:p.18
 
+###Block: Orc abilities
+# Ability Name	Unique Key				Category of Ability		Type						Description																																	Move			Source Page
+Weapon Familiarity	KEY:Weapon Familiarity ~ Orc	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Orcs are always proficient with greataxes and falchions, and treat any weapon with the word "orc" in its name as a martial weapon.						AUTO:WEAPONPROF|Greataxe|Falchion	CHANGEPROF:TYPE.Orc=Martial
+
 ###Block: Tengu abilities
 # Ability Name	Unique Key				Category of Ability		Type						Description																								Automatically Gained Weapon Prof.	Bonus to skill						Source Page
 Gifted Linguist	KEY:Gifted Linguist ~ Tengu	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Tengus gain a +4 racial bonus on Linguistics checks, and learn 2 languages each time they gain a rank in Linguistics rather than 1 language.							BONUS:SKILL|Linguistics|4|TYPE=Racial		SOURCEPAGE:p.24
