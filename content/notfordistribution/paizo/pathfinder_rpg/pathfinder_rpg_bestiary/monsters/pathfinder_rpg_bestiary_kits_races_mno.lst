@@ -444,11 +444,15 @@ FEAT:Alertness
 FEAT:Toughness
 FEAT:Weapon Focus (Tentacle)
 
-#STARTPACK:Owlbear Default		TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Owlbear]	SOURCEPAGE:224
-#RACE:Owlbear		!PRERACE:1,%
-#NAME:Owlbear
-#ALIGN:TN
-#STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+STARTPACK:Owlbear Default		TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Owlbear]	SOURCEPAGE:224
+RACE:Owlbear		!PRERACE:1,%
+NAME:Owlbear
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+SKILL:Perception	RANK:5
+FEAT:Improved Initiative
+FEAT:Great Fortitude
+FEAT:Skill Focus (Perception)
 
 #
 # End
