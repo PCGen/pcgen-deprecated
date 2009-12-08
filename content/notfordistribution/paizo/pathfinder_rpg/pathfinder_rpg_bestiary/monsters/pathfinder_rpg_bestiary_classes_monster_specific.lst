@@ -59,6 +59,23 @@ CLASS:Nymph		STARTSKILLPTS:6	MODTOSKILLS:YES			CSKILL:Acrobatics|Bluff|Climb|TYP
 5	BONUS:PCLEVEL|Druid|1
 6	BONUS:PCLEVEL|Druid|1
 
+# Class Name		Hit Dice	Type			Max Level		Source Page		Ability																		Save checks bonus											Combat bonus
+CLASS:Rakshasa		HD:10		TYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p.231	ABILITY:Special Ability|AUTOMATIC|Outsider Traits|PREVAREQ:NoTypeTraits,0	ABILITY:FEAT|AUTOMATIC|CMB Output	BONUS:CHECKS|BASE.Reflex,BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
+# Class Name			Reg. Race Type
+CLASS:Rakshasa			PRERACETYPE:Outsider
+# Class Name			Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
+CLASS:Rakshasa			STARTSKILLPTS:6	MODTOSKILLS:YES				CSKILL:Bluff|TYPE.Craft|Diplomacy|Disguise|Knowledge (Planes)|Perception|TYPE.Perform|Sense Motive|Stealth
+###Block:Proficiencies
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
+###Block:Spellcaster Progression
+1						ADD:SPELLCASTER|1|Sorcerer
+2	BONUS:PCLEVEL|Sorcerer|1
+3	BONUS:PCLEVEL|Sorcerer|1
+4	BONUS:PCLEVEL|Sorcerer|1
+5	BONUS:PCLEVEL|Sorcerer|1
+6	BONUS:PCLEVEL|Sorcerer|1
+7	BONUS:PCLEVEL|Sorcerer|1
+
 
 #
 # End

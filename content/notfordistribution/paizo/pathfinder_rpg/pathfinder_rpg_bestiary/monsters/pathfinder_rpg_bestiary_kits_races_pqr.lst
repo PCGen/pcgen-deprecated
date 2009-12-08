@@ -95,6 +95,44 @@ SKILL:Stealth	RANK:2
 SKILL:Survival	RANK:2
 FEAT:Weapon Finesse
 
+STARTPACK:Purple Worm Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Purple Worm]	SOURCEPAGE:p.230
+RACE:Purple Worm	!PRERACE:1,%
+NAME:Purple Worm
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=10
+SKILL:Perception	RANK:16
+FEAT:Power Attack
+FEAT:Improved Bull Rush
+FEAT:Awesome Blow
+FEAT:Improved Critical (Bite)
+FEAT:Critical Focus
+FEAT:Staggering Critical
+FEAT:Weapon Focus (Bite)
+FEAT:Weapon Focus (Sting)
+
+STARTPACK:Rakshasa Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Rakshasa]	SOURCEPAGE:p.231
+RACE:Rakshasa	!PRERACE:1,%
+NAME:Rakshasa
+ALIGN:LE
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+SKILL:Bluff		RANK:10
+SKILL:Diplomacy		RANK:10
+SKILL:Disguise	RANK:10
+SKILL:Perception	RANK:10
+SKILL:Sense Motive	RANK:10
+SKILL:TYPE=Perform	RANK:10
+SKILL:Stealth	RANK:10
+FEAT:Combat Expertise
+FEAT:Dodge
+FEAT:Improved Critical (Kukri)
+FEAT:Improved Initiative
+FEAT:Weapon Finesse
+SPELLS:Dancing Lights|Detect Magic|Ghost Sound|Mage Hand|Mending|Message|Prestidigitation
+SPELLS:Charm Person|Mage Armor|Magic Missile|Shield|Silent Image
+SPELLS:Acid Arrow|Invisibility|Minor Image
+SPELLS:Lightning Bolt|Suggestion
+GEAR:Kukri	LOCATION:Equipped	EQMOD:PLUS1W
+
 STARTPACK:Rat (Dire) Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Rat (Dire)]	SOURCEPAGE:p.232
 RACE:Rat (Dire)	!PRERACE:1,%
 NAME:Dire Rat
@@ -113,6 +151,55 @@ SKILL:Perception	RANK:1
 SKILL:Stealth	RANK:1
 FEAT:Improved Initiative
 FEAT:Skill Focus (Perception)
+
+STARTPACK:Remorhaz Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Remorhaz]	SOURCEPAGE:p.233
+RACE:Remorhaz	!PRERACE:1,%
+NAME:Remorhaz
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=11|INT=11|WIS=10|CHA=10
+SKILL:Perception	RANK:9
+FEAT:Power Attack
+FEAT:Cleave
+FEAT:Improved Bull Rush
+FEAT:Skill Focus (Perception)
+FEAT:Awesome Blow
+## Awesome Blow requires a Strength of 25 so the Remoraz does not qualify.
+
+STARTPACK:Retriever Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Retriever]	SOURCEPAGE:p.234
+RACE:Retriever	!PRERACE:1,%
+NAME:Retriever
+ALIGN:CE
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+SKILL:Perception	RANK:15
+FEAT:Power Attack
+FEAT:Cleave
+FEAT:Improved Bull Rush
+FEAT:Great Fortitude
+FEAT:Improved Critical (Claw)
+FEAT:Improved Initiative
+FEAT:Lightning Reflexes
+FEAT:Toughness
+
+STARTPACK:Rhinoceros Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Rhinoceros]	SOURCEPAGE:p.235
+RACE:Rhinoceros	!PRERACE:1,%
+NAME:Rhinoceros
+ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+SKILL:Perception	RANK:5
+FEAT:Skill Focus (Perception)
+FEAT:Endurance
+FEAT:Great Fortitude
+
+STARTPACK:Rhinoceros (Woolly) Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Rhinoceros (Woolly)]	SOURCEPAGE:p.235
+RACE:Rhinoceros (Woolly)	!PRERACE:1,%
+NAME:Rhinoceros (Woolly)
+ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+SKILL:Perception	RANK:8
+FEAT:Skill Focus (Perception)
+FEAT:Endurance
+FEAT:Great Fortitude
+FEAT:Diehard
 
 #
 # End
