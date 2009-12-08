@@ -136,7 +136,7 @@ Disease						KEY:Disease ~ Su									CATEGORY:Special Ability	TYPE:SpecialAttac
 
 ## Disease, Specific
 # Ability Name	Unique Key				Category of Ability		Type						Visible	Define			Description																										Modify VAR					Source Page
-Disease		KEY:Disease ~ Filth Fever	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:DiseaseDC|0	DESC:Filth Fever: Bite injury; Save Fort DC %1; Onset 1d3 days; Frequency 1/day; Effect 1d3 Dex damage and 1d3 Con damage; Cure 2 consecutive saves.|DiseaseDC	BONUS:VAR|DiseaseDC|10+(TL/2)+CON	SOURCEPAGE:p.232
+Disease		KEY:Disease ~ Filth Fever	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:DiseaseDC|0	DESC:Filth Fever-Bite injury; Save Fort DC %1; Onset 1d3 days; Frequency 1/day; Effect 1d3 Dex damage and 1d3 Con damage; Cure 2 consecutive saves.|DiseaseDC	BONUS:VAR|DiseaseDC|10+(TL/2)+CON	SOURCEPAGE:p.232
 
 Distraction						KEY:Distraction ~ Swarm								CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary					DEFINE:DistractionDC|10+(HD/2)+CON																	DESC:You can nauseate creatures that you damage.																																																																																																																																																																	SOURCEPAGE:p. 299	ASPECT:Ability Benefit|(DC %1)|DistractionDC																	BENEFIT:You can nauseate creatures that you damage. Any living creature that takes damage from you is nauseated for 1 round; a Fortitude save (DC %1) negates the effect.|DistractionDC
 
