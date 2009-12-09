@@ -1,5 +1,134 @@
-# CVS $Revision$ $Author$ -- Tue Nov 10 15:28:33 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Tue Dec  8 22:53:40 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+
+
+STARTPACK:Vampire Spawn Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Vampire Spawn],[!PRERACE:1,%]	SOURCEPAGE:p.271
+ALIGN:LE
+RACE:Vampire Spawn	!PRERACE:1,%
+NAME:Vampire Spawn
+SKILL:Intimidate			RANK:4
+SKILL:Knowledge (Religion)	RANK:4
+SKILL:Perception			RANK:4
+SKILL:Stealth			RANK:4
+FEAT:Blind-Fight
+FEAT:Skill Focus (Perception)
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+
+
+STARTPACK:Vargouille Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Vargouille],[!PRERACE:1,%]	SOURCEPAGE:p.272
+ALIGN:NE
+RACE:Vargouille	!PRERACE:1,%
+NAME:Vargouille
+SKILL:Fly		RANK:1
+SKILL:Intimidate	RANK:1
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:1
+FEAT:Skill Focus (Stealth)
+FEAT:Weapon Finesse
+STAT:STR=10|DEX=11|CON=11|INT=11|WIS=10|CHA=10
+
+
+STARTPACK:Vegepygmy Default	TYPE:DefaultMonster.Plant	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Vegepygmy],[!PRERACE:1,%]	SOURCEPAGE:p.273
+ALIGN:TN
+RACE:Vegepygmy	!PRERACE:1,%
+NAME:Vegepygmy
+SKILL:Perception	RANK:1
+FEAT:Skill Focus (Perception)
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+GEAR:Longspear	SIZE:S	LOCATION:Both Hands
+
+
+STARTPACK:Violet Fungus Default	TYPE:DefaultMonster.Plant	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Violet Fungus],[!PRERACE:1,%]	SOURCEPAGE:p.274
+ALIGN:TN
+RACE:Violet Fungus	!PRERACE:1,%
+NAME:Violet Fungus
+STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Wasp (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Wasp (Giant)],[!PRERACE:1,%]	SOURCEPAGE:p.275
+ALIGN:TN
+RACE:Wasp (Giant)	!PRERACE:1,%
+NAME:Giant Wasp
+STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+
+
+STARTPACK:Wasp Swarm Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Wasp Swarm],[!PRERACE:1,%]	SOURCEPAGE:p.275
+ALIGN:TN
+RACE:Wasp Swarm	!PRERACE:1,%
+NAME:Wasp Swarm
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
+
+
+STARTPACK:Wight Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Wight],[!PRERACE:1,%]	SOURCEPAGE:p.276
+ALIGN:LE
+RACE:Wight	!PRERACE:1,%
+NAME:Wight
+SKILL:Intimidate			RANK:4
+SKILL:Knowledge (Religion)	RANK:4
+SKILL:Perception			RANK:4
+SKILL:Stealth			RANK:4
+FEAT:Blind-Fight
+FEAT:Skill Focus (Perception)
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+
+
+STARTPACK:Wight (Brute) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Wight (Brute)],[!PRERACE:1,%]	SOURCEPAGE:p.276
+ALIGN:LE
+RACE:Wight (Brute)	!PRERACE:1,%
+NAME:Brute Wight
+SKILL:Intimidate			RANK:4
+SKILL:Knowledge (Religion)	RANK:4
+SKILL:Perception			RANK:4
+SKILL:Stealth			RANK:4
+FEAT:Blind-Fight
+FEAT:Skill Focus (Perception)
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+
+
+STARTPACK:Wight (Cairn) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Wight (Cairn)],[!PRERACE:1,%]	SOURCEPAGE:p.276
+ALIGN:LE
+RACE:Wight (Cairn)	!PRERACE:1,%
+NAME:Cairn Wight
+SKILL:Intimidate			RANK:4
+SKILL:Knowledge (Religion)	RANK:4
+SKILL:Perception			RANK:4
+SKILL:Stealth			RANK:4
+FEAT:Blind-Fight
+FEAT:Skill Focus (Perception)
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+GEAR:Longsword	LOCATION:Primary Hand
+
+
+STARTPACK:Wight (Frost) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Wight (Frost)],[!PRERACE:1,%]	SOURCEPAGE:p.276
+ALIGN:LE
+RACE:Wight (Frost)	!PRERACE:1,%
+NAME:Frost Wight
+SKILL:Intimidate			RANK:4
+SKILL:Knowledge (Religion)	RANK:4
+SKILL:Perception			RANK:4
+SKILL:Stealth			RANK:4
+FEAT:Blind-Fight
+FEAT:Skill Focus (Perception)
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+
+
+STARTPACK:Will-o'-Wisp Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Will-o'-Wisp],[!PRERACE:1,%]	SOURCEPAGE:p.277
+ALIGN:CE
+RACE:Will-o'-Wisp	!PRERACE:1,%
+NAME:Will-o'-Wisp
+SKILL:Acrobatics		RANK:9
+SKILL:Bluff			RANK:9
+SKILL:Escape Artist	RANK:9
+SKILL:Fly			RANK:9
+SKILL:Perception		RANK:9
+SKILL:Stealth		RANK:9
+FEAT:Alertness
+FEAT:Blind-Fight
+FEAT:Dodge
+FEAT:Improved Initiative
+FEAT:Weapon Finesse
+STAT:STR=11|DEX=11|CON=10|INT=11|WIS=10|CHA=10
+
 
 STARTPACK:Wolf Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Wolf]	SOURCEPAGE:p.278
 RACE:Wolf	!PRERACE:1,%
