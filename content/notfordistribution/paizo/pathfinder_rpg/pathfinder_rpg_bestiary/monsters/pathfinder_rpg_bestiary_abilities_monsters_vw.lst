@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Dec  8 22:53:40 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Dec  9 13:48:19 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Vampire Spawn Abilities
@@ -30,6 +30,22 @@ Resurrection Vulnerability	KEY:Resurrection Vulnerability ~ Wight	CATEGORY:Speci
 Feed on Fear		KEY:Feed on Fear ~ Will-o'-Wisp		CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural			DESC:Any time a will-o'-wisp is within 15 feet of a dying creature or creature subject to a fear effect, it gains fast healing 5.		SOURCEPAGE:p.277
 Immunity to Magic		KEY:Immunity to Magic ~ Will-o'-Wisp	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	DESC:Will-o'-wisps are immune to all spells and spell-like abilities that allow spell resistance, except magic missile and maze.		SOURCEPAGE:p.277	ASPECT:Immunity|Magic
 Natural Invisibility	KEY:Natural Invisibility ~ Will-o'-Wisp	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Defensive	DESC:Will-o'-wisps have the ability to extinguish their natural glow as a move action, effectively becoming invisible, as per the spell.	SOURCEPAGE:p.277
+
+###Block: Wolverine Abilities
+# Ability Name	Unique Key			Category of Ability		Type						Description																								Combat bonus					Stat bonus							Source Page		Description of the Benefits																																							Temporary effect description
+Rage			KEY:Rage ~ Wolverine	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DESC:A wolverine that takes damage in combat flies into a rage on its next turn, clawing and biting madly until either it or its opponent is dead.	BONUS:COMBAT|AC|-2|TYPE=Rage|PREAPPLY:PC	BONUS:STAT|STR,CON|4|TYPE=Rage|PREAPPLY:PC	SOURCEPAGE:p.279	BENEFIT:A wolverine that takes damage in combat flies into a rage on its next turn, clawing and biting madly until either it or its opponent is dead. It gains +4 to Strength, +4 to Constitution, and -2 to AC. The creature cannot end its rage voluntarily.	TEMPDESC:A raging wolverine gains +4 to Strength, +4 to Constitution, and -2 to AC.
+
+###Block: Wraith Abilities
+# Ability Name		Unique Key					Category of Ability		Type								Define						Description																								Source Page		Aspects									Description of the Benefits
+Create Spawn		KEY:Create Spawn ~ Wraith		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural										DESC:A humanoid slain by a wraith becomes a wraith in 1d4 rounds.															SOURCEPAGE:p.281											BENEFIT:A humanoid slain by a wraith becomes a wraith in 1d4 rounds. These spawn are less powerful than typical wraiths, and suffer a -2 penalty on all d20 rolls and checks, receive -2 hp per HD, and only drain 1d2 points of Constitution on a touch. Spawn are under the command of the wraith that created them until its death, at which point they lose their spawn penalties and become free-willed wraiths. They do not possess any of the abilities they had in life.
+Constitution Drain	KEY:Constitution Drain ~ Wraith	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural			DEFINE:ConstitutionDrainDC|10+(HD/2)+CHA	DESC:Creatures hit by a wraith's touch attack must succeed on a DC %1 Fortitude save or take 1d6 points of Constitution drain.|ConstitutionDrainDC	SOURCEPAGE:p.281	ASPECT:Ability Benefit|(1d6, DC %1)|ConstitutionDrainDC	BENEFIT:Creatures hit by a wraith's touch attack must succeed on a DC %1 Fortitude save or take 1d6 points of Constitution drain. On each successful attack, the wraith gains 5 temporary hit points.|ConstitutionDrainDC
+Lifesense			KEY:Lifesense ~ Wraith			CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Sense									DESC:A wraith notices and locates living creatures within 60 feet, just as if it possessed the blindsight ability.						SOURCEPAGE:p.281	ASPECT:Ability Benefit|(60 ft.)
+Sunlight Powerlessness	KEY:Sunlight Powerlessness ~ Wraith	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Weakness								DESC:A wraith caught in sunlight cannot attack and is staggered.															SOURCEPAGE:p.281
+Unnatural Aura		KEY:Unnatural Aura ~ Wraith		CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Aura									DESC:Animals do not willingly approach within 30 feet of a wraith, unless a master makes a DC 25 Handle Animal, Ride, or wild empathy check.		SOURCEPAGE:p.281	ASPECT:Ability Benefit|(30 ft.)
+
+###Block: Wyvern Abilities
+# Ability Name	Unique Key			Category of Ability		Type						Define				Description																				Source Page		Aspects
+Poison		KEY:Poison ~ Wyvern	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:PoisonDC|10+(HD/2)+CON	DESC:Sting--injury; save DC 17; frequency 1/round for 6 rounds; effect 1d4 Constitution damage; cure 2 consecutive saves.	SOURCEPAGE:p.282	ASPECT:Ability Benefit|(DC %1)|PoisonDC
 
 #
 # End
