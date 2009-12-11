@@ -7,6 +7,7 @@ Companion Advancement (Goblin Dog)			CATEGORY:Special Ability	TYPE:CompChoice	VI
 Companion Advancement (Herd Animal (Aurochs))	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Herd Animal (Aurochs))	ABILITY:Special Ability|AUTOMATIC|Trample|Stampede		BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1						BONUS:VAR|TrampleDamageDice|1	BONUS:VAR|TrampleDamageDieSize|6
 Companion Advancement (Hyena)				CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Hyena)				ABILITY:Special Ability|AUTOMATIC|Trip												BONUS:SIZEMOD|NUMBER|1
 Companion Advancement (Monitor Lizard)		CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Lizard (Monitor))		ABILITY:Special Ability|AUTOMATIC|Poison ~ Lizard Monitor	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1	BONUS:STAT|CON|2|TYPE=Racial
+Companion Advancement (Rhinoceros)	CATEGORY:Special Ability	TYPE:CompChoice	VISIBLE:DISPLAY	PRERACE:1,Companion (Rhinoceros)	ABILITY:Special Ability|AUTOMATIC|Powerful Charge		BONUS:COMBAT|AC|3|TYPE=NaturalArmor.REPLACE	BONUS:SIZEMOD|NUMBER|1
 
 #
 # End
