@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Nov 18 20:58:47 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Dec 11 16:09:32 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Aboleth abilities
@@ -9,6 +9,16 @@ Slime			KEY:Slime ~ Aboleth		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraor
 ###Block: Angel abilities
 # Ability Name	Unique Key		Category of Ability		Type						Visible
 Stun			KEY:Stun ~ Angel	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:YES
+
+###Block: Angel (Planetar) Abilities
+# Ability Name				Unique Key						Category of Ability		Type							Define				Description										Source Page		Aspects							Description of the Benefits
+Detect Evil					KEY:Detect Evil ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:A Planetar has Detect Evil as a constant ability.		SOURCEPAGE:p.11									BENEFIT:A Planetar has Detect Evil as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
+Detect Snares And Pits			KEY:Detect Snares And Pits ~ Planetar	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:A Planetar has Detect Snares And Pits as a constant ability.	SOURCEPAGE:p.11									BENEFIT:A Planetar has Detect Snares And Pits as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
+Discern Lies				KEY:Discern Lies ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Communicate	DEFINE:DiscernLiesDC|13+CHA	DESC:A Planetar has Discern Lies as a constant ability.		SOURCEPAGE:p.11	ASPECT:Ability Benefit|(DC %1)|DiscernLiesDC	BENEFIT:A Planetar has Discern Lies as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
+True Seeing					KEY:True Seeing ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:A Planetar has True Seeing as a constant ability.		SOURCEPAGE:p.11									BENEFIT:A Planetar has True Seeing as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
+Change Shape				KEY:Change Shape ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural							DESC:Alter self									SOURCEPAGE:p.11	ASPECT:Ability Benefit|(alter self)
++4 Resistance to Saves vs. Evil	KEY:Planetar Resistance				CATEGORY:Special Ability	TYPE:SpecialQuality.Defensive																			SOURCEPAGE:p.11
++4 Deflection bonus to AC vs. Evil	KEY:Planetar Deflection				CATEGORY:Special Ability	TYPE:SpecialQuality.ModifyAC																			SOURCEPAGE:p.11
 
 ###Block: Ant abilities
 # Ability Name	Unique Key			Category of Ability		Type						Visible	Define		Description																Modify VAR					Source Page

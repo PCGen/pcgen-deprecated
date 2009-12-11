@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Nov 18 21:54:56 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Wed Dec  9 23:29:48 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.8
@@ -41,6 +41,71 @@ FEAT:Power Attack
 FEAT:Toughness
 FEAT:Weapon Focus (Warhammer)
 GEAR:Warhammer	SIZE:PC	LOCATION:Primary Hand	EQMOD:PLUS2W.DISRPT
+
+
+STARTPACK:Angel (Planetar) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Angel (Planetar)],[!PRERACE:1,%]	SOURCEPAGE:p.11
+ALIGN:NG
+RACE:Angel (Planetar)	!PRERACE:1,%
+NAME:Planetar
+SKILL:Acrobatics			RANK:17
+SKILL:TYPE=Craft			RANK:17
+SKILL:Diplomacy			RANK:17
+SKILL:Fly				RANK:17
+SKILL:Heal				RANK:17
+SKILL:Intimidate			RANK:17
+SKILL:Knowledge (History)	RANK:17
+SKILL:Knowledge (Planes)	RANK:17
+SKILL:Knowledge (Religion)	RANK:17
+SKILL:Perception			RANK:17
+SKILL:Sense Motive		RANK:17
+SKILL:Stealth			RANK:17
+FEAT:Blind-Fight
+FEAT:Cleave
+FEAT:Great Fortitude
+FEAT:Improved Initiative
+FEAT:Improved Sunder
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Power Attack
+FEAT:Toughness
+STAT:STR=11|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+GEAR:Greatsword	SIZE:L	LOCATION:Primary Hand	EQMOD:PLUS3W.HOLY
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Earthquake
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Fire Storm
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Holy Word
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Regenerate
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Regenerate
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Banishment
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dispel Magic (Greater)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Heal
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Moderate Wounds (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Break Enchantment
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dispel Evil
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dispel Evil
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Plane Shift
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Righteous Might
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Death Ward
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dismissal
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Neutralize Poison
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Summon Monster IV
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Serious Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Serious Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Daylight
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Invisibility Purge
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Summon Monster III
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Wind Wall
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Align Weapon
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Align Weapon
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bear's Endurance
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Moderate Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Moderate Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Eagle's Splendor
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bless
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bless
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Shield of Faith
 
 
 STARTPACK:Ant (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Giant)]	SOURCEPAGE:p.16
