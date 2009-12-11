@@ -201,6 +201,49 @@ FEAT:Endurance
 FEAT:Great Fortitude
 FEAT:Diehard
 
+STARTPACK:Roc Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Roc]	SOURCEPAGE:p.236
+RACE:Roc	!PRERACE:1,%
+NAME:Roc
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+SKILL:Fly	RANK:8
+SKILL:Perception	RANK:8
+FEAT:Flyby Attack
+FEAT:Improved Critical (Talons)
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Power Attack
+FEAT:Skill Focus (Perception)
+FEAT:Weapon Focus (Talons)
+
+STARTPACK:Roper Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Roper]	SOURCEPAGE:p.237
+RACE:Roper	!PRERACE:1,%
+NAME:Roper
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=11|INT=11|WIS=10|CHA=10
+SKILL:Climb		RANK:12
+SKILL:Knowledge (Dungeoneering)		RANK:12
+SKILL:Knowledge (Religion)	RANK:10
+SKILL:Perception	RANK:12
+SKILL:Stealth	RANK:12
+FEAT:Improved Critical (Bite)
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Skill Focus (Perception)
+FEAT:Skill Focus (Stealth)
+FEAT:Weapon Focus (Strand)
+
+STARTPACK:Rust Monster Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Rust Monster]	SOURCEPAGE:p.235
+RACE:Rust Monster	!PRERACE:1,%
+NAME:Rust Monster
+ALIGN:TN
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=11|CHA=10
+SKILL:Perception	RANK:5
+FEAT:Ability Focus (Rust ~ Rust monster)
+FEAT:Skill Focus (Perception)
+FEAT:Weapon Finesse
+
 #
 # End
 #
