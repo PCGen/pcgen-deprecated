@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Dec  9 23:29:48 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Dec 11 22:35:28 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.8
@@ -105,6 +105,87 @@ SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bless
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Shield of Faith
+
+
+STARTPACK:Angel (Solar) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Angel (Solar)],[!PRERACE:1,%]	SOURCEPAGE:p.12
+ALIGN:NG
+RACE:Angel (Solar)	!PRERACE:1,%
+NAME:Solar
+SKILL:TYPE.Craft			RANK:22
+SKILL:Diplomacy			RANK:22
+SKILL:Fly				RANK:22
+SKILL:Knowledge (History)	RANK:22
+SKILL:Knowledge (Nature)	RANK:22
+SKILL:Knowledge (Planes)	RANK:22
+SKILL:Knowledge (Religion)	RANK:22
+SKILL:Perception			RANK:22
+SKILL:Sense Motive		RANK:22
+SKILL:Spellcraft			RANK:22
+SKILL:Stealth			RANK:22
+SKILL:Survival			RANK:22
+FEAT:Cleave
+FEAT:Deadly Aim
+FEAT:Dodge
+FEAT:Great Fortitude
+FEAT:Improved Initiative
+FEAT:Improved Sunder
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Mobility
+FEAT:Power Attack
+FEAT:Toughness
+STAT:STR=10|DEX=10|CON=10|INT=11|WIS=11|CHA=11
+GEAR:Full Plate			SIZE:L	LOCATION:Equipped		EQMOD:PLUS5A
+GEAR:Greatsword			SIZE:L	LOCATION:Both Hands	EQMOD:PLUS5W.DANCE
+GEAR:Longbow (Composite)	SIZE:L	LOCATION:Carried		EQMOD:PLUS5W.BOWSTR|+9
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Etherealness
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Heal (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Miracle
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Storm of Vengeance
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Fire Storm
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Holy Aura
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Holy Aura
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Critical Wounds (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Critical Wounds (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Destruction
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dictum
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Ethereal Jaunt
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Holy Word
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Regenerate
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Banishment
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Heroes' Feast
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Moderate Wounds (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Undeath To Death
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Word of Recall
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Break Enchantment
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Breath of Life
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dispel Evil
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Plane Shift
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Righteous Might
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Critical Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Critical Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Critical Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Death Ward
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dismissal
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Neutralize Poison
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Serious Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Daylight
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Invisibility Purge
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Magic Circle against Evil
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Prayer
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Protection From Energy
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Align Weapon
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bear's Endurance
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bull's Strength
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Consecrate
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Moderate Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Eagle's Splendor
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bless
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Divine Favor
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Entropic Shield
 SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Shield of Faith
 
 

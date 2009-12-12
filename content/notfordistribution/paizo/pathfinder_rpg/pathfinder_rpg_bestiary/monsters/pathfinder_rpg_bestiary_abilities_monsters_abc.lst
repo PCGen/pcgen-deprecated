@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Dec 11 16:09:32 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Dec 11 22:35:28 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Aboleth abilities
@@ -7,18 +7,16 @@ Mucus Cloud		KEY:Mucus Cloud ~ Aboleth	CATEGORY:Special Ability	TYPE:SpecialAtta
 Slime			KEY:Slime ~ Aboleth		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary		VISIBLE:YES	DEFINE:SlimeDC|0		DESC:A creature hit by an aboleth's tentacle must succeed on a DC %1 Fortitude save or his skin and flesh transform into a clear, slimy membrane over the course of 1d4 rounds. The creature's new "flesh" is soft and tender, reducing its Constitution score by 4 as long as it persists. If the creature's flesh isn't kept moist, it dries quickly and the victim takes 1d12 points of damage every 10 minutes. Remove disease and similar effects can restore an afflicted creature to normal, but immunity to disease offers no protection from this attack.|SlimeDC	BONUS:VAR|SlimeDC|10+(TL/2)+CON		SOURCEPAGE:p.8
 
 ###Block: Angel abilities
-# Ability Name	Unique Key		Category of Ability		Type						Visible
-Stun			KEY:Stun ~ Angel	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:YES
-
-###Block: Angel (Planetar) Abilities
-# Ability Name				Unique Key						Category of Ability		Type							Define				Description										Source Page		Aspects							Description of the Benefits
-Detect Evil					KEY:Detect Evil ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:A Planetar has Detect Evil as a constant ability.		SOURCEPAGE:p.11									BENEFIT:A Planetar has Detect Evil as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
-Detect Snares And Pits			KEY:Detect Snares And Pits ~ Planetar	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:A Planetar has Detect Snares And Pits as a constant ability.	SOURCEPAGE:p.11									BENEFIT:A Planetar has Detect Snares And Pits as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
-Discern Lies				KEY:Discern Lies ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Communicate	DEFINE:DiscernLiesDC|13+CHA	DESC:A Planetar has Discern Lies as a constant ability.		SOURCEPAGE:p.11	ASPECT:Ability Benefit|(DC %1)|DiscernLiesDC	BENEFIT:A Planetar has Discern Lies as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
-True Seeing					KEY:True Seeing ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense							DESC:A Planetar has True Seeing as a constant ability.		SOURCEPAGE:p.11									BENEFIT:A Planetar has True Seeing as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
-Change Shape				KEY:Change Shape ~ Planetar			CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural							DESC:Alter self									SOURCEPAGE:p.11	ASPECT:Ability Benefit|(alter self)
-+4 Resistance to Saves vs. Evil	KEY:Planetar Resistance				CATEGORY:Special Ability	TYPE:SpecialQuality.Defensive																			SOURCEPAGE:p.11
-+4 Deflection bonus to AC vs. Evil	KEY:Planetar Deflection				CATEGORY:Special Ability	TYPE:SpecialQuality.ModifyAC																			SOURCEPAGE:p.11
+# Ability Name				Unique Key					Category of Ability		Type							Visible	Define				Description																			Source Page		Aspects							Description of the Benefits
+Change Shape				KEY:Change Shape ~ Angel		CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural									DESC:Alter self																		SOURCEPAGE:p.11	ASPECT:Ability Benefit|(alter self)
+Detect Evil					KEY:Detect Evil ~ Angel			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense									DESC:The Angel has Detect Evil as a constant ability.												SOURCEPAGE:p.11									BENEFIT:The Angel has Detect Evil as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
+Detect Snares And Pits			KEY:Detect Snares And Pits ~ Angel	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense									DESC:The Angel has Detect Snares And Pits as a constant ability.										SOURCEPAGE:p.11									BENEFIT:The Angel has Detect Snares And Pits as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
+Discern Lies				KEY:Discern Lies ~ Angel		CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Communicate			DEFINE:DiscernLiesDC|13+CHA	DESC:The Angel has Discern Lies as a constant ability.											SOURCEPAGE:p.11	ASPECT:Ability Benefit|(DC %1)|DiscernLiesDC	BENEFIT:The Angel has Discern Lies as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
+Slaying Arrow				KEY:Slaying Arrow ~ Solar		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural									DESC:A solar's bow needs no ammunition, and automatically creates a slaying arrow of the solar's choice when drawn.	SOURCEPAGE:p.12
+Stun						KEY:Stun ~ Angel				CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural		VISIBLE:YES
+True Seeing					KEY:True Seeing ~ Angel			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense									DESC:The Angel has True Seeing as a constant ability.												SOURCEPAGE:p.11									BENEFIT:The Angel has True Seeing as a constant ability. Constant spell-like abilities function at all times but can be dispelled. Constant spell-like abilities can be reactivate a as a swift action.
++4 Deflection bonus to AC vs. Evil	KEY:Angel Deflection			CATEGORY:Special Ability	TYPE:SpecialQuality.ModifyAC																														SOURCEPAGE:p.11
++4 Resistance to Saves vs. Evil	KEY:Angel Resistance			CATEGORY:Special Ability	TYPE:SpecialQuality.Defensive																														SOURCEPAGE:p.11
 
 ###Block: Ant abilities
 # Ability Name	Unique Key			Category of Ability		Type						Visible	Define		Description																Modify VAR					Source Page
