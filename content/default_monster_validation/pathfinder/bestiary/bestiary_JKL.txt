@@ -5,3 +5,4 @@ Lizard (Giant Frilled): IN AC +8 is listed as Armor, shouldn't this be listed as
 Lizardfolk: The Swim skill bonus does not reflect the shield penalty (understandably)
 
 
+Lycanthrope, Werewolf: Not enough skill points for the skills listed, need 2 more than it has.
