@@ -521,12 +521,15 @@ public class AbilityUtilities
 		final Categorisable abilityInfo,
 		final Ability.Nature           abilityType)
 	{
-		for ( Ability ability : anAbilityList )
+		if (anAbilityList != null)
 		{
-			if (AbilityUtilities.areSameAbility(ability, abilityInfo) &&
-					((abilityType == Ability.Nature.ANY) || (ability.getAbilityNature() == abilityType)))
+			for ( Ability ability : anAbilityList )
 			{
-				return ability;
+				if (AbilityUtilities.areSameAbility(ability, abilityInfo) &&
+						((abilityType == Ability.Nature.ANY) || (ability.getAbilityNature() == abilityType)))
+				{
+					return ability;
+				}
 			}
 		}
 
