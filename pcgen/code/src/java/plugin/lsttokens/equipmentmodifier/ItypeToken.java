@@ -27,6 +27,7 @@ import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
+import pcgen.util.Logging;
 
 /**
  * Deals with ITYPE token
@@ -53,8 +54,19 @@ public class ItypeToken extends AbstractToken implements
 		StringTokenizer tok = new StringTokenizer(value, Constants.DOT);
 		while (tok.hasMoreTokens())
 		{
-			context.getObjectContext().addToList(mod, ListKey.ITEM_TYPES,
-					tok.nextToken());
+			final String typeName = tok.nextToken();
+			if ("double".equalsIgnoreCase(typeName))
+			{
+				// We have to stop double going through as it causes an infinite loop when expanding double weapons to show each head
+				Logging.log(Logging.LST_ERROR,
+					"IType must not be double. Ignoring occurrence in "
+						+ getTokenName() + ":" + value);
+			}
+			else
+			{
+				context.getObjectContext().addToList(mod, ListKey.ITEM_TYPES,
+					typeName);
+			}
 		}
 		return true;
 	}
