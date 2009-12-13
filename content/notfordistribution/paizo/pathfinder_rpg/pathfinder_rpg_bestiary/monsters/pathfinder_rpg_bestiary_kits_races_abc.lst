@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Dec 11 22:35:28 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sat Dec 12 23:15:22 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Aboleth Default	TYPE:DefaultMonster.Aberration	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Aboleth]	SOURCEPAGE:p.8
@@ -194,6 +194,17 @@ ALIGN:TN
 STAT:STR=10|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
 
+STARTPACK:Ankheg Default	TYPE:DefaultMonster.Magical Beast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Ankheg],[!PRERACE:1,%]	SOURCEPAGE:p.15
+ALIGN:TN
+RACE:Ankheg	!PRERACE:1,%
+NAME:Ankheg
+SKILL:Climb		RANK:2
+SKILL:Perception	RANK:1
+FEAT:Skill Focus (Perception)
+FEAT:Toughness
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=10
+
+
 STARTPACK:Ant (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ant (Giant)]	SOURCEPAGE:p.16
 RACE:Ant (Giant)	!PRERACE:1,%
 NAME:Giant Ant
@@ -222,6 +233,13 @@ ALIGN:TN
 STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
 
 
+STARTPACK:Ant (Army/Swarm) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Ant (Army/Swarm)],[!PRERACE:1,%]	SOURCEPAGE:p.16
+ALIGN:TN
+RACE:Ant (Army/Swarm)	!PRERACE:1,%
+NAME:Army Ant Swarm
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=10|CHA=10
+
+
 STARTPACK:Ape (Gorilla) Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ape (Gorilla)]	SOURCEPAGE:p.17
 RACE:Ape (Gorilla)	!PRERACE:1,%
 NAME:Gorilla
@@ -245,6 +263,96 @@ SKILL:Perception	RANK:1
 SKILL:Stealth	RANK:1
 FEAT:Iron Will
 FEAT:Skill Focus (Perception)
+
+
+STARTPACK:Archon (Hound) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Archon (Hound)],[!PRERACE:1,%]	SOURCEPAGE:p.19
+ALIGN:LG
+RACE:Archon (Hound)	!PRERACE:1,%
+NAME:Archon (Hound)
+SKILL:Acrobatics		RANK:6
+SKILL:Intimidate		RANK:6
+SKILL:Perception		RANK:6
+SKILL:Sense Motive	RANK:6
+SKILL:Stealth		RANK:6
+SKILL:Survival		RANK:6
+FEAT:Improved Initiative
+FEAT:Iron Will
+FEAT:Power Attack
+STAT:STR=11|DEX=10|CON=11|INT=10|WIS=11|CHA=10
+GEAR:Greatsword	LOCATION:Both Hands	EQMOD:MWORKW
+
+
+STARTPACK:Archon (Lantern) Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Archon (Lantern)],[!PRERACE:1,%]	SOURCEPAGE:p.20
+ALIGN:LG
+RACE:Archon (Lantern)	!PRERACE:1,%
+NAME:Lantern Archon
+SKILL:Diplomacy			RANK:2
+SKILL:Fly				RANK:1
+SKILL:Knowledge (Planes)	RANK:2
+SKILL:Perception			RANK:1
+SKILL:Sense Motive		RANK:2
+FEAT:Improved Initiative
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=10
+
+
+STARTPACK:Archon (Trumpet) Default	TYPE:DefaultMonster.xxx	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Archon (Trumpet)],[!PRERACE:1,%]	SOURCEPAGE:p.21
+ALIGN:LG
+RACE:Archon (Trumpet)	!PRERACE:1,%
+NAME:Trumpet Archon
+SKILL:Diplomacy				RANK:14
+SKILL:Escape Artist			RANK:14
+SKILL:Fly					RANK:14
+SKILL:Handle Animal			RANK:14
+SKILL:Knowledge (Religion)		RANK:14
+SKILL:Perception				RANK:14
+SKILL:Perform (Wind Instruments)	RANK:14
+SKILL:Sense Motive			RANK:14
+SKILL:Stealth				RANK:14
+FEAT:Blind-Fight
+FEAT:Cleave
+FEAT:Combat Reflexes
+FEAT:Improved Initiative
+FEAT:Lightning Reflexes
+FEAT:Persuasive
+FEAT:Power Attack
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+GEAR:Greatsword	LOCATION:Both Hands	EQMOD:PLUS4W
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Serious Wounds (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Serious Wounds (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Banishment
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Heal
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Heal
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dispel Evil
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds (Mass)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Plane Shift
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Raise Dead
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Dismissal
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Divine Power
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Neutralize Poison
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Spell Immunity
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Serious Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Daylight
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Invisibility Purge
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Magic Vestment
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Protection From Energy
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bull's Strength
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Consecrate
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Moderate Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Restoration (Lesser)
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Owl's Wisdom
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Bless
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Cure Light Wounds
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Divine Favor
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Sanctuary
+SPELLS:SPELLBOOK=Prepared Spells|CLASS=Cleric|Shield of Faith
+
+
+STARTPACK:Assassin Vine Default	TYPE:DefaultMonster.Plant	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Assassin Vine],[!PRERACE:1,%]	SOURCEPAGE:p.22
+ALIGN:TN
+RACE:Assassin Vine	!PRERACE:1,%
+NAME:Assassin Vine
+STAT:STR=10|DEX=10|CON=10|INT=10|WIS=11|CHA=11
 
 
 STARTPACK:Barghest Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Barghest],[!PRERACE:1,%]	SOURCEPAGE:p.27

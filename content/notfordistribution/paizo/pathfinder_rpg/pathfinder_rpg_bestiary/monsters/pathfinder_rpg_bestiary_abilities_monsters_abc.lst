@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Dec 12 16:47:12 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Sat Dec 12 23:15:22 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 ###Block: Aboleth abilities
@@ -40,9 +40,44 @@ Metal (Adamantine/6 CP)			KEY:Animated Object ~ Metal (Adamantine)	CATEGORY:Spec
 Stone (1 CP)				KEY:Animated Object ~ Stone			CATEGORY:Special Ability	TYPE:SpecialQuality.AnimatedObjectAbility	VISIBLE:DISPLAY												!PREABILITY:1,CATEGORY=Special Ability,Animated Object ~ Metal (Mithral),Animated Object ~ Metal (Common),Animated Object ~ Metal (Adamantine)																DESC:The object is made of stone or crystal.																																															BONUS:COMBAT|AC|1|TYPE=NaturalArmor.REPLACE																														BONUS:VAR|ConstructionPointsSpent|1	BONUS:VAR|Hardness|3				SOURCEPAGE:p.14
 Trample (2 CP)				KEY:Animated Object ~ Trample			CATEGORY:Special Ability	TYPE:SpecialQuality.AnimatedObjectAbility	VISIBLE:DISPLAY																																																			DESC:The object gains the trample special attack.																									ABILITY:Special Ability|AUTOMATIC|Trample																																																				BONUS:VAR|ConstructionPointsSpent|2						COST:2	SOURCEPAGE:p.14
 
+###Block: Ankheg Abilities
+# Ability Name	Unique Key			Category of Ability		Type						Define					Description																		Source Page		Aspects							Description of the Benefits
+Spit Acid		KEY:Spit Acid ~ Ankheg	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:SpitAcidDC|10+(HD/2)+CON	DESC:Once every 6 hours, an ankheg can spit a 30-foot line of acid.								SOURCEPAGE:p.15	ASPECT:Ability Benefit|(4d4, DC %1)|SpitAcidDC	BENEFIT:Once every 6 hours, an ankheg can spit a 30-foot line of acid. Creatures struck by this acid take 4d4 points of acid damage (Reflex DC %1 halves). Once an ankheg uses this attack, it must wait 6 hours before using it again. Additionally, during this time period, its bite attack does not inflict any additional acid damage. As a result, an ankheg does not use this ability unless it is desperate or frustrated, most often spitting acid when reduced to fewer than half its full normal hit points or when it cannot not successfully grab an opponent.|SpitAcidDC
+Acid Bite		KEY:Acid Bite ~ Ankheg	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary							DESC:An Ankheg's bite does an additional 1d4 acid damage unless it has recently used it's spit acid ability.	SOURCEPAGE:p.15	ASPECT:Ability Benefit|(1d4)
+
 ###Block: Ant abilities
 # Ability Name	Unique Key			Category of Ability		Type						Visible	Define		Description																Modify VAR					Source Page
 Poison		KEY:Poison ~ Giant Ant	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:PoisonDC|0	DESC:Injury; Save Fort DC %1; Frequency 1/round for 4 rounds; Effect 1d2 Str; Cure 1 save.|PoisonDC	BONUS:VAR|PoisonDC|10+(TL/2)+CON	SOURCEPAGE:p.16
+
+###Block: Army Ant Swarm Abilities
+# Ability Name	Unique Key				Category of Ability		Type						Define				Description																																		Source Page		Aspects						Description of the Benefits
+Cling			KEY:Cling ~ Army Ant Swarm	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:ClingDC|10+(HD/2)+CON	DESC:If a creature leaves an army ant swarm's square, the swarm suffers 1d6 points of damage to reflect the loss of its numbers as several of the crawling pests continue to cling tenaciously to the victim.	SOURCEPAGE:p.16	ASPECT:Ability Benefit|(DC %1)|ClingDC	BENEFIT:If a creature leaves an army ant swarm's square, the swarm suffers 1d6 points of damage to reflect the loss of its numbers as several of the crawling pests continue to cling tenaciously to the victim. A creature with army ants clinging to him takes 3d6 points of damage at the end of his turn each round. As a full-round action, he can remove the ants with a DC %1 Reflex save. High wind or any amount of damage from an area effect destroys all clinging ants.|ClingDC
+Consume		KEY:Consume ~ Army Ant Swarm	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary						DESC:An army ant swarm can rapidly consume any creature it swarms over. Against helpless or nauseated targets, an army ant swarm attack deals 6d6 points of damage.								SOURCEPAGE:p.16
+
+###Block: Archon Abilities
+# Ability Name				Unique Key						Category of Ability		Type							Description															Source Page
++2 deflection to AC vs. evil		KEY:Archon Deflection				CATEGORY:Special Ability	TYPE:SpecialQuality.ModifyAC																			SOURCEPAGE:p.20
++2 resistance to saves vs. evil	KEY:Archon Resistance				CATEGORY:Special Ability	TYPE:SpecialQuality.Defensive																			SOURCEPAGE:p.20
+Magic Circle against Evil		KEY:Magic Circle against Evil ~ Archon	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Aura	DESC:This ability continually duplicates the effect of the spell Magic Circle against Evil.	SOURCEPAGE:p.20
+Detect Evil					KEY:Detect Evil ~ Archon			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike.Sense		DESC:This ability continually duplicates the effect of the spell Detect Evil.				SOURCEPAGE:p.20
+
+###Block: Archon (Hound) Abilities
+# Ability Name	Unique Key					Category of Ability		Type						Description																																																								Source Page		Aspects
+Change Shape	KEY:Change Shape ~ Hound Archon	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	DESC:A hound archon can assume any canine form of Small to Large size, as if using beast shape II. While in canine form, the hound archon loses its bite, slam, and greatsword attacks, but gains the bite attack of the form it chooses. For the purposes of this ability, canines include any dog-like or wolf-like creature of the animal type.	SOURCEPAGE:p.19	ASPECT:Ability Benefit|(beast shape II)
+
+###Block: Archon (Lantern) Abilities
+# Ability Name	Unique Key					Category of Ability		Type						Description																												Source Page		Description of the Benefits
+Gestalt		KEY:Gestalt ~ Lantern Archon		CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	DESC:Nine lantern archons can fuse together as a full-round action, becoming a single Large entity that is more powerful than the individual archons that make up its parts.	SOURCEPAGE:p.20	BENEFIT:Nine lantern archons can fuse together as a full-round action, becoming a single Large entity that is more powerful than the individual archons that make up its parts. Looking like a whirlwind of dancing firefly lights, the gestalt has all the powers and abilities of a Large air elemental plus the following: archon, good, and lawful subtypes; archon traits (aura of menace DC 16); 2 light rays (2d6); DR 5/evil and magic. The archons can remain in this form for 2d4 rounds. When the gestalt separates back into individual lantern archons, its remaining hit points are divided evenly among them; if it had less than 9 hit points, some of the component archons die when the gestalt ends.
+Light Ray		KEY:Light Ray ~ Lantern Archon	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DESC:A lantern archon can fire beams of light to damage foes. These light rays have a maximum range of 30 feet. This attack overcomes damage reduction of any type.		SOURCEPAGE:p.20
+
+###Block: Archon (Trumpet) Abilities
+# Ability Name	Unique Key				Category of Ability		Type						Define					Description																									Source Page		Aspects						Description of the Benefits
+Trumpet		KEY:Trumpet ~ Trumpet Archon	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:TrumpetDC|10+(HD/2)+CHA	DESC:All creatures except archons within 100 feet of the trumpet's blast must succeed on a DC %1 Fortitude save or be paralyzed for 1d4 rounds.|TrumpetDC	SOURCEPAGE:p.21	ASPECT:Ability Benefit|(DC %1)|TrumpetDC	BENEFIT:All creatures except archons within 100 feet of the trumpet's blast must succeed on a DC %1 Fortitude save or be paralyzed for 1d4 rounds. The archon can also command its trumpet to become a +4 greatsword as a free action. Out of the archon's hands, it is a chunk of useless metal.|TrumpetDC
+
+###Block: Assassin Vine Abilities
+# Ability Name	Unique Key					Category of Ability		Type								Define					Description																												Source Page		Aspects						Description of the Benefits
+Camouflage		KEY:Camouflage ~ Assassin Vine	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Defensive							DESC:A DC 20 Perception check is required to notice the Assassin Vine before it attacks for the first time.												SOURCEPAGE:p.22	ASPECT:Ability Benefit|(DC 20)		BENEFIT:Since an assassin vine looks like a normal plant when at rest, a DC 20 Perception check is required to notice it before it attacks for the first time. Anyone with ranks in Survival or Knowledge (nature) can use either of those skills instead of Perception to notice the plant.
+Entangle		KEY:Entangle ~ Assassin Vine		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural			DEFINE:EntangleDC|10+(HD/2)+CON	DESC:An assassin vine can, as a free action, cause plants within 30 feet of it to animate and grasp at foes. This ability is otherwise similar to entangle %1.|EntangleDC	SOURCEPAGE:p.22	ASPECT:Ability Benefit|(DC %1)|EntangleDC
 
 ###Block: Barghest Abilities
 # Ability Name	Unique Key				Category of Ability		Type						Define			Description																				Choose								Save checks bonus			Combat bonus				Bonus to HP					Misc bonus				Bonus to skill			Modify VAR										Source Page		Aspects								Description of the Benefits
