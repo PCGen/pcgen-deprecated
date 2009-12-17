@@ -3348,7 +3348,7 @@ public final class InfoSummary extends FilterAdapterPanel implements
 
 					final int minPurchaseScore =
 							SettingsHandler.getGame()
-								.getPurchaseModeBaseStatScore(pc);
+								.getPurchaseScoreMin(pc);
 
 					if (statVal < minPurchaseScore)
 					{
