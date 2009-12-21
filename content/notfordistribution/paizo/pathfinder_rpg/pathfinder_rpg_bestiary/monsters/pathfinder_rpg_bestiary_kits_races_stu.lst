@@ -1,6 +1,100 @@
 # CVS $Revision$ $Author$ -- Tue Nov 10 22:18:52 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
+STARTPACK:Sahuagin Default	TYPE:DefaultMonster.MonsterousHumanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sahuagin]	SOURCEPAGE:p.239
+RACE:Sahuagin	!PRERACE:1,%
+NAME:Sahuagin
+ALIGN:LE
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+SKILL:Handle Animal	RANK:2
+SKILL:Perception	RANK:2
+SKILL:Ride			RANK:2
+SKILL:Stealth	RANK:2
+SKILL:Survival	RANK:2
+SKILL:Swim		RANK:2
+FEAT:Great Fortitude
+GEAR:Trident	LOCATION:Primary Hand
+GEAR:Crossbow (Heavy)	LOCATION:Carried
+GEAR:Bolt (Crossbow)	QTY:10	LOCATION:Carried
+
+STARTPACK:Salamander Default	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Salamander]	SOURCEPAGE:p.240
+RACE:Salamander	!PRERACE:1,%
+NAME:Salamander
+ALIGN:LE
+STAT:STR=10|DEX=11|CON=10|INT=10|WIS=11|CHA=11
+SKILL:Acrobatics	RANK:8
+SKILL:Bluff			RANK:8
+SKILL:Craft (Weapons)	RANK:8
+SKILL:Intimidate	RANK:8
+SKILL:Knowledge (Planes)	RANK:8
+SKILL:Perception	RANK:8
+SKILL:Sense Motive		RANK:8
+SKILL:Stealth	RANK:8
+FEAT:Power Attack
+FEAT:Cleave
+FEAT:Iron Will
+FEAT:Skill Focus (Perception)
+GEAR:Spear	LOCATION:Both Hands
+
+STARTPACK:Satyr Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Satyr]	SOURCEPAGE:p.241
+RACE:Satyr	!PRERACE:1,%
+NAME:Satyr
+ALIGN:CN
+STAT:STR=10|DEX=11|CON=11|INT=10|WIS=10|CHA=11
+SKILL:Bluff		RANK:8
+SKILL:Diplomacy		RANK:8
+SKILL:Disguise		RANK:2
+SKILL:Intimidate	RANK:5
+SKILL:Knowledge (Nature)	RANK:6
+SKILL:Perception	RANK:6
+SKILL:Perform (Wind Instruments)	RANK:8
+SKILL:Stealth	RANK:8
+SKILL:Survival		RANK:5
+FEAT:Dodge
+FEAT:Mobility
+FEAT:Skill Focus (Perception)
+FEAT:Weapon Finesse
+GEAR:Dagger		LOCATION:Primary Hand
+GEAR:Shortbow	LOCATION:Carried
+GEAR:Arrow		QTY:20	LOCATION:Carried
+GEAR:Musical Instrument (Pan Pipes)	LOCATION:Carried	EQMOD:MWORKT
+
+STARTPACK:Scorpion (Giant) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Giant)]	SOURCEPAGE:p.242
+RACE:Scorpion (Giant)	!PRERACE:1,%
+NAME:Scorpion (Giant)
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+
+STARTPACK:Sea Hag Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sea Hag]	SOURCEPAGE:p.243
+RACE:Sea Hag	!PRERACE:1,%
+NAME:Sea Hag
+ALIGN:CE
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=11|CHA=11
+SKILL:Bluff		RANK:4
+SKILL:TYPE=Knowledge	RANK:4
+SKILL:Perception	RANK:4
+SKILL:Stealth	RANK:4
+SKILL:Swim	RANK:4
+FEAT:Skill Focus (Bluff)
+FEAT:Skill Focus (Perception)
+
+STARTPACK:Sea Serpent Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sea Serpent]	SOURCEPAGE:p.244
+RACE:Sea Serpent	!PRERACE:1,%
+NAME:Sea Serpent
+ALIGN:TN
+STAT:STR=10|DEX=10|CON=11|INT=10|WIS=11|CHA=11
+SKILL:Perception	RANK:5
+SKILL:Stealth		RANK:5
+SKILL:Swim		RANK:5
+FEAT:Improved Initiative
+FEAT:Power Attack
+FEAT:Improved Bull Rush
+FEAT:Improved Critical (Tail Slap)
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Stealthy
+FEAT:Skill Focus (Stealth)
+
 STARTPACK:Tiger Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Tiger]	SOURCEPAGE:p.265
 RACE:Tiger	!PRERACE:1,%
 NAME:Tiger
