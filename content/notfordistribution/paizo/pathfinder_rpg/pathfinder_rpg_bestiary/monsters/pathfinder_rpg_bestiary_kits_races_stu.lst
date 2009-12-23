@@ -59,49 +59,49 @@ GEAR:Shortbow	LOCATION:Carried
 GEAR:Arrow		QTY:20	LOCATION:Carried
 GEAR:Musical Instrument (Pan Pipes)	LOCATION:Carried	EQMOD:MWORKT
 
-STARTPACK:Scorpion (Greensting) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Greensting)]	SOURCEPAGE:p.242
+STARTPACK:Scorpion (Greensting) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Greensting)]	SOURCEPAGE:p.242
 RACE:Scorpion (Greensting)	!PRERACE:1,%
 NAME:Scorpion (Greensting)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Scorpion (Ghost) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Ghost)]	SOURCEPAGE:p.242
+STARTPACK:Scorpion (Ghost) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Ghost)]	SOURCEPAGE:p.242
 RACE:Scorpion (Ghost)	!PRERACE:1,%
 NAME:Scorpion (Ghost)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Scorpion (Cave) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Cave)]	SOURCEPAGE:p.242
+STARTPACK:Scorpion (Cave) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Cave)]	SOURCEPAGE:p.242
 RACE:Scorpion (Cave)	!PRERACE:1,%
 NAME:Scorpion (Cave)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Scorpion (Giant) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Giant)]	SOURCEPAGE:p.242
+STARTPACK:Scorpion (Giant) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Giant)]	SOURCEPAGE:p.242
 RACE:Scorpion (Giant)	!PRERACE:1,%
 NAME:Scorpion (Giant)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Scorpion (Deadfall) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Deadfall)]	SOURCEPAGE:p.242
+STARTPACK:Scorpion (Deadfall) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Deadfall)]	SOURCEPAGE:p.242
 RACE:Scorpion (Deadfall)	!PRERACE:1,%
 NAME:Scorpion (Deadfall)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Scorpion (Giant Emperor) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Giant Emperor)]	SOURCEPAGE:p.242
+STARTPACK:Scorpion (Giant Emperor) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Giant Emperor)]	SOURCEPAGE:p.242
 RACE:Scorpion (Giant Emperor)	!PRERACE:1,%
 NAME:Scorpion (Giant Emperor)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Scorpion (Black) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Black)]	SOURCEPAGE:p.242
+STARTPACK:Scorpion (Black) Default	TYPE:DefaultMonster.Vermin	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Black)]	SOURCEPAGE:p.242
 RACE:Scorpion (Black)	!PRERACE:1,%
 NAME:Scorpion (Black)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Sea Hag Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sea Hag]	SOURCEPAGE:p.243
+STARTPACK:Sea Hag Default	TYPE:DefaultMonster.MonstrousHumaniod	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sea Hag]	SOURCEPAGE:p.243
 RACE:Sea Hag	!PRERACE:1,%
 NAME:Sea Hag
 ALIGN:CE
@@ -114,7 +114,7 @@ SKILL:Swim	RANK:4
 FEAT:Skill Focus (Bluff)
 FEAT:Skill Focus (Perception)
 
-STARTPACK:Sea Serpent Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sea Serpent]	SOURCEPAGE:p.244
+STARTPACK:Sea Serpent Default	TYPE:DefaultMonster.MagicalBeast	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sea Serpent]	SOURCEPAGE:p.244
 RACE:Sea Serpent	!PRERACE:1,%
 NAME:Sea Serpent
 ALIGN:TN
@@ -129,6 +129,31 @@ FEAT:Improved Critical (Tail Slap)
 FEAT:Iron Will
 FEAT:Lightning Reflexes
 FEAT:Stealthy
+FEAT:Skill Focus (Stealth)
+
+STARTPACK:Shadow Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Shadow]	SOURCEPAGE:p.245
+RACE:Shadow	!PRERACE:1,%
+NAME:Shadow
+ALIGN:CE
+STAT:STR=10|DEX=10|CON=10|INT=10|WIS=10|CHA=11
+SKILL:Fly	RANK:2
+SKILL:Perception	RANK:1
+SKILL:Stealth	RANK:3
+FEAT:Dodge
+FEAT:Skill Focus (Perception)
+
+STARTPACK:Shadow (Greater) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Shadow (Greater)]	SOURCEPAGE:p.245
+RACE:Shadow (Greater)	!PRERACE:1,%
+NAME:Greater Shadow
+ALIGN:CE
+STAT:STR=10|DEX=10|CON=10|INT=10|WIS=10|CHA=11
+SKILL:Fly	RANK:3
+SKILL:Perception	RANK:6
+SKILL:Stealth	RANK:9
+FEAT:Dodge
+FEAT:Flyby Attack
+FEAT:Mobility
+FEAT:Skill Focus (Perception)
 FEAT:Skill Focus (Stealth)
 
 STARTPACK:Tiger Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Tiger]	SOURCEPAGE:p.265
