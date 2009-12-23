@@ -6,7 +6,9 @@ SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http:/
 # Skill Name			Key Stat	Untrained?		Classes	Type			Visible
 Disguise (Mimic objects)	KEYSTAT:CHA	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
 Perception (Blindsense)		KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
+Stealth (In bright light)		KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
 Stealth (In caverns)		KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
+Stealth (In dim light)		KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
 Stealth (In forests)		KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
 Stealth (In lair)			KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
 Stealth (In tall grass)		KEYSTAT:DEX	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	VISIBLE:EXPORT
@@ -24,7 +26,9 @@ Survival (Track by scent)	KEYSTAT:WIS	USEUNTRAINED:NO	CLASSES:ALL	TYPE:SkillUse	
 # Skill Name	Bonus to skill								Bonus to skill rank
 Disguise.MOD	BONUS:SKILL|Disguise (Mimic objects)|SKILL.Disguise.MISC	BONUS:SKILLRANK|Disguise (Mimic objects)|SKILLRANK=Disguise|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Disguise (Mimic objects).MISC"),var("SKILL.Disguise.MISC")
 Perception.MOD	BONUS:SKILL|Perception (Blindsense)|SKILL.Perception.MISC	BONUS:SKILLRANK|Perception (Blindsense)|SKILLRANK=Perception|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Perception (Blindsense).MISC"),var("SKILL.Perception.MISC")
+Stealth.MOD		BONUS:SKILL|Stealth (In bright light)|SKILL.Stealth.MISC	BONUS:SKILLRANK|Stealth (In bright light)|SKILLRANK=Stealth|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Stealth (In bright light).MISC"),var("SKILL.Stealth.MISC")
 Stealth.MOD		BONUS:SKILL|Stealth (In caverns)|SKILL.Stealth.MISC		BONUS:SKILLRANK|Stealth (In caverns)|SKILLRANK=Stealth|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Stealth (In caverns).MISC"),var("SKILL.Stealth.MISC")
+Stealth.MOD		BONUS:SKILL|Stealth (In dim light)|SKILL.Stealth.MISC		BONUS:SKILLRANK|Stealth (In dim light)|SKILLRANK=Stealth|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Stealth (In dim light).MISC"),var("SKILL.Stealth.MISC")
 Stealth.MOD		BONUS:SKILL|Stealth (In forests)|SKILL.Stealth.MISC		BONUS:SKILLRANK|Stealth (In forests)|SKILLRANK=Stealth|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Stealth (In forests).MISC"),var("SKILL.Stealth.MISC")
 Stealth.MOD		BONUS:SKILL|Stealth (In lair)|SKILL.Stealth.MISC		BONUS:SKILLRANK|Stealth (In lair)|SKILLRANK=Stealth|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Stealth (In lair).MISC"),var("SKILL.Stealth.MISC")
 Stealth.MOD		BONUS:SKILL|Stealth (In tall grass)|SKILL.Stealth.MISC	BONUS:SKILLRANK|Stealth (In tall grass)|SKILLRANK=Stealth|TYPE=SkillGranted|PRERULE:1,DISPLAYSKILLUSE|PREVARNEQ:var("SKILL.Stealth (In tall grass).MISC"),var("SKILL.Stealth.MISC")
