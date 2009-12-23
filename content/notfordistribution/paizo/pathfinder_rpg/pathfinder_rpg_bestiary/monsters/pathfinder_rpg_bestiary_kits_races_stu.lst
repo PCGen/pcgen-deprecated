@@ -59,9 +59,45 @@ GEAR:Shortbow	LOCATION:Carried
 GEAR:Arrow		QTY:20	LOCATION:Carried
 GEAR:Musical Instrument (Pan Pipes)	LOCATION:Carried	EQMOD:MWORKT
 
+STARTPACK:Scorpion (Greensting) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Greensting)]	SOURCEPAGE:p.242
+RACE:Scorpion (Greensting)	!PRERACE:1,%
+NAME:Scorpion (Greensting)
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+
+STARTPACK:Scorpion (Ghost) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Ghost)]	SOURCEPAGE:p.242
+RACE:Scorpion (Ghost)	!PRERACE:1,%
+NAME:Scorpion (Ghost)
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+
+STARTPACK:Scorpion (Cave) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Cave)]	SOURCEPAGE:p.242
+RACE:Scorpion (Cave)	!PRERACE:1,%
+NAME:Scorpion (Cave)
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+
 STARTPACK:Scorpion (Giant) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Giant)]	SOURCEPAGE:p.242
 RACE:Scorpion (Giant)	!PRERACE:1,%
 NAME:Scorpion (Giant)
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+
+STARTPACK:Scorpion (Deadfall) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Deadfall)]	SOURCEPAGE:p.242
+RACE:Scorpion (Deadfall)	!PRERACE:1,%
+NAME:Scorpion (Deadfall)
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+
+STARTPACK:Scorpion (Giant Emperor) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Giant Emperor)]	SOURCEPAGE:p.242
+RACE:Scorpion (Giant Emperor)	!PRERACE:1,%
+NAME:Scorpion (Giant Emperor)
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
+
+STARTPACK:Scorpion (Black) Default	TYPE:DefaultMonster.Fey	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Scorpion (Black)]	SOURCEPAGE:p.242
+RACE:Scorpion (Black)	!PRERACE:1,%
+NAME:Scorpion (Black)
 ALIGN:TN
 STAT:STR=11|DEX=10|CON=10|INT=10|WIS=10|CHA=10
 
