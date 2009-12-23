@@ -156,6 +156,19 @@ FEAT:Mobility
 FEAT:Skill Focus (Perception)
 FEAT:Skill Focus (Stealth)
 
+STARTPACK:Shambling Mound Default	TYPE:DefaultMonster.Plant	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Shambling Mound]	SOURCEPAGE:p.246
+RACE:Shambling Mound	!PRERACE:1,%
+NAME:Shambling Mound
+ALIGN:TN
+STAT:STR=11|DEX=10|CON=11|INT=11|WIS=10|CHA=11
+SKILL:Perception	RANK:4
+SKILL:Stealth	RANK:5
+FEAT:Power Attack
+FEAT:Cleave
+FEAT:Iron Will
+FEAT:Lightning Reflexes
+FEAT:Weapon Focus (Slam)
+
 STARTPACK:Tiger Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Tiger]	SOURCEPAGE:p.265
 RACE:Tiger	!PRERACE:1,%
 NAME:Tiger

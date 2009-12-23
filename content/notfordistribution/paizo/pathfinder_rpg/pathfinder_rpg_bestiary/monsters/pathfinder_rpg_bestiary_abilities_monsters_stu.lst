@@ -35,6 +35,10 @@ Swallow Whole		KEY:Swallow Whole ~ Sea Serpent	CATEGORY:Special Ability	TYPE:Spe
 Create Spawn		KEY:Create Spawn ~ Shadow		CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural																													DESC:A humanoid creature killed by a shadow’s Strength damage becomes a shadow under the control of its killer in 1d4 rounds.																																																																																																			SOURCEPAGE:p.245
 Strength Damage		KEY:Strength Damage ~ Shadow	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural		DEFINE:StrengthDamageDieSize|0						DESC:A shadow’s touch deals 1d%1 points of Strength damage to a living creature. This is a negative energy effect. A creature dies if this Strength damage equals or exceeds its actual Strength score.|StrengthDamageDieSize			SOURCEPAGE:p.245
 
+###Block: Shambling Mound Abilities
+# Ability Name		Unique Key									Category of Ability			Type								Define						Description																																																																																											Modify VAR																																																																																																																																															Source Page							Benefit
+Electric Fortitude	KEY:Electric Fortitude ~ Shambling Mound	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary													DESC:Shambling mounds take no damage from electricity. Instead, any electricity attack used against a shambling mound temporarily increases its Constitution score by 1d4 points. The shambling mound loses these temporary points at the rate of 1 per hour.		SOURCEPAGE:p.246
+
 ###Block: Unicorn Abilities
 # Ability Name				Unique Key						Category of Ability		Type							Description																			Modify VAR					Source Page
 +2 deflection to AC vs. evil		KEY:Unicorn Deflection				CATEGORY:Special Ability	TYPE:SpecialQuality.ModifyAC																													SOURCEPAGE:p.269
