@@ -1,3 +1,6 @@
 Bestiary A, B & C
 
+Azata (Bralani): Has 2 skill points left over when the stats are maxed and Fly only has 5 point not the Max 7. Fly can be maxed to +22
+
+Azata (Ghaele): Has 1 too many spells listed for Cleric prepared spell levels 1 and 2.
 
