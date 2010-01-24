@@ -240,6 +240,7 @@ FEATNAME
 FEATTYPE
 FILE
 FORGET
+HIGHESTLEVELCLASS
 HP
 HTDIEROLL
 INSTANT
@@ -369,6 +370,7 @@ Crossbow
 CROSSCLASSSKILLS
 CURRENTMAX
 Darkness
+Darkvision
 Death
 Deflection
 Dependent
@@ -419,6 +421,8 @@ harmless
 Headgear
 Healing
 Heavy
+HeavyArmor
+HeavyLoad
 Humanoid
 HMG
 if
@@ -443,9 +447,11 @@ Lawful
 LE
 LG
 Light
+light
 LIST
 LN
 Long
+Low
 LT
 LTEQ
 Luck
@@ -602,6 +608,8 @@ PREDEITYDOMAIN
 PREDOMAIN
 PREDR
 PREEQUIP
+PREEQUIPBOTH
+PREEQUIPSECONDARY
 PREFEAT
 PREGENDER
 PREHANDSEQ
@@ -704,6 +712,7 @@ Fighter
 Forgery
 Gather Information
 Geography
+Gnome
 Half Elf
 Half Orc
 Halfling
