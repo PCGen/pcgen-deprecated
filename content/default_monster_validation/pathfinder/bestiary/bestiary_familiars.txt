@@ -1,3 +1,25 @@
 Bestiary Familiars
 
 
+Familiar (Bat):
+
+Familiar (Cat):
+
+Familiar (Hawk):
+
+Familiar (Lizard):
+
+Familiar (Monkey):
+
+Familiar (Owl):
+
+Familiar (Rat):
+
+Familiar (Raven):
+
+Familiar (Viper):
+
+Familiar (Toad):
+
+Familiar (Weasel):
+

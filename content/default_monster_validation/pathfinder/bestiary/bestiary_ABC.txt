@@ -1,6 +1,159 @@
 Bestiary A, B & C
 
+###Block: A
+
+Aasimar:
+
+Aboleth:
+
+Angel (Astral Deva):
+
+Angel (Planetar):
+
+Angel (Solar):
+
+Animated Object (Tiny):
+
+Animated Object (Small):
+
+Animated Object (Medium):
+
+Animated Object (Large):
+
+Animated Object (Huge):
+
+Animated Object (Gargantuan):
+
+Animated Object (Colossal):
+
+Ankheg:
+
+Ant (Giant):
+
+Ant (Worker):
+
+Ant (Drone):
+
+Ant (Queen):
+
+Ant (Army/Swarm):
+
+Ape (Gorilla):
+
+Ape (Dire):
+
+Archon (Hound):
+
+Archon (Lantern):
+
+Archon (Trumpet):
+
+Assassin Vine:
+
 Azata (Bralani): Has 2 skill points left over when the stats are maxed and Fly only has 5 point not the Max 7. Fly can be maxed to +22
 
 Azata (Ghaele): Has 1 too many spells listed for Cleric prepared spell levels 1 and 2.
+
+Azata (Lillend):
+
+
+###Block: B
+
+Barghest:
+
+Barghest (Greater):
+
+Basidirond:
+
+Basilisk:
+
+Bat (Dire):
+
+Bat Swarm:
+
+Bear (Grizzly):
+
+Bear (Dire):
+
+Bebilith:
+
+Beetle (Fire):
+
+Beetle (Giant Stag):
+
+Behir:
+
+Black Pudding:
+
+Boar:
+
+Boar (Dire):
+
+Boggard:
+
+Bugbear:
+
+Bulette:
+
+
+###Block: C
+
+Cat (Cheetah):
+
+Cat (Leopard):
+
+Cave Fisher:
+
+Centaur:
+
+Centipede (House):
+
+Centipede (Sewer):
+
+Centipede (Giant):
+
+Centipede (Hisser):
+
+Centipede (Giant Whiptail):
+
+Centipede (Great Forest):
+
+Centipede (Titan):
+
+Centipede Swarm:
+
+Chimera:
+
+Choker:
+
+Chuul:
+
+Cloaker:
+
+Cockatrice:
+
+Couatl:
+
+Crab (Giant):
+
+Crab (Giant King):
+
+Crab (Giant Coconut):
+
+Crab (Giant Rock):
+
+Crab (Giant Shark-Eating):
+
+Crab (Giant Reef):
+
+Crab (Giant Shipwrecker):
+
+Crab Swarm:
+
+Crocodile:
+
+Crocodile (Dire):
+
+Cyclops:
+
 

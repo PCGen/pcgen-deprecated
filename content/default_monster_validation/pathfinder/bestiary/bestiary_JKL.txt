@@ -1,8 +1,36 @@
 Bestiary J,K & L
 
-Lizard (Monitor): Poison (Su)? shouldn't a normal animals poison be Extrodinary?
-Lizard (Giant Frilled): IN AC +8 is listed as Armor, shouldn't this be listed as Natural?
-Lizardfolk: The Swim skill bonus does not reflect the shield penalty (understandably)
+###Block: K
 
+Kobold:
+
+Kraken:
+
+Kyton:
+
+
+###Block: L
+
+Lamia:
+
+Leech (Giant):
+
+Leech Swarm:
+
+Linnorm (Crag):
+
+Linnorm (Ice):
+
+Linnorm (Tarn):
+
+Lion:
+
+Lion (Dire):
+
+Lizard (Monitor): Poison (Su)? shouldn't a normal animals poison be Extrodinary?
+
+Lizard (Giant Frilled): IN AC +8 is listed as Armor, shouldn't this be listed as Natural?
+
+Lizardfolk: The Swim skill bonus does not reflect the shield penalty (understandably)
 
 Lycanthrope, Werewolf: Not enough skill points for the skills listed, need 2 more than it has.

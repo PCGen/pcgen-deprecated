@@ -1,3 +1,83 @@
 Bestiary M, N & O
 
 
+###Block: M
+
+Manticore:
+
+Mantis (Giant):
+
+Medusa:
+
+Mephit (Air):
+
+Mephit (Dust):
+
+Mephit (Earth):
+
+Mephit (Fire):
+
+Mephit (Ice):
+
+Mephit (Magma):
+
+Mephit (Ooze):
+
+Mephit (Salt):
+
+Mephit (Steam):
+
+Mephit (Water):
+
+Merfolk:
+
+Mimic:
+
+Minotaur:
+
+Mite:
+
+Mohrg:
+
+Morlock:
+
+Mummy:
+
+
+###Block: N
+
+Naga (Dark):
+
+Naga (Guardian):
+
+Naga (Spirit):
+
+Neothelid:
+
+Night Hag:
+
+Nightmare:
+
+Nightmare (Cauchemar):
+
+Nymph:
+
+
+###Block: O
+
+Ochre Jelly:
+
+Octopus:
+
+Octopus (Giant):
+
+Ogre:
+
+Oni (Ogre Mage):
+
+Orc:
+
+Otyugh:
+
+Owlbear:
+

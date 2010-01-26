@@ -1,5 +1,172 @@
 Bestiary D, E & F
 
+###Block: D
+
+Dark Creeper:
+
+Dark Stalker:
+
 Darkmantle: None of the derived stats add up correctly for the Str (11) and Dex (15) presented. AC should be 15 (missing +2 dex). Ref save should be +5. Slam should be +3 (1d4). CMB +1 (+5 grapple); CMD +13. Looks like the values listed for STR and DEX are in error, if I change them to STR 17 and DEX 11 the number add up. The skill bonuses are off as well but I don't know exactly where without knowing the correct Ability stats but I think Stealth is missing the +3 bonus for being a class skill (if DEX = 11).
 
+Demon (Babau):
+
+Demon (Balor):
+
+Demon (Dretch):
+
+Demon (Glabrezu):
+
+Demon (Hezrou):
+
+Demon (Marilith):
+
+Demon (Nabasu):
+
+Demon (Nalfeshnee):
+
+Demon (Quasit):
+
+Demon (Shadow):
+
+Demon (Succubus):
+
+Demon (Vrock):
+
+Derro:
+
+Devil (Barbed):
+
+Devil (Bearded):
+
+Devil (Bone):
+
+Devil (Erinyes):
+
+Devil (Horned):
+
+Devil (Ice):
+
+Devil (Imp):
+
+Devil (Lemure):
+
+Devil (Pit Fiend):
+
+Devourer:
+
+Dinosaur (Ankylosaurus):
+
+Dinosaur (Brachiosaurus):
+
+Dinosaur (Deinonychus):
+
+Dinosaur (Elasmosaurus):
+
+Dinosaur (Pteranodon):
+
+Dinosaur (Stegosaurus):
+
+Dinosaur (Triceratops):
+
+Dinosaur (Tyrannosaurus):
+
+Dog:
+
+Dog (Riding):
+
+Dolphin:
+
+Dolphin (Orca):
+
+Doppelganger:
+
+Dragon Turtle:
+
+Drider:
+
+Drow:
+
+Drow Noble:
+
+Dryad:
+
+Duergar:
+
+
+###Block: E
+
+Eagle:
+
+Eagle (Giant):
+
+Eel (Electric):
+
+Eel (Giant Moray):
+
+Elemental (Air/Small):
+
+Elemental (Air/Medium):
+
+Elemental (Air/Large):
+
+Elemental (Air/Huge):
+
+Elemental (Air/Greater):
+
+Elemental (Air/Elder):
+
+Elemental (Earth/Small):
+
+Elemental (Earth/Medium):
+
+Elemental (Earth/Large):
+
+Elemental (Earth/Huge):
+
+Elemental (Earth/Greater):
+
+Elemental (Earth/Elder):
+
+Elemental (Fire/Small):
+
+Elemental (Fire/Medium):
+
+Elemental (Fire/Large):
+
+Elemental (Fire/Huge):
+
+Elemental (Fire/Greater):
+
+Elemental (Fire/Elder):
+
+Elemental (Water/Small):
+
+Elemental (Water/Medium):
+
+Elemental (Water/Large):
+
+Elemental (Water/Huge):
+
+Elemental (Water/Greater):
+
+Elemental (Water/Elder):
+
+Elephant:
+
+Elephant (Mastodon):
+
+Ettercap:
+
+Ettin:
+
+
+###Block: F
+
+Flytrap (Giant):
+
+Frog (Giant):
+
+Frog (Poison):
+
+Froghemoth:
 

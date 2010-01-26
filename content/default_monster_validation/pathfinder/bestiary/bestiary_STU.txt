@@ -1,3 +1,110 @@
 Bestiary S, T & U
 
+###Block: S
+
+Sahuagin:
+
+Salamander:
+
+Satyr:
+
+Scorpion (Greensting):
+
+Scorpion (Ghost):
+
+Scorpion (Cave):
+
+Scorpion (Giant):
+
+Scorpion (Deadfall):
+
+Scorpion (Giant Emperor):
+
+Scorpion (Black):
+
+Sea Hag:
+
+Sea Serpent:
+
+Shadow:
+
+Shadow (Greater):
+
+Shambling Mound:
+
+Shark:
+
+Shark (Dire):
+
+Shocker Lizard:
+
+Shoggoth:
+
+Skeleton (Human):
+
+Skeletal Champion (Human):
+
+Skum:
+
+Slug (Giant):
+
+Snake (Constrictor):
+
+Snake (Venomous):
+
+Spectre:
+
+Sphinx (Gynosphinx):
+
+Spider (Scarlet):
+
+Spider (Giant Crab):
+
+Spider (Giant Web-spinning):
+
+Spider (Giant Hunting):
+
+Spider (Black Widow):
+
+Spider (Ogre):
+
+Spider (Giant Tarantula):
+
+Spider (Goliath):
+
+Spider Swarm:
+
+Squid:
+
+Squid (Giant):
+
+Stirge:
+
+Svirfneblin:
+
+
+###Block: T
+
+Tarrasque:
+
+Tengu:
+
+Tiefling:
+
+Tiger:
+
+Tiger (Dire):
+
+Treant:
+
+Troglodyte:
+
+Troll:
+
+Troll (Scrag):
+
+
+###Block: U
+
+Unicorn:
 

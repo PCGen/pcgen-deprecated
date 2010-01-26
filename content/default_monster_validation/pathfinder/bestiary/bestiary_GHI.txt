@@ -1,3 +1,125 @@
 Bestiary G, H & I
 
+###Block: G
+
+Gargoyle:
+
+Gargoyle (Kapoacinth):
+
+Gelatinous Cube:
+
+Genie (Djinni):
+
+Genie (Djinni/Noble):
+
+Genie (Efreeti):
+
+Genie (Efreeti/Noble):
+
+Genie (Janni):
+
+Genie (Marid):
+
+Genie (Shaitan):
+
+Genie (Shaitan/Noble):
+
+Ghoul:
+
+Ghoul (Ghast):
+
+Ghoul (Lacedon):
+
+Giant (Cloud):
+
+Giant (Fire):
+
+Giant (Frost):
+
+Giant (Hill):
+
+Giant (Stone):
+
+Giant (Storm):
+
+Gibbering Mouther:
+
+Girallon:
+
+Gnoll:
+
+Goblin:
+
+Goblin Dog:
+
+Golem (Clay):
+
+Golem (Flesh):
+
+Golem (Ice):
+
+Golem (Iron):
+
+Golem (Stone):
+
+Golem (Wood):
+
+Gorgon:
+
+Gray Ooze:
+
+Gray Ooze (Crystal Ooze):
+
+Gray Ooze (Id Ooze):
+
+Green Hag:
+
+Griffon:
+
+
+###Block: H
+
+Harpy:
+
+Hell Hound:
+
+Hell Hound (Nessian):
+
+Herd Animal (Aurochs):
+
+Herd Animal (Bison):
+
+Hobgoblin:
+
+Homunculus:
+
+Horse:
+
+Horse (Pony):
+
+Hydra:
+
+Cryohydra:
+
+Pyrohydra:
+
+Hyena:
+
+Hyena (Dire):
+
+
+###Block: I
+
+Intellect Devourer:
+
+Invisible Stalker:
+
+Iron Cobra:
+
+Adamantine Cobra:
+
+Darkwood Cobra:
+
+Mithral Cobra:
+
 

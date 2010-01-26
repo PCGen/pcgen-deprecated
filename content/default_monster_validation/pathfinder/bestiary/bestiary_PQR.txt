@@ -1,3 +1,39 @@
 Bestiary P, Q & R
 
+###Block: P
+
+Pegasus:
+
+Phase Spider:
+
+Phoenix:
+
+Pixie:
+
+Pseudodragon:
+
+Purple Worm:
+
+
+###Block: R
+
+Rakshasa:
+
+Rat (Dire):
+
+Rat Swarm:
+
+Remorhaz:
+
+Retriever:
+
+Rhinoceros:
+
+Rhinoceros (Woolly):
+
+Roc:
+
+Roper:
+
+Rust Monster:
 
