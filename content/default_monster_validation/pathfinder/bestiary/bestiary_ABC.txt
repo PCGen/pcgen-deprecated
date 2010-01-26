@@ -10,74 +10,56 @@ Angel (Astral Deva): Has 15 skill points left to allocate.
 
 Angel (Planetar): Valid
 
-Angel (Solar): Speed does not reflect armor penalties, reads: Speed 50 ft., fly 150 ft. (good) should be  35 ft. (in armor) Fly 100 ft. (in armor) (Good)
+Angel (Solar): Speed does not reflect armor penalties, reads: Speed 50 ft., fly 150 ft. (good); should be  35 ft. (in armor) Fly 100 ft. (in armor) (Good)
 
-Animated Object (Tiny):
+Animated Object: Valid
 
-Animated Object (Small):
+Ankheg: Valid
 
-Animated Object (Medium):
+Ant (Giant): Valid
 
-Animated Object (Large):
+Ant (Army/Swarm): Valid
 
-Animated Object (Huge):
+Ape (Gorilla): CMB off, listed: CMB +6; CMD 18, should be CMB +5; CMD 17
 
-Animated Object (Gargantuan):
+Ape (Dire): Valid
 
-Animated Object (Colossal):
+Archon (Hound): Valid
 
-Ankheg:
+Archon (Lantern): Aura of Menace DC should be 13,
 
-Ant (Giant):
+Archon (Trumpet): attack line:  Melee +4 greatsword +23/+18/+13 (2d6+11/19-20)  (was missing the /19-20 part)
 
-Ant (Worker):
-
-Ant (Drone):
-
-Ant (Queen):
-
-Ant (Army/Swarm):
-
-Ape (Gorilla):
-
-Ape (Dire):
-
-Archon (Hound):
-
-Archon (Lantern):
-
-Archon (Trumpet):
-
-Assassin Vine:
+Assassin Vine: Valid
 
 Azata (Bralani): Has 2 skill points left over when the stats are maxed and Fly only has 5 point not the Max 7. Fly can be maxed to +22
 
 Azata (Ghaele): Has 1 too many spells listed for Cleric prepared spell levels 1 and 2.
 
-Azata (Lillend):
+Azata (Lillend): Can pick 1 more 3rd level spell
 
 
 ###Block: B
 
-Barghest:
+Barghest: Valid
 
-Barghest (Greater):
+Barghest (Greater): Claw attack bonus should be +14
 
-Basidirond:
+Basidirond: Valid
 
-Basilisk:
+Basilisk: Valid
 
-Bat (Dire):
+Bat (Dire): Valid
 
-Bat Swarm:
+Bat Swarm: Valid
 
-Bear (Grizzly):
+Bear (Grizzly): Valid
 
-Bear (Dire):
+Bear (Dire): Valid
 
-Bebilith:
+Bebilith: Valid
 
-Beetle (Fire):
+Beetle (Fire): Valid
 
 Beetle (Giant Stag):
 
