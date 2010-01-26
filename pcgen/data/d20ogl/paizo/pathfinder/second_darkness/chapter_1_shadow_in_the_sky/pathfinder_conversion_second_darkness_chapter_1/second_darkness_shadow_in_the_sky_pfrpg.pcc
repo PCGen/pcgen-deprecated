@@ -22,7 +22,7 @@ COPYRIGHT:Pathfinder 13: Shadow in the Sky. Copyright 2008, Paizo Publishing, LL
 COPYRIGHT:PCGen dataset conversion for "Second Darkness - Chapter 1: Shadow in the Sky" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
 INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This dataset is not published, endorsed, or specifically approved by Paizo Publishing. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Publishing and Paizo products, please visit paizo.com.
 
-COVER:@/d20ogl/paizo/pathfinder/second_darkness/chapter_1_shadow_in_the_sky/second_darkness_shadow_in_the_sky.jpg
+COVER:../second_darkness_shadow_in_the_sky.jpg
 LOGO:@/publisher_logos/Paizo_Publishing.png
 URL:WEBSITE|http://www.paizo.com/|Visit Paizo Publishing!
 URL:WEBSITE|http://www.paizo.com/communityuse|Paizo's Community Use Policy.
@@ -32,10 +32,10 @@ DESC:The elves of the Mierani Forest have been hiding something from outside eye
 #Do Not Remove Comment
 #INFOTEXT:OGL.txt
 
-ABILITY:@/d20ogl/paizo/pathfinder/second_darkness/chapter_1_shadow_in_the_sky/pf13_ability.lst
-EQUIPMENT:@/d20ogl/paizo/pathfinder/second_darkness/chapter_1_shadow_in_the_sky/pf13_equipment.lst
-RACE:@/d20ogl/paizo/pathfinder/second_darkness/chapter_1_shadow_in_the_sky/pf13_race.lst
-TEMPLATE:@/d20ogl/paizo/pathfinder/second_darkness/chapter_1_shadow_in_the_sky/pf13_template.lst
+ABILITY:../pf13_ability.lst
+EQUIPMENT:../pf13_equipment.lst
+RACE:../pf13_race.lst
+TEMPLATE:../pf13_template.lst
 
 KIT:pf13_kit_monster_pfrpg.lst
 KIT:pf13_kit_npc_pfrpg.lst
