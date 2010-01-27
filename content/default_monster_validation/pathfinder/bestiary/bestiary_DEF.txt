@@ -2,95 +2,95 @@ Bestiary D, E & F
 
 ###Block: D
 
-Dark Creeper:
+Dark Creeper: Stealth should be +12 (missing +4 size modifier?)
 
-Dark Stalker:
+Dark Stalker: Valid
 
 Darkmantle: None of the derived stats add up correctly for the Str (11) and Dex (15) presented. AC should be 15 (missing +2 dex). Ref save should be +5. Slam should be +3 (1d4). CMB +1 (+5 grapple); CMD +13. Looks like the values listed for STR and DEX are in error, if I change them to STR 17 and DEX 11 the number add up. The skill bonuses are off as well but I don't know exactly where without knowing the correct Ability stats but I think Stealth is missing the +3 bonus for being a class skill (if DEX = 11).
 
-Demon (Babau):
+Demon (Babau): Valid
 
-Demon (Balor):
+Demon (Balor): Valid
 
-Demon (Dretch):
+Demon (Dretch): Valid
 
-Demon (Glabrezu):
+Demon (Glabrezu): Valid
 
-Demon (Hezrou):
+Demon (Hezrou): Valid
 
-Demon (Marilith):
+Demon (Marilith): Valid
 
-Demon (Nabasu):
+Demon (Nabasu): Valid
 
-Demon (Nalfeshnee):
+Demon (Nalfeshnee): Valid
 
-Demon (Quasit):
+Demon (Quasit): Valid
 
-Demon (Shadow):
+Demon (Shadow): Valid
 
-Demon (Succubus):
+Demon (Succubus): Valid
 
-Demon (Vrock):
+Demon (Vrock): Valid
 
-Derro:
+Derro: small light crossbow should do 1d6 damage
 
-Devil (Barbed):
+Devil (Barbed): Valid
 
-Devil (Bearded):
+Devil (Bearded): Valid
 
-Devil (Bone):
+Devil (Bone): Valid
 
-Devil (Erinyes):
+Devil (Erinyes): Valid
 
-Devil (Horned):
+Devil (Horned): Valid
 
-Devil (Ice):
+Devil (Ice): Valid
 
-Devil (Imp):
+Devil (Imp): Valid
 
-Devil (Lemure):
+Devil (Lemure): Valid
 
-Devil (Pit Fiend):
+Devil (Pit Fiend): Valid
 
-Devourer:
+Devourer: Not enough skill points (by 7) for all the displayed skill bonuses
 
-Dinosaur (Ankylosaurus):
+Dinosaur (Ankylosaurus): Valid
 
-Dinosaur (Brachiosaurus):
+Dinosaur (Brachiosaurus): Perception should be +28
 
-Dinosaur (Deinonychus):
+Dinosaur (Deinonychus): Valid
 
-Dinosaur (Elasmosaurus):
+Dinosaur (Elasmosaurus): Valid
 
-Dinosaur (Pteranodon):
+Dinosaur (Pteranodon): Perception should be +13, CMD should be 22
 
-Dinosaur (Stegosaurus):
+Dinosaur (Stegosaurus): Valid
 
-Dinosaur (Triceratops):
+Dinosaur (Triceratops): Perception should be +24
 
-Dinosaur (Tyrannosaurus):
+Dinosaur (Tyrannosaurus): Valid
 
-Dog:
+Dog: Valid
 
-Dog (Riding):
+Dog (Riding): Valid
 
-Dolphin:
+Dolphin: Valid
 
-Dolphin (Orca):
+Dolphin (Orca): Valid
 
-Doppelganger:
+Doppelganger: Valid
 
-Dragon Turtle:
+Dragon Turtle: Valid
 
-Drider:
+Drider: Valid
 
-Drow:
+Drow: rapier should be +2 (-1 due to the shield armor check penalty applied to to hit bonus per Weapon Finesse)
 
-Drow Noble:
+Drow Noble: rapier should be +4 (-2 due to the shield armor check penalty applied to to hit bonus per Weapon Finesse), hit points should be 23 (3d8)+6, not enough skill points for the skills listed (has 6, needs 9 to get the bonuses shown)
 
-Dryad:
+Dryad: Valid
 
-Duergar:
+Duergar: Hit points should be 13 (1d10)+3, Skills should be Intimidate +1, Stealth -3
 
 
 ###Block: E
