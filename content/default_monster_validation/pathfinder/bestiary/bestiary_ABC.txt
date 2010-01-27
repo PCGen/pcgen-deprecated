@@ -61,81 +61,55 @@ Bebilith: Valid
 
 Beetle (Fire): Valid
 
-Beetle (Giant Stag):
+Beetle (Giant Stag): Valid
 
-Behir:
+Behir: Perception should be +8
 
-Black Pudding:
+Black Pudding: Valid
 
-Boar:
+Boar: Valid
 
-Boar (Dire):
+Boar (Dire): Valid
 
-Boggard:
+Boggard: Acrobatics should be +18 jumping if he gets +16 Acrobatics when jumping and starts with +2 as listed
 
-Bugbear:
+Bugbear: Stealth should be +9 (missing -1 for armor)
 
-Bulette:
+Bulette: Valid
 
 
 ###Block: C
 
-Cat (Cheetah):
+Cat (Cheetah): Valid
 
-Cat (Leopard):
+Cat (Leopard): Valid
 
-Cave Fisher:
+Cave Fisher: Valid
 
-Centaur:
+Centaur: Speed should be 35 with armor
 
-Centipede (House):
+Centipede (Giant): Valid
 
-Centipede (Sewer):
+Centipede Swarm: Valid
 
-Centipede (Giant):
+Chimera: Valid
 
-Centipede (Hisser):
+Choker: Valid
 
-Centipede (Giant Whiptail):
+Chuul: Has 3 skill points left to allocate
 
-Centipede (Great Forest):
+Cloaker: Has 3 skill points left to allocate
 
-Centipede (Titan):
+Cockatrice: Valid
 
-Centipede Swarm:
+Couatl: Valid
 
-Chimera:
+Crab (Giant): Valid
 
-Choker:
+Crab Swarm: Valid
 
-Chuul:
+Crocodile: Valid
 
-Cloaker:
+Crocodile (Dire): Valid
 
-Cockatrice:
-
-Couatl:
-
-Crab (Giant):
-
-Crab (Giant King):
-
-Crab (Giant Coconut):
-
-Crab (Giant Rock):
-
-Crab (Giant Shark-Eating):
-
-Crab (Giant Reef):
-
-Crab (Giant Shipwrecker):
-
-Crab Swarm:
-
-Crocodile:
-
-Crocodile (Dire):
-
-Cyclops:
-
-
+Cyclops: Should have iterative attacks: greataxe +11/+6
