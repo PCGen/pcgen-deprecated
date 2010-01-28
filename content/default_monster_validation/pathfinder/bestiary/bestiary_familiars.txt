@@ -1,25 +1,24 @@
 Bestiary Familiars
 
 
-Familiar (Bat):
+Familiar (Bat): Valid
 
-Familiar (Cat):
+Familiar (Cat): Valid
 
-Familiar (Hawk):
+Familiar (Hawk): Valid
 
-Familiar (Lizard):
+Familiar (Lizard): Valid
 
-Familiar (Monkey):
+Familiar (Monkey): Valid
 
-Familiar (Owl):
+Familiar (Owl): Valid
 
-Familiar (Rat):
+Familiar (Rat): Valid
 
-Familiar (Raven):
+Familiar (Raven): Fly skill should be +6, Doesn't need and can't have Skill Focus (Perception), that's one to many feats
 
-Familiar (Viper):
+Familiar (Viper): Valid
 
-Familiar (Toad):
+Familiar (Toad): Valid
 
-Familiar (Weasel):
-
+Familiar (Weasel): Escape Artist should be +3 not +6 (it's not a class skill)
