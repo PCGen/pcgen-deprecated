@@ -95,69 +95,69 @@ Duergar: Hit points should be 13 (1d10)+3, Skills should be Intimidate +1, Steal
 
 ###Block: E
 
-Eagle:
+Eagle: Valid
 
-Eagle (Giant):
+Eagle (Giant): Valid
 
-Eel (Electric):
+Eel (Electric): Valid
 
-Eel (Giant Moray):
+Eel (Giant Moray): Valid
 
-Elemental (Air/Small):
+Elemental (Air/Small): Valid
 
-Elemental (Air/Medium):
+Elemental (Air/Medium): Valid
 
-Elemental (Air/Large):
+Elemental (Air/Large): Valid
 
-Elemental (Air/Huge):
+Elemental (Air/Huge): Valid
 
-Elemental (Air/Greater):
+Elemental (Air/Greater): Valid
 
-Elemental (Air/Elder):
+Elemental (Air/Elder): Valid
 
-Elemental (Earth/Small):
+Elemental (Earth/Small): Valid
 
-Elemental (Earth/Medium):
+Elemental (Earth/Medium): Valid
 
-Elemental (Earth/Large):
+Elemental (Earth/Large): Valid
 
-Elemental (Earth/Huge):
+Elemental (Earth/Huge): Valid
 
-Elemental (Earth/Greater):
+Elemental (Earth/Greater): Valid
 
-Elemental (Earth/Elder):
+Elemental (Earth/Elder): Valid
 
-Elemental (Fire/Small):
+Elemental (Fire/Small): Valid
 
-Elemental (Fire/Medium):
+Elemental (Fire/Medium): Valid
 
-Elemental (Fire/Large):
+Elemental (Fire/Large): Valid
 
-Elemental (Fire/Huge):
+Elemental (Fire/Huge): Fort save should be +10, Burn DC should be 18
 
-Elemental (Fire/Greater):
+Elemental (Fire/Greater): Valid
 
-Elemental (Fire/Elder):
+Elemental (Fire/Elder): Valid
 
-Elemental (Water/Small):
+Elemental (Water/Small): Valid
 
-Elemental (Water/Medium):
+Elemental (Water/Medium): Valid
 
-Elemental (Water/Large):
+Elemental (Water/Large): Valid
 
-Elemental (Water/Huge):
+Elemental (Water/Huge): Valid
 
-Elemental (Water/Greater):
+Elemental (Water/Greater): Valid
 
-Elemental (Water/Elder):
+Elemental (Water/Elder): Valid
 
-Elephant:
+Elephant: Valid
 
-Elephant (Mastodon):
+Elephant (Mastodon): Valid
 
-Ettercap:
+Ettercap: Valid
 
-Ettin:
+Ettin: Valid
 
 
 ###Block: F
