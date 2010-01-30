@@ -2,124 +2,104 @@ Bestiary G, H & I
 
 ###Block: G
 
-Gargoyle:
+Gargoyle: Valid
 
-Gargoyle (Kapoacinth):
+Gelatinous Cube: CMD should be 9
 
-Gelatinous Cube:
+Genie (Djinni): Valid
 
-Genie (Djinni):
+Genie (Efreeti): Has 1 more skill point than he should
 
-Genie (Djinni/Noble):
+Genie (Janni): Valid
 
-Genie (Efreeti):
+Genie (Marid): Valid
 
-Genie (Efreeti/Noble):
+Genie (Shaitan): Valid
 
-Genie (Janni):
+Ghost: Reflex save should be +5
 
-Genie (Marid):
+Ghoul: Valid
 
-Genie (Shaitan):
+Giant (Cloud): Valid
 
-Genie (Shaitan/Noble):
+Giant (Fire): AC should be 23 (Half-plate is +8)
 
-Ghoul:
+Giant (Frost): Has 3 skill points left to spend
 
-Ghoul (Ghast):
+Giant (Hill): Valid
 
-Ghoul (Lacedon):
+Giant (Stone): Valid
 
-Giant (Cloud):
+Giant (Storm): Valid
 
-Giant (Fire):
+Gibbering Mouther: Valid
 
-Giant (Frost):
+Girallon: CMB should be +12; CMD should be 25 
 
-Giant (Hill):
+Gnoll: Valid
 
-Giant (Stone):
+Goblin: Skills should be Ride +9, Swim +3 (missing shield penalty) Attack bonuses missing the +1 for size
 
-Giant (Storm):
+Goblin Dog: Valid
 
-Gibbering Mouther:
+Golem (Clay): Valid
 
-Girallon:
+Golem (Flesh): Valid
 
-Gnoll:
+Golem (Ice): Valid
 
-Goblin:
+Golem (Iron): Valid
 
-Goblin Dog:
+Golem (Stone): Valid
 
-Golem (Clay):
+Golem (Wood): Should not have a CON score, Will save should be +5
 
-Golem (Flesh):
+Gorgon: Valid
 
-Golem (Ice):
+Gray Ooze: Valid
 
-Golem (Iron):
+Green Hag: Valid
 
-Golem (Stone):
-
-Golem (Wood):
-
-Gorgon:
-
-Gray Ooze:
-
-Gray Ooze (Crystal Ooze):
-
-Gray Ooze (Id Ooze):
-
-Green Hag:
-
-Griffon:
+Griffon: Has 1 more skill point to spend
 
 
 ###Block: H
 
-Harpy:
+Half-Celestial Unicorn: Sense Motive and Survival should be +11 (not class skills)
 
-Hell Hound:
+Half-Dragon: CMD should be 35 vs trip
 
-Hell Hound (Nessian):
+Half-Fiend: Valid
 
-Herd Animal (Aurochs):
+Harpy: Valid
 
-Herd Animal (Bison):
+Hell Hound: Valid
 
-Hobgoblin:
+Hell Hound (Nessian): Acrobatics should be +12, Stealth should be +19, Does the Speed acount for Armor penalties? 
 
-Homunculus:
+Herd Animal (Aurochs): Valid
 
-Horse:
+Herd Animal (Bison): Valid
 
-Horse (Pony):
+Hobgoblin: Attacks should be Longbow +3, Longsword +4, Stealth should be +8
 
-Hydra:
+Homunculus: CMD should be +2
 
-Cryohydra:
+Horse: Valid
 
-Pyrohydra:
+Horse (Pony): Valid
 
-Hyena:
+Hydra: Fort save should be +8
 
-Hyena (Dire):
+Hyena: Valid
+
+Hyena (Dire): Valid
 
 
 ###Block: I
 
-Intellect Devourer:
+Intellect Devourer: Valid
 
-Invisible Stalker:
+Invisible Stalker: Fort save should be +11
 
-Iron Cobra:
-
-Adamantine Cobra:
-
-Darkwood Cobra:
-
-Mithral Cobra:
-
-
+Iron Cobra: Valid

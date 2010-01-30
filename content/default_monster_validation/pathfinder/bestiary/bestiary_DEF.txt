@@ -162,11 +162,11 @@ Ettin: Valid
 
 ###Block: F
 
-Flytrap (Giant):
+Flytrap (Giant): Valid
 
-Frog (Giant):
+Frog (Giant): Valid
 
-Frog (Poison):
+Frog (Poison): CMD should be 5
 
-Froghemoth:
+Froghemoth: Swim should be +18
 
