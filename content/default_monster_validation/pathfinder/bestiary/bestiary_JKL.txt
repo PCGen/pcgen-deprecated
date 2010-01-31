@@ -2,35 +2,39 @@ Bestiary J,K & L
 
 ###Block: K
 
-Kobold:
+Kobold: Perception and Stealth should be +5, Warriors have d10 hitdice, sling damage should be 1d3-1
 
-Kraken:
+Kraken: Valid
 
-Kyton:
+Kyton: Valid
 
 
 ###Block: L
 
-Lamia:
+Lamia: Fort should be +7, dagger damage should be 1d4+4
 
-Leech (Giant):
+Leech (Giant): Fort should be +5
 
-Leech Swarm:
+Leech Swarm: Valid
 
-Linnorm (Crag):
+Lich: 11 too many skill points spent
 
-Linnorm (Ice):
+Linnorm (Crag): Valid
 
-Linnorm (Tarn):
+Linnorm (Ice): Valid
 
-Lion:
+Linnorm (Tarn): Valid
 
-Lion (Dire):
+Lion: Valid
+
+Lion (Dire): Valid
 
 Lizard (Monitor): Poison (Su)? shouldn't a normal animals poison be Extrodinary?
 
 Lizard (Giant Frilled): IN AC +8 is listed as Armor, shouldn't this be listed as Natural?
 
 Lizardfolk: The Swim skill bonus does not reflect the shield penalty (understandably)
+
+Lycanthrope, Wererat: Valid
 
 Lycanthrope, Werewolf: Not enough skill points for the skills listed, need 2 more than it has.
