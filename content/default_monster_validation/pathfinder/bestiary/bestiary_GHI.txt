@@ -34,7 +34,7 @@ Giant (Storm): Valid
 
 Gibbering Mouther: Valid
 
-Girallon: CMB should be +12; CMD should be 25 
+Girallon: CMB should be +12; CMD should be 25 
 
 Gnoll: Valid
 
@@ -67,7 +67,7 @@ Griffon: Has 1 more skill point to spend
 
 Half-Celestial Unicorn: Sense Motive and Survival should be +11 (not class skills)
 
-Half-Dragon: CMD should be 35 vs trip
+Half-Dragon: CMD should be 35 vs trip
 
 Half-Fiend: Valid
 
@@ -75,7 +75,7 @@ Harpy: Valid
 
 Hell Hound: Valid
 
-Hell Hound (Nessian): Acrobatics should be +12, Stealth should be +19, Does the Speed acount for Armor penalties? 
+Hell Hound (Nessian): Acrobatics should be +12, Stealth should be +19, Does the Speed account for Armor penalties? 
 
 Herd Animal (Aurochs): Valid
 

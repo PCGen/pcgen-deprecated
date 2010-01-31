@@ -10,7 +10,7 @@ Angel (Astral Deva): Has 15 skill points left to allocate.
 
 Angel (Planetar): Valid
 
-Angel (Solar): Speed does not reflect armor penalties, reads: Speed 50 ft., fly 150 ft. (good); should be  35 ft. (in armor) Fly 100 ft. (in armor) (Good)
+Angel (Solar): Speed does not reflect armor penalties, reads: Speed 50 ft., fly 150 ft. (good); should be  35 ft. (in armor) Fly 100 ft. (in armor) (Good)
 
 Animated Object: Valid
 
@@ -26,7 +26,7 @@ Ape (Dire): Valid
 
 Archon (Hound): Valid
 
-Archon (Lantern): Aura of Menace DC should be 13,
+Archon (Lantern): Aura of Menace DC should be 13,
 
 Archon (Trumpet): attack line:  Melee +4 greatsword +23/+18/+13 (2d6+11/19-20)  (was missing the /19-20 part)
 

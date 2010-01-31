@@ -1,3 +1,62 @@
 Bestiary Dragons
 
 
+Dragon (Black/Young): Valid
+
+Dragon (Black/Adult): Has 3 point left to spend which could be put in Stealth as it has not been maxed out.
+
+Dragon (Black/Ancient): Valid
+
+Dragon (Blue/Young): Valid
+
+Dragon (Blue/Adult): Valid
+
+Dragon (Blue/Ancient): Valid
+
+Dragon (Green/Young): Valid
+
+Dragon (Green/Adult): Too many feats (someone probably overlooked that Improved Critical (Bite, Claw) counts for 2)
+
+Dragon (Green/Ancient): Too many feats (someone probably overlooked that Improved Critical (Bite, Claw) counts for 2)
+
+Dragon (Red/Young): Valid
+
+Dragon (Red/Adult): Valid
+
+Dragon (Red/Ancient): Valid
+
+Dragon (White/Young): Valid
+
+Dragon (White/Adult): Valid
+
+Dragon (White/Ancient): Can have 1 more 4th level spell and 4 more 0 level spells
+
+Dragon (Brass/Young): Valid
+
+Dragon (Brass/Adult): Not enough skill points (by 6) for the listed bonuses
+
+Dragon (Brass/Ancient): Can have 1 more 5th level spell
+
+Dragon (Bronze/Young): Valid
+
+Dragon (Bronze/Adult): Can have 3 more 0 level spells
+
+Dragon (Bronze/Ancient): Can have 3 more 0 level spells
+
+Dragon (Copper/Young): Can choose 1 more feat
+
+Dragon (Copper/Adult): Valid
+
+Dragon (Copper/Ancient): Valid
+
+Dragon (Gold/Young): Valid
+
+Dragon (Gold/Adult): Valid
+
+Dragon (Gold/Ancient): Valid
+
+Dragon (Silver/Young): Valid
+
+Dragon (Silver/Adult): Valid
+
+Dragon (Silver/Ancient): Valid
