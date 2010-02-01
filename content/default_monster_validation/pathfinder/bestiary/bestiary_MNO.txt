@@ -47,19 +47,19 @@ Nymph: Has 6 skill points left to spend
 
 ###Block: O
 
-Ochre Jelly:
+Ochre Jelly: Valid
 
-Octopus:
+Octopus: Valid
 
-Octopus (Giant):
+Octopus (Giant): Valid
 
-Ogre:
+Ogre: Perception should be +5 (missing class skill bonus?)
 
-Oni (Ogre Mage):
+Oni (Ogre Mage): Valid
 
-Orc:
+Orc: falchion should be +5 to hit
 
-Otyugh:
+Otyugh: Valid
 
-Owlbear:
+Owlbear: Valid
 
