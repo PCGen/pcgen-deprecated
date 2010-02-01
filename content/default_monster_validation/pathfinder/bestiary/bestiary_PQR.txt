@@ -2,17 +2,17 @@ Bestiary P, Q & R
 
 ###Block: P
 
-Pegasus:
+Pegasus: Valid
 
-Phase Spider:
+Phase Spider: Valid
 
-Phoenix:
+Phoenix: Valid
 
-Pixie:
+Pixie: Valid
 
-Pseudodragon:
+Pseudodragon: Valid
 
-Purple Worm:
+Purple Worm: Valid
 
 
 ###Block: R
