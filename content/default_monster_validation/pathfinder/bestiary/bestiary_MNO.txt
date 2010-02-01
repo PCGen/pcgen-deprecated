@@ -3,64 +3,46 @@ Bestiary M, N & O
 
 ###Block: M
 
-Manticore:
+Manticore: Valid
 
-Mantis (Giant):
+Mantis (Giant): Valid
 
-Medusa:
+Medusa: Valid
 
-Mephit (Air):
+Mephit: AC should 17 (+1 for Dodge feat)
 
-Mephit (Dust):
+Merfolk: heavy crossbow does 1d10 damage
 
-Mephit (Earth):
-
-Mephit (Fire):
-
-Mephit (Ice):
-
-Mephit (Magma):
-
-Mephit (Ooze):
-
-Mephit (Salt):
-
-Mephit (Steam):
-
-Mephit (Water):
-
-Merfolk:
-
-Mimic:
+Mimic: Knowledge (Dungeoneering) should be +10, Perception should be +14
 
 Minotaur: Valid
 
-Mite:
+Mite: Valid
 
-Mohrg:
+Mohrg: Perception should be +23
 
-Morlock:
+Morlock: Valid
 
-Mummy:
+Mummy: Valid
 
 
 ###Block: N
 
-Naga (Dark):
+Naga (Dark): Has 9 skill points left to spend, bite damage should be 1d4+2
 
-Naga (Guardian):
+Naga (Guardian): Has 3 skill points left to spend,
 
-Naga (Spirit):
+Naga (Spirit): Should have Stabilize instead of Cure Minor Wounds for 0 level spell
 
-Neothelid:
+Neothelid: Valid
 
-Night Hag:
+Night Hag: Valid
 
-Nightmare:
+Nightmare: Valid
 
-Nightmare (Cauchemar):
+Nightmare (Cauchemar): Valid
 
-Nymph:
+Nymph: Has 6 skill points left to spend
 
 
 ###Block: O
