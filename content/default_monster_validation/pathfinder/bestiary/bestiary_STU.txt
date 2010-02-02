@@ -2,106 +2,80 @@ Bestiary S, T & U
 
 ###Block: S
 
-Sahuagin:
+Sahuagin: Valid
 
-Salamander:
+Salamander: Valid
 
-Satyr:
+Satyr: AC should be 18 (missing +1 from Dodge feat), Perform (Wind Instruments) should be +19
 
-Scorpion (Greensting):
+Scorpion (Giant): Valid
 
-Scorpion (Ghost):
+Sea Hag: Valid
 
-Scorpion (Cave):
+Sea Serpent: Doesn't say which attack Improved Critical was applied to
 
-Scorpion (Giant):
+Shadow: Valid
 
-Scorpion (Deadfall):
+Shadow (Greater): Valid
 
-Scorpion (Giant Emperor):
+Shambling Mound: Valid
 
-Scorpion (Black):
+Shark: Valid
 
-Sea Hag:
+Shark (Dire): Valid
 
-Sea Serpent:
+Shocker Lizard: Valid
 
-Shadow:
+Shoggoth: Valid
 
-Shadow (Greater):
+Skeleton (Human): Valid
 
-Shambling Mound:
+Skeletal Champion (Human): Valid
 
-Shark:
+Skum: Valid
 
-Shark (Dire):
+Slug (Giant): Valid
 
-Shocker Lizard:
+Snake (Constrictor): Valid
 
-Shoggoth:
+Snake (Venomous): Valid
 
-Skeleton (Human):
+Spectre: Incorporal Touch attack bonus should be +12
 
-Skeletal Champion (Human):
+Sphinx (Gynosphinx): Valid
 
-Skum:
+Spider (Giant): Valid
 
-Slug (Giant):
+Spider Swarm: Valid
 
-Snake (Constrictor):
+Squid: Valid
 
-Snake (Venomous):
+Squid (Giant): Doesn't say which attack Improved Critical was applied to; doesn't say which attacks can constrict
 
-Spectre:
+Stirge: Valid
 
-Sphinx (Gynosphinx):
-
-Spider (Scarlet):
-
-Spider (Giant Crab):
-
-Spider (Giant Web-spinning):
-
-Spider (Giant Hunting):
-
-Spider (Black Widow):
-
-Spider (Ogre):
-
-Spider (Giant Tarantula):
-
-Spider (Goliath):
-
-Spider Swarm:
-
-Squid:
-
-Squid (Giant):
-
-Stirge:
-
-Svirfneblin:
+Svirfneblin: Valid
 
 
 ###Block: T
 
-Tarrasque:
+Tarrasque: Valid
 
-Tengu:
+Tengu: Valid
 
-Tiefling:
+Tiefling: Valid
 
-Tiger:
+Tiger: Valid
 
-Tiger (Dire):
+Tiger (Dire): There are unused skill points, Stealth cannot be +8, it's +5 with no ranks or +9 with 1 rank. Should be +15 if all the unspent point were used for Stealth (7 ranks)
 
-Treant:
+Treant: Rock damage should be rock 2d6+13
 
-Troglodyte:
+Troglodyte: Valid
 
-Troll:
+Troll: Valid
 
-Troll (Scrag):
+Troll (Scrag): Valid
 
 
 ###Block: U
