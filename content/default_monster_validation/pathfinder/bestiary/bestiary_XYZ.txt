@@ -3,20 +3,20 @@ Bestiary X, Y & Z
 
 ###Block: X
 
-Xill:
+Xill: Stealth should be +14 (missing shield penalty)
 
-Xorn:
+Xorn: Valid
 
 ###Block: Y
 
-Yellow Musk Creeper:
+Yellow Musk Creeper: Valid
 
-Yeth Hound:
+Yeth Hound: Valid
 
-Yeti:
+Yeti: Valid
 
 ###Block: Z
 
-Zombie (Human):
+Zombie (Human): Valid
 
 

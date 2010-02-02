@@ -5,44 +5,36 @@ Bestiary V & W
 
 Vampire: The sample vampire has 1 more feat than she should have. Also, she has skill ranks as if the vampire template was applied before class levels were added (and gained 5 skill points from the +2 INT), but the Vampite template says it can be applied to creatures with 5 or more HD.
 
-Vampire Spawn:
-
 Vargouille: Should have AC 15, stats are missing the +1 for Small Size.
 
-Vegepygmy:
+Vegepygmy: Valid
 
-Violet Fungus:
+Violet Fungus: Valid
 
 
 ###Block: W
 
-Wasp (Giant):
+Wasp (Giant): Valid
 
-Wasp Swarm:
+Wasp Swarm: Valid
 
-Wight:
+Wight: Valid
 
-Wight (Brute):
+Will-o'-Wisp: Perception should be +17, missing the +2 from the Alertness feat.
 
-Wight (Cairn):
+Wolf: Valid
 
-Wight (Frost):
+Wolf (Dire): bite should be +6 (missing -1 for size Large)
 
-Will-o'-Wisp: Perception should be +17, missing the from the Alertness feat.
+Wolverine: Valid
 
-Wolf:
+Wolverine (Dire): Valid
 
-Wolf (Dire):
+Worg: Valid
 
-Wolverine:
+Worg (Winter Wolf): Valid
 
-Wolverine (Dire):
+Wraith: Valid
 
-Worg:
-
-Worg (Winter Wolf):
-
-Wraith:
-
-Wyvern:
+Wyvern: Valid
 
