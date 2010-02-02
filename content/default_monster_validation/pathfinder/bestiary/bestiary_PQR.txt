@@ -17,23 +17,22 @@ Purple Worm: Valid
 
 ###Block: R
 
-Rakshasa:
+Rakshasa:  Kukri damage should be 1d4+4
 
-Rat (Dire):
+Rat (Dire): Valid
 
-Rat Swarm:
+Rat Swarm: Valid
 
-Remorhaz:
+Remorhaz: Valid
 
-Retriever:
+Retriever: Valid
 
-Rhinoceros:
+Rhinoceros: Valid
 
-Rhinoceros (Woolly):
+Rhinoceros (Woolly): Valid
 
-Roc:
+Roc: Valid
 
-Roper:
+Roper: Has 3 skill points left to spend (Knowledge Religion can be maxed to +16)
 
-Rust Monster:
-
+Rust Monster: Valid
