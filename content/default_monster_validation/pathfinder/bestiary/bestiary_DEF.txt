@@ -168,5 +168,5 @@ Frog (Giant): Valid
 
 Frog (Poison): CMD should be 5
 
-Froghemoth: Swim should be +18
+Froghemoth: Swim should be +18, Swallow Whole AC should be 19
 
