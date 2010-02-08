@@ -2208,6 +2208,7 @@ my %master_order = (
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'RACETYPE',
 		'SWITCHRACE:*',
+		'TEMPLATE:*',		# [ 2946558 ] TEMPLATE can be used in COMPANIONMOD lines
 		'STACK',
 		'MULT',
 		'CHOOSE',
@@ -15175,6 +15176,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2946558 ] TEMPLATE can be used in COMPANIONMOD lines
 
 [ 2596967 ] ABILITY not recognized for MASTERBONUSRACE
 
