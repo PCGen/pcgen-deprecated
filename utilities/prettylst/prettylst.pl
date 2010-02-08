@@ -11447,6 +11447,15 @@ sub validate_line {
 			}
 			elsif ( $choose =~ /^CHOOSE:?(SKILLBONUS)[^|]*/ ) {
 			}
+			elsif ( $choose =~ /^CHOOSE:?(SKILL)[^|]*/ ) {
+				if ( $choose !~ /(TITLE[=])/ ) {
+					$logging->ewarn(INFO,
+					qq(TITLE= is missing in CHOOSE:SKILL for "$choose"),
+					$file_for_error,
+					$line_for_error
+					);
+				}
+			}
 			elsif ( $choose =~ /^CHOOSE:?(EQBUILDER.SPELL)[^|]*/ ) {
 			}
 			elsif ( $choose =~ /^CHOOSE:?(EQBUILDER.EQTYPE)[^|]*/ ) {
