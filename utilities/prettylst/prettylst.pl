@@ -1940,7 +1940,7 @@ my %master_order = (
 		@SOURCE_Tags,
 		'NATURALATTACKS',
 		'ASPECT:*',
-		'BENEFIT',
+		'BENEFIT:*',
 		'TEMPDESC',
 		'SPELLKNOWN:CLASS:*',
 		'SPELLKNOWN:DOMAIN:*',
@@ -2527,7 +2527,7 @@ my %master_order = (
 		@SOURCE_Tags,
 		'NATURALATTACKS',
 		'ASPECT:*',
-		'BENEFIT',
+		'BENEFIT:*',
 		'TEMPDESC',
 		'SPELLKNOWN:CLASS:*',
 		'SPELLKNOWN:DOMAIN:*',
@@ -15172,6 +15172,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2946555 ] BENEFIT can be used more than once per line
 
 [ 2946551 ] New LANGBONUS Kit tag
 
