@@ -11405,6 +11405,61 @@ sub validate_line {
 				);
 			}
 		}
+		if ( exists $line_ref->{'CHOOSE'} ) {               # [ 1870825 ] EqMod CHOOSE Changes
+			my $choose = $line_ref->{'CHOOSE'}[0];
+			my $eqmod_name = $line_ref->{'000ModifierName'}[0];
+			$eqmod_name =~ s/.MOD$//;
+			if ( $choose =~ /^CHOOSE:(NUMBER[^|]*)/ ) {
+			# Valid: CHOOSE:NUMBER|MIN=1|MAX=99129342|TITLE=Whatever
+			# Valid: CHOOSE:NUMBER|1|2|3|4|5|6|7|8|TITLE=Whatever
+			# Valid: CHOOSE:NUMBER|MIN=1|MAX=99129342|INCREMENT=5|TITLE=Whatever
+			# Valid: CHOOSE:NUMBER|MAX=99129342|INCREMENT=5|MIN=1|TITLE=Whatever
+			# Only testing for TITLE= for now.
+				# Test for TITLE= and warn if not present.
+				if ( $choose !~ /(TITLE[=])/ ) {
+					$logging->ewarn(INFO,
+					qq(TITLE= is missing in CHOOSE:NUMBER for "$choose"),
+					$file_for_error,
+					$line_for_error
+					);
+				}
+			}
+			# Only CHOOSE:NOCHOICE is Valid
+			elsif ( $choose =~ /^CHOOSE:NOCHOICE/ ) {
+			}
+			# CHOOSE:STRING|Foo|Bar|Monkey|Poo|TITLE=these are choices
+			elsif ( $choose =~ /^CHOOSE:?(STRING)[^|]*/ ) {
+				# Test for TITLE= and warn if not present.
+				if ( $choose !~ /(TITLE[=])/ ) {
+					$logging->ewarn(INFO,
+					qq(TITLE= is missing in CHOOSE:STRING for "$choose"),
+					$file_for_error,
+					$line_for_error
+					);
+				}
+			}
+			# CHOOSE:STATBONUS|statname|MIN=2|MAX=5|TITLE=Enhancement Bonus
+			# Statname is what I'd want to check to verify against the defined stats, but since it is optional....
+			elsif ( $choose =~ /^CHOOSE:?(STATBONUS)[^|]*/ ) {
+#				my $checkstat = $choose;
+#				$checkstat =~ s/(CHOOSE:STATBONUS)// ;
+#				$checkstat =~ s/[|]MIN=[-]?\d+\|MAX=\d+\|TITLE=.*//;
+			}
+			elsif ( $choose =~ /^CHOOSE:?(SKILLBONUS)[^|]*/ ) {
+			}
+			elsif ( $choose =~ /^CHOOSE:?(EQBUILDER.SPELL)[^|]*/ ) {
+			}
+			elsif ( $choose =~ /^CHOOSE:?(EQBUILDER.EQTYPE)[^|]*/ ) {
+			}
+			# If not above, invaild CHOOSE for equipmod files.
+			else {
+					$logging->ewarn(WARNING,
+					qq(Invalid CHOOSE for Equipmod spells for "$choose"),
+					$file_for_error,
+					$line_for_error
+					);
+			}
+		}
 	}
 	elsif ( $linetype eq "CLASS" ) {
 
@@ -15176,6 +15231,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 1870825 ] EqMod CHOOSE Changes
 
 [ 2946558 ] TEMPLATE can be used in COMPANIONMOD lines
 
