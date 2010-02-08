@@ -2650,6 +2650,7 @@ my %master_order = (
 		'FREE',
 		'COUNT',
 		'OPTION',
+		'SELECTION',
 		@PRE_Tags,
 	],
 
@@ -4352,6 +4353,7 @@ my %tagheader = (
 
 	'KIT SKILL' => {
 		'SKILL'			=> '# Skill',
+		'SELECTION'             => 'Selections',
 	},
 
 	'KIT TABLE' => {
@@ -15132,7 +15134,7 @@ key here: <L<http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x5187D5D2>>
 
 Copyright 2002 to 2006 by E<Eacute>ric E<quot>Space MonkeyE<quot> Beaudoin -- <mailto:beaudoer@videotron.ca>
 
-Copyright 2006 to 2008 by Andrew E<quot>Tir GwaithE<quot> McDougall -- <mailto:tir.gwaith@gmail.com>
+Copyright 2006 to 2010 by Andrew E<quot>Tir GwaithE<quot> McDougall -- <mailto:tir.gwaith@gmail.com>
 
 Copyright 2007 by Richard Bowers
 
@@ -15172,6 +15174,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2946552 ] New SELECTION Kit Tag
 
 [ 2946555 ] BENEFIT can be used more than once per line
 
