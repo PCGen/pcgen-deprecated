@@ -1312,6 +1312,12 @@ my %master_file_type = (
 			Format	=> FIRST_COLUMN,
 			Header	=> NO_HEADER,
 		},
+		{ Linetype	=> 'KIT LANGBONUS',
+			RegEx		=> qr{^LANGBONUS:([^\t]*)},
+			Mode		=> SUB,
+			Format	=> FIRST_COLUMN,
+			Header	=> NO_HEADER,
+		},
 		{ Linetype	=> 'KIT LEVELABILITY',
 			RegEx		=> qr{^LEVELABILITY:([^\t]*)},
 			Mode		=> SUB,
@@ -3571,7 +3577,7 @@ my %token_ADD_tag = map { $_ => 1 } (
 	'ADD:INIT',
 	'ADD:LANGUAGE',
 	'ADD:SAB',
-	'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
+	'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats or Abilities.
 	'ADD:SPELLCASTER',
 	'ADD:SKILL',
 	'ADD:TEMPLATE',
@@ -3923,7 +3929,7 @@ my %tagheader = (
 		'CASTTIME:.CLEAR'		=> 'Clear Casting Time',
 		'CASTTIME'			=> 'Casting Time',
 		'CATEGORY'			=> 'Category of Ability',
-		'CSKILL:.CLEAR'		=> 'Remove Cross-Class Skill',
+		'CCSKILL:.CLEAR'		=> 'Remove Cross-Class Skill',
 		'CCSKILL'			=> 'Cross-Class Skill',
 		'CHANGEPROF'		=> 'Change Weapon Prof. Category',
 		'CHOOSE'			=> 'Choose',
@@ -4312,36 +4318,40 @@ my %tagheader = (
 	},
 
 	'KIT STARTPACK' => {
-		'STARTPACK'			=> 'Kit Name',
+		'STARTPACK'			=> '# Kit Name',
 		'APPLY'			=> 'Apply method to char',			#[ 1593879 ] New Kit tag: APPLY
 	},
 
 	'KIT CLASS' => {
-		'CLASS'			=> 'Class',
+		'CLASS'			=> '# Class',
 	},
 
 	'KIT FUNDS' => {
-		'FUNDS'			=> 'Funds',
+		'FUNDS'			=> '# Funds',
 	},
 
 	'KIT GEAR' => {
-		'GEAR'			=> 'Gear',
+		'GEAR'			=> '# Gear',
+	},
+
+	'KIT LANGBONUS' => {
+		'LANGBONUS'			=> '# Bonus Language',
 	},
 
 	'KIT NAME' => {
-		'NAME'			=> 'Name',
+		'NAME'			=> '# Name',
 	},
 
 	'KIT RACE' => {
-		'RACE'			=> 'Race',
+		'RACE'			=> '# Race',
 	},
 
 	'KIT SELECT' => {
-		'SELECT'			=> 'Select choice',
+		'SELECT'			=> '# Select choice',
 	},
 
 	'KIT SKILL' => {
-		'SKILL'			=> 'Skill',
+		'SKILL'			=> '# Skill',
 	},
 
 	'KIT TABLE' => {
@@ -15162,6 +15172,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2946551 ] New LANGBONUS Kit tag
 
 [ 1864706 ] PROFICIENCY: requires a subtoken
 
