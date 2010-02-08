@@ -2719,6 +2719,7 @@ my %master_order = (
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
 		'ADD:LANGUAGE',
+		'ABILITY:*',			# [ 2596967 ] ABILITY not recognized for MASTERBONUSRACE
 		'VFEAT:*',
 		'SA:.CLEAR',
 		'SA:*',
@@ -15174,6 +15175,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 2596967 ] ABILITY not recognized for MASTERBONUSRACE
 
 [ 2946552 ] New SELECTION Kit Tag
 
