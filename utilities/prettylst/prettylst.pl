@@ -672,7 +672,7 @@ my %tag_fix_value = (
 	STACK			=> { YES => 1, NO => 1 },
 	SPELLBOOK		=> { YES => 1, NO => 1 },
 	SPELLSTAT		=> { map { $_ => 1 } ( @valid_system_stats, 'SPELL', 'NONE', 'OTHER' ) },
-	TIMEUNIT		=> { map { $_ => 1 } ( 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Round', 'Encounter', 'Charges' ) },
+	TIMEUNIT		=> { map { $_ => 1 } ( 'Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Round', 'Encounter', 'Charges' ) },
 	USEUNTRAINED	=> { YES => 1, NO => 1 },
 	USEMASTERSKILL	=> { YES => 1, NO => 1 },
 	VISIBLE		=> { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
@@ -7950,40 +7950,40 @@ BEGIN {
 		}
 		elsif ( $tag_name eq 'MOVE' ) {
 
-		# MOVE:<move type>,<value>
-		# ex. MOVE:Walk,30,Fly,20,Climb,10,Swim,10
+			# MOVE:<move type>,<value>
+			# ex. MOVE:Walk,30,Fly,20,Climb,10,Swim,10
 
-		my @list = split ',', $tag_value;
+			my @list = split ',', $tag_value;
 
-		MOVE_PAIR:
-		while (@list) {
-			my ( $type, $value ) = ( splice @list, 0, 2 );
-			$value = "" if !defined $value;
+			MOVE_PAIR:
+			while (@list) {
+				my ( $type, $value ) = ( splice @list, 0, 2 );
+				$value = "" if !defined $value;
 
-			# $type should be a word and $value should be a number
-			if ( $type =~ /^\d+$/ ) {
-				$logging->ewarn( NOTICE,
-				qq{I was expecting a move type where I found "$type" in "$tag_name:$tag_value"},
-				$file_for_error,
-				$line_for_error
-				);
-				last;
+				# $type should be a word and $value should be a number
+				if ( $type =~ /^\d+$/ ) {
+					$logging->ewarn( NOTICE,
+					qq{I was expecting a move type where I found "$type" in "$tag_name:$tag_value"},
+					$file_for_error,
+					$line_for_error
+					);
+					last;
+				}
+				else {
+
+					# We keep the move type for future validation
+					$valid_entities{'MOVE Type'}{$type}++;
+				}
+
+				unless ( $value =~ /^\d+$/ ) {
+					$logging->ewarn( NOTICE,
+					qq{I was expecting a number after "$type" and found "$value" in "$tag_name:$tag_value"},
+					$file_for_error,
+					$line_for_error
+					);
+					last MOVE_PAIR;
+				}
 			}
-			else {
-
-				# We keep the move type for future validation
-				$valid_entities{'MOVE Type'}{$type}++;
-			}
-
-			unless ( $value =~ /^\d+$/ ) {
-				$logging->ewarn( NOTICE,
-				qq{I was expecting a number after "$type" and found "$value" in "$tag_name:$tag_value"},
-				$file_for_error,
-				$line_for_error
-				);
-				last MOVE_PAIR;
-			}
-		}
 		}
 		elsif ( $tag_name eq 'RACE' && $linetype ne 'PCC' ) {
 		# There is only one race per RACE tag
