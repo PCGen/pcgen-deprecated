@@ -3900,7 +3900,6 @@ my %tagheader = (
 		'BONUS:ITEMCOST'		=> 'Modify the item cost',
 		'BONUS:LANGUAGES'		=> 'More language',
 		'BONUS:MISC'		=> 'Misc bonus',
-		'BONUS:MOVE'		=> 'Move class',
 		'BONUS:MOVEADD'		=> 'Add to base move',
 		'BONUS:MOVEMULT'		=> 'Multiply base move',
 		'BONUS:POSTMOVEADD'	=> 'Add to magical move',
@@ -7932,21 +7931,21 @@ BEGIN {
 		}
 		elsif ( $tag_name eq 'ADD:LANGUAGE' ) {
 
-		# Syntax: ADD:LANGUAGE(<coma separated list of languages)<number>
-		if ( $tag_value =~ /\((.*)\)/ ) {
-			push @xcheck_to_process,
-				[
-				'LANGUAGE', 'ADD:LANGUAGE(@@)', $file_for_error, $line_for_error,
-				split ',',  $1
-				];
-		}
-		else {
-			$logging->ewarn( NOTICE,
-				qq{Invalid syntax for "$tag_name$tag_value"},
-				$file_for_error,
-				$line_for_error
-			);
-		}
+			# Syntax: ADD:LANGUAGE(<coma separated list of languages)<number>
+			if ( $tag_value =~ /\((.*)\)/ ) {
+				push @xcheck_to_process,
+					[
+					'LANGUAGE', 'ADD:LANGUAGE(@@)', $file_for_error, $line_for_error,
+					split ',',  $1
+					];
+			}
+			else {
+				$logging->ewarn( NOTICE,
+					qq{Invalid syntax for "$tag_name$tag_value"},
+					$file_for_error,
+					$line_for_error
+				);
+			}
 		}
 		elsif ( $tag_name eq 'MOVE' ) {
 
@@ -7984,6 +7983,38 @@ BEGIN {
 					last MOVE_PAIR;
 				}
 			}
+		} 
+		elsif ( $tag_name eq 'MOVECLONE' ) {
+		# MOVECLONE:A,B,formula  A and B must be valid move types.
+			if ( $tag_value =~ /^(.*),(.*),(.*)/ ) {
+				# Error if more parameters (Which will show in the first group)
+				if ( $1 =~ /,/ ) {
+					$logging->ewarn( WARNING,
+					qq{Found too many parameters in "$tag_name:$tag_value"},
+					$file_for_error,
+					$line_for_error
+					);
+				} 
+				else {
+					# Cross check for used MOVE Types.
+					push @xcheck_to_process,
+						[
+						'MOVE Type', $tag_name, 
+						$file_for_error, $line_for_error,
+						$1, $2
+						];
+				}
+			}
+			else {
+				# Report missing requisite parameters.
+				$logging->ewarn( WARNING,
+				qq{Missing a parameter in in "$tag_name:$tag_value"},
+				$file_for_error,
+				$line_for_error
+				);
+			}
+
+
 		}
 		elsif ( $tag_name eq 'RACE' && $linetype ne 'PCC' ) {
 		# There is only one race per RACE tag
@@ -15240,6 +15271,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 1778050 ] MOVECLONE now only has 3 args
 
 [ 1870825 ] EqMod CHOOSE Changes
 
