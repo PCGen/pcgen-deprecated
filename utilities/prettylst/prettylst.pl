@@ -210,6 +210,7 @@ my %conversion_enable =
 	'ALL:ADD Syntax Fix'			=> 0,			#[1678577 ] ADD: syntax no longer uses parens
 	'ALL:PRESPELLTYPE Syntax'		=> 0,			#[1678570 ] Correct PRESPELLTYPE syntax
 	'ALL:Convert ADD:SA to ADD:SAB'	=> 0,			#[ 1864711 ] Convert ADD:SA to ADD:SAB
+	'CLASS:no more HASSPELLFORMULA'	=> 0,			#[ 1973497 ] HASSPELLFORMULA is deprecated
 
 );
 
@@ -355,6 +356,9 @@ $logging = Ewarn->new(warning_level=>$cl_options{warning_level});
 if ( $cl_options{convert} ) {
 	if ( $cl_options{convert} eq 'ADD:SAB' ) {
 		$conversion_enable{'ALL:Convert ADD:SA to ADD:SAB'} = 1;
+	}
+	elsif ( $cl_options{convert} eq 'pcgen60' ) {
+	$conversion_enable{'CLASS:no more HASSPELLFORMULA'} = 1;
 	}
 	elsif ( $cl_options{convert} eq 'RACETYPE' ) {
 			$conversion_enable{'RACE:TYPE to RACETYPE'} = 1;
@@ -3445,8 +3449,8 @@ if ( $conversion_enable{'PCC:GAME to GAMEMODE'} ) {
 
 if ( $conversion_enable{'ALL:BONUS:MOVE convertion'} ) {
 	push @{ $master_order{'CLASS'} },		'BONUS:MOVE:*';
-	push @{ $master_order{'CLASS Level'} },   'BONUS:MOVE:*';
-	push @{ $master_order{'COMPANIONMOD'} },  'BONUS:MOVE:*';
+	push @{ $master_order{'CLASS Level'} },	'BONUS:MOVE:*';
+	push @{ $master_order{'COMPANIONMOD'} },	'BONUS:MOVE:*';
 	push @{ $master_order{'DEITY'} },		'BONUS:MOVE:*';
 	push @{ $master_order{'DOMAIN'} },		'BONUS:MOVE:*';
 	push @{ $master_order{'EQUIPMENT'} },	'BONUS:MOVE:*';
@@ -4255,7 +4259,7 @@ my %tagheader = (
 		'ABB'				=> 'Abbreviation',
 		'ALLOWBASECLASS',		=> 'Base class as subclass?',
 		'HASSUBSTITUTIONLEVEL'	=> 'Substitution levels?',
-		'HASSPELLFORMULA'		=> 'Spell Fomulas?',		# [ 1893279 ] HASSPELLFORMULA Class Line tag # [ 1973497 ] HASSPELLFORMULA is deprecated
+#		'HASSPELLFORMULA'		=> 'Spell Fomulas?',		# [ 1893279 ] HASSPELLFORMULA Class Line tag # [ 1973497 ] HASSPELLFORMULA is deprecated
 		'ITEMCREATE'		=> 'Craft Level Mult.',
 		'LEVELSPERFEAT'		=> 'Levels per Feat',
 		'MODTOSKILLS'		=> 'Add INT to Skill Points?',
@@ -9426,14 +9430,14 @@ sub scan_for_deprecated_tags {
 		);
 	}
 
-#	# [ 1973497 ] HASSPELLFORMULA is deprecated
-#	if ( $line =~ /\sHASSPELLFORMULA\s/ ) {
-#		$logging->ewarn( $error_level,
-#			qq{HASSPELLFORMULA is no longer needed and is deprecated in PCGen 5.15},
-#			$file_for_error,
-#			$line_for_error
-#		);
-#	}
+	# [ 1973497 ] HASSPELLFORMULA is deprecated
+	if ( $line =~ /\sHASSPELLFORMULA/ ) {
+		$logging->ewarn( WARNING,
+			qq{HASSPELLFORMULA is no longer needed and is deprecated in PCGen 5.15},
+			$file_for_error,
+			$line_for_error
+		);
+	}
 
 	if ( $line =~ /[\d+|\)]MAX\d+/ ) {
 		$logging->ewarn( $error_level,
@@ -12080,6 +12084,15 @@ BEGIN {
 		$logging->ewarn( WARNING, qq{Removed MOVE tags}, $file_for_error, $line_for_error );
 		delete $line_ref->{'MOVE'};
 		}
+
+		if (   $conversion_enable{'CLASS:no more HASSPELLFORMULA'}
+		&& $filetype eq "CLASS"
+		&& exists $line_ref->{'HASSPELLFORMULA'} )
+		{
+		$logging->ewarn( WARNING, qq{Removed deprecated HASSPELLFORMULA tags}, $file_for_error, $line_for_error );
+		delete $line_ref->{'HASSPELLFORMULA'};
+		}
+		 
 
 		##################################################################
 		# Every RACE that has a Climb or a Swim MOVE must have a
@@ -14794,6 +14807,16 @@ Here are the list of the valid convertions so far:
 
 =over 12
 
+=item B<pcgen60>
+
+=over 16
+
+Use to change a number of conversions needed for stable 6.0
+
+=item * [ 1973497 ] HASSPELLFORMULA is deprecated
+
+=over 12
+
 =item B<pcgen5120>
 
 =over 16
@@ -15271,6 +15294,8 @@ See L<http://www.perl.com/perl/misc/Artistic.html>.
 =head1 VERSION HISTORY
 
 =head2 v1.40 -- -- NOT YET RELEASED
+
+[ 1973497 ] HASSPELLFORMULA is deprecated
 
 [ 1778050 ] MOVECLONE now only has 3 args
 
