@@ -1,0 +1,20 @@
+Fantasy Character Sheet
+
+This package has been created to allow you to use the Fantasy Character Sheet, as seen in the Character Sheet tab of PCGen, as a stand alone HTML sheet you can export your characters to. This sheet is different from most of our sheets because it relies on graphics instead of just html alone and thus depends on having the correct relational links to those graphics to work. Inside the program in the Character Sheet tab this is not a problem, when a PC is exported the user can save the file anywhere and so PCGen has no way of knowing the file path to link back to the graphics. This package will allow you to set things up on your system so that the sheet will function as intended.
+
+Step 1: Copy the file "csheet_fantasy_character_sheet.html" into the following PCGen directory:
+
+outputsheets/d20/fantasy/htmlxml
+
+The sheet will now be an export option when choosing the Standard export.
+
+Step 2: Move or copy the "Fantasy_Character_Sheet_Graphics" folder to the directory that you will be saving your exported character sheet into. As long as this folder is in the same directory as your character sheets the graphics will load and the javascript will function as intended.
+
+Note: In the Output panel of the Preferences you can select a default html sheet, this sheet is then used when you click the Print or Preview buttons. PCGen exports the page with the selected sheet to a temporary location and opened it within your prefered browser. This temporary location can very from system to system, in order for the csheet_fantasy_character_sheet.html to function correctly with the Print and Preview buttons the Fantasy_Character_Sheet_Graphics folder will need to be copied into the temporary location as well.
+
+Enjoy!
+
+-- 
+~ Eddy Anthony (MoSaT)
+~ PCGen Data, Docs & Tracker Chimp
+~ Outputsheet Tamarin & Mac build guru
