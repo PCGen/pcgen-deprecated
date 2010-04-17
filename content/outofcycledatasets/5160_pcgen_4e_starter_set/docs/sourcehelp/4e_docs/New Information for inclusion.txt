@@ -1,0 +1,66 @@
+
+
+// Eric, have some more information to include in the general docs and 4e docs.
+
+
+OUTPUTSHEETS:
+
+
+Greetings. To support our D&D fourth edition and Starwars Homebrew users I've added the following features for your use.
+
+Fourth Edition Powers
+
+To get At Will, Daily, Encounter and Utility powers to display in their own section, use the following
+
+At Will Power <tab> CATEGORY:Special Ability <tab> TYPE:AtWill
+Daily Power <tab> CATEGORY:Special Ability <tab> TYPE:Daily
+Encounter Power <tab> CATEGORY:Special Ability <tab> TYPE:Encounter
+Utility Power <tab> CATEGORY:Special Ability <tab> TYPE:Utility
+
+For Starwars Saga or related homebrew users; the following sections will display
+Talents, Force Powers and Force Techniques
+
+Talent		CATEGORY:Talent			TYPE:Talent
+Force Power <tab> CATEGORY:Special Ability	TYPE:ForcePower
+Force Techniques	CATEGORY:Talent			TYPE:ForceTechniques
+Force Secret	CATEGORY:Talent			TYPE:ForceSecrets
+
+
+And for General users
+
+Disadvantage <> CATEGORY:Special Ability <> TYPE:Disadvantage
+
+
+NOTE: You will need to make sure you have set up the following ABILITYCATEGORY for those to work
+
+ABILITYCATEGORY:Talent <> CATEGORY:Talent
+ABILITYCATEGORY:Sub Talent <> CATEGORY:Talent <> TYPE:Talent
+#
+ABILITYCATEGORY:At-Will Power <> CATEGORY:Special Ability <> TYPE:AtWill
+ABILITYCATEGORY:Daily Power <> CATEGORY:Special Ability <> TYPE:Daily
+ABILITYCATEGORY:Encounter Power <> CATEGORY:Special Ability <> TYPE:Encounter
+ABILITYCATEGORY:Utility Power <> CATEGORY:Special Ability <> TYPE:Utility
+#
+ABILITYCATEGORY:Force Power <> CATEGORY:Special Ability <> TYPE:ForcePower
+ABILITYCATEGORY:Force Techniques <> CATEGORY:Talent <> TYPE:ForceTechniques
+ABILITYCATEGORY:Force Secrets <> CATEGORY:Talent <> TYPE:ForceSecrets
+#
+ABILITYCATEGORY:Disadvantage <> CATEGORY:Special Ability <> TYPE:Disadvantage
+
+
+# Aspects Supported
+
+ASPECTS Supported:
+Power Use
+Power Type
+Action Type
+Special
+Trigger
+Target
+Attack
+Hit
+Miss
+Effect
+Sustain
+
+NOTE: Aspects Support is not in Utility.
