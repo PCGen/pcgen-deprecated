@@ -13,16 +13,13 @@ Now for the hard part.  Start TextPad.  Under Configure tab is the "New Document
 
 PcGen
 *.pcc, *.lst
-Enable Syntex Highlighting and select the PcGen.syn Syntex Highlighting file
+Enable Syntax Highlighting and select the PcGen.syn Syntax Highlighting file
 Click Finish
 
 Go back under Configure and open the Preferences tab.  Open Document Classes and click on the PcGen entry.
 
-First page, click on the "Maintain Indention", "Strip training spaces when saving", "Save with no breaks in lines", "Check spelling of everything", Default Encoding as ANSI, Save as PC.
+First page, click on the "Maintain Indentation", "Strip training spaces when saving", "Save with no breaks in lines", "Check spelling of everything", Default Encoding as ANSI, Save as PC.
 
 Jump to Colors age and change the keywords to what you like, but "Keyword 6" needs to be red background and green letter, or something that stands out.  Keyword 6 is the "deprecate or incorrect words" if you have red backlit 
-words you are using something your not suposed to be using.  Check the docs directory for more information, or check the trackers page at https://sourceforge.net/projects/pcgen/
-
-Open a PcGen file and see what Syntex Highlighting does for you.
-
-
+words you are using something your not supposed to be using.  Check the docs directory for more information, or check the issues page at http://jira.pcgen.org
+Open a PcGen file and see what Syntax Highlighting does for you.

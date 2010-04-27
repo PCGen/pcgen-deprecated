@@ -37,8 +37,8 @@ $title = basename($_SERVER['PHP_SELF'], '.php');
         <li><a href="https://sourceforge.net/project/project_donations.php?group_id=25576">Donate!</a></li>
         <li><a href="https://sourceforge.net/account/login.php">SF Login</a></li>
         <li><a href="https://sourceforge.net/projects/pcgen/">SF Project Page</a></li>
-        <li><a href="https://sourceforge.net/tracker/?atid=384719&amp;group_id=25576&amp;func=browse" title="You must log into SourceForge in order to report a bug.">Report Bug</a></li>
-        <li><a href="https://sourceforge.net/tracker/?atid=384722&amp;group_id=25576&amp;func=browse" title="You must log into SourceForge in order to request a new feature.">Request Feature</a></li>
+        <li><a href="http://jira.pcgen.org" title="You must log into JIRA in order to report a bug.">Report Bug</a></li>
+        <li><a href="http://jira.pcgen.org" title="You must log into JIRA in order to request a new feature.">Request Feature</a></li>
         <li><a href="http://pcgen.svn.sourceforge.net/viewvc/pcgen/" title="SourceForge SVN Repository">SVN</a></li>
     </ul>
 </div> <!-- div pagemenu -->
@@ -69,7 +69,7 @@ else
     exit;
 }
 
-// $tabs = array('news', 'overview', 'downloads', 'support', 'email_lists', 'trackers');
+// $tabs = array('news', 'overview', 'downloads', 'support', 'email_lists', 'issues');
 reset ($tabs);
 
 foreach ($tabs as $tab)

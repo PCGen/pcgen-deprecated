@@ -155,6 +155,8 @@ function writeStatItems($url)
                 $title  = substr($title, 27);
                 echo "Forums: $title<br />\n";
             }
+            // Karianna 26/04/2010 - comment out deprecated SF tracker RSS feeds
+            /*
             else if (strpos(strtolower($title), "tracker: bugs") === 0)
             {
                 $title  = substr($title, 13);
@@ -170,6 +172,7 @@ function writeStatItems($url)
                 $title  = substr($title, 25);
                 echo "Support Requests: $title<br />\n";
             }
+            */
         }
     }
 }
