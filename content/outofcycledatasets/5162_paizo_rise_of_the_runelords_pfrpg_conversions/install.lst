@@ -1,0 +1,25 @@
+CAMPAIGN:Paizo - Rise of the Runelords - Pathfinder Conversion Sets Chapters 2-6
+MINVER:5.16.2
+MINDEVVER: 5.17.0
+DEST:DATA
+
+PUBNAMELONG:Paizo Publishing
+PUBNAMESHORT:Paizo
+PUBNAMEWEB:http://paizo.com/
+SOURCELONG:Rise of the Runelords Pathfinder Conversion Sets Chapters 2-6
+SOURCESHORT:RRPG
+SOURCEWEB:http://paizo.com
+SOURCEDATE:2007-08
+
+INFOTEXT:This installer installs Pathfinder RPG conversion sets for chapters 2 through 6 of the Rise of the Runelords adventure paths. These sets require that you also have installed the Pathfinder RPG and Bestiary installer (release 6) which also installs the Players Guide and Chapter 1 of Rise of the Runelords.
+
+COPYRIGHT:Open Game License v 1.0 Copyright 2000, Wizards of the Coast, Inc.
+COPYRIGHT:System Reference Document. Copyright 2000. Wizards of the Coast, Inc; Authors Jonathan Tweet, Monte Cook, Skip Williams, based on material by E. Gary Gygax and Dave Arneson.
+COPYRIGHT:Rise of the Runelords Player's Guide. Copyright 2007 Paizo Publishing LLC. Author F. Wesley Schneider.
+COPYRIGHT:Pathfinder 1: Burnt Offerings. Copyright 2007 Paizo Publishing LLC. Author: James Jacobs
+COPYRIGHT:Pathfinder 2: The Skinsaw Murders. Copyright 2007 Paizo Publishing LLC. Author: Richard Pett
+COPYRIGHT:Pathfinder 3: The Hook Mountain Massacre. Copyright 2007 Paizo Publishing LLC.
+COPYRIGHT:Pathfinder 4: Fortress of the Stone Giants, Copyright 2007, Paizo Publishing, LLC; Author Wolfgang Baur.
+COPYRIGHT:Pathfinder 5: Sins of the Saviors, Copyright 2007, Paizo Publishing, LLC; Author: Stephen S. Greer.
+COPYRIGHT:Pathfinder 6: Spires of Xin-Shalast, Copyright 2008, Paizo Publishing, LLC; Author: Greg A. Vaughan.
+COPYRIGHT:This dataset uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This dataset is not published, endorsed, or specifically approved by Paizo Publishing. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Publishing and Paizo products, please visit paizo.com.
