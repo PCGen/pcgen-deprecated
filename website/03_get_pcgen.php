@@ -2,6 +2,30 @@
 
 require_once('include/header.php.inc');
 
+function nth_position($str, $letter, $n, $offset = 0)
+{
+    $str_arr = str_split($str);
+    $letter_size = array_count_values(str_split(substr($str, $offset)));
+    if( !isset($letter_size[$letter]))
+	{
+        trigger_error('letter "' . $letter . '" does not exist in ' . $str . ' after ' . $offset . '. position', E_USER_WARNING);
+        return false;
+    }
+	else if($letter_size[$letter] < $n)
+	{
+        trigger_error('letter "' . $letter . '" does not exist ' . $n .' times in ' . $str . ' after ' . $offset . '. position', E_USER_WARNING);
+        return false;
+    }
+    for($i = $offset, $x = 0, $count = (count($str_arr) - $offset); $i < $count, $x != $n; $i++)
+	{
+        if($str_arr[$i] == $letter)
+		{
+            $x++;
+        }
+    }
+    return $i - 1;
+}
+
 function writePcgenFileItems($url, $viewProd, $maxRecs)
 {
     if ($url)
@@ -10,32 +34,40 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         $outCount = 0;
         $prevVerNum = array(0,0,0);
 
+        $ver2 = '';
         foreach ($rss->items as $item)
-        {
+		{
             $title  = $item['title'];
             $title  = strtolower($title);
             $title  = str_replace("_", " ", $title);
             $title  = str_replace("<br>", "<br /> ", $title);
             $title  = ucwords($title);
-
-            $findme = 'Released';
-            $found  = strpos($title, $findme);
-            $title  = substr($title, 0, $found);
-
-            $found  = strpos($title, " ");
-            $ver    = substr($title, $found);
-            $verNum = split("\.", $ver);
+			$found = nth_position($title, '/', 2);
+			$found2 = nth_position($title, '/', 3);
+			$ver    = substr($title, $found + 1, $found2 - $found - 1);
+			if ($ver != $ver2)
+			{
+			    $ver2 = $ver;
+				$display = true;
+			}
+			else
+			{
+				$display = false;
+			}
+			
+			// Check its PRD status
+			$verNum = split("\.", $ver);
             $isProd = false;
             $isSnapshot = false;
             if (count($verNum > 1))
             {
-              if ($verNum[1] % 2 == 0)
-              {
-                if (strpos(strtolower($title), "rc") == 0)
+                if ($verNum[1] % 2 == 0)
                 {
-                  $isProd = true;
+                    if (strpos(strtolower($title), "rc") == 0)
+                    {
+                        $isProd = true;
+                    }
                 }
-              }
             }
             if (strpos(strtolower($title), "snapshot") != 0)
             {
@@ -49,35 +81,22 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
             	$isProd = false;
             }
 
-			if (($outCount < $maxRecs) && !$isSnapshot && (($viewProd && $isProd) || (!$viewProd && !$isProd)))
+			if (($outCount < $maxRecs) && !$isSnapshot && (($viewProd && $isProd) || (!$viewProd && !$isProd)) && $display)
 			{
-              $pub    = date("Y-m-d", strtotime($item['pubdate']));
+                $pub    = date("Y-m-d", strtotime($item['pubdate']));
+				$href   = 'http://sourceforge.net/projects/pcgen/files/PCGen%20Unstable/';
+				$ver = str_replace("Rc", "RC", $ver);
+	    	    echo "<h3><a href='$href$ver'>$ver</a></h3>\n";
+	    	    echo "Released: $pub\n";
+                $outCount++;
 
-              $desc   = substr($item['description'], 2);
-              $findme = '<br>';
-              $found  = (4 + strpos($desc, $findme));
-              $desc   = substr($desc, $found);
-              $desc   = str_replace("<br>", "<br /> ", $desc);
-              $desc   = str_replace("),", "),<br /> ", $desc);
-              $desc   = str_replace("files:", "files:<br /> ", $desc);
-              $desc   = str_replace("&release_id", "&amp;release_id", $desc);
-
-              $href   = $item['link'];
-              echo "<h3>$title</h3>\n";
-
-              echo "<div class=\"published\">Released: $pub</div>\n";
-
-              echo "<p>$desc</p>\n";
-              echo "\n";
-              $outCount++;
-
-              if ($isProd)
-              {
-              	$prevVerNum = $verNum;
-              }
+                if ($isProd)
+                {
+              	    $prevVerNum = $verNum;
+                }
             }
-        }
-    }
+		}
+	}
 }
 
 ?>
@@ -124,15 +143,13 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <p>These are development milestone releases designed to display the work in progress on PCGen
         and for use in testing new features. Use at own risk. Basic functionality is tested before
         each alpha and beta build though.
-        </p><!--  <p>The beta releases have all of the features of the next production release of PCGen,
-        and work focuses on fixing bugs and getting the program ready for a production release.<br /> -->
-        <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689" style="font-size: 80%;">[View Older Alpha and Beta Releases]</a>
         </p>
 <?php
-
-writePcgenFileItems("http://sourceforge.net/export/rss2_projfiles.php?group_id=25576&rss_limit=20", false, 5);
-
+writePcgenFileItems("http://sourceforge.net/api/file/index/project-id/25576/mtime/desc/rss?path=/PCGen%20Unstable", false, 5);
 ?>
+		<p>
+        <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689" style="font-size: 80%;">[View Older Alpha and Beta Releases]</a>
+        </p>
 
         <h2>Option 3. Nightly Builds<a class="" title="autobuild" name="autobuild"></a></h2>
         <p>Autobuilds are compilations of the PCGen program and data taken
