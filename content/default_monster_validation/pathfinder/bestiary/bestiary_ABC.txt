@@ -6,11 +6,11 @@ Aasimar: Valid
 
 Aboleth: Valid
 
-Angel (Astral Deva): Has 15 skill points left to allocate.
+Angel (Astral Deva): Does not have enough skill points by 2 for the bonuses listed.
 
 Angel (Planetar): Valid
 
-Angel (Solar): Speed does not reflect armor penalties, reads: Speed 50 ft., fly 150 ft. (good); should be  35 ft. (in armor) Fly 100 ft. (in armor) (Good)
+Angel (Solar): Valid
 
 Animated Object: Valid
 
@@ -20,30 +20,30 @@ Ant (Giant): Valid
 
 Ant (Army/Swarm): Valid
 
-Ape (Gorilla): CMB off, listed: CMB +6; CMD 18, should be CMB +5; CMD 17
+Ape (Gorilla): Valid
 
 Ape (Dire): Valid
 
 Archon (Hound): Valid
 
-Archon (Lantern): Aura of Menace DC should be 13,
+Archon (Lantern): Valid
 
-Archon (Trumpet): attack line:  Melee +4 greatsword +23/+18/+13 (2d6+11/19-20)  (was missing the /19-20 part)
+Archon (Trumpet): Valid
 
 Assassin Vine: Valid
 
-Azata (Bralani): Has 2 skill points left over when the stats are maxed and Fly only has 5 point not the Max 7. Fly can be maxed to +22
+Azata (Bralani): Valid
 
-Azata (Ghaele): Has 1 too many spells listed for Cleric prepared spell levels 1 and 2.
+Azata (Ghaele): Valid
 
-Azata (Lillend): Can pick 1 more 3rd level spell
+Azata (Lillend): Can pick 1 more 1st level spell
 
 
 ###Block: B
 
 Barghest: Valid
 
-Barghest (Greater): Claw attack bonus should be +14
+Barghest (Greater): Valid
 
 Basidirond: Valid
 
@@ -63,7 +63,7 @@ Beetle (Fire): Valid
 
 Beetle (Giant Stag): Valid
 
-Behir: Perception should be +8
+Behir: Valid
 
 Black Pudding: Valid
 
@@ -71,9 +71,9 @@ Boar: Valid
 
 Boar (Dire): Valid
 
-Boggard: Acrobatics should be +18 jumping if he gets +16 Acrobatics when jumping and starts with +2 as listed
+Boggard: Valid
 
-Bugbear: Stealth should be +9 (missing -1 for armor)
+Bugbear: Valid
 
 Bulette: Valid
 
@@ -86,7 +86,7 @@ Cat (Leopard): Valid
 
 Cave Fisher: Valid
 
-Centaur: Speed should be 35 with armor
+Centaur: Valid
 
 Centipede (Giant): Valid
 
@@ -98,7 +98,7 @@ Choker: Valid
 
 Chuul: Has 3 skill points left to allocate
 
-Cloaker: Has 3 skill points left to allocate
+Cloaker: Valid
 
 Cockatrice: Valid
 
@@ -112,4 +112,4 @@ Crocodile: Valid
 
 Crocodile (Dire): Valid
 
-Cyclops: Should have iterative attacks: greataxe +11/+6
+Cyclops: Has 3 skill points left to allocate
