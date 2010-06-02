@@ -15,10 +15,10 @@ Familiar (Owl): Valid
 
 Familiar (Rat): Valid
 
-Familiar (Raven): Fly skill should be +6, Doesn't need and can't have Skill Focus (Perception), that's one to many feats
+Familiar (Raven): Doesn't need and can't have Skill Focus (Perception), that's one to many feats
 
 Familiar (Viper): Valid
 
 Familiar (Toad): Valid
 
-Familiar (Weasel): Escape Artist should be +3 not +6 (it's not a class skill)
+Familiar (Weasel): Valid

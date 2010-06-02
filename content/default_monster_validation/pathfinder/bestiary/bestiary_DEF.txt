@@ -2,11 +2,11 @@ Bestiary D, E & F
 
 ###Block: D
 
-Dark Creeper: Stealth should be +12 (missing +4 size modifier?)
+Dark Creeper: Valid
 
 Dark Stalker: Valid
 
-Darkmantle: None of the derived stats add up correctly for the Str (11) and Dex (15) presented. AC should be 15 (missing +2 dex). Ref save should be +5. Slam should be +3 (1d4). CMB +1 (+5 grapple); CMD +13. Looks like the values listed for STR and DEX are in error, if I change them to STR 17 and DEX 11 the number add up. The skill bonuses are off as well but I don't know exactly where without knowing the correct Ability stats but I think Stealth is missing the +3 bonus for being a class skill (if DEX = 11).
+Darkmantle: Valid
 
 Demon (Babau): Valid
 
@@ -32,7 +32,7 @@ Demon (Succubus): Valid
 
 Demon (Vrock): Valid
 
-Derro: small light crossbow should do 1d6 damage
+Derro: Valid
 
 Devil (Barbed): Valid
 
@@ -52,11 +52,11 @@ Devil (Lemure): Valid
 
 Devil (Pit Fiend): Valid
 
-Devourer: Not enough skill points (by 7) for all the displayed skill bonuses
+Devourer: Valid
 
 Dinosaur (Ankylosaurus): Valid
 
-Dinosaur (Brachiosaurus): Perception should be +28
+Dinosaur (Brachiosaurus): Valid
 
 Dinosaur (Deinonychus): Valid
 
@@ -66,7 +66,7 @@ Dinosaur (Pteranodon): Perception should be +13, CMD should be 22
 
 Dinosaur (Stegosaurus): Valid
 
-Dinosaur (Triceratops): Perception should be +24
+Dinosaur (Triceratops): Valid
 
 Dinosaur (Tyrannosaurus): Valid
 
@@ -84,13 +84,13 @@ Dragon Turtle: Valid
 
 Drider: Valid
 
-Drow: rapier should be +2 (-1 due to the shield armor check penalty applied to to hit bonus per Weapon Finesse)
+Drow: Valid
 
-Drow Noble: rapier should be +4 (-2 due to the shield armor check penalty applied to to hit bonus per Weapon Finesse), hit points should be 23 (3d8)+6, not enough skill points for the skills listed (has 6, needs 9 to get the bonuses shown)
+Drow Noble: Valid
 
 Dryad: Valid
 
-Duergar: Hit points should be 13 (1d10)+3, Skills should be Intimidate +1, Stealth -3
+Duergar: Valid
 
 
 ###Block: E
@@ -133,7 +133,7 @@ Elemental (Fire/Medium): Valid
 
 Elemental (Fire/Large): Valid
 
-Elemental (Fire/Huge): Fort save should be +10, Burn DC should be 18
+Elemental (Fire/Huge): Valid
 
 Elemental (Fire/Greater): Valid
 
@@ -166,7 +166,7 @@ Flytrap (Giant): Valid
 
 Frog (Giant): Valid
 
-Frog (Poison): CMD should be 5
+Frog (Poison): Valid
 
-Froghemoth: Swim should be +18, Swallow Whole AC should be 19
+Froghemoth: Valid
 
