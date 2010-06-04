@@ -4,11 +4,11 @@ Bestiary G, H & I
 
 Gargoyle: Valid
 
-Gelatinous Cube: CMD should be 9
+Gelatinous Cube: Valid
 
 Genie (Djinni): Valid
 
-Genie (Efreeti): Has 1 more skill point than he should
+Genie (Efreeti): Valid
 
 Genie (Janni): Valid
 
@@ -16,15 +16,15 @@ Genie (Marid): Valid
 
 Genie (Shaitan): Valid
 
-Ghost: Reflex save should be +5
+Ghost: Valid
 
 Ghoul: Valid
 
 Giant (Cloud): Valid
 
-Giant (Fire): AC should be 23 (Half-plate is +8)
+Giant (Fire): Valid
 
-Giant (Frost): Has 3 skill points left to spend
+Giant (Frost): Has 6 skill points left to spend
 
 Giant (Hill): Valid
 
@@ -34,11 +34,11 @@ Giant (Storm): Valid
 
 Gibbering Mouther: Valid
 
-Girallon: CMB should be +12; CMD should be 25 
+Girallon: Valid
 
 Gnoll: Valid
 
-Goblin: Skills should be Ride +9, Swim +3 (missing shield penalty) Attack bonuses missing the +1 for size
+Goblin: Skills should be Ride +9, Swim +3 (missing shield penalty).
 
 Goblin Dog: Valid
 
@@ -52,7 +52,7 @@ Golem (Iron): Valid
 
 Golem (Stone): Valid
 
-Golem (Wood): Should not have a CON score, Will save should be +5
+Golem (Wood): Valid
 
 Gorgon: Valid
 
@@ -60,7 +60,7 @@ Gray Ooze: Valid
 
 Green Hag: Valid
 
-Griffon: Has 1 more skill point to spend
+Griffon: Valid
 
 
 ###Block: H
@@ -75,21 +75,21 @@ Harpy: Valid
 
 Hell Hound: Valid
 
-Hell Hound (Nessian): Acrobatics should be +12, Stealth should be +19, Does the Speed account for Armor penalties? 
+Hell Hound (Nessian): Acrobatics should be +12, Stealth should be +19, Does the Speed account for Armor penalties? Need to know what armor is used to calculate penalties.
 
 Herd Animal (Aurochs): Valid
 
 Herd Animal (Bison): Valid
 
-Hobgoblin: Attacks should be Longbow +3, Longsword +4, Stealth should be +8
+Hobgoblin: Stealth should be +8
 
-Homunculus: CMD should be +2
+Homunculus: Valid
 
 Horse: Valid
 
 Horse (Pony): Valid
 
-Hydra: Fort save should be +8
+Hydra: Valid
 
 Hyena: Valid
 
@@ -100,6 +100,6 @@ Hyena (Dire): Valid
 
 Intellect Devourer: Valid
 
-Invisible Stalker: Fort save should be +11
+Invisible Stalker: Valid
 
 Iron Cobra: Valid
