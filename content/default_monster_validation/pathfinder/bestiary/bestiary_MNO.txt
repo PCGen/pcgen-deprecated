@@ -9,17 +9,17 @@ Mantis (Giant): Valid
 
 Medusa: Valid
 
-Mephit: AC should 17 (+1 for Dodge feat)
+Mephit: Valid
 
-Merfolk: heavy crossbow does 1d10 damage
+Merfolk: Valid
 
-Mimic: Knowledge (Dungeoneering) should be +10, Perception should be +14
+Mimic: Valid
 
 Minotaur: Valid
 
 Mite: Valid
 
-Mohrg: Perception should be +23
+Mohrg: Valid
 
 Morlock: Valid
 
@@ -28,11 +28,11 @@ Mummy: Valid
 
 ###Block: N
 
-Naga (Dark): Has 9 skill points left to spend, bite damage should be 1d4+2
+Naga (Dark): Has 3 skill points left to spend
 
-Naga (Guardian): Has 3 skill points left to spend,
+Naga (Guardian): Has 3 skill points left to spend
 
-Naga (Spirit): Should have Stabilize instead of Cure Minor Wounds for 0 level spell
+Naga (Spirit): Valid
 
 Neothelid: Valid
 
@@ -53,11 +53,11 @@ Octopus: Valid
 
 Octopus (Giant): Valid
 
-Ogre: Perception should be +5 (missing class skill bonus?)
+Ogre: Valid
 
 Oni (Ogre Mage): Valid
 
-Orc: falchion should be +5 to hit
+Orc: Valid
 
 Otyugh: Valid
 

@@ -3,9 +3,9 @@ Bestiary V & W
 
 ###Block: V
 
-Vampire: The sample vampire has 1 more feat than she should have. Also, she has skill ranks as if the vampire template was applied before class levels were added (and gained 5 skill points from the +2 INT), but the Vampite template says it can be applied to creatures with 5 or more HD.
+Vampire: The sample vampire has 1 more feat than she should have.
 
-Vargouille: Should have AC 15, stats are missing the +1 for Small Size.
+Vargouille: Valid
 
 Vegepygmy: Valid
 
@@ -20,7 +20,7 @@ Wasp Swarm: Valid
 
 Wight: Valid
 
-Will-o'-Wisp: Perception should be +17, missing the +2 from the Alertness feat.
+Will-o'-Wisp: Valid
 
 Wolf: Valid
 

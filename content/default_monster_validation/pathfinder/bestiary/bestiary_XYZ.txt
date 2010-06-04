@@ -3,7 +3,7 @@ Bestiary X, Y & Z
 
 ###Block: X
 
-Xill: Stealth should be +14 (missing shield penalty)
+Xill: Valid
 
 Xorn: Valid
 

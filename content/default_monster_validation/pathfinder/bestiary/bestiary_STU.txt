@@ -6,13 +6,13 @@ Sahuagin: Valid
 
 Salamander: Valid
 
-Satyr: AC should be 18 (missing +1 from Dodge feat), Perform (Wind Instruments) should be +19
+Satyr: Valid
 
 Scorpion (Giant): Valid
 
 Sea Hag: Valid
 
-Sea Serpent: Doesn't say which attack Improved Critical was applied to
+Sea Serpent: bite damage should be 4d8+12/19Ð20 plus grab, (not 4d8+22)
 
 Shadow: Valid
 
@@ -40,7 +40,7 @@ Snake (Constrictor): Valid
 
 Snake (Venomous): Valid
 
-Spectre: Incorporal Touch attack bonus should be +12
+Spectre: Valid
 
 Sphinx (Gynosphinx): Valid
 
@@ -67,9 +67,9 @@ Tiefling: Valid
 
 Tiger: Valid
 
-Tiger (Dire): There are unused skill points, Stealth cannot be +8, it's +5 with no ranks or +9 with 1 rank. Should be +15 if all the unspent point were used for Stealth (7 ranks)
+Tiger (Dire): Valid
 
-Treant: Rock damage should be rock 2d6+13
+Treant: Has 4 skill points left to spend
 
 Troglodyte: Valid
 

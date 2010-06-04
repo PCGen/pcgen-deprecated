@@ -17,7 +17,7 @@ Purple Worm: Valid
 
 ###Block: R
 
-Rakshasa:  Kukri damage should be 1d4+4
+Rakshasa:  Valid
 
 Rat (Dire): Valid
 
