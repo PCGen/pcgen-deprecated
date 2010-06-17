@@ -96,8 +96,8 @@ public class TypeLst extends AbstractToken implements
 				if (bRemove)
 				{
 					Logging.log(Logging.LST_ERROR,
-							"Non-sensical use of .REMOVE.ADD. in "
-									+ getTokenName() + ": " + value);
+						"Non-sensical use of .REMOVE.ADD. in " + getTokenName()
+							+ ": " + value);
 					return false;
 				}
 				bRemove = false;
@@ -108,8 +108,8 @@ public class TypeLst extends AbstractToken implements
 				if (bAdd)
 				{
 					Logging.log(Logging.LST_ERROR,
-							"Non-sensical use of .ADD.REMOVE. in "
-									+ getTokenName() + ": " + value);
+						"Non-sensical use of .ADD.REMOVE. in " + getTokenName()
+							+ ": " + value);
 					return false;
 				}
 				bRemove = true;
@@ -117,14 +117,14 @@ public class TypeLst extends AbstractToken implements
 			else if ("CLEAR".equals(aType))
 			{
 				Logging.errorPrint("Non-sensical use of .CLEAR in "
-						+ getTokenName() + ": " + value);
+					+ getTokenName() + ": " + value);
 				return false;
 			}
 			else if (bRemove)
 			{
 				Type type = Type.getConstant(aType);
 				context.getObjectContext().removeFromList(cdo, ListKey.TYPE,
-						type);
+					type);
 				bRemove = false;
 			}
 			else
@@ -137,15 +137,14 @@ public class TypeLst extends AbstractToken implements
 		if (bRemove)
 		{
 			Logging.errorPrint(getTokenName()
-					+ "ended with REMOVE, so didn't have any Type to remove: "
-					+ value);
+				+ "ended with REMOVE, so didn't have any Type to remove: "
+				+ value);
 			return false;
 		}
 		if (bAdd)
 		{
 			Logging.log(Logging.LST_ERROR, getTokenName()
-					+ "ended with ADD, so didn't have any Type to add: "
-					+ value);
+				+ "ended with ADD, so didn't have any Type to add: " + value);
 			return false;
 		}
 		return true;
@@ -153,8 +152,8 @@ public class TypeLst extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMObject cdo)
 	{
-		Changes<Type> changes = context.getObjectContext().getListChanges(cdo,
-				ListKey.TYPE);
+		Changes<Type> changes =
+				context.getObjectContext().getListChanges(cdo, ListKey.TYPE);
 		if (changes == null || changes.isEmpty())
 		{
 			return null;
@@ -174,14 +173,24 @@ public class TypeLst extends AbstractToken implements
 			}
 			sb.append(StringUtil.join(added, Constants.DOT));
 		}
+		Collection<Type> removed = changes.getRemoved();
+		if (removed != null && !removed.isEmpty())
+		{
+			if (sb.length() > 0)
+			{
+				sb.append(Constants.DOT);
+			}
+			sb.append("REMOVE.");
+			sb.append(StringUtil.join(removed, Constants.DOT));
+		}
 		if (sb.length() == 0)
 		{
 			context.addWriteMessage(getTokenName()
-					+ " was expecting non-empty changes to include "
-					+ "added items or global clear");
+				+ " was expecting non-empty changes to include "
+				+ "added items or global clear");
 			return null;
 		}
-		return new String[] { sb.toString() };
+		return new String[]{sb.toString()};
 	}
 
 	public Class<CDOMObject> getTokenClass()
