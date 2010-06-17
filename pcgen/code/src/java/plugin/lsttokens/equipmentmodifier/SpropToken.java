@@ -44,7 +44,7 @@ public class SpropToken extends AbstractToken implements
 	}
 
 	public boolean parse(LoadContext context, EquipmentModifier mod,
-			String value)
+		String value)
 	{
 		if (isEmpty(value) || hasIllegalSeparator('|', value))
 		{
@@ -53,7 +53,7 @@ public class SpropToken extends AbstractToken implements
 		if (Constants.LST_DOT_CLEAR.equals(value))
 		{
 			context.getObjectContext().removeList(mod,
-					ListKey.SPECIAL_PROPERTIES);
+				ListKey.SPECIAL_PROPERTIES);
 			return true;
 		}
 
@@ -63,32 +63,47 @@ public class SpropToken extends AbstractToken implements
 			return false;
 		}
 		context.getObjectContext().addToList(mod, ListKey.SPECIAL_PROPERTIES,
-				sa);
+			sa);
 		return true;
 	}
 
 	public String[] unparse(LoadContext context, EquipmentModifier mod)
 	{
-		Changes<SpecialProperty> changes = context.getObjectContext()
-				.getListChanges(mod, ListKey.SPECIAL_PROPERTIES);
-		Collection<SpecialProperty> added = changes.getAdded();
-		if (added == null || added.isEmpty())
+		Changes<SpecialProperty> changes =
+				context.getObjectContext().getListChanges(mod,
+					ListKey.SPECIAL_PROPERTIES);
+		if (changes == null || changes.isEmpty())
 		{
-			// Zero indicates no Token
 			return null;
 		}
 		List<String> list = new ArrayList<String>();
-		for (SpecialProperty sp : added)
+		Collection<SpecialProperty> added = changes.getAdded();
+		boolean globalClear = changes.includesGlobalClear();
+		if (globalClear)
 		{
-			StringBuilder sb = new StringBuilder();
-			sb.append(sp.getDisplayName());
-			if (sp.hasPrerequisites())
+			list.add(Constants.LST_DOT_CLEAR);
+		}
+		if (added != null && !added.isEmpty())
+		{
+			for (SpecialProperty sp : added)
 			{
-				sb.append(Constants.PIPE);
-				sb.append(getPrerequisiteString(context, sp
+				StringBuilder sb = new StringBuilder();
+				sb.append(sp.getDisplayName());
+				if (sp.hasPrerequisites())
+				{
+					sb.append(Constants.PIPE);
+					sb.append(getPrerequisiteString(context, sp
 						.getPrerequisiteList()));
+				}
+				list.add(sb.toString());
 			}
-			list.add(sb.toString());
+		}
+		if (list.isEmpty())
+		{
+			context.addWriteMessage(getTokenName()
+				+ " was expecting non-empty changes to include "
+				+ "added items or global clear");
+			return null;
 		}
 		return list.toArray(new String[list.size()]);
 	}
