@@ -56,9 +56,9 @@ public class MovecloneLst extends AbstractToken implements
 		if (moves.countTokens() != 3)
 		{
 			Logging.addParseMessage(Logging.LST_ERROR,
-					"Invalid Version of MOVECLONE detected: " + value
-							+ "\n  MOVECLONE has 3 arguments: "
-							+ "SourceMove,DestinationMove,Modifier");
+				"Invalid Version of MOVECLONE detected: " + value
+					+ "\n  MOVECLONE has 3 arguments: "
+					+ "SourceMove,DestinationMove,Modifier");
 			return false;
 		}
 
@@ -68,37 +68,67 @@ public class MovecloneLst extends AbstractToken implements
 
 		if (formulaString.startsWith("/"))
 		{
-			int denom = Integer.parseInt(formulaString.substring(1));
-			if (denom <= 0)
+			try
 			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				int denom = Integer.parseInt(formulaString.substring(1));
+				if (denom <= 0)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 						+ " was expecting a Positive Integer "
 						+ "for dividing Movement, was : "
 						+ formulaString.substring(1));
+					return false;
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " was expecting an integer to follow /, was : "
+					+ formulaString);
 				return false;
 			}
 		}
 		else if (formulaString.startsWith("*"))
 		{
-			int mult = Integer.parseInt(formulaString.substring(1));
-			if (mult < 0)
+			try
 			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				int mult = Integer.parseInt(formulaString.substring(1));
+				if (mult < 0)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 						+ " was expecting an "
 						+ "Integer >= 0 for multiplying Movement, was : "
 						+ formulaString.substring(1));
+					return false;
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " was expecting an integer to follow *, was : "
+					+ formulaString);
 				return false;
 			}
 		}
 		else if (formulaString.startsWith("+"))
 		{
-			int add = Integer.parseInt(formulaString.substring(1));
-			if (add < 0)
+			try
 			{
-				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+				int add = Integer.parseInt(formulaString.substring(1));
+				if (add < 0)
+				{
+					Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
 						+ " was expecting a Non-Negative "
 						+ "Integer for adding Movement, was : "
 						+ formulaString.substring(1));
+					return false;
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
+					+ " was expecting an integer to follow +, was : "
+					+ formulaString);
 				return false;
 			}
 		}
@@ -111,8 +141,8 @@ public class MovecloneLst extends AbstractToken implements
 			catch (NumberFormatException e)
 			{
 				Logging.addParseMessage(Logging.LST_ERROR, getTokenName()
-						+ " was expecting a Formula as the final value, was : "
-						+ formulaString);
+					+ " was expecting a Formula as the final value, was : "
+					+ formulaString);
 				return false;
 			}
 		}
@@ -126,16 +156,17 @@ public class MovecloneLst extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		Changes<Movement> changes = context.getObjectContext().getListChanges(
-				obj, ListKey.MOVEMENT);
+		Changes<Movement> changes =
+				context.getObjectContext()
+					.getListChanges(obj, ListKey.MOVEMENT);
 		Collection<Movement> added = changes.getAdded();
 		if (added == null || added.isEmpty())
 		{
 			// Zero indicates no Token
 			return null;
 		}
-		WeightedCollection<String> set = new WeightedCollection<String>(
-				String.CASE_INSENSITIVE_ORDER);
+		WeightedCollection<String> set =
+				new WeightedCollection<String>(String.CASE_INSENSITIVE_ORDER);
 		for (Movement m : added)
 		{
 			if (m.getMoveRatesFlag() == 2)
