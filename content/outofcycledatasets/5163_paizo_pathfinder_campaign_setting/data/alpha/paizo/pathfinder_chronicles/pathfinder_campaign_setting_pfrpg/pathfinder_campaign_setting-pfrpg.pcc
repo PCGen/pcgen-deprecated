@@ -23,7 +23,7 @@ COPYRIGHT:Art of the Duel. Copyright 2008, Sinister Adventures; Author: Craig Sh
 COPYRIGHT:Tome of Horrors Revised. Copyright 2002, Necromancer Games, Inc.; Authors: Scott Greene, with Clark Peterson, Erica Balsley, Kevin Baase, Casey Christofferson, Lance Hawvermale, Travis Hawvermale, Patrick Lawinger, and Bill Webb; Based on original content from TSR.
 COPYRIGHT:PCGen dataset conversion for "Pathfinder Chronicles: Campaign Setting" Copyright 2010, PCGen Data team (Including, but not limited to Eddy Anthony (MoSaT))
 
-COVER:pathfinder_campaign_setting.jpg
+COVER:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting.jpg
 LOGO:@/publisher_logos/Paizo_Publishing.png
 URL:WEBSITE|http://www.paizo.com/|Visit Paizo Publishing!
 URL:WEBSITE|http://www.paizo.com/communityuse|Paizo's Community Use Policy.
@@ -33,24 +33,25 @@ DESC:Golarion, the exciting world of the Pathfinder Adventure Paths and Pathfind
 #Do Not Remove Comment
 #EXTRAFILE:OGL.txt
 
-ABILITYCATEGORY:pathfinder_campaign_setting_abilitycategories.lst
+ABILITYCATEGORY:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_abilitycategories.lst
+ABILITY:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_abilities.lst
+CLASS:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_classes.lst
+DEITY:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_deities.lst
+EQUIPMENT:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_equipment.lst
+FEAT:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_feats.lst
+LANGUAGE:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_languages.lst
+RACE:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_races.lst
+TEMPLATE:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_templates.lst
+WEAPONPROF:@/alpha/paizo/pathfinder_chronicles/pathfinder_campaign_setting/pathfinder_campaign_setting_profs_weapons.lst
+
 ABILITY:pathfinder_campaign_setting_abilities_pfrpg.lst
-ABILITY:pathfinder_campaign_setting_abilities.lst
 CLASS:pathfinder_campaign_setting_classes_pfrpg.lst
-CLASS:pathfinder_campaign_setting_classes.lst
 COMPANIONMOD:pathfinder_campaign_setting_companion_mods_pfrpg.lst
-DEITY:pathfinder_campaign_setting_deities.lst
-EQUIPMENT:pathfinder_campaign_setting_equipment.lst
 FEAT:pathfinder_campaign_setting_feats_pfrpg.lst
-FEAT:pathfinder_campaign_setting_feats.lst
 KIT:pathfinder_campaign_setting_kits_npc_pfrpg.lst
-LANGUAGE:pathfinder_campaign_setting_languages.lst
 RACE:pathfinder_campaign_setting_races_pfrpg.lst
-RACE:pathfinder_campaign_setting_races.lst
 SKILL:pathfinder_campaign_setting_skills_pfrpg.lst
 TEMPLATE:pathfinder_campaign_setting_templates_pfrpg.lst
-TEMPLATE:pathfinder_campaign_setting_templates.lst
-WEAPONPROF:pathfinder_campaign_setting_profs_weapons.lst
 
 #
 # End
