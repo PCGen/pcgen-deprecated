@@ -31,10 +31,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -723,13 +725,17 @@ public class DataInstaller extends JFrame
 			
 			// Parse the install file
 			InputStream inStream = in.getInputStream(installEntry);
+			BufferedReader reader
+			   = new BufferedReader(new InputStreamReader(inStream, "UTF-8")); //$NON-NLS-1$
+			
 			StringBuffer installInfo = new StringBuffer();
-			byte[] b = new byte[512];
-			int len = 0;
-			while ((len = inStream.read(b)) != -1)
+			String line;
+			while ((line = reader.readLine()) != null)
 			{
-				installInfo.append((new String(b, "UTF8")).substring(0, len));
+				installInfo.append(line);
+				installInfo.append("\n");
 			}
+
 			final InstallLoader loader = new InstallLoader();
 			loader.loadLstString(null, dataSet.toURI(), installInfo.toString());
 			campaign = loader.getCampaign();
