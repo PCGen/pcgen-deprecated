@@ -97,7 +97,7 @@ import pcgen.util.enumeration.VisionType;
 public final class Globals
 {
 	/** These are changed during normal operation */
-	private static PlayerCharacter currentPC;
+	//private static PlayerCharacter currentPC; -- Commented out in 5.16 and removed in the trunk.
 	private static List<PlayerCharacter>            pcList      = new ArrayList<PlayerCharacter>();
 	/** Race, a s_EMPTYRACE */
 	public static  Race            s_EMPTYRACE;
@@ -560,7 +560,8 @@ public final class Globals
 	 */
 	public static void setCurrentPC(final PlayerCharacter aCurrentPC)
 	{
-		currentPC = aCurrentPC;
+		// Note: This does nothing in 5.16 and has been removed entirely in the trunk (5.17 onwards)
+		//currentPC = aCurrentPC;
 	}
 
 	/**
@@ -1510,7 +1511,7 @@ public final class Globals
 	 *                   at least one of classKey and domainKey must not be ""
 	 * @return a List of Spell
 	 */
-	public static List<Spell> getSpellsIn(final int level, List<? extends CDOMList<Spell>> spellLists)
+	public static List<Spell> getSpellsIn(final int level, List<? extends CDOMList<Spell>> spellLists, PlayerCharacter pc)
 	{
 		MasterListInterface masterLists = Globals.getMasterLists();
 		ArrayList<CDOMReference<CDOMList<Spell>>> useLists = new ArrayList<CDOMReference<CDOMList<Spell>>>();
@@ -1537,7 +1538,7 @@ public final class Globals
 				{
 					// TODO This null for source is incorrect!
 					if (PrereqHandler.passesAll(apo.getPrerequisiteList(),
-							currentPC, null))
+							pc, null))
 					{
 						int lvl = apo
 								.getAssociation(AssociationKey.SPELL_LEVEL);
@@ -1550,7 +1551,7 @@ public final class Globals
 				}
 			}
 		}
-		DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> dkmtl = currentPC
+		DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> dkmtl = pc
 				.getPCBasedLevelInfo();
 		for (Spell spell : dkmtl.getKeySet())
 		{

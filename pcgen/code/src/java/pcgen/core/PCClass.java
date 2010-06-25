@@ -519,7 +519,7 @@ public class PCClass extends PObject
 							{
 								bList = Globals.getSpellsIn(ix, Collections
 										.singletonList(cd.getDomain().get(
-												ObjectKey.DOMAIN_SPELLLIST)));
+												ObjectKey.DOMAIN_SPELLLIST)), aPC);
 							}
 						}
 					}
@@ -1513,7 +1513,7 @@ public class PCClass extends PObject
 		{
 			// Get every spell that can be cast by this class.
 			final List<Spell> cspelllist =
-					Globals.getSpellsIn(-1, getSpellLists(aPC));
+					Globals.getSpellsIn(-1, getSpellLists(aPC), aPC);
 			if (cspelllist.isEmpty())
 			{
 				return;

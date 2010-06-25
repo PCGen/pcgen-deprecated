@@ -79,7 +79,7 @@ public class PreSpellTester extends AbstractPrerequisiteTest implements
 			{
 				aArrayList.addAll(Globals.getSpellsIn(-1, Collections
 						.singletonList(aCD.getDomain().get(
-								ObjectKey.DOMAIN_SPELLLIST))));
+								ObjectKey.DOMAIN_SPELLLIST)), character));
 			}
 		}
 
