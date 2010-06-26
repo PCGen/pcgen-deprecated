@@ -250,14 +250,9 @@ public class EquipToken extends AbstractToken implements
 				.silentlyGetConstructedCDOMObject(EQUIPMENT_CLASS, o);
 		if (e != null)
 		{
-			Collection<Equipment> equipList = qo.getRawObject().getContainedObjects();
-			for (Equipment e : equipList)
-			{
-				e = e.clone();
-				e.setQty(1);
-				e.setAutomatic(true);
-				list.add(e);
-			}
+			e = e.clone();
+			e.setQty(1);
+			e.setAutomatic(true);
 			pc.addAssoc(obj, AssociationListKey.EQUIPMENT, e);
 		}
 	}
