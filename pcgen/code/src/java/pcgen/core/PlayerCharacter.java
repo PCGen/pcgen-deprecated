@@ -1571,6 +1571,14 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 		for (CDOMObject aPObj : getCDOMObjectList())
 		{
+			for (CDOMObject cdo : getCDOMObjectList())
+			{
+				 List<Equipment> equip = getAssocList(cdo, AssociationListKey.EQUIPMENT);
+				 if (equip != null)
+				 {
+					 aList.addAll(equip);
+				 }
+			}
 			List<QualifiedObject<CDOMReference<Equipment>>> spl =
 					aPObj.getSafeListFor(ListKey.EQUIPMENT);
 			for (QualifiedObject<CDOMReference<Equipment>> qo : spl)
@@ -1578,9 +1586,12 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 				CDOMReference<Equipment> ref = qo.getObject(this);
 				if (ref != null)
 				{
-					for (Equipment sp : ref.getContainedObjects())
+					for (Equipment e : ref.getContainedObjects())
 					{
-						aList.add(sp);
+						e = e.clone();
+						e.setQty(1);
+						e.setAutomatic(true);
+						aList.add(e);
 					}
 				}
 			}
