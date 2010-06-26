@@ -140,7 +140,7 @@ public class LSTConverter extends Observable
 				File base = findSubRoot(rootDir, in);
 				if (base == null)
 				{
-					Logging.log(Logging.WARNING, "Skipping campaign " + uri + " as it is not in the conversion path.");
+					Logging.log(Logging.WARNING, "Skipping campaign " + uri + " as it is not in the selected source directory.");
 					continue;
 				}
 				String relative = in.toString().substring(
@@ -235,15 +235,16 @@ public class LSTConverter extends Observable
 
 	private File findSubRoot(File root, File in)
 	{
-		if (in.getParentFile() == null)
+		File parent = in.getParentFile();
+		if (parent == null)
 		{
 			return null;
 		}
-		if (in.getParentFile().getAbsolutePath().equals(root.getAbsolutePath()))
+		if (parent.getAbsolutePath().equals(root.getAbsolutePath()))
 		{
-			return in;
+			return parent;
 		}
-		return findSubRoot(root, in.getParentFile());
+		return findSubRoot(root, parent);
 	}
 
 	private String load(URI uri, Loader loader) throws InterruptedException,
