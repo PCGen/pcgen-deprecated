@@ -1,9 +1,9 @@
-# CVS $Revision: 12252 $ $Author: eddyanthony $ -- Sun Aug 10 23:59:36 2008 -- reformated by prettylst.pl v1.38 (build 7233)
-CAMPAIGN:Paizo - Second Darkness - Chapter 4: Endless Night - Pathfinder Conversion
-GAMEMODE:Pathfinder
+# CVS $Revision$ $Author$ -- Sun Aug 10 23:59:36 2008 -- reformated by prettylst.pl v1.38 (build 7233)
+CAMPAIGN:Paizo - Second Darkness - Chapter 4: Endless Night
+GAMEMODE:35e
 TYPE:Paizo Publishing.Pathfinder Adventure Paths.Second Darkness
 PRECAMPAIGN:1,BOOKTYPE=Core Rules
-PRECAMPAIGN:1,Paizo - Pathfinder Companion: Second Darkness Player's Guide - Pathfinder Conversion
+PRECAMPAIGN:1,Paizo - Pathfinder Companion: Second Darkness Player's Guide
 RANK:5
 GENRE:Fantasy
 BOOKTYPE:Supplement
@@ -23,10 +23,9 @@ COPYRIGHT:The Advanced Bestiary. Copyright 2004, Green Ronin Publishing; Author:
 COPYRIGHT:Plot & Poison: A Guidebook to Drow. Copyright 2002, Green Ronin Publishing; Author: Matthew Sernett.
 COPYRIGHT:Tome of Horrors. Copyright 2002, Necromancer Games, Inc.; Authors: Scott Greene, with Clark Peterson, Erica Balsley, Kevin Baase, Casey Christofferson, Lance Hawvermale, Travis Hawvermale, Patrick Lawinger, and Bill Webb; Based on original content from TSR.
 COPYRIGHT:PCGen dataset conversion for "Second Darkness - Chapter 4: Endless Night" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
-COPYRIGHT:Pathfinder RPG Conversion Copyright 2010, Eddy Anthony.
 INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This dataset is not published, endorsed, or specifically approved by Paizo Publishing. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Publishing and Paizo products, please visit paizo.com.
 
-COVER:../second_darkness_endless_night.jpg
+COVER:endless_night.jpg
 LOGO:@/publisher_logos/Paizo_Publishing.png
 URL:WEBSITE|http://www.paizo.com/|Visit Paizo Publishing!
 URL:WEBSITE|http://www.paizo.com/communityuse|Paizo's Community Use Policy.
@@ -36,15 +35,12 @@ DESC:The Underworld Awaits! Far below the world of light, a cavity of unspeakabl
 #Do Not Remove Comment
 #INFOTEXT:OGL.txt
 
-ABILITY:../pf16_abilities.lst
-EQUIPMENT:../pf16_equipment.lst
-FEAT:../pf16_feat.lst
-RACE:../pf16_race.lst
-SPELL:../pf16_spells.lst
-
-ABILITY:pf16_abilities_pfrpg.lst
-KIT:pf16_kits_pfrpg.lst
-RACE:pf16_race_pfrpg.lst
+ABILITY:pf16_abilities.lst
+EQUIPMENT:pf16_equipment.lst
+FEAT:pf16_feat.lst
+KIT:pf16_kits.lst
+RACE:pf16_race.lst
+SPELL:pf16_spells.lst
 
 #
 # End
