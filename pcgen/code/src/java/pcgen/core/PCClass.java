@@ -1616,6 +1616,22 @@ public class PCClass extends PObject
 		return currHighest;
 	}
 
+	/**
+	 * Get the highest level of spell that this class can cast.
+	 * 
+	 * @param aPC The character to build the casting information for.
+	 * @return the highest level of spells that this class can cast, or -1 if
+	 *         this class can not cast spells
+	 */
+	public int getMaxCastLevel(PlayerCharacter aPC)
+	{
+		if (castForLevelMap == null)
+		{
+			calcCastPerDayMapForLevel(aPC);
+		}
+		return getMaxCastLevel();
+	}
+
 	/*
 	 * FINALPCCLASSANDLEVEL This is required in PCClassLevel and should be present in 
 	 * PCClass for PCClassLevel creation (in the factory)

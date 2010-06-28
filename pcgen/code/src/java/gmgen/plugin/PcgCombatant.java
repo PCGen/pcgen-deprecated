@@ -685,25 +685,24 @@ public class PcgCombatant extends Combatant
 			statBuf.append("; ");
 
 			statBuf
-				.append("<font class='type'>Sv:</font> Fort <font class='highlight'>");
-			statBuf.append("<a href='save:FORTITUDE\\");
-			statBuf.append(pcOut.getSaveFort()); //|CHECK.FORTITUDE.TOTAL|
-			statBuf.append("' class='highlight'> ");
-			statBuf.append(pcOut.getSaveFort()); //|CHECK.FORTITUDE.TOTAL|
-			statBuf.append("</a>");
-			statBuf.append("</font>, Ref <font class='highlight'>");
-			statBuf.append("<a href='save:REFLEX\\");
-			statBuf.append(pcOut.getSaveRef()); //|CHECK.REFLEX.TOTAL|
-			statBuf.append("' class='highlight'> ");
-			statBuf.append(pcOut.getSaveRef()); //|CHECK.REFLEX.TOTAL|
-			statBuf.append("</a>");
-			statBuf.append("</font>, Will <font class='highlight'>");
-			statBuf.append("<a href='save:WILL\\");
-			statBuf.append(pcOut.getSaveWill()); //|CHECK.WILL.TOTAL|
-			statBuf.append("' class='highlight'> ");
-			statBuf.append(pcOut.getSaveWill()); //|CHECK.WILL.TOTAL|
-			statBuf.append("</a>");
-			statBuf.append("</font>; ");
+				.append("<font class='type'>Sv:</font> ");
+			boolean firstChk = true;
+			for (PObject chk : SettingsHandler.getGame().getUnmodifiableCheckList())
+			{
+				if (!firstChk)
+				{
+					statBuf.append(", ");
+				}
+				firstChk = false;
+				statBuf.append(chk.getDisplayName());
+				statBuf.append(" <font class='highlight'>");
+				statBuf.append("<a href='save:").append(chk.getDisplayName()).append("\\");
+				statBuf.append(pc.calculateSaveBonus(1, chk.toString(), "TOTAL")); 
+				statBuf.append("' class='highlight'> ");
+				statBuf.append(pc.calculateSaveBonus(1, chk.toString(), "TOTAL")); 
+				statBuf.append("</a></font>");
+			}
+			statBuf.append("; ");
 
 			StatList sl = pcOut.getStatList();
 
@@ -1064,7 +1063,7 @@ public class PcgCombatant extends Combatant
 					if (pObj instanceof PCClass) 
 					{
 						PCClass theClass = (PCClass) pObj;
-						maxLevel = (theClass.getLevel() ==0) ? maxLevel: theClass.getMaxCastLevel();
+						maxLevel = (theClass.getLevel() ==0) ? maxLevel: theClass.getMaxCastLevel(aPC);
 					}
 					StringBuffer spellBuff = new StringBuffer();
 					for (int level = 0; level <=maxLevel; level++)
