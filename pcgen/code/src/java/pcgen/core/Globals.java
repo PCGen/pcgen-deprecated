@@ -350,6 +350,22 @@ public final class Globals
 	 */
 	public static Campaign getCampaignKeyed(final String aKey)
 	{
+		Campaign campaign = getCampaignKeyedSilently(aKey);
+		if (campaign == null)
+		{
+			Logging.errorPrint("Could not find campaign: " + aKey);
+		}
+
+		return campaign;
+	}
+
+	/**
+	 * Get campaign by key
+	 * @param aKey
+	 * @return Campaign
+	 */
+	public static Campaign getCampaignKeyedSilently(final String aKey)
+	{
 		for ( Campaign campaign : getCampaignList() )
 		{
 			if (campaign.getKeyName().equalsIgnoreCase(aKey))
@@ -357,8 +373,6 @@ public final class Globals
 				return campaign;
 			}
 		}
-
-		Logging.errorPrint("Could not find campaign: " + aKey);
 
 		return null;
 	}
