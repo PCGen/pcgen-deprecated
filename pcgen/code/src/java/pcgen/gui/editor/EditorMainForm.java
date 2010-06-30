@@ -763,16 +763,22 @@ public final class EditorMainForm extends JDialog
 				// Save favoured classes
 				//
 				sel = pnlClasses.getSelectedList();
-				aString = EditUtil.delimitArray(sel, '|');
-				context.unconditionallyProcess(thisRace, "FAVCLASS", aString);
+				if (sel.length > 0)
+				{
+					aString = EditUtil.delimitArray(sel, '|');
+					context.unconditionallyProcess(thisRace, "FAVCLASS", aString);
+				}
 
 				//
 				// Save choice of auto languages
 				//
 				sel = pnlLanguages.getSelectedList2();
-				aString = EditUtil.delimitArray(sel, '|');
-				context.unconditionallyProcess(thisRace, "CHOOSE", "LANGAUTO|"
-					+ aString);
+				if (sel.length > 0)
+				{
+					aString = EditUtil.delimitArray(sel, '|');
+					context.unconditionallyProcess(thisRace, "CHOOSE", "LANGAUTO|"
+						+ aString);
+				}
 
 				//
 				// Save feats
@@ -788,8 +794,11 @@ public final class EditorMainForm extends JDialog
 				//
 				thisRace.removeAllFromList(Language.STARTING_LIST);
 				sel = pnlBonusLang.getSelectedList();
-				aString = EditUtil.delimitArray(sel, ',');
-				context.unconditionallyProcess(thisRace, "LANGBONUS", aString);
+				if (sel.length > 0)
+				{
+					aString = EditUtil.delimitArray(sel, ',');
+					context.unconditionallyProcess(thisRace, "LANGBONUS", aString);
+				}
 
 				break;
 
@@ -1059,8 +1068,11 @@ public final class EditorMainForm extends JDialog
 				  || editType == EditorConstants.EDIT_RACE)
 				{
 					thisPObject.removeAllFromList(WeaponProf.STARTING_LIST);
-					context.unconditionallyProcess(thisPObject, "WEAPONBONUS",
-							EditUtil.delimitArray(sel, ','));
+					if (sel.length > 0)
+					{
+						context.unconditionallyProcess(thisPObject, "WEAPONBONUS",
+								EditUtil.delimitArray(sel, ','));
+					}
 				}
 			}
 		}
