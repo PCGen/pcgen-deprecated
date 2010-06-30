@@ -25,7 +25,7 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder 12: Crown of Fangs" Copyright
 COPYRIGHT:Pathfinder RPG Conversion Copyright 2010, Eddy Anthony.
 INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This dataset is not published, endorsed, or specifically approved by Paizo Publishing. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Publishing and Paizo products, please visit paizo.com.
 
-COVER:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_6_crown_of_fangs/curse_of_the_crimson_throne_crown_of_fangs.jpg
+COVER:../crown_of_fangs.jpg
 LOGO:@/publisher_logos/Paizo_Publishing.png
 URL:WEBSITE|http://www.paizo.com/|Visit Paizo Publishing!
 URL:WEBSITE|http://www.paizo.com/communityuse|Paizo's Community Use Policy.
@@ -35,9 +35,9 @@ DESC:The heroes return to Korvosa to find their home city in a stranglehold of m
 # Do not remove the EXTRAFILE comment.
 #EXTRAFILE:OGL.txt
 
-ABILITY:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_6_crown_of_fangs/pf12_ability.lst
-EQUIPMENT:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_6_crown_of_fangs/pf12_equipment.lst|(EXCLUDE:Staff of the Slain)
-FEAT:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_6_crown_of_fangs/pf12_feat.lst
+ABILITY:../pf12_ability.lst
+EQUIPMENT:../pf12_equipment.lst|(EXCLUDE:Staff of the Slain)
+FEAT:../pf12_feat.lst
 
 ABILITY:pf12_ability_pfrpg.lst
 EQUIPMENT:pf12_equipment_pfrpg.lst
