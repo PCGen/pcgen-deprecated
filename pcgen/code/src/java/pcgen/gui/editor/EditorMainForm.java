@@ -875,9 +875,12 @@ public final class EditorMainForm extends JDialog
 
 				PCTemplate thisPCTemplate = (PCTemplate) thisPObject;
 				thisPCTemplate.removeListFor(ListKey.MOVEMENT);
-				Movement cmv = Movement.getMovementFrom(pnlMovement.getMoveValues());
-				cmv.setMoveRatesFlag(pnlMovement.getMoveRateType());
-				thisPCTemplate.addToListFor(ListKey.MOVEMENT, cmv);
+				if (pnlMovement.getMoveValues().length() > 0)
+				{
+					Movement cmv = Movement.getMovementFrom(pnlMovement.getMoveValues());
+					cmv.setMoveRatesFlag(pnlMovement.getMoveRateType());
+					thisPCTemplate.addToListFor(ListKey.MOVEMENT, cmv);
+				}
 
 				thisPCTemplate.removeAllFromList(Vision.VISIONLIST);
 				List<Vision> tplVisionList = pnlVision.getVision();
@@ -917,32 +920,44 @@ public final class EditorMainForm extends JDialog
 				// Save favoured classes
 				//
 				sel = pnlClasses.getSelectedList();
-				aString = EditUtil.delimitArray(sel, '|');
-				context.unconditionallyProcess(thisPCTemplate, "FAVOREDCLASS", aString);
+				if (sel.length > 0)
+				{
+					aString = EditUtil.delimitArray(sel, '|');
+					context.unconditionallyProcess(thisPCTemplate, "FAVOREDCLASS", aString);
+				}
 
 				//
 				// Save choice of auto languages
 				//
 				sel = pnlLanguages.getSelectedList2();
-				aString = EditUtil.delimitArray(sel, '|');
-				context.unconditionallyProcess(thisPCTemplate, "CHOOSE", "LANGAUTO|"
-					+ aString);
+				if (sel.length > 0)
+				{
+					aString = EditUtil.delimitArray(sel, '|');
+					context.unconditionallyProcess(thisPCTemplate, "CHOOSE", "LANGAUTO|"
+						+ aString);
+				}
 
 				//
 				// Save feats
 				//
 				thisPCTemplate.removeListFor(ListKey.FEAT_TOKEN_LIST);
 				sel = pnlFeats.getSelectedList();
-				aString = EditUtil.delimitArray(sel, '|');
-				context.unconditionallyProcess(thisPCTemplate, "FEAT", aString);
+				if (sel.length > 0)
+				{
+					aString = EditUtil.delimitArray(sel, '|');
+					context.unconditionallyProcess(thisPCTemplate, "FEAT", aString);
+				}
 
 				//
 				// Save bonus languages
 				//
 				thisPCTemplate.removeAllFromList(Language.STARTING_LIST);
 				sel = pnlBonusLang.getSelectedList();
-				aString = EditUtil.delimitArray(sel, ',');
-				context.unconditionallyProcess(thisPCTemplate, "LANGBONUS", aString);
+				if (sel.length > 0)
+				{
+					aString = EditUtil.delimitArray(sel, ',');
+					context.unconditionallyProcess(thisPCTemplate, "LANGBONUS", aString);
+				}
 
 				//
 				// Save level and hit dice abilities
@@ -1030,8 +1045,11 @@ public final class EditorMainForm extends JDialog
 				}
 				selList.append((String) sel[i]);
 			}
-			context.unconditionallyProcess(thisPObject, "AUTO:WEAPONPROF",
-					selList.toString());
+			if (selList.length() > 0)
+			{
+				context.unconditionallyProcess(thisPObject, "AUTO:WEAPONPROF",
+						selList.toString());
+			}
 
 			sel = pnlWeapons.getSelectedList2();
 
@@ -1041,7 +1059,7 @@ public final class EditorMainForm extends JDialog
 				  || editType == EditorConstants.EDIT_RACE)
 				{
 					thisPObject.removeAllFromList(WeaponProf.STARTING_LIST);
-					context.unconditionallyProcess(thisPObject, "LANGBONUS",
+					context.unconditionallyProcess(thisPObject, "WEAPONBONUS",
 							EditUtil.delimitArray(sel, ','));
 				}
 			}
