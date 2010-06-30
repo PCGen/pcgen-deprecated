@@ -1121,6 +1121,10 @@ public final class EditorMainForm extends JDialog
 		//
 		switch (editType)
 		{
+			case EditorConstants.EDIT_CLASS:
+				((PCClass) thisPObject).removeListFor(ListKey.ADD);
+				break;
+
 			case EditorConstants.EDIT_DEITY:
 				((Deity) thisPObject).removeListFor(ListKey.PANTHEON);
 
@@ -3260,6 +3264,19 @@ public final class EditorMainForm extends JDialog
 				selectedList.addAll(Arrays.asList(spellSupportObj));
 			}
 		}
+		
+		if (anEditType == EditorConstants.EDIT_CLASS)
+		{
+			String[] unparse  = Globals.getContext().unparse(thisPObject, "ADD");
+			if(unparse != null)
+			{
+				for (String s : unparse)
+				{
+					selectedList.add("ADD:" + s);
+				}
+			}
+		}
+		
 		return selectedList;
 	}
 
