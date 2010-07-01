@@ -103,7 +103,7 @@ public class ChooseLst extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		String[] str = context.unparse(obj, getTokenName());
+		String[] str = context.unparseSubtoken(obj, getTokenName());
 		if (str == null)
 		{
 			return null;

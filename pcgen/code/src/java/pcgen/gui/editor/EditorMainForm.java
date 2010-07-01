@@ -1687,7 +1687,7 @@ public final class EditorMainForm extends JDialog
 				for ( final Race race : Globals.getContext().ref.getConstructedCDOMObjects(Race.class) )
 				{
 //					final String raceName = (String) e.next();
-					String[] unp = Globals.getContext().unparse(race, "REGION");
+					String[] unp = Globals.getContext().unparseSubtoken(race, "REGION");
 
 					if (unp == null)
 					{
@@ -2047,7 +2047,7 @@ public final class EditorMainForm extends JDialog
 				List<String> selectedSAList = new ArrayList<String>();
 
 				LoadContext context = Globals.getContext();
-				String[] level = context.unparse(thisPObject, "LEVEL");
+				String[] level = context.unparseSubtoken(thisPObject, "LEVEL");
 				if (level != null)
 				{
 					for (String s : level)
@@ -2055,7 +2055,7 @@ public final class EditorMainForm extends JDialog
 						selectedSAList.add("LEVEL:" + s);
 					}
 				}
-				level = context.unparse(thisPObject, "HD");
+				level = context.unparseSubtoken(thisPObject, "HD");
 				if (level != null)
 				{
 					for (String s : level)
@@ -2124,7 +2124,7 @@ public final class EditorMainForm extends JDialog
 			if ((editType == EditorConstants.EDIT_TEMPLATE) || (editType == EditorConstants.EDIT_RACE))
 			{
 				aString = "";
-				String[] unparsed = Globals.getContext().unparse(thisPObject, "CHOOSE");
+				String[] unparsed = Globals.getContext().unparseSubtoken(thisPObject, "CHOOSE");
 				if (unparsed != null)
 				{
 					for (String s : unparsed)
@@ -2181,7 +2181,7 @@ public final class EditorMainForm extends JDialog
 			// We don't load the WeaponProfAuto list as that is composed of
 			// generated things, such as natural weapon proficiencies
 			final List<String> autoWeap = new ArrayList<String>();
-			String[] autoTokens = Globals.getContext().unparse(thisPObject, "AUTO");
+			String[] autoTokens = Globals.getContext().unparseSubtoken(thisPObject, "AUTO");
 			if (autoTokens != null)
 			{
 				for (String s : autoTokens)
@@ -3149,7 +3149,7 @@ public final class EditorMainForm extends JDialog
 				break;
 		}
 
-		String[] auto = Globals.getContext().unparse(thisPObject, "AUTO");
+		String[] auto = Globals.getContext().unparseSubtoken(thisPObject, "AUTO");
 
 		if (auto != null)
 		{
@@ -3226,7 +3226,7 @@ public final class EditorMainForm extends JDialog
 			}
 		}
 
-		String[] drs = Globals.getContext().unparse(thisPObject, "DR");
+		String[] drs = Globals.getContext().unparseSubtoken(thisPObject, "DR");
 
 		if (drs != null)
 		{
@@ -3238,7 +3238,7 @@ public final class EditorMainForm extends JDialog
 
 		if (anEditType != EditorConstants.EDIT_CLASS)
 		{
-			String[] unparse = Globals.getContext().unparse(thisPObject,
+			String[] unparse = Globals.getContext().unparseSubtoken(thisPObject,
 					"SPELLS");
 			if (unparse != null)
 			{
@@ -3258,7 +3258,7 @@ public final class EditorMainForm extends JDialog
 		
 		if (anEditType != EditorConstants.EDIT_DOMAIN)
 		{
-			String[] spellSupportObj = Globals.getContext().unparse(thisPObject, "SPELLLEVEL");
+			String[] spellSupportObj = Globals.getContext().unparseSubtoken(thisPObject, "SPELLLEVEL");
 			if(spellSupportObj != null)
 			{
 				selectedList.addAll(Arrays.asList(spellSupportObj));
@@ -3267,7 +3267,7 @@ public final class EditorMainForm extends JDialog
 		
 		if (anEditType == EditorConstants.EDIT_CLASS)
 		{
-			String[] unparse  = Globals.getContext().unparse(thisPObject, "ADD");
+			String[] unparse  = Globals.getContext().unparseSubtoken(thisPObject, "ADD");
 			if(unparse != null)
 			{
 				for (String s : unparse)

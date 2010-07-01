@@ -163,7 +163,7 @@ public class ValuesToken extends AbstractToken implements
 			{
 				sb.append(Constants.PIPE);
 			}
-			String[] unparse = context.unparse(rl.gear, getParentToken());
+			String[] unparse = context.unparseSubtoken(rl.gear, getParentToken());
 			if (unparse.length == 1)
 			{
 				sb.append(unparse[0]);

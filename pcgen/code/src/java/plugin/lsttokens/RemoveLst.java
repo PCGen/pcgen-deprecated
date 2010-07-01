@@ -60,7 +60,7 @@ public class RemoveLst extends AbstractToken implements
 
 	public String[] unparse(LoadContext context, CDOMObject obj)
 	{
-		return context.unparse(obj, getTokenName());
+		return context.unparseSubtoken(obj, getTokenName());
 	}
 
 	public Class<CDOMObject> getTokenClass()
