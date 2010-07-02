@@ -50,12 +50,14 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import pcgen.base.util.HashMapToList;
+import pcgen.base.util.MapToList;
 import pcgen.cdom.base.AssociatedPrereqObject;
 import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PersistentTransitionChoice;
+import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.SimpleAssociatedObject;
 import pcgen.cdom.content.SpellResistance;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -70,6 +72,7 @@ import pcgen.cdom.inst.PCClassLevel;
 import pcgen.cdom.list.AbilityList;
 import pcgen.cdom.list.ClassSkillList;
 import pcgen.cdom.list.DomainList;
+import pcgen.cdom.list.DomainSpellList;
 import pcgen.cdom.reference.CDOMDirectSingleRef;
 import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
@@ -105,6 +108,7 @@ import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.output.prereq.PrerequisiteWriter;
 import pcgen.persistence.lst.prereq.PreParserFactory;
 import pcgen.persistence.lst.prereq.PrerequisiteParserInterface;
+import pcgen.rules.context.AssociatedChanges;
 import pcgen.rules.context.LoadContext;
 import pcgen.util.Logging;
 import pcgen.util.PropertyFactory;
@@ -1424,54 +1428,42 @@ public final class EditorMainForm extends JDialog
 				List<Spell> availableSpellList = new ArrayList<Spell>();
 				List<String> selectedSpellList = new ArrayList<String>();
 
-				Domain thisDomain = (Domain) thisPObject;
-				if (thisDomain.isNewItem())
-				{
-					thisPObject.clearSpellListInfo();
-					for (Iterator<?> e = Globals.getSpellMap().values().iterator(); e.hasNext();)
-					{
-						final Object obj = e.next();
+				availableSpellList = new ArrayList<Spell>(Globals.getSpellMap().values().size());
 
-						if (obj instanceof Spell)
+				for (Iterator<?> e = Globals.getSpellMap().values().iterator(); e.hasNext();)
+				{
+					final Object obj = e.next();
+
+					if (obj instanceof Spell)
+					{
+						HashMapToList<CDOMList<Spell>, Integer> hml = SpellLevel
+							.getMasterLevelInfo(null, (Spell) obj);
+						List<Integer> levelList = hml
+							.getListFor(((Domain) thisPObject)
+									.get(ObjectKey.DOMAIN_SPELLLIST));
+						if (levelList == null || levelList.isEmpty())
 						{
 							availableSpellList.add((Spell)obj);
 						}
-					}
-				}
-				else
-				{
-					availableSpellList = new ArrayList<Spell>(Globals.getSpellMap().values().size());
-
-					for (Iterator<?> e = Globals.getSpellMap().values().iterator(); e.hasNext();)
-					{
-						final Object obj = e.next();
-
-						if (obj instanceof Spell)
+						else
 						{
-							HashMapToList<CDOMList<Spell>, Integer> hml = SpellLevel
-								.getMasterLevelInfo(null, (Spell) obj);
-							List<Integer> levelList = hml
-								.getListFor(((Domain) thisPObject)
-										.get(ObjectKey.DOMAIN_SPELLLIST));
-							if (levelList == null || levelList.isEmpty())
+							int lvl = levelList.get(0);
+							if (lvl == -1)
 							{
 								availableSpellList.add((Spell)obj);
 							}
 							else
 							{
-								int lvl = levelList.get(0);
-								if (lvl == -1)
-								{
-									availableSpellList.add((Spell)obj);
-								}
-								else
-								{
-									selectedSpellList.add(encodeSpellEntry(obj.toString(), Integer.toString(lvl)));
-								}
+								selectedSpellList.add(encodeSpellEntry(obj.toString(), Integer.toString(lvl)));
 							}
 						}
 					}
-
+				}
+				// TODO: Fix this hack. Copied domains will show the original spell list when subsequently edited. Close and reload will show the correct one
+				if (selectedSpellList.isEmpty())
+				{
+					addSelectedDomainSpells(availableSpellList,
+						selectedSpellList);
 				}
 				Globals.sortPObjectList(availableSpellList);
 
@@ -2413,6 +2405,61 @@ public final class EditorMainForm extends JDialog
 		pnlAdvanced.setAvailableTagList(editType);
 		List<String> selectedAdvancedList = buildAdvancedSelectedList(editType);
 		pnlAdvanced.setSelected(selectedAdvancedList);
+	}
+
+	/**
+	 * Add the domain spells for the current object to the selected spell list, 
+	 * removing them from the available list.
+	 * 
+	 * @param availableSpellList The list of available spells
+	 * @param selectedSpellList The list of domain spells strings 
+	 */
+	@SuppressWarnings("unchecked")
+	private void addSelectedDomainSpells(List<Spell> availableSpellList,
+		List<String> selectedSpellList)
+	{
+		final LoadContext context = Globals.getContext();
+		final String tokenName = "SPELLLEVEL";
+
+		Collection<CDOMReference<? extends CDOMList<? extends PrereqObject>>> changedDomainLists = context
+		.getListContext().getChangedLists(thisPObject, DomainSpellList.class);
+		for (CDOMReference listRef : changedDomainLists)
+		{
+			AssociatedChanges changes = context.getListContext()
+					.getChangesInList(tokenName, thisPObject, listRef);
+			Collection<Spell> removedItems = changes.getRemoved();
+			if (removedItems != null && !removedItems.isEmpty()
+					|| changes.includesGlobalClear())
+			{
+				return;
+			}
+			MapToList<CDOMReference<Spell>, AssociatedPrereqObject> mtl = changes
+					.getAddedAssociations();
+			if (mtl == null || mtl.isEmpty())
+			{
+				// Zero indicates no Token
+				continue;
+			}
+			for (CDOMReference<Spell> added : mtl.getKeySet())
+			{
+				for (AssociatedPrereqObject assoc : mtl.getListFor(added))
+				{
+					Integer lvl = assoc
+							.getAssociation(AssociationKey.SPELL_LEVEL);
+					Boolean known = assoc.getAssociation(AssociationKey.KNOWN);
+					boolean isKnown = known !=null && known;
+					if (!isKnown)
+					{
+						for (Spell spell : added.getContainedObjects())
+						{
+							String entry = encodeSpellEntry(spell.getKeyName(), String.valueOf(lvl));
+							selectedSpellList.add(entry);
+							availableSpellList.remove(spell);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
