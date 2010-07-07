@@ -23,6 +23,7 @@
 package pcgen.core.term;
 
 import pcgen.core.PlayerCharacter;
+import pcgen.core.character.CharacterSpell;
 import pcgen.core.spell.Spell;
 
 /**
@@ -52,7 +53,7 @@ public class PCCastTimesAtWillTermEvaluator
 	}
 
 	@Override
-	public Float resolve(PlayerCharacter pc, final Spell aSpell) {
+	public Float resolve(PlayerCharacter pc, final CharacterSpell aSpell) {
 		return resolve(pc);
 	}
 
