@@ -60,7 +60,9 @@ public abstract class AbstractReferenceContext implements ReferenceContext
 	private final HashMap<CDOMObject, CDOMSingleRef<?>> directRefCache = new HashMap<CDOMObject, CDOMSingleRef<?>>();
 
 	public abstract <T extends CDOMObject> ReferenceManufacturer<T, ? extends CDOMSingleRef<T>> getManufacturer(
-			Class<T> cl);
+		Class<T> cl);
+
+	public abstract <T extends CDOMObject> boolean hasManufacturer(Class<T> cl);
 
 	/**
 	 * Retrieve the Reference manufacturer that handles this class and category. Note that 
@@ -73,6 +75,9 @@ public abstract class AbstractReferenceContext implements ReferenceContext
 	 */
 	protected abstract <T extends CDOMObject & CategorizedCDOMObject<T>> ReferenceManufacturer<T, ? extends CDOMSingleRef<T>> getManufacturer(
 			Class<T> cl, Category<T> cat);
+
+	protected abstract <T extends CDOMObject & CategorizedCDOMObject<T>> boolean hasManufacturer(
+		Class<T> cl, Category<T> cat);
 
 	public abstract Collection<? extends ReferenceManufacturer<? extends CDOMObject, ?>> getAllManufacturers();
 
@@ -263,12 +268,20 @@ public abstract class AbstractReferenceContext implements ReferenceContext
 		{
 			Class cl = obj.getClass();
 			CategorizedCDOMObject cdo = (CategorizedCDOMObject) obj;
-			return getManufacturer(cl, cdo.getCDOMCategory()).forgetObject(obj);
+			if (hasManufacturer(cl, cdo.getCDOMCategory()))
+			{
+				return getManufacturer(cl, cdo.getCDOMCategory()).forgetObject(obj);
+			}
 		}
 		else
 		{
-			return getManufacturer((Class<T>) obj.getClass()).forgetObject(obj);
+			if (hasManufacturer((Class<T>) obj.getClass()))
+			{
+				return getManufacturer((Class<T>) obj.getClass()).forgetObject(
+					obj);
+			}
 		}
+		return false;
 	}
 
 	// public <T extends CDOMObject & CategorizedCDOMObject<T>> T
