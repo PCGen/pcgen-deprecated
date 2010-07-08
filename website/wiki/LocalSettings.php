@@ -7,6 +7,9 @@
 # See includes/DefaultSettings.php for all configurable settings
 # and their default values, but don't forget to make changes in _this_
 # file, not there.
+#
+# Further documentation for configuration settings may be found at:
+# http://www.mediawiki.org/wiki/Manual:Configuration_settings
 
 # If you customize your file layout, set $IP to the directory that contains
 # the other MediaWiki files. It will be used as a base to locate files.
@@ -33,35 +36,55 @@ if ( $wgCommandLineMode ) {
 # $wgDisableOutputCompression = true;
 
 $wgSitename         = "PCGen Wiki";
+$wgLogo = "skins/common/images/pcgenlogo.png";
 
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
-$wgScriptPath       = "/wiki";
-$wgScriptExtension  = ".php";
-
 ## For more information on customizing the URLs please see:
 ## http://www.mediawiki.org/wiki/Manual:Short_URL
+$wgScriptPath       = "";
+$wgScriptExtension  = ".php";
+
+$wgArticlePath      = "/$1";
+$wgUsePathInfo      = false;
+
+## UPO means: this is also a user preference option
 
 $wgEnableEmail      = true;
-$wgEnableUserEmail  = true;
+$wgEnableUserEmail  = true; # UPO
 
-$wgEmergencyContact = "drew0500@yahoo.com";
-$wgPasswordSender = "drew0500@yahoo.com";
+$wgEmergencyContact =  "wiki@pcgen.org";
+$wgPasswordSender   =  "wiki@pcgen.org";
+$wgNoReplyAddress	= false;
+$wgEmailConfirmToEdit= true;
 
-## For a detailed description of the following switches see
-## http://www.mediawiki.org/wiki/Extension:Email_notification 
-## and http://www.mediawiki.org/wiki/Extension:Email_notification
-## There are many more options for fine tuning available see
-## /includes/DefaultSettings.php
-## UPO means: this is also a user preference option
 $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
-$wgEmailConfirmToEdit = true;
 
-# Database settings are stored separately
-require_once("DbSettings.php");
+#$wgUsersNotifiedOnAllChanges  
 
+$wgEnotifWatchlist = true;
+# Declare this twice so it works for all versions
+$wgUsersNotifiedOnAllChanges =
+$wgUsersNotifedOnAllChanges = array( 'LegacyKing', 'James', 'Karianna' );
+# Groups don't seem to work
+
+## Database settings
+$wgDBtype           = "mysql";
+$wgDBserver         = "localhost";
+$wgDBname           = "pcgen1_pcgenwikidb";
+$wgDBuser           = "pcgen1_wiki";
+$wgDBpassword       = "PCGENwiki1423";
+
+# MySQL specific settings
+$wgDBprefix         = "mw_";
+
+# MySQL table options to use during installation or update
+$wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
+
+# Experimental charset support for MySQL 4.1/5.0.
+$wgDBmysql5 = true;
 
 ## Shared memory settings
 $wgMainCacheType = CACHE_NONE;
@@ -69,9 +92,14 @@ $wgMemCachedServers = array();
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
-$wgEnableUploads       = true;
+$wgEnableUploads = true;
 $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
+
+## If you use ImageMagick (or any other shell command) on a
+## Linux server, this will need to be set to the name of an
+## available UTF-8 locale
+$wgShellLocale = "en_US.utf8";
 
 ## If you want to use image uploads under safe mode,
 ## create the directories images/archive, images/thumb and
@@ -83,11 +111,11 @@ $wgImageMagickConvertCommand = "/usr/bin/convert";
 ## you can enable inline LaTeX equations:
 $wgUseTeX           = false;
 
-$wgLocalInterwiki   = $wgSitename;
+$wgLocalInterwiki   = strtolower( $wgSitename );
 
 $wgLanguageCode = "en";
 
-$wgProxyKey = "73892e7fe23b9640729140c977bf165b401bfa32f6a6ae78df98fbb69248a3ec";
+$wgSecretKey = "dba05004ae47e6e6c5ade8950cd5d6f59fa74809ae91daa26b5d09aadd226f06";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook':
@@ -107,13 +135,74 @@ $wgDiff3 = "/usr/bin/diff3";
 
 # When you make changes to this configuration file, this will make
 # sure that cached pages are cleared.
-$configdate = gmdate( 'YmdHis', @filemtime( __FILE__ ) );
-$wgCacheEpoch = max( $wgCacheEpoch, $configdate );
-	
+$wgCacheEpoch = max( $wgCacheEpoch, gmdate( 'YmdHis', @filemtime( __FILE__ ) ) );
+
+### Extensions
 # Security/permissions settings
 # Stop anonymous editing
-$wgGroupPermissions['*']['edit'] = false;
+$wgGroupPermissions['*']['edit']       = false;
+$wgGroupPermissions['*']['createtalk'] = false;
+$wgGroupPermissions['*']['createpage'] = false;
+
+#Restrict anonymous editing
+$wgShowIPinHeader = false;
 
 # Require approval of new accounts
-# require_once("$IP/extensions/ConfirmAccount/SpecialConfirmAccount.php");
-# $wgAccountRequestMinWords=10;
+#require_once("$IP/extensions/ConfirmAccount/SpecialConfirmAccount.php");
+#$wgAccountRequestMinWords=5;
+#$wgConfirmAccountContact = "wikiadmin@pcgen.org";
+
+# Notify new accounts
+require_once( "{$IP}/extensions/NewUserNotif/NewUserNotif.php" );
+$wgNewUserNotifTargets = array( 'James', 'LegacyKing', 'Karianna' );
+
+# Anti spam settings
+$wgSpamRegex = "/\<.*style.*?(display|position|overflow|visibility|height)\s*:.*?>/i";
+
+
+# EXTENSIONS - Added by LK
+
+# Cite - Requested by Tom
+require_once("$IP/extensions/Cite/Cite.php");
+
+# Simple Anti Spam
+require_once("$IP/extensions/SimpleAntiSpam/SimpleAntiSpam.php");
+			
+# AntiSpoof
+require_once("$IP/extensions/AntiSpoof/AntiSpoof.php");
+
+# Merge & Delete Extension
+require_once( "$IP/extensions/UserMerge/UserMerge.php" );
+$wgGroupPermissions['bureaucrat']['usermerge'] = true;
+ 
+#optional - default is array( 'sysop' )
+$wgUserMergeProtectedGroups = array( 'sysop', 'administrators', 'bureaucrat' );
+
+#Allow ALL users to be merged (by default, the 'sysop' group is unmergable)
+#$wgUserMergeProtectedGroups = array();
+#Disallow merging of the users in the 'sysop' or 'awesomeusers' groups
+$wgUserMergeUnmergeable = array( 'sysop', 'administrators', 'bureaucrat' );
+
+# Extension - AutoWatch - This emails specified users of any new pages
+$wgMultiWatchUserIDs = array( 'James', 'LegacyKing', 'Karianna' ); #This is the list of your users' IDs to include in this mailing list
+require_once("extensions/AutoWatch/AutoWatch.php");
+# 14 = LegacyKing, 
+
+# Extension - ArticleCategory
+#require_once("$IP/extensions/ArticleToCategory/articletocategory.php");
+
+# Extension - Restrict Access By Category and Group
+#require_once("$IP/extensions/rabcg/rabcg.php");
+#$wgWhitelistRead = array('Special:UserLogin');
+
+# Extension - Renameuser
+require_once("$IP/extensions/Renameuser/SpecialRenameuser.php");
+
+#
+#require_once("$IP/extensions/GroupPermissionsManager/GroupPermissionsManager.php");
+
+$wgGroupPermissions['sysop']['passwordreset']   = true;
+require_once( "$IP/extensions/PasswordReset/PasswordReset.php" );
+
+$wgShowExceptionDetails = true;
+
