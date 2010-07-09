@@ -18,20 +18,29 @@
 package plugin.lsttokens.campaign;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.core.Campaign;
+import pcgen.persistence.PersistenceLayerException;
 import pcgen.persistence.lst.InstallLstToken;
+import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
+import pcgen.rules.persistence.token.AbstractToken;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
 import pcgen.util.Logging;
 
 /**
  * Class deals with INFOTEXT Token
  */
-public class InfotextToken implements CDOMPrimaryToken<Campaign>, InstallLstToken
+public class InfotextToken extends AbstractToken implements
+		CDOMPrimaryToken<Campaign>, InstallLstToken
 {
 
+	@Override
 	public String getTokenName()
 	{
 		return "INFOTEXT";
@@ -39,30 +48,38 @@ public class InfotextToken implements CDOMPrimaryToken<Campaign>, InstallLstToke
 
 	public boolean parse(Campaign campaign, String value, URI sourceUri)
 	{
-		campaign.put(StringKey.INFO_TEXT, value);
+		campaign.addToListFor(ListKey.INFO_TEXT, value);
 		return true;
 	}
 
-	public boolean parse(LoadContext context, Campaign camp, String value)
+	public boolean parse(LoadContext context, Campaign campaign, String value)
+		throws PersistenceLayerException
 	{
-		if (value == null || value.length() == 0)
+		if (isEmpty(value))
 		{
-			Logging.log(Logging.LST_ERROR, getTokenName() + " arguments may not be empty");
 			return false;
 		}
-		context.getObjectContext().put(camp, StringKey.INFO_TEXT, value);
+		context.obj.addToList(campaign, ListKey.INFO_TEXT, value);
 		return true;
 	}
 
-	public String[] unparse(LoadContext context, Campaign camp)
+	public String[] unparse(LoadContext context, Campaign campaign)
 	{
-		String infotext =
-				context.getObjectContext().getString(camp, StringKey.INFO_TEXT);
-		if (infotext == null)
+		Changes<String> changes =
+				context.getObjectContext().getListChanges(campaign,
+					ListKey.INFO_TEXT);
+		List<String> set = new ArrayList<String>();
+		Collection<String> added = changes.getAdded();
+		if (added != null && !added.isEmpty())
 		{
+			set.addAll(added);
+		}
+		if (set.isEmpty())
+		{
+			//Okay, no info text
 			return null;
 		}
-		return new String[]{infotext};
+		return set.toArray(new String[set.size()]);
 	}
 
 	public Class<Campaign> getTokenClass()

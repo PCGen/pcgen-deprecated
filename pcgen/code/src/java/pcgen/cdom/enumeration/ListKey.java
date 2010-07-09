@@ -155,6 +155,8 @@ public final class ListKey<T> {
 	public static final ListKey<String> SAVE = new ListKey<String>();
 	/** SECTION 15 - a ListKey */
 	public static final ListKey<String> SECTION_15 = new ListKey<String>();
+	/** INFO_TEXT - a ListKey */
+	public static final ListKey<String> INFO_TEXT = new ListKey<String>();
 	/** SELECTED_WEAPON_PROF_BONUS - a ListKey */
 	public static final ListKey<String> SELECTED_WEAPON_PROF_BONUS = new ListKey<String>();
 	/** SPECIAL_ABILITY - a ListKey */
