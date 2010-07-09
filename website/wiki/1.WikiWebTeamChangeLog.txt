@@ -1,0 +1,22 @@
+Use the following Format to Log any and all changes done to the WIKI, New Entries shall be PLACED ahead of the previous, so our most recent changes are always at the TOP of the LIST
+
+
+FORMAT MASTER:
+* [Name]; [DATE and TIME]
+* Changes: [Note Changes]
+---- BEGIN LOG BELOW THIS LINE ----
+
+
+
+Andrew Maitland; July 08, 2010 @ 1726hours PDT
+Changes: Commented out AUTOWATCH Extension as it caused Errors.
+
+
+Andrew Maitland; July 08, 2010 @ 1717hours PDT
+Changes: Added Change Log txt file.
+
+***EOF
+
+
+
+
