@@ -2100,6 +2100,16 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 			}
 		}
 
+		//Must process ADD after CLASS is added to the PC
+		for (PCGElement e : new PCGTokenizer(line).getElements())
+		{
+			tag = e.getName();
+			if (tag.equals(TAG_ADDTOKEN))
+			{
+				parseAddTokenInfo(e, aPCClass);
+			}
+		}
+
 		if (skillPool > -1)
 		{
 			aPCClass.setSkillPool(skillPool);
