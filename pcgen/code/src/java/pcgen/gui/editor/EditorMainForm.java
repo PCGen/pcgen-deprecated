@@ -1131,7 +1131,6 @@ public final class EditorMainForm extends JDialog
 
 			case EditorConstants.EDIT_DEITY:
 				((Deity) thisPObject).removeListFor(ListKey.PANTHEON);
-
 				break;
 
 			case EditorConstants.EDIT_DOMAIN:
@@ -1220,12 +1219,6 @@ public final class EditorMainForm extends JDialog
 			catch (PersistenceLayerException ple)
 			{
 				Logging.errorPrint(ple.getMessage() + " while parsing " + aString, ple);
-			}
-
-			if ((editType == EditorConstants.EDIT_DEITY) && (aString.startsWith("PANTHEON:")))
-			{
-				thisPObject.addToListFor(ListKey.PANTHEON, Pantheon
-						.getConstant(aString.substring(9)));
 			}
 		}
 	}
