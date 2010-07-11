@@ -151,6 +151,7 @@ public class ClassLevelPanel extends JPanel implements PObjectUpdater
 			CampaignSourceEntry tempSource = new CampaignSourceEntry(customCampaign, sourceFile);
 
 			// Loop through level tags.  Parse them to apply them to the PCClass.
+			object.clearClassLevels();
 			for (Iterator<LevelTag> i = levelTagList.iterator(); i.hasNext();)
 			{
 				LevelTag lt = i.next();

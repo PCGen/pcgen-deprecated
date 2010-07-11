@@ -4322,6 +4322,15 @@ public class PCClass extends PObject
 		return -1;
 	}
 
+	/**
+	 * Clear any data from the class levels. Primarily for use by the Classes 
+	 * LST editor. 
+	 */
+	public void clearClassLevels()
+	{
+		levelMap.clear();
+	}
+
 //	public PCClassLevel getRepeatLevel(int level, String objectName)
 //	{
 //		PCClassLevel pcl = new PCClassLevel();
