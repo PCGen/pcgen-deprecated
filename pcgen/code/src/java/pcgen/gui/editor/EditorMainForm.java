@@ -1062,8 +1062,8 @@ public final class EditorMainForm extends JDialog
 			}
 			if (selList.length() > 0)
 			{
-				context.unconditionallyProcess(thisPObject, "AUTO:WEAPONPROF",
-						selList.toString());
+				context.unconditionallyProcess(thisPObject, "AUTO",
+					"WEAPONPROF|"+selList.toString());
 			}
 
 			sel = pnlWeapons.getSelectedList2();
@@ -2175,7 +2175,7 @@ public final class EditorMainForm extends JDialog
 				{
 					if (s.startsWith("WEAPONPROF|"))
 					{
-						autoWeap.add(s);
+						autoWeap.add(s.substring(11));
 					}
 				}
 			}
