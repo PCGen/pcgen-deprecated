@@ -26,6 +26,7 @@
 package pcgen.io;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -91,8 +92,11 @@ import pcgen.core.character.Follower;
 import pcgen.core.character.SpellBook;
 import pcgen.core.character.SpellInfo;
 import pcgen.core.pclevelinfo.PCLevelInfo;
+import pcgen.core.prereq.PrereqHandler;
 import pcgen.core.spell.Spell;
 import pcgen.core.utils.CoreUtility;
+import pcgen.core.utils.MessageType;
+import pcgen.core.utils.ShowMessageDelegate;
 import pcgen.gui.GuiConstants;
 import pcgen.io.parsers.CharacterDomainParser;
 import pcgen.persistence.PersistenceLayerException;
@@ -1375,6 +1379,16 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 		{
 			PCGTokenizer tokens;
 
+			List<URI> chosenCampaignSourcefiles = PersistenceManager.getInstance().getChosenCampaignSourcefiles();
+			List<Campaign> loaded = new ArrayList<Campaign>();
+			for (Campaign aCamp : Globals.getCampaignList())
+			{
+				if (aCamp.isLoaded())
+				{
+					loaded.add(aCamp);
+				}
+			}
+			
 			for (final String line : lines)
 			{
 				try
@@ -1416,6 +1430,7 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 							if (!aCampaign.isLoaded())
 							{
 								campaigns.add(aCampaign);
+								chosenCampaignSourcefiles.add(aCampaign.getSourceURI());
 							}
 						}
 					}
@@ -1424,19 +1439,64 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 
 			if (campaigns.size() > 0)
 			{
-				try
+				// First we check that the sources are valid to load.
+				boolean validSelection = true;
+				for (Campaign campaign : campaigns)
 				{
-					//PersistenceObserver observer = new PersistenceObserver();
-					PersistenceManager pManager =
-							PersistenceManager.getInstance();
-					//pManager.addObserver( observer );
-					pManager.loadCampaigns(campaigns);
-					//pManager.deleteObserver( observer );
+					if (!campaign.qualifies(null))
+					{
+						StringBuffer errCampaigns = new StringBuffer();
+						for (Campaign c : loaded)
+						{
+							errCampaigns.append(" ").append(c.getDisplayName()).append("\n");
+						}
+						ShowMessageDelegate
+							.showMessageDialog(PropertyFactory
+								.getFormattedString(
+									"Warnings.PCGenParser.InvalidSources",
+									campaign.getDisplayName(), errCampaigns
+										.toString()), PropertyFactory
+								.getString("in_error"), MessageType.ERROR);
+						validSelection = false;
+						break;
+					}
 				}
-				catch (PersistenceLayerException e)
+				for (Campaign campaign : loaded)
 				{
-					throw new PCGParseException(
-						"parseCampaignLines", "N/A", e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+					if (!campaign.qualifies(null))
+					{
+						StringBuffer errCampaigns = new StringBuffer();
+						for (Campaign c : campaigns)
+						{
+							errCampaigns.append(" ").append(c.getDisplayName()).append("\n");
+						}
+						ShowMessageDelegate.showMessageDialog(PropertyFactory
+							.getFormattedString(
+								"Warnings.PCGenParser.IncompatLoadedSources",
+								campaign.getDisplayName(), errCampaigns
+									.toString()), PropertyFactory
+							.getString("in_error"), MessageType.ERROR);
+						validSelection = false;
+						break;
+					}
+				}
+				
+				if (validSelection)
+				{
+					try
+					{
+						//PersistenceObserver observer = new PersistenceObserver();
+						PersistenceManager pManager =
+								PersistenceManager.getInstance();
+						//pManager.addObserver( observer );
+						pManager.loadCampaigns(campaigns);
+						//pManager.deleteObserver( observer );
+					}
+					catch (PersistenceLayerException e)
+					{
+						throw new PCGParseException(
+							"parseCampaignLines", "N/A", e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 				}
 
 				if (Globals.getUseGUI())
