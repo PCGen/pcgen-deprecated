@@ -243,7 +243,7 @@ public final class AdvancedPanel extends JPanel
 			"CHOOSE",
 			"DEFINE",
 			"DR",
-			"KEY",
+			//"KEY", -- Deactivated as the save mechanism can't cope with a key change
 			"PANTHEON",
 			"PREALIGN",
 			"PREARMORPROF",
