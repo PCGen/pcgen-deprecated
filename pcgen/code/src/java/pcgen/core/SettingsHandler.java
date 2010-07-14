@@ -146,7 +146,7 @@ public final class SettingsHandler
 	private static Point leftUpperCorner = null;
 	private static int windowState = Frame.NORMAL;
 	private static boolean loadCampaignsAtStart = false;
-	private static boolean loadCampaignsWithPC = true;
+	private static boolean loadCampaignsWithPC = false;
 	private static int looknFeel = 1; // default to Java L&F
 	private static boolean expertGUI = false; // default to System L&F
 	private static boolean optionAllowedInSources = true;
