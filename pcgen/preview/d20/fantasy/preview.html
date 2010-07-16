@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text-html; charset=utf-8" />
@@ -190,11 +190,11 @@
 										<td>&nbsp;</td>
 										<td width="18" class="center top font5">Natural</td>
 										<td>&nbsp;</td>
-										<td width="25" class="center top font5">Deflection</td>
+										<td width="25" class="center top font5">Dodge</td>
+										<td>&nbsp;</td>
+										<td width="18" class="center top font5">Deflection</td>
 										<td>&nbsp;</td>
 										<td width="25" class="center top font5">Misc</td>
-										<td>&nbsp;</td>
-										<td width="18" class="center top font5">Deflect.</td>
 										<td>&nbsp;</td>
 										<td width="18" class="center top font5">Misc</td>
 										<td>&nbsp;</td>
@@ -666,7 +666,7 @@ Immune
 									<tr>
 										<td>
 <!-- START Weapon Table -->
-|FOR,%weap,0,2,1,0|
+|FOR,%weap,0,COUNT[EQTYPE.Weapon]-1,1,0|
 |%WEAPON.%weap.NAME|
 											<table class="noborder" cellpadding="0" width="100%" cellspacing="0" summary="Weapon Table">
 												<tr>
