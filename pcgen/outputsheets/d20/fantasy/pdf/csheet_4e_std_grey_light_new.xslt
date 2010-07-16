@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
+<!-- $Id: csheet_4e_std_grey_light_new.xslt -->
 <xsl:stylesheet
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -15,14 +15,14 @@
 		<centre text-align="center" />
 		<border.temp border-width="2pt" border-style="solid" border-color="lightgrey"><subattrib centre=""/></border.temp>
 
-		<normal color="black" background-color="white" border-color="#555588"/>
-		<light color="black" background-color="#eeeeff" border-color="#555588"/>
-		<medium color="black" background-color="#ccccee" border-color="#555588"/>
-		<dark color="black" background-color="#bbbbee" border-color="#555588"/>
-		<very.dark color="black" background-color="#aaaacc" border-color="#555588"/>
-		<inverse color="black" background-color="#9999bb" border-color="#555588"/>
+		<normal color="black" background-color="white" border-color="black"/>
+		<light color="black" background-color="white" border-color="black"/>
+		<medium color="black" background-color="lightgrey" border-color="black"/>
+		<dark color="black" background-color="lightgrey" border-color="black"/>
+		<very.dark color="black" background-color="white" border-color="black"/>
+		<inverse color="black" background-color="white" border-color="black"/>
 
-		<bio display-align="after" color="black" background-color="transparent" border-color="#555588"></bio>
+		<bio display-align="after" color="black" background-color="transparent" border-color="black"></bio>
 		<bio.title border-top-width="0.5pt" border-top-style="solid"><subattrib normal=""/></bio.title>
 
 		<picture><subattrib normal="" border=""/></picture>
@@ -33,7 +33,7 @@
 		<stat.base.score><subattrib border="" centre="" normal="" /></stat.base.score>
 		<stat.base.modifier><subattrib stat.base.score="" /></stat.base.modifier>
 		<stat.temp.score color="lightgrey"><subattrib centre="" border.temp=""/></stat.temp.score>
-		<stat.temp.modifier ><subattrib stat.temp.score=""/></stat.temp.modifier>
+		<stat.temp.modifier><subattrib stat.temp.score=""/></stat.temp.modifier>
 
 		<hp.title><subattrib border="" centre="" inverse=""/></hp.title>
 		<hp.total><subattrib border="" centre="" light=""/></hp.total>
@@ -179,10 +179,130 @@
 		<special_qualities.lightline><subattrib light=""/></special_qualities.lightline>
 		<special_qualities.darkline><subattrib medium=""/></special_qualities.darkline>
 
-        <traits.title><subattrib centre="" inverse=""/></traits.title>
-        <traits.border padding="0.5pt"><subattrib border="" inverse=""/></traits.border>
-        <traits.lightline><subattrib light=""/></traits.lightline>
-        <traits.darkline><subattrib medium=""/></traits.darkline>
+		<animal_tricks.title><subattrib centre="" inverse=""/></animal_tricks.title>
+		<animal_tricks.border padding="0.5pt"><subattrib border="" inverse=""/></animal_tricks.border>
+		<animal_tricks.lightline><subattrib light=""/></animal_tricks.lightline>
+		<animal_tricks.darkline><subattrib medium=""/></animal_tricks.darkline>
+
+		<talents.title><subattrib centre="" inverse=""/></talents.title>
+		<talents.border padding="0.5pt"><subattrib border="" inverse=""/></talents.border>
+		<talents.lightline><subattrib light=""/></talents.lightline>
+		<talents.darkline><subattrib medium=""/></talents.darkline>
+
+		<intelligent_items.title><subattrib centre="" inverse=""/></intelligent_items.title>
+		<intelligent_items.border padding="0.5pt"><subattrib border="" inverse=""/></intelligent_items.border>
+		<intelligent_items.lightline><subattrib light=""/></intelligent_items.lightline>
+		<intelligent_items.darkline><subattrib medium=""/></intelligent_items.darkline>
+
+		<casterleveloutputs.title><subattrib centre="" inverse=""/></casterleveloutputs.title>
+		<casterleveloutputs.border padding="0.5pt"><subattrib border="" inverse=""/></casterleveloutputs.border>
+		<casterleveloutputs.lightline><subattrib light=""/></casterleveloutputs.lightline>
+		<casterleveloutputs.darkline><subattrib medium=""/></casterleveloutputs.darkline>
+
+		<eclipse_abilities.title><subattrib centre="" inverse=""/></eclipse_abilities.title>
+		<eclipse_abilities.border padding="0.5pt"><subattrib border="" inverse=""/></eclipse_abilities.border>
+		<eclipse_abilities.lightline><subattrib light=""/></eclipse_abilities.lightline>
+		<eclipse_abilities.darkline><subattrib medium=""/></eclipse_abilities.darkline>
+
+		<witchcrafts.title><subattrib centre="" inverse=""/></witchcrafts.title>
+		<witchcrafts.border padding="0.5pt"><subattrib border="" inverse=""/></witchcrafts.border>
+		<witchcrafts.lightline><subattrib light=""/></witchcrafts.lightline>
+		<witchcrafts.darkline><subattrib medium=""/></witchcrafts.darkline>
+
+		<dominions.title><subattrib centre="" inverse=""/></dominions.title>
+		<dominions.border padding="0.5pt"><subattrib border="" inverse=""/></dominions.border>
+		<dominions.lightline><subattrib light=""/></dominions.lightline>
+		<dominions.darkline><subattrib medium=""/></dominions.darkline>
+
+		<path_dragons.title><subattrib centre="" inverse=""/></path_dragons.title>
+		<path_dragons.border padding="0.5pt"><subattrib border="" inverse=""/></path_dragons.border>
+		<path_dragons.lightline><subattrib light=""/></path_dragons.lightline>
+		<path_dragons.darkline><subattrib medium=""/></path_dragons.darkline>
+
+		<martial_arts.title><subattrib centre="" inverse=""/></martial_arts.title>
+		<martial_arts.border padding="0.5pt"><subattrib border="" inverse=""/></martial_arts.border>
+		<martial_arts.lightline><subattrib light=""/></martial_arts.lightline>
+		<martial_arts.darkline><subattrib medium=""/></martial_arts.darkline>
+
+		<mystic_artists.title><subattrib centre="" inverse=""/></mystic_artists.title>
+		<mystic_artists.border padding="0.5pt"><subattrib border="" inverse=""/></mystic_artists.border>
+		<mystic_artists.lightline><subattrib light=""/></mystic_artists.lightline>
+		<mystic_artists.darkline><subattrib medium=""/></mystic_artists.darkline>
+
+		<channelings.title><subattrib centre="" inverse=""/></channelings.title>
+		<channelings.border padding="0.5pt"><subattrib border="" inverse=""/></channelings.border>
+		<channelings.lightline><subattrib light=""/></channelings.lightline>
+		<channelings.darkline><subattrib medium=""/></channelings.darkline>
+
+		<charcreations.title><subattrib centre="" inverse=""/></charcreations.title>
+		<charcreations.border padding="0.5pt"><subattrib border="" inverse=""/></charcreations.border>
+		<charcreations.lightline><subattrib light=""/></charcreations.lightline>
+		<charcreations.darkline><subattrib medium=""/></charcreations.darkline>
+
+		<vampire_disciplines.title><subattrib centre="" inverse=""/></vampire_disciplines.title>
+		<vampire_disciplines.border padding="0.5pt"><subattrib border="" inverse=""/></vampire_disciplines.border>
+		<vampire_disciplines.lightline><subattrib light=""/></vampire_disciplines.lightline>
+		<vampire_disciplines.darkline><subattrib medium=""/></vampire_disciplines.darkline>
+
+		<demon_cants.title><subattrib centre="" inverse=""/></demon_cants.title>
+		<demon_cants.border padding="0.5pt"><subattrib border="" inverse=""/></demon_cants.border>
+		<demon_cants.lightline><subattrib light=""/></demon_cants.lightline>
+		<demon_cants.darkline><subattrib medium=""/></demon_cants.darkline>
+
+		<werewolf_rites.title><subattrib centre="" inverse=""/></werewolf_rites.title>
+		<werewolf_rites.border padding="0.5pt"><subattrib border="" inverse=""/></werewolf_rites.border>
+		<werewolf_rites.lightline><subattrib light=""/></werewolf_rites.lightline>
+		<werewolf_rites.darkline><subattrib medium=""/></werewolf_rites.darkline>
+
+		<mage_gnosises.title><subattrib centre="" inverse=""/></mage_gnosises.title>
+		<mage_gnosises.border padding="0.5pt"><subattrib border="" inverse=""/></mage_gnosises.border>
+		<mage_gnosises.lightline><subattrib light=""/></mage_gnosises.lightline>
+		<mage_gnosises.darkline><subattrib medium=""/></mage_gnosises.darkline>
+
+		<force_techniques.title><subattrib centre="" inverse=""/></force_techniques.title>
+		<force_techniques.border padding="0.5pt"><subattrib border="" inverse=""/></force_techniques.border>
+		<force_techniques.lightline><subattrib light=""/></force_techniques.lightline>
+		<force_techniques.darkline><subattrib medium=""/></force_techniques.darkline>
+
+		<force_powers.title><subattrib centre="" inverse=""/></force_powers.title>
+		<force_powers.border padding="0.5pt"><subattrib border="" inverse=""/></force_powers.border>
+		<force_powers.lightline><subattrib light=""/></force_powers.lightline>
+		<force_powers.darkline><subattrib medium=""/></force_powers.darkline>
+
+		<force_secrets.title><subattrib centre="" inverse=""/></force_secrets.title>
+		<force_secrets.border padding="0.5pt"><subattrib border="" inverse=""/></force_secrets.border>
+		<force_secrets.lightline><subattrib light=""/></force_secrets.lightline>
+		<force_secrets.darkline><subattrib medium=""/></force_secrets.darkline>
+
+		<disadvantages.title><subattrib centre="" inverse=""/></disadvantages.title>
+		<disadvantages.border padding="0.5pt"><subattrib border="" inverse=""/></disadvantages.border>
+		<disadvantages.lightline><subattrib light=""/></disadvantages.lightline>
+		<disadvantages.darkline><subattrib medium=""/></disadvantages.darkline>
+
+		<spellcasteroutputs.title><subattrib centre="" inverse=""/></spellcasteroutputs.title>
+		<spellcasteroutputs.border padding="0.5pt"><subattrib border="" inverse=""/></spellcasteroutputs.border>
+		<spellcasteroutputs.lightline><subattrib light=""/></spellcasteroutputs.lightline>
+		<spellcasteroutputs.darkline><subattrib medium=""/></spellcasteroutputs.darkline>
+
+		<powers_atwills.title><subattrib centre="" inverse=""/></powers_atwills.title>
+		<powers_atwills.border padding="0.5pt"><subattrib border="" inverse=""/></powers_atwills.border>
+		<powers_atwills.lightline><subattrib light=""/></powers_atwills.lightline>
+		<powers_atwills.darkline><subattrib medium=""/></powers_atwills.darkline>
+
+		<powers_encounters.title><subattrib centre="" inverse=""/></powers_encounters.title>
+		<powers_encounters.border padding="0.5pt"><subattrib border="" inverse=""/></powers_encounters.border>
+		<powers_encounters.lightline><subattrib light=""/></powers_encounters.lightline>
+		<powers_encounters.darkline><subattrib medium=""/></powers_encounters.darkline>
+
+		<powers_dailies.title><subattrib centre="" inverse=""/></powers_dailies.title>
+		<powers_dailies.border padding="0.5pt"><subattrib border="" inverse=""/></powers_dailies.border>
+		<powers_dailies.lightline><subattrib light=""/></powers_dailies.lightline>
+		<powers_dailies.darkline><subattrib medium=""/></powers_dailies.darkline>
+
+		<powers_utilities.title><subattrib centre="" inverse=""/></powers_utilities.title>
+		<powers_utilities.border padding="0.5pt"><subattrib border="" inverse=""/></powers_utilities.border>
+		<powers_utilities.lightline><subattrib light=""/></powers_utilities.lightline>
+		<powers_utilities.darkline><subattrib medium=""/></powers_utilities.darkline>
 
 		<salient_divine_abilities.title><subattrib centre="" inverse=""/></salient_divine_abilities.title>
 		<salient_divine_abilities.border padding="0.5pt"><subattrib border="" inverse=""/></salient_divine_abilities.border>
@@ -193,6 +313,12 @@
 		<feats.border padding="0.5pt"><subattrib border="" inverse=""/></feats.border>
 		<feats.lightline><subattrib light=""/></feats.lightline>
 		<feats.darkline><subattrib medium=""/></feats.darkline>
+
+		<traits.title><subattrib centre="" inverse=""/></traits.title>
+		<traits.border padding="0.5pt"><subattrib border="" inverse=""/></traits.border>
+		<traits.lightline><subattrib light=""/></traits.lightline>
+		<traits.darkline><subattrib medium=""/></traits.darkline>
+
 
 		<spelllist.known.header><subattrib border="" inverse="" very.dark=""/></spelllist.known.header>
 		<spelllist.known.header.centre><subattrib border="" inverse="" very.dark="" centre="" /></spelllist.known.header.centre>
