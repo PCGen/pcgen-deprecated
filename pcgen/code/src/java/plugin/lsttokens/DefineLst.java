@@ -28,6 +28,7 @@ import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.VariableKey;
 import pcgen.cdom.helper.StatLock;
 import pcgen.core.PCStat;
+import pcgen.core.utils.ParsingSeparator;
 import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
 import pcgen.rules.persistence.token.CDOMPrimaryToken;
@@ -49,65 +50,71 @@ public class DefineLst implements CDOMPrimaryToken<CDOMObject>
 
 	public boolean parse(LoadContext context, CDOMObject obj, String value)
 	{
-		int barLoc = value.indexOf('|');
-		if (barLoc != value.lastIndexOf('|'))
+		ParsingSeparator sep = new ParsingSeparator(value, '|');
+		if (!sep.hasNext())
 		{
-			Logging
-					.errorPrint(getTokenName()
-							+ " must be of Format: varName|varFormula or LOCK.<stat>|value or UNLOCK.<stat>");
+			Logging.errorPrint(getTokenName() + " may not be empty");
 			return false;
 		}
-		if (barLoc == -1)
+		String firstItem = sep.next();
+
+		if (firstItem.startsWith("UNLOCK."))
 		{
-			if (value.startsWith("UNLOCK."))
+			if (sep.hasNext())
 			{
-				PCStat stat = context.ref.getAbbreviatedObject(PCSTAT_CLASS,
-						value.substring(7));
-				context.obj.addToList(obj, ListKey.UNLOCKED_STATS, stat);
-				return true;
-			}
-			else
-			{
-				Logging.log(Logging.LST_ERROR, getTokenName() + " varName|varFormula"
-						+ "or LOCK.<stat>|value syntax requires an argument");
+				Logging.errorPrint(getTokenName()
+					+ " found UNLOCK. with additional pipe separated item.  "
+					+ "Must be of Format: varName|varFormula or "
+					+ "LOCK.<stat>|value or UNLOCK.<stat>");
 				return false;
 			}
+			PCStat stat =
+					context.ref.getAbbreviatedObject(PCSTAT_CLASS, value
+						.substring(7));
+			context.obj.addToList(obj, ListKey.UNLOCKED_STATS, stat);
+			return true;
 		}
-		if (value.startsWith("UNLOCK."))
+		if (!sep.hasNext())
 		{
-			Logging.log(Logging.LST_ERROR, getTokenName()
-					+ " UNLOCK.<stat> does not allow an argument");
+			Logging.errorPrint(getTokenName() + " varName|varFormula"
+				+ "or LOCK.<stat>|value syntax requires an argument");
 			return false;
 		}
-		String var = value.substring(0, barLoc);
+		String var = firstItem;
 		if (var.length() == 0)
 		{
-			Logging.log(Logging.LST_ERROR, "Empty Variable Name found in " + getTokenName()
-					+ ": " + value);
+			Logging.errorPrint("Empty Variable Name found in " + getTokenName()
+				+ ": " + value);
 			return false;
 		}
 		try
 		{
-			Formula f = FormulaFactory.getFormulaFor(value
-					.substring(barLoc + 1));
+			Formula f = FormulaFactory.getFormulaFor(sep.next());
+			if (sep.hasNext())
+			{
+				Logging.errorPrint(getTokenName() + " " + firstItem
+					+ " syntax requires only one argument: " + value);
+				return false;
+			}
 			if (value.startsWith("LOCK."))
 			{
-				PCStat stat = context.ref.getAbbreviatedObject(PCSTAT_CLASS,
-						value.substring(5, barLoc));
+				PCStat stat =
+						context.ref.getAbbreviatedObject(PCSTAT_CLASS,
+							firstItem.substring(5));
 				context.getObjectContext().addToList(obj, ListKey.STAT_LOCKS,
-						new StatLock(stat, f));
+					new StatLock(stat, f));
 			}
 			else
 			{
 				context.getObjectContext().put(obj,
-						VariableKey.getConstant(var), f);
+					VariableKey.getConstant(var), f);
 			}
 			return true;
 		}
 		catch (IllegalArgumentException e)
 		{
-			Logging.log(Logging.LST_ERROR, "Illegal Formula found in " + getTokenName()
-					+ ": " + value + " " + e.getLocalizedMessage());
+			Logging.errorPrint("Illegal Formula found in " + getTokenName()
+				+ ": " + value + " " + e.getLocalizedMessage());
 			return false;
 		}
 	}
