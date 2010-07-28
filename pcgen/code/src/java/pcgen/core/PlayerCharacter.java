@@ -1006,7 +1006,8 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	{
 		for (PCClass aClass : classList)
 		{
-			if (aClass.getKeyName().equalsIgnoreCase(aString))
+			if (aClass.getKeyName().equalsIgnoreCase(aString)
+				|| aClass.getSubClassKey().equalsIgnoreCase(aString))
 			{
 				return aClass;
 			}
