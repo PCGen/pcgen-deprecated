@@ -1565,19 +1565,23 @@ public final class Globals
 				}
 			}
 		}
-		DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> dkmtl = pc
-				.getPCBasedLevelInfo();
-		for (Spell spell : dkmtl.getKeySet())
+		if (pc != null)
 		{
-			for (CDOMList<Spell> list : dkmtl.getSecondaryKeySet(spell))
+			DoubleKeyMapToList<Spell, CDOMList<Spell>, Integer> dkmtl =
+					pc.getPCBasedLevelInfo();
+			for (Spell spell : dkmtl.getKeySet())
 			{
-				if (spellLists.contains(list))
+				for (CDOMList<Spell> list : dkmtl.getSecondaryKeySet(spell))
 				{
-					List<Integer> levels = dkmtl.getListFor(spell, list);
-					if (levels != null && (allLevels || levels.contains(level)))
+					if (spellLists.contains(list))
 					{
-						spellList.add(spell);
-						break;
+						List<Integer> levels = dkmtl.getListFor(spell, list);
+						if (levels != null
+							&& (allLevels || levels.contains(level)))
+						{
+							spellList.add(spell);
+							break;
+						}
 					}
 				}
 			}

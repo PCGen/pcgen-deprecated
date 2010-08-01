@@ -586,7 +586,7 @@ public class NPCGenerator
 			for ( int i = 0; i < MAX_RETRIES; i++ )
 			{
 				final int randAlign = getAlignment( align );
-				if (randAlign > 0)
+				if (randAlign >= 0)
 				{
 					Logging
 						.debugPrint("NPCGenerator: Selected " + randAlign + " for alignment " + align); //$NON-NLS-1$//$NON-NLS-2$
@@ -649,6 +649,7 @@ public class NPCGenerator
 							break;
 						}
 						// TODO Remove a failed class from the list.
+						Logging.errorPrint("Counld not add a level of " + aClass);
 						aClass = null;
 						break;
 					}
