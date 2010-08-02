@@ -3311,6 +3311,15 @@ public class PCClass extends PObject
 				aPC.delEquipSetItem(eq);
 				aPC.setDirty(true);
 			}
+
+			if (!aPC.isImporting())
+			{
+				final int maxxp = aPC.minXPForNextECL();
+				if (aPC.getXP() >= maxxp)
+				{
+					aPC.setXP(maxxp-1);
+				}
+			}
 		}
 		else
 		{
