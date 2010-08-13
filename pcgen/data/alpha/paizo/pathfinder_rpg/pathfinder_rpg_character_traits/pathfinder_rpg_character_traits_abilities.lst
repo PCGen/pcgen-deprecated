@@ -53,6 +53,13 @@ Poverty-Stricken		KEY:Poverty-Stricken_Trait		CATEGORY:Special Ability	TYPE:Trai
 Rich Parents		KEY:Rich Parents_Trait			CATEGORY:Special Ability	TYPE:Trait.BasicTrait.SocialTrait	PREMULT:1,[PREABILITY:1,CATEGORY=Special Ability,Rich Parents_Trait],[!PREABILITY:1,CATEGORY=Special Ability,TYPE.SocialTrait]		DESC:You were born into a rich family, perhaps even the nobility.																																																			KIT:1|Rich Parents	SOURCEPAGE:p.6
 Suspicious			KEY:Suspicious_Trait			CATEGORY:Special Ability	TYPE:Trait.BasicTrait.SocialTrait	PREMULT:1,[PREABILITY:1,CATEGORY=Special Ability,Suspicious],[!PREABILITY:1,CATEGORY=Special Ability,TYPE.SocialTrait]				DESC:You discovered at an early age that someone you trusted, perhaps an older sibling or a parent, had lied to you, and often, about something you had taken for granted, leaving you quick to question the claims of others.						BONUS:SKILL|Sense Motive|1|TYPE=Trait								CSKILL:Sense Motive					SOURCEPAGE:p.6
 
+#Block: No Traits Block, Stefan Mentioned a change in how many can be had. Putting in support for either.
+No Traits x2		KEY:No Traits Two				CATEGORY:Special Ability	TYPE:Trait.BasicTrait																										DESC:You've chosen to not take any Traits.																																																													COST:2	VISIBLE:DISPLAY
+No Traits x1		KEY:No Traits One				CATEGORY:Special Ability	TYPE:Trait.BasicTrait																										DESC:You've chosen to not take any Traits.																																																													COST:1	VISIBLE:DISPLAY
+
+#Block: Workaround to Assign No Traits to all PCs
+CATEGORY=Special Ability|All Automatic Proficiencies.MOD	KIT:1|No Starting Traits
+
 #
 # End
 #

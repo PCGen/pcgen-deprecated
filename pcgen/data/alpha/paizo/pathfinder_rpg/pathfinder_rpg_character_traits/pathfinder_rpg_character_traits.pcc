@@ -38,3 +38,5 @@ TEMPLATE:pathfinder_rpg_character_traits_templates.lst
 
 #Hide internal types
 HIDETYPE:FEAT|Trait|BasicTrait
+
+BONUS:ABILITYPOOL|Traits|2

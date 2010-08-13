@@ -4,6 +4,8 @@ SOURCELONG:Pathfinder Roleplaying Game Character Traits	SOURCESHORT:PFCT	SOURCEW
 STARTPACK:Rich Parents	TYPE:StartingKit	VISIBLE:NO
 FUNDS:gp	QTY:900
 
+STARTPACK:No Starting Traits	VISIBLE:NO		APPLY:INSTANT
+ABILITY:CATEGORY=Traits|No Traits Two
 #
 # End
 #
