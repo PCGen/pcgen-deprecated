@@ -1,6 +1,7 @@
 CAMPAIGN:Intelligent Item Test
 RANK:6
-GAMEMODE:35e|Pathfinder|3e
+#GAMEMODE:35e|Pathfinder|3e
+#COMMENT: Commenting out the GAMEMODE effectively makes the set VISIBLE:NO.
 GENRE:Fantasy
 BOOKTYPE:SRD
 SETTING:Fantasy
