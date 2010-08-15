@@ -1,5 +1,15 @@
 # @version    $Revision: 11304 $
 #
+# Menu entry (under Settings-->Campaign), and tool tip displayed for said entry
+# use & for mnemonic, && for & (MENUENTRY only)
+#
+MENUENTRY:&Gaslight RPG
+MENUTOOLTIP:Use Gaslight character creation settings
+DISPLAYORDER:1
+ALLOWEDMODES:Gaslight
+
+
+
 # message displayed when experience added will allow character to advance a level
 #
 LEVELMSG:Congratulations, you can advance with that much experience!
@@ -65,13 +75,6 @@ TAB:CAMPAIGNS		NAME:Source Materials		CONTEXT:tabpages\source\sourcesectionheadi
 TAB:SPELLS			NAME:in_spells			CONTEXT:tabpages\players\tabspells.html
 TAB:SUMMARY			NAME:in_summary			CONTEXT:tabpages\players\tabsummary.html
 #
-# Menu entry (under Settings-->Campaign), and tool tip displayed for said entry
-# use & for mnemonic, && for & (MENUENTRY only)
-#
-MENUENTRY:&Gaslight RPG
-MENUTOOLTIP:Use Gaslight character creation settings
-DISPLAYORDER:1
-ALLOWEDMODES:Gaslight
 #
 #SHORTRANGE sets the Short Range as referenced by TOHIT-SHORTRANGE and DAMAGE-SHORTRANGE
 # Integer value, defaults to zero if tag not present to allow GameModes without shortrange bonus/limitations
