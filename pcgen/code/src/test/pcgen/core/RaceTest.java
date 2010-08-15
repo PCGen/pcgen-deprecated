@@ -75,4 +75,30 @@ public class RaceTest extends AbstractCharacterTestCase
 		race.addToListFor(ListKey.UNLOCKED_STATS, str);
 		assertEquals("Template has been unlocked", false, RaceStat.isNonAbility(index, race));
 	}
+	
+	/**
+	 * Verify the function of the sizesAdvanced method.
+	 */
+	public void testSizesAdvanced()
+	{
+		Race race = new Race();
+		race.setName("Test Race");
+		
+		// Validate that there are no size changes if no advancement is specified
+		assertEquals("Size increase where none specified wrong", 0, race.sizesAdvanced(1));
+		assertEquals("Size increase where none specified wrong", 0, race.sizesAdvanced(2));
+		assertEquals("Size increase where none specified wrong", 0, race.sizesAdvanced(3));
+		assertEquals("Size increase where none specified wrong", 0, race.sizesAdvanced(4));
+		assertEquals("Size increase where none specified wrong", 0, race.sizesAdvanced(5));
+
+		// Validate that size changes occur when needed and no extra happen if advancement is specified
+		race.addToListFor(ListKey.HITDICE_ADVANCEMENT, 2);
+		race.addToListFor(ListKey.HITDICE_ADVANCEMENT, 4);
+		assertEquals("Size increase pre first change wrong", 0, race.sizesAdvanced(1));
+		assertEquals("Size increase pre first change wrong", 0, race.sizesAdvanced(2));
+		assertEquals("Size increase pre last change wrong", 1, race.sizesAdvanced(3));
+		assertEquals("Size increase pre last change wrong", 1, race.sizesAdvanced(4));
+		assertEquals("Size increase post last change wrong", 1, race.sizesAdvanced(5));
+		assertEquals("Size increase post last change wrong", 1, race.sizesAdvanced(6));
+	}
 }
