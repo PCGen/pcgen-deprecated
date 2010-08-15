@@ -123,23 +123,23 @@ public final class Race extends PObject
 	int sizesAdvanced(final int HD)
 	{
 		List<Integer> hda = getListFor(ListKey.HITDICE_ADVANCEMENT);
-		if (hda == null)
+		int steps = 0;
+		if (hda != null)
 		{
-			return 0;
-		}
-		else
-		{
-			int steps = 0;
+			int limit = maxHitDiceAdvancement();
 			for (Integer hitDie : hda)
 			{
 				if (HD <= hitDie)
 				{
 					break;
 				}
-				steps++;
+				if (hitDie < limit)
+				{
+					steps++;
+				}
 			}
-			return steps;
 		}
+		return steps;
 	}
 	
 	@Override

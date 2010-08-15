@@ -12503,9 +12503,10 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		}
 
 		// SizeAdjustment
-		if (getSizeAdjustment() != null)
+		SizeAdjustment sizeAdjustment = getSizeAdjustment();
+		if (sizeAdjustment != null)
 		{
-			results.add(getSizeAdjustment());
+			results.add(sizeAdjustment);
 		}
 
 		// Skill
