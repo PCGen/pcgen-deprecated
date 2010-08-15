@@ -179,10 +179,15 @@
 		<special_qualities.lightline><subattrib light=""/></special_qualities.lightline>
 		<special_qualities.darkline><subattrib medium=""/></special_qualities.darkline>
 
-        <traits.title><subattrib centre="" inverse=""/></traits.title>
-        <traits.border padding="0.5pt"><subattrib border="" inverse=""/></traits.border>
-        <traits.lightline><subattrib light=""/></traits.lightline>
-        <traits.darkline><subattrib medium=""/></traits.darkline>
+		<intelligent_items.title><subattrib centre="" inverse=""/></intelligent_items.title>
+		<intelligent_items.border padding="0.5pt"><subattrib border="" inverse=""/></intelligent_items.border>
+		<intelligent_items.lightline><subattrib light=""/></intelligent_items.lightline>
+		<intelligent_items.darkline><subattrib medium=""/></intelligent_items.darkline>
+
+		<traits.title><subattrib centre="" inverse=""/></traits.title>
+		<traits.border padding="0.5pt"><subattrib border="" inverse=""/></traits.border>
+		<traits.lightline><subattrib light=""/></traits.lightline>
+		<traits.darkline><subattrib medium=""/></traits.darkline>
 
 		<salient_divine_abilities.title><subattrib centre="" inverse=""/></salient_divine_abilities.title>
 		<salient_divine_abilities.border padding="0.5pt"><subattrib border="" inverse=""/></salient_divine_abilities.border>
