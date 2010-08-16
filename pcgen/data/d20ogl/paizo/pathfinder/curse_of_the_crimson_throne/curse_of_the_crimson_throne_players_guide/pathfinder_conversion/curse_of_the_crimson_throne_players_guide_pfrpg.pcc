@@ -34,7 +34,8 @@ DESC:Rebellion is in the air! The Pathfinder: Curse of the Crimson Throne Player
 # Do not remove the EXTRAFILE comment.
 #EXTRAFILE:OGL.txt
 
-ABILITY:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/curse_of_the_crimson_throne_players_guide/cotct_pg_abilities.lst
+#ABILITY:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/curse_of_the_crimson_throne_players_guide/cotct_pg_abilities.lst
+
 EQUIPMENT:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/curse_of_the_crimson_throne_players_guide/cotct_pg_equipment.lst
 EQUIPMENT:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/curse_of_the_crimson_throne_players_guide/cotct_pg_equipment_armor.lst
 EQUIPMENT:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/curse_of_the_crimson_throne_players_guide/cotct_pg_equipment_weapons.lst|(EXCLUDE:Starknife)
