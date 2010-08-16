@@ -49,7 +49,7 @@ CLASS:Dark Temptress	STARTSKILLPTS:2	CSKILL:Bluff|Concentration|TYPE.Craft|Diplo
 6						SAB:Second Pact (Power)																	BONUS:COMBAT|AC|5|TYPE=NaturalArmor																					SPELLS:Class|TIMES=3|CASTERLEVEL=CL|Charm Monster,14+CHA|Darkness,12+CHA|Doom,11+CHA|Ethereal Jaunt,17+CHA
 7						SAB:Bind Souls																																							ADD:SPELLCASTER|1|Arcane
 8																																					BONUS:VAR|PowerOfTheNight|1						ADD:SPELLCASTER|1|Arcane
-9						SAB:Third Pact (Pride)																																											SPELLS:Class|TIMES=ATWILL|CASTERLEVEL=CL|Tongues,13+CHA	SPELLS:Class|TIMES=3|CASTERLEVEL=CL|Desecrate,12+CHA|Detect Good,11+CHA|Detect Thoughts,12+CHA|Teleport Without Error,17+CHA
+9						SAB:Third Pact (Pride)																																											SPELLS:Class|TIMES=ATWILL|CASTERLEVEL=CL|Tongues,13+CHA	SPELLS:Class|TIMES=3|CASTERLEVEL=CL|Desecrate,12+CHA|Detect Good,11+CHA|Detect Thoughts,12+CHA|Teleport without Error,17+CHA
 10	MOVE:Fly,50	SR:12	DR:20/+2	SAB:The Epiphany of Extacy	SAB:Energy Drain	SAB:Alternate Form	SAB:Summon Tanar'ri	SAB:Tanar'ri Qualities							BONUS:SKILL|Listen,Spot|8											ADD:SPELLCASTER|1|Arcane	SPELLS:Class|TIMES=1|CASTERLEVEL=CL|Unholy Blight,14+CHA																						TEMPLATE:Dark Temptress Level 10
 
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus													Combat bonus
