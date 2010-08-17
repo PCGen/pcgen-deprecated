@@ -1,0 +1,6 @@
+# CVS $Revision: 9384 $ $Author: eddyanthony $ -- Fri Feb 13 22:23:31 2009 -- reformated by prettylst.pl v1.39 (build 9329)
+SOURCELONG:Rise of the Runelords - Chapter 3: The Hook Mountain Massacre	SOURCESHORT:PF3	SOURCEWEB:http://paizo.com/pathfinder/v5748btpy80e8	SOURCEDATE:2007-08
+
+###Block: Custom NPC Templates
+# Template Name			Class Skill
+Barl Breakbones Skills.MOD	CSKILL:.CLEAR
