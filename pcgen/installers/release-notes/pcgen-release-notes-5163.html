@@ -1,0 +1,457 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" >
+		<title>Release Notes for PCGen v5.16.3</title>
+		<link rel="stylesheet" type="text/css" href="http://sourceforge.net/cssdef.php">
+	</head>
+
+	<body>
+
+		<h1>Release Notes for PCGen v5.16.3</h1>
+
+		<h2>Table of Content</h2>
+
+		<ul>
+			<li><a href="#WhatsNew">What's new for v5.16.3</a></li>
+			<li><a href="#Chars">Character Changes</a></li>
+			<li><a href="#GMGenIssue">GMGen known issue</a></li>
+			<li><a href="#Installation">Installation</a></li>
+			<li><a href="#CustomDataSets">Custom Data Sets</a></li>
+			<li><a href="#WantToHelp">Want to Help?</a></li>
+			<li><a href="#links">Useful Links</a></li>
+			<li><a href="#ChangeLog">Change Log for 5.16.3</a></li>
+		</ul>
+
+		<h2><a name="WhatsNew">What's new for v5.16.3</a></h2>
+
+
+<p>PCGen v5.16.3 is the third patch to PCGen 5.16. We've fixed a number of 
+bugs that have been reported since the 5.16.2 production release, including a number in the in-built LST editor. 
+We've also added the errata for PathFinder RPG data set and the bestiary previously distributed as a Out Of Cycle data 
+set download, along with the following new sources: 
+</P>
+<ul>
+<li>[Distant Horizons Games] Distinctions & Demerits</li>
+<li>[Distant Horizons Games] The Practical Enchanter</li>
+<li>[DragonWing Games] BP - Into the Green</li>
+<li>[Paizo] conversion sets for Curse of the Crimson Throne</li>
+<li>[Paizo] Pathfinder Adventure Path: Kingmaker Player's Guide</li>
+<li>[Paizo] Pathfinder Chronicles: Campaign Setting</li>
+<li>[Paizo] Pathfinder Chronicles: Guide to the River Kingdoms</li>
+<li>[Paizo] Pathfinder Companion: Cheliax, Empire of Devils</li>
+<li>[Paizo] Pathfinder conversion sets for Rise of the Runelords</li>
+<li>[Paizo] Pathfinder conversion sets for Second Darkness</li>
+<li>[Paizo] Pathfinder Roleplaying Game Bestiary</li>
+<li>[Paizo] Pathfinder: Council of Thieves Player's Guide</li>
+</li>
+</ul><p>
+See the <a href="#ChangeLog">Change Log for 5.16.3</a> 
+for full details.
+</P><p>
+The highlights of the changes for PCGen 5.16 are listed below:
+</p>
+<b>Major Changes:</b>
+<ul>
+<li>Simplified Source Loading Interface</li>
+<li>Automated Data Converter to update 5.14 compliant data to current syntax</li>
+<li>Secret GM character notes that don't export</li>
+<li>Improvement of performance for epic characters</li>
+<li>Implement Flight Maneuverability</li>
+<li>Allow multiple experience tables</li>
+<li>Add Quick Search and filtering to the Kit window</li>
+<li>In-built LST Editor has several bugs fixed</li>
+</ul>
+
+<b>LST Changes:</b>
+<ul>
+<li>New LST parser and validator with rigorous error checking (first step of CDOM implementation)</li>
+<li>ASPECT tag for Abilities and Feats</li>
+<li>BONUSSTATLEVELSTARTINTERVAL tag enhancement</li>
+<li>FAVCLASS:CHOOSE improvements</li>
+<li>LEVELSPERFEAT expansion</li>
+<li>Allow CHOOSE to be used in races and templates</li>
+<li>Assigning Languages via kits</li>
+</ul>
+
+<b>New Games:</b>
+<ul>
+<li>[Paizo] Pathfinder RPG</li>
+</ul>
+
+<b>New Sources:</b>
+<ul>
+<li><a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/5160_pcgen_4e_starter_set_0.1.zip/download">4e Starter Set</a> - <a href="https://sourceforge.net/docman/display_doc.php?docid=180557&group_id=25576">Install guide</a> (Separate download)</li>
+<li>[Dragon Wing Games] BP - eFaeries</li>
+<li>[En Publishing] Elements of Magic (Revised)</li>
+<li>[Mongoose] Quintessential Ranger II </li>
+<li>[Mongoose] Quintessential Ranger</li>
+<li>[Paizo] Curse of the Crimson Throne - Player&#039;s Guide</li>
+<li>[Paizo] Curse of the Crimson Throne: Chapter 1</li>
+<li>[Paizo] Curse of the Crimson Throne: Chapter 2</li>
+<li>[Paizo] Curse of the Crimson Throne: Chapter 4</li>
+<li>[Paizo] Curse of the Crimson Throne: Chapter 6</li>
+<li>[Paizo] Curse of the Crimson Throne: Chapter3</li>
+<li>[Paizo] Legacy of Fire Player's Guide</li>
+<li>[Paizo] Module D0: Hollow&#039;s Last Hope</li>
+<li>[Paizo] Module D1.5: Revenge of the Kobold King</li>
+<li>[Paizo] Module D1: Crown of the Kobold King</li>
+<li>[Paizo] Pathfinder Character Traits Web Enhancement</li>
+<li>[Paizo] Pathfinder RPG</li>
+<li>[Paizo] Pathfinder RPG (Beta Playtest Web Enhancement)</li>
+<li>[Paizo] Rise of the Runelords - Chapter 2</li>
+<li>[Paizo] Rise of the Runelords - Chapter 3</li>
+<li>[Paizo] Rise of the Runelords - Chapter 4</li>
+<li>[Paizo] Rise of the Runelords - Chapter 5</li>
+<li>[Paizo] Rise of the Runelords - Chapter 6</li>
+<li>[Paizo] Second Darkness - Chapter 1: Shadow in the Sky</li>
+<li>[Paizo] Second Darkness - Chapter 2: Children of the Void</li>
+<li>[Paizo] Second Darkness - Chapter 3: The Armageddon Echo</li>
+<li>[Paizo] Second Darkness - Chapter 4: Endless Night</li>
+<li>[Paizo] Second Darkness - Chapter 5: A Memory of Darkness</li>
+<li>[Paizo] Second Darkness - Chapter 6</li>
+<li>[Paizo] Second Darkness Player's Guide</li>
+<li>[Paradigm Concepts] Forged In Magic</li>
+<li>[Reality Deviant] Critical Feats</li>
+<li>[Skirmisher] Nuisances: Director&#039;s Cut</li>
+<li>[Distant Horizons Games] Distinctions & Demerits</li>
+<li>[Distant Horizons Games] The Practical Enchanter</li>
+<li>[DragonWing Games] BP - Into the Green</li>
+<li>[Paizo] conversion sets for Curse of the Crimson Throne</li>
+<li>[Paizo] Pathfinder Adventure Path: Kingmaker Player's Guide</li>
+<li>[Paizo] Pathfinder Chronicles: Campaign Setting</li>
+<li>[Paizo] Pathfinder Chronicles: Guide to the River Kingdoms</li>
+<li>[Paizo] Pathfinder Companion: Cheliax, Empire of Devils</li>
+<li>[Paizo] Pathfinder conversion sets for Rise of the Runelords</li>
+<li>[Paizo] Pathfinder conversion sets for Second Darkness</li>
+<li>[Paizo] Pathfinder Roleplaying Game Bestiary</li>
+<li>[Paizo] Pathfinder: Council of Thieves Player's Guide</li>
+</li>
+</ul>
+<p>For full details of the new changes in this release, see the <a href="#ChangeLog">Change Log</a> .</p>
+
+<p>Note: This software uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under 
+Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. 
+This software is not published, endorsed, or specifically approved by Paizo Publishing. For more information 
+about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo 
+Publishing and Paizo products, please visit <a href="http://paizo.com">Paizo.Com</a>.</p>
+
+<p><i>James Dempsey</i> for the PCGEN Team -- 18 August, 2010.</p>
+
+
+
+		<h2><a name="Chars">Character Changes</a></h2>
+
+		<p>Most Characters from the 5.14 series of PCGen should load seamlessly in 5.16.3. 
+		  Characters created in the Modern gameMode will be effected by changes made to 
+		  the Occupations feature. Due to refinements to the Ability Object we 
+		  have reconfigured the Occupations feature. Newly created characters will see 
+		  no differences but when existing characters are opened PCGen will report that 
+		  the Occupation Ability and the associated skill abilities cannot be found. The 
+		  fix is simple however, simply note what abilities are missing and go to the 
+		  Background tab and reselect your choices.</p>
+		
+		<h2><a name="GMGenIssue">GMGen Known Issue</a></h2>
+
+		<p>There is a known issue with GMGen when used on a Macintosh. In the Initiative
+			Tab when running a combat when you select any character other than the one whose
+			turn it is and click the Damage or Heal buttons the character whose turn it
+			is becomes selected and the damage is applied to him instead of the character
+			which had been selected.</p>
+		<p>A solution has not yet been found but fortunately there is a simple work-around.
+			The problem will only manifest when using the System Look and Feel, you can
+			change the Look and Feel by going to Preferences/Appearance/Look and Feel and
+			changing it to Java before activating GMGen and then it will work as it should.</p>
+
+		<h2><a name="Installation">Installation</a></h2>
+
+		<h3>Prerequisites</h3>
+
+		<p>Java 5. PCGEN 5.16.3 is not compatible with Java
+			1.4.x and it is NOT SUPPORTED. To get the latest version of Java, go to
+			<a href="http://jdl.sun.com/webapps/getjava/BrowserRedirect?locale=en&amp;host=java.com">java.com</a>.</p>
+
+		<h3>Important Warning</h3>
+
+		<p>If you have custom data created using either the LST Editor, or the my_dataset example files, it is 
+			very important that you read the <a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/installationpages/upgradepcgen.html">Upgrading PCGen</a> documentation before 
+			installing your new version of PCGen.</p>
+
+		<h3>Instructions</h3>
+
+		<p>Please see the
+		<a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/installationpages/installationpcgen.html">
+		Installation Documentation</a> for information about installing PCGen. 
+		</p>
+
+		<h3>Read the doc!</h3>
+
+		<p>Please make sure you read the <a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/">docs</a> to familiarize yourself with the changes. You can access it from
+			<strong>docs/index.html</strong> located in the PCGen directory.</p>
+
+		<h3>Download PCGen</h3>
+		<ul>
+			<li><a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_full.zip?download">pcgen5163_full.zip</a>
+				(<a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_full.zip.asc?download">PGP Signature</a>): <br />
+				everything including GMGen and PDF</li>
+			<li><a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_partial.zip?download">pcgen5163_partial.zip</a>
+				(<a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_partial.zip.asc?download">PGP Signature</a>):<br />
+				everything except GMGen and PDF</li>
+			<li><a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_win_install.exe?download">pcgen5163_win_install.exe</a>
+				(<a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_win_install.exe.asc?download">PGP Signature</a>): <br />
+				the full package bundle in an easy to use installer for Windows</li>
+			<li><a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_mac_install.dmg?download">pcgen5163_mac_install.dmg</a> 
+				(<a href="http://prdownloads.sourceforge.net/pcgen/pcgen5163_mac_install.dmg.asc?download">PGP Signature</a>): <br />
+				the full package bundle in an easy to use installer for Mac (distributed as a disk image)</li>
+		</ul>
+		<p></p>
+
+		<h2><a name="CustomDataSets">Custom Data Sets</a></h2>
+
+		<P>PCGen provides two simple ways of adding your own data, these are the inbuilt LST 
+			Editors and the starter data set <em>my_dataset</em>. If you have used these, please
+			see the 
+			 <a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/installationpages/upgradepcgen.html">Upgrading PCGen</a> documentation  
+			when upgrading PCGen.</P>
+
+
+		<h2><a name="WantToHelp">Want to Help?</a></h2>
+
+		<p>PCGen is an open source project. Anyone who wants to contribute whether it is Java programming, data
+			set programming, documentation, helping new users, general cat herding, massage, walking the dogs, etc.
+			is very welcome.</p>
+		<p>If you want to help drop a mail to Eric Smith (<a href="mailto:maredudd@blackroot.org">maredudd@blackroot.org</a>)
+			or Eddy Anthony (<a href="mailto:eddyba@mindspring.com">eddyba@mindspring.com</a>), or
+			simply post a message with the title <strong>"I Want To Help"</strong> in one of the mailing lists (and may
+			the gods have mercy on your soul :-).</p>
+
+		<p></p>
+
+		<h2><a name="links">Useful Links</a></h2>
+
+		<ul>
+			<li>The project <strong>home page</strong>:<br />
+				<a href="http://pcgen.sourceforge.net">http://pcgen.sourceforge.net</a></li>
+			<li>The project <strong>Wiki</strong>:<br />
+				<a href="http://pcgen.wiki.sourceforge.net/">http://pcgen.wiki.sourceforge.net/</a></li>
+			<li>The Yahoo <strong>main mailing list</strong> (for help and feedback):<br />
+				<a href="http://groups.yahoo.com/group/pcgen">http://groups.yahoo.com/group/pcgen</a></li>
+			<li>The Yahoo <strong>LstHelp mailing list</strong> (for help with making your own data files):<br />
+				<a href="http://groups.yahoo.com/group/PCGenListFileHelp">http://groups.yahoo.com/group/PCGenListFileHelp</a></li>
+			<li>The SourceForge <strong>pcgen-dev mailing list</strong> (for code monkey talk about the development):<br />
+				<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=pcgen-devel">http://sourceforge.net/mailarchive/forum.php?forum_name=pcgen-devel</a></li>
+			<li>The Yahoo <strong>pcgen_experimental mailing list</strong> (for the data monkeys with new ideas/problems):<br />
+				<a href="http://groups.yahoo.com/group/pcgen_experimental/">http://groups.yahoo.com/group/pcgen_experimental</a></li>
+		</ul>
+
+		<h2><a name="ChangeLog">Change Log for 5.16.3</a></h2>
+
+
+<h2>        New Data Source Development
+</h2>
+<ul>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-2'>NEWSOURCE-2</a>] -         [DragonWing Games] BP - Into the Green
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-4'>NEWSOURCE-4</a>] -         [Distant Horizons Games] The Practical Enchanter
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-5'>NEWSOURCE-5</a>] -         [Paizo] Pathfinder Chronicles: Campaign Setting
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-6'>NEWSOURCE-6</a>] -         [Paizo] Pathfinder Chronicles: Guide to the River Kingdoms
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-7'>NEWSOURCE-7</a>] -         [Paizo] Pathfinder Companion: Cheliax, Empire of Devils
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-8'>NEWSOURCE-8</a>] -         [Paizo] Pathfinder conversion sets for Rise of the Runelords
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-9'>NEWSOURCE-9</a>] -         [Paizo] conversion sets for Curse of the Crimson Throne
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-10'>NEWSOURCE-10</a>] -         [Paizo] Pathfinder conversion sets for Second Darkness
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-12'>NEWSOURCE-12</a>] -         [Distant Horizons Games] Distinctions &amp; Demerits
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-13'>NEWSOURCE-13</a>] -         [Paizo] Pathfinder Roleplaying Game Bestiary
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-15'>NEWSOURCE-15</a>] -         [Paizo] Pathfinder: Council of Thieves Player's Guide
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/NEWSOURCE-16'>NEWSOURCE-16</a>] -         [Paizo] Pathfinder Adventure Path: Kingmaker Player's Guide
+</li>
+</ul>
+                
+
+                    
+<h3>        Code - Bug
+</h3>
+<ul>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-14'>CODE-14</a>] -         Custom Sources aren't being Saved
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-15'>CODE-15</a>] -         Casterlevel not applying correctly
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-34'>CODE-34</a>] -         Minor issue - Counter For number of Feat/Abilities has issue with x0  (10, 20, 30)
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-40'>CODE-40</a>] -         Data Installer fails to read Install.lst file with accented characters
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-53'>CODE-53</a>] -         Spell list for sorcerers missing from GMGen Initiative panel
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-57'>CODE-57</a>] -         Data Converter does not mirror directory of converted data on output
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-64'>CODE-64</a>] -         PCG relative file path to companion
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-75'>CODE-75</a>] -         TYPE (Global) and ALTTYPE (Equipment) do not unparse .REMOVE.
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-77'>CODE-77</a>] -         Domain LST FEAT token does not unparse .CLEAR
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-78'>CODE-78</a>] -         Equipment and EquipmentModifier SPROP tokens do not unparse .CLEAR
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-79'>CODE-79</a>] -         Template HD and LEVEL do not unparse .CLEAR
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-82'>CODE-82</a>] -         AUTO:EQUIP Adds '0' of item
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-118'>CODE-118</a>] -         Spell Editor: CLASSES entries do not get saved
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-119'>CODE-119</a>] -         Experience preference is not accessible if GMGen open
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-128'>CODE-128</a>] -         Birthday no longer persisted - backport fix for 2856884 to 5.16.3
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-130'>CODE-130</a>] -         NullPointerException When Displaying Character  - backport fix for 2845097 to 5.16.3
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-136'>CODE-136</a>] -         Removing a level does not reduce current xp
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-137'>CODE-137</a>] -         Spell Editor: Spell copy loses classes and domains
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-138'>CODE-138</a>] -         Class Editor: ADD:ABILITY does not show on advanced page
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-139'>CODE-139</a>] -         Class Editor: Errors in console on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-140'>CODE-140</a>] -         Domain Editor: Spells lost on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-141'>CODE-141</a>] -         Feat Editor: Errors in console on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-142'>CODE-142</a>] -         Race Editor: Errors in console on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-143'>CODE-143</a>] -         Skill Editor: Errors in console on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-144'>CODE-144</a>] -         Spell Editor: Errors in console on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-145'>CODE-145</a>] -         Template Editor: Errors in console on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-146'>CODE-146</a>] -         Source Editor: Errors in console on save
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-147'>CODE-147</a>] -         Source Editor - Cannot add PCC file
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-156'>CODE-156</a>] -         LST Converter can get stuck at Game Mode
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-157'>CODE-157</a>] -         LST Converter leaks memory
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-162'>CODE-162</a>] -         ADD:CLASSSKILL on CLASS LINE does not Save to the PCG file
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-166'>CODE-166</a>] -         CSKILL on Class Level line is ignored
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-167'>CODE-167</a>] -         Classes Editor - Removed level entries are persisted
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-168'>CODE-168</a>] -         Deity Editor - ITEM and PANTHEON save problems
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-169'>CODE-169</a>] -         LST Editor: New Custom type gets added each edit cycle
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-172'>CODE-172</a>] -         Domain Editor: Weapon prof not saved
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-173'>CODE-173</a>] -         LST Editors: Vision tag is duplicated
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-174'>CODE-174</a>] -         Language Editor: TYPE does not get selected
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-176'>CODE-176</a>] -         Load Sources with PC loads incompatible and duplicate sources
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-177'>CODE-177</a>] -         NPE - Create NPC - 20 Level Human Monk brings up several NPEs
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-181'>CODE-181</a>] -         Race file - FEAT not adding the FEAT
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-182'>CODE-182</a>] -         Parsing Bug in Formula
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-188'>CODE-188</a>] -         CL not being evaluated on SUBCLASS Levels greater than Level 1
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-196'>CODE-196</a>] -         HITDICEADVANCEMENT is not working as Documented
+</li>
+</ul>
+                        
+<h3>        Code - New Feature
+</h3>
+<ul>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-20'>CODE-20</a>] -         Add support for new installer extension pcz
+</li>
+</ul>
+        
+    
+<h3>        Data - Bug
+</h3>
+<ul>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-41'>DATA-41</a>] -         Shorten overly long directory paths
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-44'>DATA-44</a>] -         SOURCEPAGES incorrect for Equipment
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-60'>DATA-60</a>] -         Burst ~ Xeph move bonus is wrong (doesn't round TL/4 in 10*(TL/4)+10)
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-62'>DATA-62</a>] -         [PATHFINDER] Half-Dragon template problems
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-65'>DATA-65</a>] -         NPE error with Pathfinder Monk
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-69'>DATA-69</a>] -         Description for Destined Sorcerer bloodline's Fated ability missing reference to AC bonus
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-71'>DATA-71</a>] -         Animal Tricks have issues
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-72'>DATA-72</a>] -         [Pathfinder] Barkskin spell has misplaced parenthesis
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-77'>DATA-77</a>] -         Incorrect TYPE usage with Natural Armor 
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-78'>DATA-78</a>] -         Orc Double Axe not treated as a double weapon
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-79'>DATA-79</a>] -         Missing Companion Creatures - Familiars, Mounts and Animal Companions
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-80'>DATA-80</a>] -         Rhino Hide armor check penalty is wrong
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-82'>DATA-82</a>] -         Missing Descriptions for Oils!
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-85'>DATA-85</a>] -         Displaying Combat Styles erroneously
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-86'>DATA-86</a>] -         [AEG] Gods Prestige Class - Line 167 - CLASS:The Returned has missing Formula for the BONUS:COMBAT|xxx
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-87'>DATA-87</a>] -         Giants' thrown rocks have incorrect ranges
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-88'>DATA-88</a>] -         Missing Fire Damage From Fire Giants' Thrown Rocks
+</li>
+</ul>
+                        
+<h3>        Data - New Feature
+</h3>
+<ul>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-29'>DATA-29</a>] -         [Paizo] Pathfinder RPG Core Rulebook Errata
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-30'>DATA-30</a>] -         [Paizo] Pathfinder RPG Bestiary Errata
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-42'>DATA-42</a>] -         PCGen Enhancement Re-namer utility dataset
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-74'>DATA-74</a>] -         Add &quot;Pathfinder RPG for Gamemasters (includes monsters)&quot; to quick sources window
+</li>
+</ul>
+                        
+<h3>        Documentation - Bug
+</h3>
+<ul>
+<li>[<a href='http://jira.pcgen.org/browse/DOCS-2'>DOCS-2</a>] -         KIT - Need to mention RACE in a kit requires !PRERACE:1,%
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DOCS-8'>DOCS-8</a>] -         Incorrect example for ARMORPROF:x for exclude
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DOCS-16'>DOCS-16</a>] -         CHOOSE:SKILL|x|x|y example is incorrect
+</li>
+</ul>
+                        
+<h3>        Documentation - New Feature
+</h3>
+<ul>
+<li>[<a href='http://jira.pcgen.org/browse/DOCS-10'>DOCS-10</a>] -         SPELLMEM add DESC to the List.
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DOCS-23'>DOCS-23</a>] -         [Publisher] Add Rite Publishing to Publisher Permissions Page
+</li>
+</ul>
+            
+	</body>
+</html>
