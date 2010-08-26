@@ -39,4 +39,4 @@ EQUIPMENT:shadmar_equip.lst
 SPELL:shadmar_spells.lst
 
 # TEMP till we get the Nitehawk Supplements coded:
-WEAPONPROFS:shadmar_profs_weapon_temp.lst
+WEAPONPROF:shadmar_profs_weapon_temp.lst
