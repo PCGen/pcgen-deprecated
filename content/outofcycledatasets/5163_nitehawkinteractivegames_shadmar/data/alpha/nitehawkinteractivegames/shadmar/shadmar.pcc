@@ -6,9 +6,9 @@ GAMEMODE:35e
 GENRE:Fantasy
 BOOKTYPE:Supplement
 SETTING:RSRD
-TYPE:Alpha Datasets.Nitehawk Interactive Games.Supplement
+TYPE:Alpha.Nitehawk Interactive.Supplement
 PRECAMPAIGN:1,BOOKTYPE=Core Rules,[3.5 RSRD Basics]
-PUBNAMELONG:Nitehawk Interactive Games
+PUBNAMELONG:Nitehawk Interactive
 PUBNAMESHORT:NIG
 PUBNAMEWEB:http://www.nitehawk-games.biz/index.html
 SOURCELONG:From the Laboratory of the Mad Wizard Shadmar
@@ -38,3 +38,5 @@ COVER:65633.jpg
 EQUIPMENT:shadmar_equip.lst
 SPELL:shadmar_spells.lst
 
+# TEMP till we get the Nitehawk Supplements coded:
+WEAPONPROFS:shadmar_profs_weapon_temp.lst
