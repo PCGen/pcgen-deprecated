@@ -64,7 +64,6 @@ import pcgen.cdom.enumeration.AssociationKey;
 import pcgen.cdom.enumeration.IntegerKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
-import pcgen.cdom.enumeration.Pantheon;
 import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.enumeration.Type;
 import pcgen.cdom.enumeration.VariableKey;
@@ -712,6 +711,8 @@ public final class EditorMainForm extends JDialog
 				break;
 
 			case EditorConstants.EDIT_FEAT:
+				Ability thisAbility = (Ability) thisPObject;
+				thisAbility.setCDOMCategory(AbilityCategory.FEAT);
 				break;
 
 			case EditorConstants.EDIT_LANGUAGE:
