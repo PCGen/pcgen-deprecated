@@ -39,6 +39,7 @@ ABILITY:pfcr_abilities_class_common.lst
 ABILITY:pfcr_abilities_class.lst
 ABILITY:pfcr_abilities_class_prestige.lst
 ABILITY:pfcr_abilities_companions.lst
+ABILITY:pfcr_abilities_equipment.lst
 ABILITY:pfcr_abilities_general.lst
 ABILITY:pfcr_abilities_racial_common.lst
 ABILITY:pfcr_abilities_racial.lst
@@ -77,6 +78,7 @@ EQUIPMOD:pfcr_equipmods_armorshields.lst
 EQUIPMOD:pfcr_equipmods_base.lst
 EQUIPMOD:pfcr_equipmods_enhancing.lst
 EQUIPMOD:pfcr_equipmods_intelligent.lst
+EQUIPMOD:pfcr_equipmods_material.lst
 EQUIPMOD:pfcr_equipmods_weapons.lst
 FEAT:pfcr_feats.lst
 KIT:pfcr_kits_companions.lst
@@ -95,9 +97,6 @@ WEAPONPROF:pfcr_weaponprofs.lst
 
 # Load Essential Bestiary Data with Core
 PCC:bestiary_core/bestiary_core.pcc
-
-# Load the Intelligent Item Model automatically
-PCC:@/alpha/paizo/pathfinder_rpg/paizo_intelligent_item_model/int_item.pcc
 
 #Hide internal feat types
 HIDETYPE:FEAT|SpecialQuality|SpecialAttack|Extraordinary|SpellLike|Supernatural|AttackOption|Aura|Immunity|ModifyAC|Resistance|Weakness

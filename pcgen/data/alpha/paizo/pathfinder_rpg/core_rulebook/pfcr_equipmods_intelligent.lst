@@ -1,7 +1,4 @@
-# Intelligent Magic Items - An Illusive Creation
-#By Andrew Maitland
-#
-
+###Block: Intelligent Item EQMODs
 Intelligent Magic Item Base	COST:500			NAMEOPT:NOTHING	KEY:IntItemBase		TYPE:Weapon.Armor.Goods					VISIBLE:YES		ABILITY:Intelligent Item|AUTOMATIC|Base Intelligent Item				
 #EQMOD:IntItemStatINT10.IntItemStatWIS10.IntItemStatCHA10
 Int Item / Dedicated Purpose					NAMEOPT:NOTHING	KEY:IntItemPurpose	TYPE:Weapon.Armor.Goods	PRETYPE:1,EQMOD=IntItemBase	VISIBLE:QUALIFY	ABILITY:Intelligent Item|AUTOMATIC|Intelligent Item ~ Has Special Purpose
