@@ -262,6 +262,10 @@ public class ObjectKey<T>
 	public static final ObjectKey<TransitionChoice<Region>> REGION_CHOICE = new ObjectKey<TransitionChoice<Region>>(null);
 
 	public static final ObjectKey<Boolean> USE_MASTER_SKILL = new ObjectKey<Boolean>(Boolean.FALSE);
+	
+	public static final ObjectKey<Boolean> DONTADD_HITDIE = new ObjectKey<Boolean>(null);
+	
+	public static final ObjectKey<Boolean> DONTADD_SKILLPOINTS = new ObjectKey<Boolean>(null);
 
 	public static final ObjectKey<KitApply> APPLY_MODE = new ObjectKey<KitApply>(KitApply.PERMANENT);
 

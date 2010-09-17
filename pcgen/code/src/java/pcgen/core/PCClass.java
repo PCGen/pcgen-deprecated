@@ -811,10 +811,17 @@ public class PCClass extends PObject
 		PCClassLevel cl = levelMap.get(classLevel);
 		if (cl != null)
 		{
-			Modifier<HitDie> lock = cl.get(ObjectKey.HITDIE);
-			if (lock != null)
+			if (cl.get(ObjectKey.DONTADD_HITDIE) != null)
 			{
-				currDie = lock.applyModifier(currDie, this);
+				currDie = HitDie.ZERO;	//null;
+			}
+			else
+			{
+				Modifier<HitDie> lock = cl.get(ObjectKey.HITDIE);
+				if (lock != null)
+				{
+					currDie = lock.applyModifier(currDie, this);
+				}
 			}
 		}
 
@@ -2798,8 +2805,12 @@ public class PCClass extends PObject
 
 		// Update Skill Points. Modified 20 Nov 2002 by sage_sam
 		// for bug #629643
-		final int spMod;
-		spMod = recalcSkillPointMod(aPC, total);
+		//final int spMod;
+		int spMod = recalcSkillPointMod(aPC, total);
+		if (classLevel.get(ObjectKey.DONTADD_SKILLPOINTS) != null)
+		{
+			spMod = 0;
+		}
 
 		PCLevelInfo pcl;
 
