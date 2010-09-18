@@ -1,4 +1,4 @@
-# CVS $Revision: 12082 $ $Author: eddyanthony $ -- Tue Feb  2 12:49:26 2010 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision: 13042 $ $Author: amaitland $ -- Tue Feb  2 12:49:26 2010 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Sahuagin Default	TYPE:DefaultMonster.MonsterousHumanoid	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Sahuagin]	SOURCEPAGE:p.239
@@ -258,8 +258,8 @@ RACE:Skeleton (Human)	!PRERACE:1,%
 NAME:Human Skeleton
 ALIGN:NE
 STAT:STR=15|DEX=12|CON=10|INT=10|WIS=10|CHA=10
-GEAR:Chain Shirt	SIZE:PC	LOCATION:Equipped	EQMOD:BROKENA
-GEAR:Scimitar	SIZE:PC	LOCATION:Primary	EQMOD:BROKENW
+GEAR:Chain Shirt	SIZE:PC	LOCATION:Equipped	EQMOD:BROKEA
+GEAR:Scimitar	SIZE:PC	LOCATION:Primary	EQMOD:BROKEW
 
 STARTPACK:Skeletal Champion (Human) Default	TYPE:DefaultMonster.Undead	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Skeletal Champion (Human)]	SOURCEPAGE:p.252
 RACE:Skeletal Champion (Human)	!PRERACE:1,%
