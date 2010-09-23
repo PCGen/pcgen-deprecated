@@ -35,13 +35,13 @@ COPYRIGHT:PCGen dataset conversion for "Guide to the River Kingdoms" Copyright 2
 #EXTRAFILE:OGL.txt
 
 # Data Files
-ABILITY:guide_to_the_river_kingdoms_abilities.lst
-ABILITYCATEGORY:guide_to_the_river_kingdoms_abilitycategories.lst
-DEITY:guide_to_the_river_kingdoms_deities.lst
-EQUIPMENT:guide_to_the_river_kingdoms_equip.lst
-FEAT:guide_to_the_river_kingdoms_feats.lst
-SPELL:guide_to_the_river_kingdoms_spells.lst
-TEMPLATE:guide_to_the_river_kingdoms_templates.lst
+ABILITY:gtrk_abilities.lst
+ABILITYCATEGORY:gtrk_abilitycategories.lst
+DEITY:gtrk_deities.lst
+EQUIPMENT:gtrk_equip.lst
+FEAT:gtrk_feats.lst
+SPELL:gtrk_spells.lst
+TEMPLATE:gtrk_templates.lst
 
 #
 # End
