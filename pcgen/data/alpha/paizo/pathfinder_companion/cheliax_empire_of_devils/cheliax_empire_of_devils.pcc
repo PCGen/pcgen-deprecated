@@ -34,16 +34,16 @@ COPYRIGHT:PCGen dataset conversion for "Cheliax, Empire of Devils" Copyright 200
 #EXTRAFILE:OGL.txt
 
 # Data files
-ABILITY:cheliax_empire_of_devils_abilities_background.lst
-ABILITY:cheliax_empire_of_devils_abilities_traits.lst
-ABILITYCATEGORY:cheliax_empire_of_devils_abilitycategories.lst
-EQUIPMENT:cheliax_empire_of_devils_equip.lst
-FEAT:cheliax_empire_of_devils_feats.lst
-LANGUAGE:cheliax_empire_of_devils_languages.lst
-RACE:cheliax_empire_of_devils_races.lst
-SPELL:cheliax_empire_of_devils_spells.lst
-WEAPONPROF:cheliax_empire_of_devils_weaponprofs.lst
-TEMPLATE:cheliax_empire_of_devils_templates_background.lst
+ABILITY:ceod_abilities_background.lst
+ABILITY:ceod_abilities_traits.lst
+ABILITYCATEGORY:ceod_abilitycategories.lst
+EQUIPMENT:ceod_equip.lst
+FEAT:ceod_feats.lst
+LANGUAGE:ceod_languages.lst
+RACE:ceod_races.lst
+SPELL:ceod_spells.lst
+WEAPONPROF:ceod_weaponprofs.lst
+TEMPLATE:ceod_templates_background.lst
 
 #
 # End
