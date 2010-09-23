@@ -34,12 +34,12 @@ COPYRIGHT:PCGen dataset conversion for "Kingmaker Player's Guide" Copyright 2010
 #EXTRAFILE:OGL.txt
 
 # Data Files
-ABILITY:kingmaker_players_guide_abilities_companions.lst
-ABILITY:kingmaker_players_guide_abilities_traits.lst
-ABILITYCATEGORY:kingmaker_players_guide_abilitycategory.lst
-KIT:kingmaker_players_guide_kits.lst
-RACE:kingmaker_players_guide_races_companions.lst
-SKILL:kingmaker_players_guide_skills_conditional.lst
+ABILITY:kpg_abilities_companions.lst
+ABILITY:kpg_abilities_traits.lst
+ABILITYCATEGORY:kpg_abilitycategory.lst
+KIT:kpg_kits.lst
+RACE:kpg_races_companions.lst
+SKILL:kpg_skills_conditional.lst
 
 #
 # End

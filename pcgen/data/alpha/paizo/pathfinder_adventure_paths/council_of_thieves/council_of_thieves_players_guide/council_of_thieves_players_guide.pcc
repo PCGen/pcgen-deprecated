@@ -34,8 +34,8 @@ COPYRIGHT:PCGen dataset conversion for "Council of Thieves Player's Guide" Copyr
 #EXTRAFILE:OGL.txt
 
 # Data files
-ABILITY:council_of_thieves_players_guide_abilities_traits.lst
-KIT:council_of_thieves_players_guide_kits.lst
+ABILITY:cotpg_abilities_traits.lst
+KIT:cotpg_kits.lst
 
 #
 # End
