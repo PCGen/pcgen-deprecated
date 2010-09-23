@@ -7,7 +7,7 @@ build.xml - an Ant build file for assembling data sets
 $Id: build.xml 192 2008-04-30 12:19:47Z James $
 -->
 <project name="pcgen" default="packageall" basedir=".">
-	<basename property="datasetname" file="Shadmar_Dataset"/>
+	<basename property="datasetname" file="5163_nig_ladoratory_mad_wizard_shadmar"/>
 	<property name="zipfile" value="../${datasetname}.pcz" />
 
 	<target name="init">
