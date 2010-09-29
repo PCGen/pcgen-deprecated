@@ -78,7 +78,7 @@ Savage Bite				CATEGORY:Talent		TYPE:WerewolfTalent.Talent.InnerBeastTalent					
 
 ###Block: Hybrid Damage Reduction Talent Tree
 # Ability Name			Category of Ability	Type							Required Ability																		Source Page
-Damage Reduction 5/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:2,CATEGORY=Talent,Greater Lycanthrope,Regenerative Transformation								SOURCEPAGE:p.58
+#Damage Reduction 5/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:2,CATEGORY=Talent,Greater Lycanthrope,Regenerative Transformation								SOURCEPAGE:p.58
 Damage Reduction 10/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:1,CATEGORY=Talent,Damage Reduction 5/Silver	PREABILITY:1,CATEGORY=Talent,TYPE.GreaterLycanthropeTalent	SOURCEPAGE:p.58
 Damage Reduction 15/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:1,CATEGORY=Talent,Damage Reduction 10/Silver	PREABILITY:1,CATEGORY=Talent,TYPE.GreaterLycanthropeTalent	SOURCEPAGE:p.58
 
