@@ -1004,6 +1004,10 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 	 */
 	public PCClass getClassKeyed(final String aString)
 	{
+		if (aString == null || aString.equals("None"))
+		{
+			return null;
+		}
 		for (PCClass aClass : classList)
 		{
 			if (aClass.getKeyName().equalsIgnoreCase(aString)
