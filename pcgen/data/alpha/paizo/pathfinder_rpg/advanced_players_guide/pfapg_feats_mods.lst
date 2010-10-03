@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Oct  1 00:35:46 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Sat Oct  2 19:33:06 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Stefan Radermacher & Andrew Maitland
 
@@ -135,11 +135,11 @@ Mobility.MOD				TYPE:DruidShamanWolf
 Spring Attack.MOD				TYPE:DruidShamanWolf
 
 # Cavalier Mounted Mastery
-Mounted Combat.MOD		TYPE:MountedMastery
-Ride-By Attack.MOD		TYPE:MountedMastery
-Spirited Charge.MOD		TYPE:MountedMastery
-Trample.MOD				TYPE:MountedMastery
-Unseat.MOD				TYPE:MountedMastery
+Mounted Combat.MOD			TYPE:MountedMastery
+Ride-By Attack.MOD			TYPE:MountedMastery
+Spirited Charge.MOD			TYPE:MountedMastery
+Trample.MOD					TYPE:MountedMastery
+Unseat.MOD					TYPE:MountedMastery
 #
 # End
 #

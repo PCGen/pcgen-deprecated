@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Oct  1 00:28:13 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Sat Oct  2 20:18:32 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Stefan Radermacher, Andrew Maitland, Eric Smith (Maredudd) and James Dempsey
 
@@ -227,8 +227,8 @@ CLASS:Summoner	SPELLSTAT:CHA	SPELLTYPE:Arcane	BONUS:CASTERLEVEL|Summoner|CL
 20	CAST:0,5,5,5,5,5,5	KNOWN:6,6,6,6,6,5,5															ABILITY:Special Ability|AUTOMATIC|Twin Eidolon
 
 
-# Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus											Combat bonus					Special ABility
-CLASS:Witch		HD:6		TYPE:Base.PC	ABB:Wit		MAXLEVEL:20	SOURCEPAGE:p.65	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE	SAB:Concentration check for witch spells: +%.|CL+INT
+# Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Ability									Save checks bonus											Combat bonus
+CLASS:Witch		HD:6		TYPE:Base.PC	ABB:Wit		MAXLEVEL:20	SOURCEPAGE:p.65	ABILITY:Special Ability|AUTOMATIC|Witch Concentration Check	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Witch		STARTSKILLPTS:2	CSKILL:TYPE.Craft|Fly|Heal|Intimidate|Knowledge (Arcana)|Knowledge (History)|Knowledge (Nature)|Knowledge (Planes)|TYPE.Profession|Spellcraft|Use Magic Device
 # Class Name	Spell Stat		Spell Type		Automatically Known Spell Levels	Caster level

@@ -42,6 +42,7 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Advanced Pla
 ABILITY:pfapg_abilities_archetypes.lst
 ABILITY:pfapg_abilities_class.lst
 ABILITY:pfapg_abilities_class_common.lst
+#ABILITY:pfapg_abilities_class_prestige.lst
 ABILITY:pfapg_abilities_companions.lst
 ABILITY:pfapg_abilities_racial.lst
 ABILITY:pfapg_abilities_traits.lst
@@ -52,6 +53,8 @@ CLASS:pfapg_classes_base.lst
 # Disabled till the Prestige Classes have the sister abilities uploaded.
 
 COMPANIONMOD:pfapg_companion_mods.lst
+
+DOMAIN:pfapg_domains.lst
 
 EQUIPMENT:pfapg_equip_armorshields.lst
 EQUIPMENT:pfapg_equip_armorshields_specific.lst
@@ -64,6 +67,10 @@ EQUIPMENT:pfapg_equip_weap_natural.lst
 EQUIPMENT:pfapg_equip_weap_ranged.lst
 EQUIPMENT:pfapg_equip_weapons_specific.lst
 EQUIPMENT:pfapg_equip_wondrousitems.lst
+
+EQUIPMENT:pfapg_equip.lst
+EQUIPMENT:pfapg_equip_artifacts.lst
+
 
 EQUIPMOD:pfapg_equipmods.lst
 EQUIPMOD:pfapg_equipmods_armorshields.lst
