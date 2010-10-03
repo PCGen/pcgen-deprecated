@@ -1,19 +1,22 @@
 To Do List of Pending and remaining items for the APG.
 
 ##Class
-Oracle - Fix a Spell Progression. = No Assigned Person
+Oracle - Fix a Spell Progression. = Complete
 Missing Prestige Classes
 
 ##Ability
 Archetypes - CLEAN UP // Add Bonus stuff = Stefan and Andrew
 Classes - Clean up and add bonus stuff = Stefan and Andrew
 Missing Prestige Classes Abilities
+Complete Bonus/effects for Oracle Revelations - Eric
 
 ##FEATS - 
 Enter Bonus Stuff = Andrew
 
 #Equipment
 Clean up and finish up = Eric
+Adding meat to Soothsayer's Ramaint and the Ring of Revelations - Eric
+General bonus/effect review and clean-up for all equipment - Eric
 
 #Spells - 
 Change to formulas (CASTERLEVEL) entries = Stefan
