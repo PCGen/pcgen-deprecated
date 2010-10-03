@@ -61,10 +61,10 @@ EQUIPMENT:pfapg_equip_armorshields_specific.lst
 EQUIPMENT:pfapg_equip_rings.lst
 EQUIPMENT:pfapg_equip_rods.lst
 EQUIPMENT:pfapg_equip_staves.lst
-EQUIPMENT:pfapg_equip_weap_ammo.lst
-EQUIPMENT:pfapg_equip_weap_melee.lst
-EQUIPMENT:pfapg_equip_weap_natural.lst
-EQUIPMENT:pfapg_equip_weap_ranged.lst
+EQUIPMENT:pfapg_equip_weapons_ammo.lst
+EQUIPMENT:pfapg_equip_weapons_melee.lst
+EQUIPMENT:pfapg_equip_weapons_natural.lst
+EQUIPMENT:pfapg_equip_weapons_ranged.lst
 EQUIPMENT:pfapg_equip_weapons_specific.lst
 EQUIPMENT:pfapg_equip_wondrousitems.lst
 
@@ -79,7 +79,7 @@ EQUIPMOD:pfapg_equipmods_weapons.lst
 FEAT:pfapg_feats.lst
 FEAT:pfapg_feats_mods.lst
 
-KIT:pfapg_kits_races_base.lst
+KIT:pfapg_kits_companions.lst
 KIT:pfapg_kits_traits.lst
 KIT:pfapg_kits_test.lst
 
@@ -87,7 +87,7 @@ ARMORPROF:pfapg_profs_armor.lst
 SHIELDPROF:pfapg_profs_shields.lst
 WEAPONPROF:pfapg_profs_weapons.lst
 
-RACE:pfapg_races_base.lst
+RACE:pfapg_races_companions.lst
 
 SPELL:pfapg_spells.lst
 SPELL:pfapg_spells_mods.lst
