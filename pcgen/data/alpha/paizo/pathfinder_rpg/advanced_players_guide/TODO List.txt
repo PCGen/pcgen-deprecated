@@ -18,4 +18,5 @@ Clean up and finish up = Eric
 #Spells - 
 Change to formulas (CASTERLEVEL) entries = Stefan
 
-
+#All File -
+Double check sourcepage numbers.
