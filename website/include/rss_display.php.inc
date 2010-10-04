@@ -13,15 +13,8 @@ function writeNewsItems($url)
             $title  = htmlspecialchars($item['title']);
             $title  = str_replace("<br>", "<br /> ", $title);
             $pub    = date("Y-m-d", strtotime($item['pubdate']));
-            $desc   = $item['description'];
-            $desc   = str_replace("<br>", "<br /> ", $desc);
-
-            $href       = $item['link'];
-            list ($descStart, $descEnd) = explode($href, $desc);
-
-            $descMiddle  = substr($href, strlen($href));
-            $descMiddle .= '" title="Comments on _' . $title . '_';
-            $desc = $descStart . $href . $descMiddle . $descEnd;
+            $desc   = str_replace("<br>", "<br /> ", $item['description']);
+            $href   = $item['link'];
 
             echo "<h2>$title</h2>\n";
 
