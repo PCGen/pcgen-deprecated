@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Oct  2 20:18:32 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Sun Oct  3 17:45:35 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Eric C. Smith (Maredudd)
 
@@ -95,11 +95,11 @@ Symptom Kit												TYPE:Goods.Tools								COST:25	WT:5		SOURCEPAGE:p.182
 Traveling Spellbook (Blank)									TYPE:Goods.Tools.Book.Spellbook		NUMPAGES:50		COST:10	WT:1		SOURCEPAGE:p.182
 
 ###Block: Clothing
-# Equipment Name		Output Name					Type					Cost		Weight	Source Page
-Cleats									TYPE:Goods.Clothing,Resizable	COST:5	WT:2		SOURCEPAGE:p.182
-Furs										TYPE:Goods.Clothing.Resizable	COST:12	WT:5		SOURCEPAGE:p.182
-Outfir (Hot Weather)	OUTPUTNAME:Hot Whether Outfit		TYPE:Goods.Clothing.Resizable	COST:8	WT:4		SOURCEPAGE:p.182
-Snowshoes									TYPE:Goods.Clothing.Resizable	COST:5	WT:4		SOURCEPAGE:p.182
+# Equipment Name		Output Name				Type					Cost		Weight	Source Page
+Cleats								TYPE:Goods.Clothing,Resizable	COST:5	WT:2		SOURCEPAGE:p.182
+Furs									TYPE:Goods.Clothing.Resizable	COST:12	WT:5		SOURCEPAGE:p.182
+Outfir (Hot Weather)	OUTPUTNAME:Hot Whether Outfit	TYPE:Goods.Clothing.Resizable	COST:8	WT:4		SOURCEPAGE:p.182
+Snowshoes								TYPE:Goods.Clothing.Resizable	COST:5	WT:4		SOURCEPAGE:p.182
 
 ###Block:Animal-Related Gear
 # Equipment Name			Type						Cost		Weight	Source Page

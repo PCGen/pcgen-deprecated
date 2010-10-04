@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Oct  1 00:28:13 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Sun Oct  3 17:45:35 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Eric C. Smith (Maredudd)
 
@@ -32,7 +32,7 @@ Bracelet of Mercy					TYPE:Magic.Wondrous.Bracelet			COST:15000	WT:0.01	SOURCEPA
 
 ###Block:C
 # Equipment Name					Type						Cost		Weight	Source Page		Bonus to skill
-Campfire Bead					TYPE:Magic.Wondrous.Consumable	COST:720		SOURCEPAGE:p.302
+Campfire Bead					TYPE:Magic.Wondrous.Consumable	COST:720			SOURCEPAGE:p.302
 Catching Cape					TYPE:Magic.Wondrous.Cape		COST:200	WT:3		SOURCEPAGE:p.302
 Cauldron of Brewing				TYPE:Magic.Wondrous			COST:3000	WT:5		SOURCEPAGE:p.302	BONUS:SKILL|Craft (Alchemy)|5|TYPE=Competance
 Cauldron of Flying				TYPE:Magic.Wondrous			COST:40000	WT:100	SOURCEPAGE:p.302
@@ -51,9 +51,9 @@ Crystal of Healing Hands			TYPE:Magic.Wondrous.Neck		COST:12000	WT:1		SOURCEPAGE
 
 ###Block:D
 # Equipment Name	Type									Cost		Weight	Source Page		Bonus to skill
-Defoliant Polish	TYPE:Magic.Wondrous.Consumable				COST:800		SOURCEPAGE:p.304
+Defoliant Polish	TYPE:Magic.Wondrous.Consumable				COST:800			SOURCEPAGE:p.304
 Doomharp		TYPE:Magic.Wondrous.Instrument.String.Masterwork	COST:10000	WT:5		SOURCEPAGE:p.304	BONUS:SKILL|Perform (String Instruments)|2|TYPE=Circumstance|PRETYPE:1,Masterwork
-Dust of Emulation	TYPE:Magic.Wondrous.Consumable				COST:800		SOURCEPAGE:p.304
+Dust of Emulation	TYPE:Magic.Wondrous.Consumable				COST:800			SOURCEPAGE:p.304
 
 ###Block:F
 # Equipment Name	Type				Cost		Weight	Source Page
@@ -62,7 +62,7 @@ Flying Ointment	TYPE:Magic.Wondrous	COST:2250	WT:0.01	SOURCEPAGE:p.305
 ###Block:G
 # Equipment Name	Type					Cost		Weight	Source Page		Modify VAR
 Gloves of Dueling	TYPE:Magic.Wondrous.Glove	COST:15000	WT:0.01	SOURCEPAGE:p.305	BONUS:VAR|CMD_Disarm,CMD_Sunder|4	BONUS:VAR|WeaponTrainingBase|2|PREABILITY:1,CATEGORY=Special Ability,Weapon Training
-Glowing Glove	TYPE:Magic.Wondrous.Glove	COST:2000		SOURCEPAGE:p.305
+Glowing Glove	TYPE:Magic.Wondrous.Glove	COST:2000			SOURCEPAGE:p.305
 Grappler's Mask	TYPE:Magic.Wondrous.Mask	COST:5000	WT:2		SOURCEPAGE:p.306
 
 ###Block:H
@@ -71,8 +71,8 @@ Helm of Fearsome Mien	TYPE:Magic.Wondrous.Helm		COST:5000	WT:4		SOURCEPAGE:p.306
 Horn of the Huntmaster	TYPE:Magic.Wondrous.Instrument	COST:5000	WT:5		SOURCEPAGE:p.306
 
 ###Block:I
-# Equipment Name	Type				Cost		Weight	Source Page
-Ioun Torch		TYPE:Magic.Wondrous	COST:75		SOURCEPAGE:p.306
+# Equipment Name	Type				Cost		Source Page
+Ioun Torch		TYPE:Magic.Wondrous	COST:75	SOURCEPAGE:p.306
 
 ###Block:K
 # Equipment Name			Type						Cost		Weight	Source Page
@@ -94,17 +94,17 @@ Lord's Banner (Victory)		TYPE:Magic.Wondrous	COST:75000	WT:3		SOURCEPAGE:p.307
 Manacles of Cooperation		TYPE:Magic.Wondrous.Wrist	COST:2000	WT:2		SOURCEPAGE:p.307
 Mask of Giants (Lesser)		TYPE:Magic.Wondrous.Mask	COST:30000	WT:1		SOURCEPAGE:p.307
 Mask of Giants (Greater)	TYPE:Magic.Wondrous.Mask	COST:90000	WT:1		SOURCEPAGE:p.307
-Moon Circlet			TYPE:Magic.Wondrous.Circlet	COST:20000		SOURCEPAGE:p.308	VISION:Darkvision (60')
+Moon Circlet			TYPE:Magic.Wondrous.Circlet	COST:20000			SOURCEPAGE:p.308	VISION:Darkvision (60')
 Muleback Cords			TYPE:Magic.Wondrous.Shoulders	COST:1000	WT:.25	SOURCEPAGE:p.308
 
 ###Block:N
 # Equipment Name		Type					Cost		Weight	Source Page		Modify VAR
-Necklass of Ki Serenity	TYPE:Magic.Wondrous.Necklace	COST:16000		SOURCEPAGE:p.308	BONUS:VAR|KiPoolLVL|4
+Necklass of Ki Serenity	TYPE:Magic.Wondrous.Necklace	COST:16000			SOURCEPAGE:p.308	BONUS:VAR|KiPoolLVL|4
 Necromancer's Athame	TYPE:Magic.Wondrous		COST:20000	WT:2		SOURCEPAGE:p.308
 
 ###Block:P
-# Equipment Name	Type				Cost		Weight	Source Page
-Philter of Love	TYPE:Magic.Wondrous	COST:3000		SOURCEPAGE:p.308
+# Equipment Name	Type				Cost		Source Page
+Philter of Love	TYPE:Magic.Wondrous	COST:3000	SOURCEPAGE:p.308
 
 ###Block:R
 # Equipment Name			Type					Cost		Weight	Source Page		Modify VAR
@@ -136,10 +136,10 @@ War Paint of the Terrible Visage	TYPE:Magic.Wondrous.Consumable	COST:100	WT:0.01
 # Equipment Name			Type							Cost		Weight	Source Page
 Cloak of Immolation		TYPE:Magic.Wondrous.Cursed			COST:0	WT:1		SOURCEPAGE:p.310
 Crown of Blindness		TYPE:Magic.Wondrous.Cursed			COST:0	WT:1		SOURCEPAGE:p.311
-Hat of Hatreds			TYPE:Magic.Wondrous.Cursed			COST:0		SOURCEPAGE:p.311
+Hat of Hatreds			TYPE:Magic.Wondrous.Cursed			COST:0			SOURCEPAGE:p.311
 Girdle of Opposite Gender	TYPE:Magic.Wondrous.Cursed			COST:0	WT:1		SOURCEPAGE:p.311
 Riot Pipes				TYPE:Magic.Wondrous.Instrument.Cursed	COST:0	WT:3		SOURCEPAGE:p.312
 
 ###Block:Special
-# Equipment Name		Type					Cost		Weight	Source Page
-Brooch (Folding Plate)	TYPE:Magic.Wondrous.Brooch	COST:12650			SOURCEPAGE:p.284
+# Equipment Name		Type					Cost		Source Page
+Brooch (Folding Plate)	TYPE:Magic.Wondrous.Brooch	COST:12650	SOURCEPAGE:p.284

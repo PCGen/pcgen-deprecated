@@ -44,15 +44,14 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Advanced Pla
 ABILITY:pfapg_abilities_archetypes.lst
 ABILITY:pfapg_abilities_class.lst
 ABILITY:pfapg_abilities_class_common.lst
-#ABILITY:pfapg_abilities_class_prestige.lst
+ABILITY:pfapg_abilities_class_prestige.lst
 ABILITY:pfapg_abilities_companions.lst
 ABILITY:pfapg_abilities_racial.lst
 ABILITY:pfapg_abilities_traits.lst
 ABILITYCATEGORY:pfapg_abilitycategories.lst
 
 CLASS:pfapg_classes_base.lst
-#CLASS:pfapg_classes_prestige.lst
-# Disabled till the Prestige Classes have the sister abilities uploaded.
+CLASS:pfapg_classes_prestige.lst
 
 COMPANIONMOD:pfapg_companion_mods.lst
 

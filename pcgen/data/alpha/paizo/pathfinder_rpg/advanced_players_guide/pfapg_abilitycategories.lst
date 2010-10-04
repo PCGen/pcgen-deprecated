@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Oct  2 19:33:06 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Sun Oct  3 17:46:38 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 #SOURCELONG:Pathfinder Roleplaying Game Advanced Player's Guide Playtest	SOURCESHORT:PFAPGP1	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8bcj	SOURCEDATE:2009-11
 # Original Entry by: Stefan Radermacher, Eric Smith (Maredudd) and Andrew Maitland
 
@@ -98,6 +98,10 @@ ABILITYCATEGORY:Adaptation Creature Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDIT
 ABILITYCATEGORY:Shifter's Blessing Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ShifterBlessing													PLURAL:Shifter's Blessing Selections	DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Master Shifter Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:MasterShifter													PLURAL:Master Shifter Selections		DISPLAYLOCATION:Class Abilities
 
+ABILITYCATEGORY:Inspiring Command Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:InspiringCommand													PLURAL:Inspiring Command Selections	DISPLAYLOCATION:Class Abilities
+
+ABILITYCATEGORY:Terrain Mastery Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TerrainMastery													PLURAL:Terrain Mastery Selections		DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Terrain Dominance Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TerrainDominance													PLURAL:Terrain Dominance Selections		DISPLAYLOCATION:Class Abilities
 
 #COMMENT: The following are in the Core Set and shouldn't be required any longer.
 
@@ -124,7 +128,8 @@ ABILITYCATEGORY:Master Shifter Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL
 #ABILITYCATEGORY:Rogue Archetype	VISIBLE:YES	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Archetype	TYPE:RogueArchetype	PLURAL:Rogue Archetypes		DISPLAYLOCATION:Class Archetypes
 
 # Copied from Bestiary files
-ABILITYCATEGORY:Giant Spider Type			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal			TYPE:GiantSpiderType		PLURAL:Giant Spider Types			DISPLAYLOCATION:Racial Abilities
+# Ability Category			Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object	Type of Object		Plural description for UI	Display Location
+ABILITYCATEGORY:Giant Spider Type	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal		TYPE:GiantSpiderType	PLURAL:Giant Spider Types	DISPLAYLOCATION:Racial Abilities
 
 #
 # End
