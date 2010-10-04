@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Jun 22 22:42:42 2009 -- reformated by prettylst.pl v1.39 (build 9548)
+# CVS $Revision$ $Author$ -- Mon Jun 22 22:43:30 2009 -- reformated by prettylst.pl v1.39 (build 9548)
 SOURCELONG:System Reference Document	SOURCESHORT:SRD	SOURCEWEB:http://groups.yahoo.com/group/pcgen/files/3.0%20SRD/
 # Original Entry by Tir Gwaith
 
@@ -20,7 +20,7 @@ Timeless Body	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE
 
 ###Block: Companions
 # Ability Name	Category of Ability		Type						Visible	Define			Allow Follower			Allowed Companions																																																																																																							Source Page
-Animal Companion	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DEFINE:CompLevel|0	FOLLOWERS:Animal Companion|1	COMPANIONLIST:Animal Companion|Badger,Camel,Crocodile,Dog,Dog (Riding),Eagle,Hawk,Horse (Light),Horse (Heavy),Owl,Pony,Porpoise,Shark (Medium),Snake (Small Viper),Snake (Medium Viper),Squid,Wolf	COMPANIONLIST:Animal Companion|Ape,Bear (Black),Bison,Boar,Cheetah,Leopard,Snake (Constrictor),Snake (Large Viper),Wolverine|FOLLOWERADJUSTMENT:-3	COMPANIONLIST:Animal Companion|Bear (Brown),Crocodile (Giant),Lion,Rhinoceros,Snake (Huge Viper),Tiger|FOLLOWERADJUSTMENT:-6	COMPANIONLIST:Animal Companion|Bear (Polar),Snake (Giant Constrictor)|FOLLOWERADJUSTMENT:-9	COMPANIONLIST:Animal Companion|Elephant|FOLLOWERADJUSTMENT:-12
+Animal Companion	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DEFINE:CompLevel|0	FOLLOWERS:Animal Companion|1	COMPANIONLIST:Animal Companion|Badger,Camel,Crocodile,Dog,Dog (Riding),Eagle,Hawk,Horse (Heavy),Horse (Light),Owl,Pony,Porpoise,Shark (Medium),Snake (Medium Viper),Snake (Small Viper),Squid,Wolf	COMPANIONLIST:Animal Companion|Ape,Bear (Black),Bison,Boar,Cheetah,Leopard,Snake (Constrictor),Snake (Large Viper),Wolverine|FOLLOWERADJUSTMENT:-3	COMPANIONLIST:Animal Companion|Bear (Brown),Crocodile (Giant),Lion,Rhinoceros,Snake (Huge Viper),Tiger|FOLLOWERADJUSTMENT:-6	COMPANIONLIST:Animal Companion|Bear (Polar),Snake (Giant Constrictor)|FOLLOWERADJUSTMENT:-9	COMPANIONLIST:Animal Companion|Elephant|FOLLOWERADJUSTMENT:-12
 Special Mount	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike		VISIBLE:YES	DEFINE:SMLevel|0		FOLLOWERS:Special Mount|1	COMPANIONLIST:Special Mount|ANY																																																																																																					SOURCEPAGE:ClassesII.rtf
 Summon Familiar	CATEGORY:Special Ability	TYPE:SpecialQuality			VISIBLE:YES	DEFINE:FMLevel|0		FOLLOWERS:Familiar|1		COMPANIONLIST:Familiar|Bat,Cat,Hawk,Lizard,Owl,Rat,Raven,Snake (Tiny Viper),Toad,Weasel
 
@@ -41,13 +41,13 @@ Negative Levels	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES	DEFINE:
 ###Block: Class Proficiencies
 # Ability Name				Category of Ability		Type			Visible	Automatically Gained Weapon Prof.
 All Automatic Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Gauntlet|Unarmed Strike|Spells(Ray)|Grapple
-All Martial Weapon Proficiencies	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|TYPE.Martial
+All Martial Weapon Proficiencies	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|TYPE=Martial
 Druid Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Club|Dagger|Dart|Halfspear|Longspear|Quarterstaff|Scimitar|Sickle|Shortspear|Sling
 Monk Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Unarmed Strike|Club|Crossbow (Light)|Crossbow (Heavy)|Dagger|Handaxe|Javelin|Kama|Nunchaku|Quarterstaff|Shuriken|Siangham|Sling
 Rogue Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Dagger|Dagger (Punching)|Dart|Mace (Light)|Sap|Shortbow|Shortbow (Composite)|Sword (Short)	AUTO:WEAPONPROF|Club|Crossbow (Heavy)|Mace (Heavy)|Morningstar|Quarterstaff|Rapier[PRESIZEGTEQ:M]
 Wizard Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Club|Dagger|Crossbow (Heavy)|Crossbow (Light)|Quarterstaff
 Shadowdancer Weapon Proficiencies	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Dagger|Dart|Mace (Light)|Sap|Shortbow|Shortbow (Composite)|Club|Crossbow (Heavy)|Mace (Heavy)|Morningstar|Quarterstaff|Rapier
-Assassin Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Crossbow (Heavy)|TYPE.Dagger|Dart|Rapier|Sap|Shortbow|Shortbow (Composite)|Sword (Short)
+Assassin Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Crossbow (Heavy)|Dart|Rapier|Sap|Shortbow|Shortbow (Composite)|Sword (Short)|TYPE=Dagger
 
 
 #######################################
@@ -58,7 +58,7 @@ Assassin Weapon Proficiencies		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO
 
 ###Block: Barbarian class abilties
 # Ability Name		Output Name				Category of Ability		Type						Visible	Define							Add to base move																		Source Page
-Illiteracy								CATEGORY:Special Ability	TYPE:SpecialQuality			VISIBLE:YES	DEFINE:IllteracyLVL|0	DEFINE:IlliteracyLVL|0																					SOURCEPAGE:ClassesI.rtf
+Illiteracy								CATEGORY:Special Ability	TYPE:SpecialQuality			VISIBLE:YES	DEFINE:IlliteracyLVL|0	DEFINE:IlliteracyLVL|0																					SOURCEPAGE:ClassesI.rtf
 Barbarian Fast Movement	OUTPUTNAME:Fast Movement	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES									BONUS:MOVEADD|TYPE=Walk|10|PREVARLT:ENCUMBERANCE,2,var("COUNT[EQTYPE.ARMOR.EQUIPPED.IS.HEAVY]"),1|TYPE=FastMovement	SOURCEPAGE:ClassesI.rtf
 
 ###Block: Bard abilities
@@ -195,9 +195,22 @@ Arrow of Death	CATEGORY:Special Ability	TYPE:SpecialAttack.AttackOption	VISIBLE:
 
 ###Block: Assassin Abilities
 # Ability Name	Category of Ability		Type						Visible	Define			Description					Aspects
-Death Attack	CATEGORY:Special Ability	TYPE:SpecialAttack			VISIBLE:YES	DEFINE:DeathAttackDC|0	DESC:DC %|DeathAttackDC
+Death Attack	CATEGORY:Special Ability	TYPE:SpecialAttack			VISIBLE:YES	DEFINE:DeathAttackDC|0	DESC:DC %%|DeathAttackDC
 Poison Use		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES
 Save vs Poison	CATEGORY:Special Ability	TYPE:SpecialQuality			VISIBLE:YES	DEFINE:PoisonSave|0	DESC:+%1 vs. Poison|PoisonSave	ASPECT:Ability Bonus|+%1|PoisonSave
+
+
+###Block:Archmage High Arcana Class Abilities ---------------------------------------------------------------------------------------
+# Archmage abilities needs new PRE tag of PRESPELLSLOT that would function as PRESPELLSLOT:1,8 meaning that character must have 1 8th level spell slot
+# Ability Name			Output Name			Category of Ability		Type								Visible	Required Class		Req. Spell Type		Define			Description																												Stackable?	Multiple?	Choose						Bonus to spell cast/day				Modify VAR			Source Page
+Arcane Fire								CATEGORY:Special Ability	TYPE:HighArcana.Supernatural.SpecialAttack	VISIBLE:YES	PRECLASS:1,Archmage=1	PRESPELLTYPE:1,Arcane=9					DESC:You change arcane spell energy into arcane fire, manifesting it as a bolt of raw magical energy.															MULT:NO								BONUS:SPELLCAST|TYPE=Arcane;LEVEL=9|-1																			SOURCEPAGE:PrestigeClasses.rtf
+Arcane Reach							CATEGORY:Special Ability	TYPE:HighArcana.Supernatural.SpecialAttack	VISIBLE:YES	PRECLASS:1,Archmage=1	PRESPELLTYPE:1,Arcane=7	DEFINE:ArcaneReach|0	DESC:You can use spells with a range of touch on a target up to %1 feet away.|ArcaneReach															STACK:YES	MULT:YES	CHOOSE:NUMCHOICES=2|NOCHOICE			BONUS:SPELLCAST|TYPE=Arcane;LEVEL=7|-1	BONUS:VAR|ArcaneReach|30*count("ABILITIES","CATEGORY=Special Ability","NAME=Arcane Reach")|TYPE=ArcaneReach	SOURCEPAGE:PrestigeClasses.rtf
+Mastery of Counterspelling					CATEGORY:Special Ability	TYPE:HighArcana.SpecialQuality			VISIBLE:YES	PRECLASS:1,Archmage=1	PRESPELLTYPE:1,Arcane=7					DESC:When you counterspell a spell, it is turned back upon the caster as if it were fully affected by a spell turning spell.											MULT:NO								BONUS:SPELLCAST|TYPE=Arcane;LEVEL=7|-1																			SOURCEPAGE:PrestigeClasses.rtf
+Mastery of Elements						CATEGORY:Special Ability	TYPE:HighArcana.SpecialQuality			VISIBLE:YES	PRECLASS:1,Archmage=1	PRESPELLTYPE:1,Arcane=8					DESC:You can alter an arcane spell when cast so that it utilizes a different element from the one it normally uses.												MULT:NO								BONUS:SPELLCAST|TYPE=Arcane;LEVEL=8|-1																			SOURCEPAGE:PrestigeClasses.rtf
+Mastery of Shaping						CATEGORY:Special Ability	TYPE:HighArcana.SpecialQuality			VISIBLE:YES	PRECLASS:1,Archmage=1	PRESPELLTYPE:1,Arcane=6					DESC:You can alter area and effect spells that use one of the following shapes: burst, cone, cylinder, emanation, or spread.											MULT:NO								BONUS:SPELLCAST|TYPE=Arcane;LEVEL=6|-1																			SOURCEPAGE:PrestigeClasses.rtf
+Archmage Spell Power		OUTPUTNAME:Spell Power	CATEGORY:Special Ability	TYPE:HighArcana.SpecialQuality			VISIBLE:YES	PRECLASS:1,Archmage=1	PRESPELLTYPE:1,Arcane=5					DESC:Your effective caster level increases by +1 (for purposes of determining level-dependent spell variables such as damage dice or range, and caster level checks only).			MULT:NO								BONUS:SPELLCAST|TYPE=Arcane;LEVEL=5|-1																			SOURCEPAGE:PrestigeClasses.rtf
+#Needs alot of work -- Needs a way to dynamicly select a spell from spelllist and then get the level and class of the spell for removal of the spell slot
+Spell-Like Ability						CATEGORY:Special Ability	TYPE:HighArcana.SpellLike.SpecialAttack		VISIBLE:YES	PRECLASS:1,Archmage=1	PRESPELLTYPE:1,Arcane=5	DEFINE:ArchmageSLA|0	DESC:You permanently prepare the selected arcane spells as spell-like abilities that can be used twice per day.											STACK:NO	MULT:YES	CHOOSE:SPELLS|SPELLTYPE=Arcane[KNOWN=YES]	BONUS:SPELLCAST|TYPE=Arcane;LEVEL=5|-1	BONUS:VAR|ArchmageSLA|1															SOURCEPAGE:PrestigeClasses.rtf
 
 
 ###Block: Blackguard Abilities
@@ -218,7 +231,8 @@ Defensive Awareness	CATEGORY:Special Ability	TYPE:SpecialQuality.ModifyAC	VISIBL
 
 ###Block: Loremaster Abilities
 # Ability Name			Category of Ability		Type							Visible	Var. Min. Value			Define			Description			Stackable?	Multiple?	Choose														Bonus to Ability Pool		Save checks bonus			Combat bonus			Bonus to HP			Bonus to skill rank	Source Page						Aspects
-Lore					CATEGORY:Special Ability	TYPE:SpecialQuality				VISIBLE:YES						DEFINE:SecretLore|0	DESC:+%1|SecretLore																																																		ASPECT:Ability Benefit|+%1|SecretLore
+Secret Lore				CATEGORY:Special Ability	TYPE:SpecialQuality				VISIBLE:YES						DEFINE:SecretLore|0	DESC:+%1|SecretLore																																																		ASPECT:Ability Benefit|+%1|SecretLore
+Lore					CATEGORY:Special Ability	TYPE:SpecialQuality				VISIBLE:YES
 Greater Lore			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary		VISIBLE:YES
 True Lore				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary		VISIBLE:YES
 # Loremaster Secrets
