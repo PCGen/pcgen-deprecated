@@ -18,7 +18,6 @@ CLASS:Unbodied	STARTSKILLPTS:2	MODTOSKILLS:YES
 1	BONUS:VAR|BonusPowerPoints|(INT*PsionML)/2|TYPE=PsionBonusPP
 
 
-
 #
 # End
 #
