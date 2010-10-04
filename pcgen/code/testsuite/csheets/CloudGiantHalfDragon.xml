@@ -383,7 +383,7 @@ BIO
 	  ====================================-->
 	<armor_class>
 		<total>28</total>
-		<listing>ABILITY +4, BASE +10, SIZE -2, NATURALARMOR +16</listing>
+		<listing>ABILITY +4, BASE +10, NATURALARMOR +12, NATURALARMOR.STACK +4, SIZE -2</listing>
 		<flat>24</flat>
 		<touch>12</touch>
 		<base>10</base>
