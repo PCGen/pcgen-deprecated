@@ -23,3 +23,6 @@ Change to formulas (CASTERLEVEL) entries = Stefan
 
 #All File -
 Double check sourcepage numbers.
+
+# User Comments:
+- Zen Archer monk archetype bonus feats don't work properly. I'm still stuck with the normal monk bonus feat list. Also, Stunning Fist is not being replaced with Perfect Strike. The same thing is happening with the Weapon Master archetype.
