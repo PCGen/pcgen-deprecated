@@ -9,6 +9,8 @@ Modifications by: arcady
 Email: arcady0@yahoo.com
 Revisions: Barak  10/15/02
 Email: barak@voyager.net
+Revisions: Tir-Gwaith 10/11/09
+Email: tir.gwaith@gmail.com
 
 $Revision$
 $Author$
@@ -85,9 +87,13 @@ $Date$
 
 </style>
 </head>
+
+
+
 <body bgcolor="white">
 
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+<center><font size="-1"></font></center><br />
 <!-- START Top Character Data -->
 <table cellpadding="0" cellspacing="4" border="0" width="100%" summary="Character Info">
  <tr>
@@ -271,6 +277,8 @@ $Date$
           <td align="center" class="font7"><b>+</b></td>
           <td align="center" class="border9"><b>|AC.NaturalArmor|</b></td>
           <td align="center" class="font7"><b>+</b></td>
+          <td align="center" class="border9"><b>|AC.Dodge|</b></td>
+          <td align="center" class="font7"><b>+</b></td>
           <td align="center" class="border9"><b>|AC.Deflection|</b></td>
           <td align="center" class="font7"><b>+</b></td>
           <td align="center" class="border9"><b>|AC.Misc|</b></td>
@@ -306,6 +314,8 @@ $Date$
           <td align="center" width="25" class="font4">SIZE<br />BONUS</td>
           <td align="center"></td>
           <td align="center" width="25" class="font4">NATURAL<br />ARMOR</td>
+          <td align="center"></td>
+          <td align="center" width="25" class="font4">DODGE<br />BONUS</td>
           <td align="center"></td>
           <td align="center" width="25" class="font4">DEFLECTION<br />BONUS</td>
           <td align="center"></td>
@@ -941,7 +951,10 @@ Immune
 <hr /><center><font style="font-size: 7pt">PCGen Character Template by ROG, mods/maint by Arcady, Barak &amp; Dimrill.  For suggestions please post to pcgen@yahoogroups.com with "OS Suggestion" in the subject line.</font></center>
 <!-- ================================================================ -->
 <br style="page-break-after: always" />
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<!--<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+-->
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+
 <table width="100%" border="0" summary="Page 2 Master Table"> <!-- Master Page Table -->
  <tr>
   <td colspan="2" width="100%" valign="top">
@@ -1713,6 +1726,23 @@ Immune
    </table>
 <!-- STOP Proficiency Table -->
 |%|
+<!-- START Archetypes Table -->
+|IIF(count("ABILITIES";"CATEGORY=Archetype";"TYPE=Archetype";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+   <table width="100%" cellspacing="0" cellpadding="2" summary="Arcehtype Table">
+    <tr>
+     <td bgcolor="black" align="center"><font color="white" style="font-size: 9pt"><b>Archetypes</b></font></td>
+    </tr>
+|FOR,%archetype,0,count("ABILITIES","CATEGORY=Archetype","TYPE=Archetype","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|OIF(EVEN:%archetype,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
+     <td valign="top" class="font8"><b>|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=Archetype|
+</b>
+|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=Archetype.DESC|</td>
+    </tr>
+|ENDFOR|
+   </table>
+|ENDIF|
+<!-- STOP Archetypes Table -->
+
 <!-- START Special Attacks Table -->
 |IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=SpecialAttack";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
    <table width="100%" cellspacing="0" cellpadding="2" summary="Feat Table">
@@ -1808,7 +1838,9 @@ Immune
 	<!-- No innate spells -->
 |ELSE|
 <br style="page-break-after: always" />
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<!--<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+-->
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
 |FOR,%spellbook,1,1,1,1|
 |FOR,%class,0,0,1,1|
 |FOR,%level,0,0,1,1|
@@ -1922,7 +1954,9 @@ at will
 <!-- End Innate Spells -->
 |FOR,%spellbook,0,0,1,0|
 <br style="page-break-after: always" />
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<!--<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+-->
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
 |FOR,%class,COUNT[SPELLRACE],COUNT[SPELLRACE]+COUNT[CLASSES]-1,1,1|
 |%SPELLLISTCLASS.%class|
 <!-- START Spell list Header Table (Known) -->
@@ -2040,7 +2074,9 @@ at will
 |FOR,%level,0,0,1,0|
 |%SPELLLISTBOOK.%class.%level.%spellbook|
 <br style="page-break-after: always" />
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<!--<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+-->
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
 <table width="100%" cellspacing="0" cellpadding="2" summary="Spell List">
  <tr>
   <td colspan="11" align="center" bgcolor="black"><font color="white"><b>Racial Innate</b></font></td>
@@ -2121,7 +2157,9 @@ at will
 |IIF(%foo:0.OR.%bar:0)|
 <!-- Either we do not have a innate race, or if we do we do not have any 0 level spell for the innate race -->
 <br style="page-break-after: always" />
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<!--<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+-->
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
 <table width="100%" cellspacing="0" cellpadding="2" summary="Spell List">
  <tr>
   <td colspan="11" align="center" bgcolor="black"><font color="white"><b>|SPELLBOOKNAME.%spellbook|</b></font></td>
@@ -2206,7 +2244,9 @@ at will
 <!-- ================================================================= -->
 |%BIO|
 <br style="page-break-after: always" />
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<!--<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+-->
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
 <a name="Bio"></a>
 <!-- START Bio Table -->
 <table width="100%" cellspacing="0" cellpadding="2">
@@ -2255,7 +2295,9 @@ at will
 |%|
 |%NOTES|
 <br style="page-break-after: always" />
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<!--<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
+-->
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
 
 <table width="100%" cellspacing="0" cellpadding="5">
 <tr>

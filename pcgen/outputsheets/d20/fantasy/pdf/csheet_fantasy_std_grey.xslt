@@ -174,6 +174,13 @@
 		<special_attacks.lightline><subattrib light=""/></special_attacks.lightline>
 		<special_attacks.darkline><subattrib medium=""/></special_attacks.darkline>
 
+		<archetypes.title><subattrib centre="" inverse=""/></archetypes.title>
+		<archetypes.border padding="0.5pt"><subattrib border="" inverse=""/></archetypes.border>
+		<archetypes.lightline><subattrib light=""/></archetypes.lightline>
+		<archetypes.darkline><subattrib medium=""/></archetypes.darkline>
+
+
+
 		<special_qualities.title><subattrib centre="" inverse=""/></special_qualities.title>
 		<special_qualities.border padding="0.5pt"><subattrib border="" inverse=""/></special_qualities.border>
 		<special_qualities.lightline><subattrib light=""/></special_qualities.lightline>

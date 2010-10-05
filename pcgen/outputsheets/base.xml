@@ -1362,6 +1362,29 @@ Immune
 	<!--
 	  ====================================
 	  ====================================
+			ARCHETYPES
+	  ====================================
+	  ====================================-->
+	<archetypes>
+|IIF(count("ABILITIES";"CATEGORY=Archetype";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY";"TYPE=Archetype")==0)|
+|ELSE|
+	<!-- Archetypes -->
+|ENDIF|
+|FOR,%archetype,0,count("ABILITIES","CATEGORY=Archetype","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY","TYPE=Archetype")-1,1,0|
+		<archetype>
+			<name>|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=SpecialQuality|</name>
+			<description>|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=SpecialQuality.DESC|</description>
+			<type>|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=SpecialQuality.TYPE|</type>
+			<associated>|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=SpecialQuality.ASSOCIATED|</associated>
+			<count>|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=SpecialQuality.ASSOCIATEDCOUNT|</count>
+			<category>Archetype</category>
+			<source>|ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=SpecialQuality.SOURCE|</source>
+		</archetype>
+|ENDFOR|
+	</archetypes>
+	<!--
+	  ====================================
+	  ====================================
 			SPECIAL QUALITIES
 	  ====================================
 	  ====================================-->
