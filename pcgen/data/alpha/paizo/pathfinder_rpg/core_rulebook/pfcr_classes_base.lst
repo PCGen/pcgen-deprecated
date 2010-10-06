@@ -51,7 +51,7 @@ CLASS:Bard		SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|Bard|CL
 1																AUTO:FEAT|Armor Proficiency (Light)
 1																AUTO:FEAT|Shield Proficiency
 ###Block: Level progression
-1	CAST:0,1			KNOWN:4,2			BONUS:VAR|BardicKnowledgeLVL,BardicPerformanceLVL|CL	ABILITY:Special Ability|AUTOMATIC|Bardic Knowledge|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardBardicKnowledge	ABILITY:Special Ability|AUTOMATIC|Bardic Performance|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardBardicPerformance	ABILITY:Special Ability|AUTOMATIC|Armored Casting|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardArmoredCasting	ABILITY:Special Ability|AUTOMATIC|Cantrips ~ Bard|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardCantrips
+1	CAST:0,1			KNOWN:4,2			BONUS:VAR|BardicKnowledgeLVL,BardicPerformanceLVL|CL	ABILITY:Special Ability|AUTOMATIC|Bardic Knowledge|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardBardicKnowledge	ABILITY:Special Ability|AUTOMATIC|Bardic Countersong|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardCounterSong	ABILITY:Special Ability|AUTOMATIC|Bardic Performance|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardBardicPerformance	ABILITY:Special Ability|AUTOMATIC|Armored Casting|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardArmoredCasting	ABILITY:Special Ability|AUTOMATIC|Cantrips ~ Bard|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardCantrips
 2	CAST:0,2			KNOWN:5,3			BONUS:VAR|VersatilePerformanceLVL|CL			ABILITY:Special Ability|AUTOMATIC|Versatile Performance|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardVersatilePerformance	ABILITY:Special Ability|AUTOMATIC|Well-Versed|!PREABILITY:1,CATEGORY=Archetype,TYPE.BardWellVersed
 3	CAST:0,3			KNOWN:6,4
 4	CAST:0,3,1			KNOWN:6,4,2
