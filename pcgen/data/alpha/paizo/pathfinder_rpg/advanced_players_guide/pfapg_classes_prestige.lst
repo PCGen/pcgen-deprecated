@@ -149,7 +149,7 @@ CLASS:Rage Prophet		STARTSKILLPTS:4		CSKILL:Climb|Heal|Intimidate|Knowledge (His
 CLASS:Stalwart Defender		HD:12		TYPE:PC.Prestige	ABB:SD			MAXLEVEL:10		SOURCEPAGE:p.277	BONUS:CHECKS|BASE.Fortitude,BASE.Will|(CL+1)/2	BONUS:CHECKS|BASE.Reflex|(CL+1)/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
 ####I don't know how to add in AC Bonus
 # Class Name			Req. Att.	Req. Feat
-CLASS:Stalwart Defender	PREATT:7	PREFEAT:6,Dodge,Endurance,Toughness,Armor Proficiency (Light),Armor Proficiency (Medium),Shield Proficiency	
+CLASS:Stalwart Defender	PREATT:7	PREFEAT:5,Dodge,Endurance,Toughness,Armor Proficiency (Light),Armor Proficiency (Medium)	
 # Class Name			Skill Pts/Lvl		Class Skill
 CLASS:Stalwart Defender	STARTSKILLPTS:2		CSKILL:Acrobatics|Climb|Intimidate|Perception|Sense Motive
 ##Block: Normal Level Progression
