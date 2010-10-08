@@ -445,6 +445,10 @@ Immunity To Transformation			CATEGORY:Special Ability	TYPE:SpecialQuality.Extrao
 Immunity To Transmutation			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	VISIBLE:YES	DESC:You can never be transmutated				ASPECT:Immunity|Transmutation
 Oozelike Immunities				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	VISIBLE:YES
 Spell Immunities					CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	VISIBLE:YES
+# Divine Additions
+Immunity to Ability Drain			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	
+Immunity to Ability Damage			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Immunity	
+
 
 ###Block: Resistances
 # Ability Name			Category of Ability		Visible	Define					Ability
