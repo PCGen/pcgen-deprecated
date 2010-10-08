@@ -12,7 +12,7 @@ SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/
 # Class Name			Hit Dice	Type				Abbreviation	Max Level		Source Page			Save checks bonus																	Combat bonus
 CLASS:Battle Herald		HD:10		TYPE:PC.Prestige	ABB:BH			MAXLEVEL:10		SOURCEPAGE:p.260	BONUS:CHECKS|BASE.Fortitude,BASE.Will|(CL+1)/2	BONUS:CHECKS|BASE.Reflex|(CL+1)/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
 # Class Name			Req. Att.		Required Skill																		Required Special Ability
-CLASS:Battle Herald		PREATT:4		PRESKILL:4,Diplomacy=5,Intimidate=5,Perform (Oratory)=5,Profession(soldier)=2		PREABILITY:2,CATEGORY=Special Ability,Challenge,Inspire Courage
+CLASS:Battle Herald		PREATT:4		PRESKILL:4,Diplomacy=5,Intimidate=5,Perform (Oratory)=5,Profession(soldier)=2		PREABILITY:2,CATEGORY=Special Ability,Challenge ~ Cavalier,Inspire Courage
 # Class Name			Skill Pts/Lvl		Class Skill
 CLASS:Battle Herald		STARTSKILLPTS:4		CSKILL:Bluff|TYPE.Craft|Diplomacy|Handle Animal|Heal|Intimidate|Knowledge (Engineering)|Knowledge (History)|Knowledge (Local)|Knowledge (Nobility)|Perception|TYPE.Profession|Ride|Sense Motive
 ##Block: Normal Level Progression
