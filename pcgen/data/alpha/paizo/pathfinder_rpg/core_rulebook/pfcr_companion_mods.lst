@@ -55,10 +55,10 @@ FOLLOWER:CompLevel=20	TYPE:Animal Companion	HD:1																															B
 FOLLOWER:SMLevel=1	TYPE:Special Mount						ABILITY:Special Ability|AUTOMATIC|Link|Share Spells							DEFINE:MasterLevel|0	DEFINE:LOCK.INT|6																					BONUS:VAR|MasterLevel|1	RACETYPE:Animal							AUTO:ARMORPROF|ARMORTYPE=Barding
 FOLLOWER:SMLevel=2	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
 FOLLOWER:SMLevel=3	TYPE:Special Mount						ABILITY:Special Ability|AUTOMATIC|Evasion																								BONUS:COMBAT|AC|2|TYPE=NaturalArmor.STACK	BONUS:STAT|STR,DEX|1		BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=4	TYPE:Special Mount	HD:1					ABILITY:Special Ability|AUTOMATIC|Fourth Level Advancement													BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=4	TYPE:Special Mount	HD:1																											BONUS:ABILITYPOOL|Companion Stat Increase|1													BONUS:VAR|MasterLevel|1
 FOLLOWER:SMLevel=5	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
 FOLLOWER:SMLevel=6	TYPE:Special Mount	HD:1					ABILITY:Special Ability|AUTOMATIC|Devotion																							BONUS:COMBAT|AC|2|TYPE=NaturalArmor.STACK	BONUS:STAT|STR,DEX|1		BONUS:VAR|MasterLevel|1
-FOLLOWER:SMLevel=7	TYPE:Special Mount						ABILITY:Special Ability|AUTOMATIC|Seventh Level Advancement																																	BONUS:VAR|MasterLevel|1
+FOLLOWER:SMLevel=7	TYPE:Special Mount																																																BONUS:VAR|MasterLevel|1
 FOLLOWER:SMLevel=8	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
 FOLLOWER:SMLevel=9	TYPE:Special Mount	HD:1															AUTO:FEAT|Multiattack									BONUS:ABILITYPOOL|Companion Stat Increase|1	BONUS:COMBAT|AC|2|TYPE=NaturalArmor.STACK	BONUS:STAT|STR,DEX|1		BONUS:VAR|MasterLevel|1
 FOLLOWER:SMLevel=10	TYPE:Special Mount	HD:1																																															BONUS:VAR|MasterLevel|1
