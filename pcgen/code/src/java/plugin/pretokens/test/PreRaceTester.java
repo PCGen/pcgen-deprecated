@@ -193,6 +193,10 @@ BREAKOUT:		for (Race imitator: servesAsRace.keySet())
 				{
 					++runningTotal;
 				}
+				else
+				{
+					runningTotal += checkForServesAsRaceWildcard(requiredRace, wild, pcRace, servesAsRace);
+				}
 			}
 			else
 			{
@@ -224,6 +228,19 @@ BREAKOUT:			for(Race imitators : servesAsRace.keySet())
 		return countedTotal(prereq, runningTotal);
 	}
 	
+	private int checkForServesAsRaceWildcard(String requiredRace, int wild, Race pcRace, HashMap<Race, HashSet<Race>> servesAsRace)
+	{
+		for(Race imitators : servesAsRace.keySet())
+		{
+			if (servesAsRace.get(imitators).contains(pcRace) 
+					&& imitators.getDisplayName().regionMatches(true, 0, requiredRace, 0, wild))
+			{
+				return 1;
+			}
+		}
+		return 0;
+	}
+
 	private void getImitators(HashMap<Race, HashSet<Race>> serveAsRaces,PlayerCharacter character)
 	{
 		for (Race theRace : Globals.getContext().ref.getConstructedCDOMObjects(Race.class))
