@@ -34,6 +34,7 @@ import pcgen.core.Kit;
 import pcgen.core.PCTemplate;
 import pcgen.core.PlayerCharacter;
 import pcgen.core.SettingsHandler;
+import pcgen.util.chooser.ChooserFactory;
 
 /**
  * Deals with applying a Template via a Kit
@@ -88,6 +89,9 @@ public class KitTemplate extends BaseKit
 	{
 		boolean tempShowHP = SettingsHandler.getShowHPDialogAtLevelUp();
 		SettingsHandler.setShowHPDialogAtLevelUp(false);
+		final String oldChooser = ChooserFactory.getInterfaceClassname();
+		ChooserFactory.setInterfaceClassname(
+			"pcgen.util.chooser.RandomChooser"); //$NON-NLS-1$
 
 		for (CDOMSingleRef<PCTemplate> ref : templateList.getKeySet())
 		{
@@ -128,6 +132,7 @@ public class KitTemplate extends BaseKit
 			selectedMap.addAllToListFor(templateToAdd, subAdded);
 		}
 
+		ChooserFactory.setInterfaceClassname(oldChooser);
 		SettingsHandler.setShowHPDialogAtLevelUp(tempShowHP);
 
 		if (selectedMap.size() > 0)

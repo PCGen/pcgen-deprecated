@@ -229,7 +229,7 @@ public class ChooserUtilities
 	 *
 	 * @param availableList the list of things not already chosen
 	 * @param selectedList the list of things already chosen
-	 * @param process if false do not process the choice, just poplate the lists
+	 * @param process if false do not process the choice, just populate the lists
 	 * @param aPC the PC that owns the Ability
 	 * @param addIt Whether to add or remove a choice from this Ability
      * @param category The AbilityCategory whose pool will be charged for the ability (if any). May be null.
