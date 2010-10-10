@@ -8447,7 +8447,7 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 
 				if (!found)
 				{
-					setMyMoveRates(moveType, 0.0, Double.valueOf(0.0), "", 1);
+					setMyMoveRates(moveType, 0.0, Double.valueOf(0.0), "", 0);
 				}
 			}
 		}
