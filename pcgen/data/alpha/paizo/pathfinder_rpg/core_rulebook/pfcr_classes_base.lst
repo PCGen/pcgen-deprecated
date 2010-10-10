@@ -23,8 +23,8 @@ CLASS:Barbarian	STARTSKILLPTS:4	CSKILL:Acrobatics|Climb|TYPE.Craft|Handle Animal
 20																								ABILITY:Special Ability|AUTOMATIC|Mighty Rage
 #TODO: See about implementing a better method for the Uncanny Dodge; Barbarian Loses one or both with some Archetypes.
 
-# Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus											Combat bonus
-CLASS:Ex-Barbarian	HD:12		TYPE:Base.PC	ABB:Brb		MAXLEVEL:20	SOURCEPAGE:p.31	BONUS:CHECKS|BASE.Fortitude|CL/2+2	BONUS:CHECKS|BASE.Reflex,BASE.Will|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
+# Class Name		Hit Dice	Type			Abbreviation	Max Level	Visible	Save checks bonus											Combat bonus
+CLASS:Ex-Barbarian	HD:12		TYPE:Base.PC	ABB:Brb		MAXLEVEL:20	VISIBLE:NO	BONUS:CHECKS|BASE.Fortitude|CL/2+2	BONUS:CHECKS|BASE.Reflex,BASE.Will|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
 # Class Name	Restricted AL
 CLASS:Ex-Barbarian	STARTSKILLPTS:4	CSKILL:Acrobatics|Climb|TYPE.Craft|Handle Animal|Intimidate|Knowledge (Nature)|Perception|Ride|Survival|Swim	DEFINE:BarbarianLVL|CL
 ###Block:Proficiencies
