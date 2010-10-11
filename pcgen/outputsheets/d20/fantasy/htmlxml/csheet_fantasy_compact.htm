@@ -11,6 +11,8 @@ Revisions: Barak  10/15/02
 Email: barak@voyager.net
 Version 1.01
 
+Revisions: Tir-Gwaith 10/11/09 Breaking out Deflection from Misc AC bonus
+
 $Revision$
 $Author$
 $Date$
@@ -94,7 +96,7 @@ $Date$
 </style>
 </head>
 <body bgcolor="white">
-<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE|</font></center><br />
+<center><font size="-1">Created using PCGen |EXPORT.VERSION| on |EXPORT.DATE| <br>Player: |PLAYERNAME|; Character Name: |NAME|</font></center><br />
 <!-- START Top Character Data -->
 <table cellpadding="0" cellspacing="4" border="0" width="100%" summary="Character Information">
 	<tr>
@@ -103,7 +105,7 @@ $Date$
 		<td colspan="1" class="h">|ALIGNMENT|</td>
 		<td colspan="1" class="h">|DEITY|</td>
 		<td  class="h">|POOL.COST|</td>
-		<td rowspan="6" align="center" width="1%" class="border"><img src="|PORTRAIT|" alt="Character Portrait" height="100" /><br /></td>
+		<td rowspan="6" align="center" width="1%" class="border"><img src="file://|PORTRAIT|" alt="Character Portrait" height="100" /><br /></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="topline">CHARACTER NAME</td>
@@ -265,6 +267,8 @@ $Date$
 					<td align="center" class="font7"><b>+</b></td>
 					<td align="center" class="border9"><b>|AC.NaturalArmor|</b></td>
 					<td align="center" class="font7"><b>+</b></td>
+					<td align="center" class="border9"><b>|AC.Dodge|</b></td>
+					<td align="center" class="font7"><b>+</b></td>
 					<td align="center" class="border9"><b>|AC.Deflection|</b></td>
 					<td align="center" class="font7"><b>+</b></td>
 					<td align="center" class="border9"><b>|AC.Misc|</b></td>
@@ -300,6 +304,8 @@ $Date$
 					<td align="center" width="25" class="font4">SIZE<br />BONUS</td>
 					<td align="center"></td>
 					<td align="center" width="25" class="font4">NATURAL<br />ARMOR</td>
+					<td align="center"></td>
+					<td align="center" width="25" class="font4">DODGE<br />BONUS</td>
 					<td align="center"></td>
 					<td align="center" width="25" class="font4">DEFLECTION<br />BONUS</td>
 					<td align="center"></td>
