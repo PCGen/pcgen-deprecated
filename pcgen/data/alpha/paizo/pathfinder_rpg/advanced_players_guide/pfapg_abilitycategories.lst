@@ -106,8 +106,10 @@ ABILITYCATEGORY:Terrain Dominance Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPO
 
 # Monk Archetypes
 ABILITYCATEGORY:Zen Archer Feat			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ZenArcherFeat													PLURAL:Zen Archer Feats				DISPLAYLOCATION:Class Abilities
-ABILITYCATEGORY:Monk Weapon Choice		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:MonkWeaponChoice													PLURAL:Monk Weapon Choices		DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Monk Weapon Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:MonkWeaponChoice													PLURAL:Monk Weapon Choices		DISPLAYLOCATION:Class Abilities
 
+# Ranger Arcehtypes
+ABILITYCATEGORY:Hunter's Trick Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:HuntersTrickChoice													PLURAL:Hunter's Trick Selections		DISPLAYLOCATION:Class Abilities
 
 
 # Fighter Archetypes
