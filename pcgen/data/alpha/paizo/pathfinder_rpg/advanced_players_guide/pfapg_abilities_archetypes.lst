@@ -568,7 +568,7 @@ Deadly Critical		KEY:Fighter Weapon Master ~ Deadly Critical		CATEGORY:Special A
 Critical Specialist	KEY:Fighter Weapon Master ~ Critical Specialist		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.FighterWeaponTraining_Four														DESC:At 17th level, the save DCs of any effects caused by a critical hit with a weapon master's chosen weapon increase by +4. This ability replaces weapon training 4.
 Unstoppable Strike	KEY:Fighter Weapon Master ~ Unstoppable Strike		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.FighterArmorMastery															DESC:At 19th level, a weapon master can take a standard action to make one attack with his chosen weapon as a touch attack that ignores damage reduction (or hardness, if attacking an object). This ability replaces armor mastery.
 #
-Weapon Choice		KEY:Weapon Choice ~ Weapon Training				CATEGORY:Special Ability	TYPE:WeaponMasterChosenWeapon		CHOOSE:WEAPONPROF|LIST	BONUS:WEAPONPROF=LIST|TOHIT,DAMAGE|1+((classlevel("Fighter")-3)/4)
+Weapon Choice		KEY:Weapon Choice ~ Weapon Training				CATEGORY:Special Ability	TYPE:WeaponMasterChosenWeapon		CHOOSE:WEAPONPROFS|LIST		SELECT:1	BONUS:WEAPONPROF=LIST|TOHIT,DAMAGE|1+((classlevel("Fighter")-3)/4)
 
 
 ###Block: Monk archetypes -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
