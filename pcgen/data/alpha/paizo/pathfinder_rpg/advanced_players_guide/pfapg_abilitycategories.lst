@@ -99,10 +99,16 @@ ABILITYCATEGORY:Adaptation Creature Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDIT
 ABILITYCATEGORY:Shifter's Blessing Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ShifterBlessing													PLURAL:Shifter's Blessing Selections	DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Master Shifter Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:MasterShifter													PLURAL:Master Shifter Selections		DISPLAYLOCATION:Class Abilities
 
-ABILITYCATEGORY:Inspiring Command Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:InspiringCommand													PLURAL:Inspiring Command Selections	DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Inspiring Command Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:InspiringCommand													PLURAL:Inspiring Command Selections		DISPLAYLOCATION:Class Abilities
 
 ABILITYCATEGORY:Terrain Mastery Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TerrainMastery													PLURAL:Terrain Mastery Selections		DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Terrain Dominance Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TerrainDominance													PLURAL:Terrain Dominance Selections		DISPLAYLOCATION:Class Abilities
+
+# Monk Zen Archer feats
+ABILITYCATEGORY:Zen Archer Feat			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ZenArcherFeat													PLURAL:Zen Archer Feats				DISPLAYLOCATION:Class Abilities
+
+# Fighter Archetypes
+ABILITYCATEGORY:Weapon Master Chosen Weapon	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:WeaponMasterChosenWeapon												PLURAL:Weapon Master Chosen Weapon		DISPLAYLOCATION:Class Abilities
 
 #COMMENT: The following are in the Core Set and shouldn't be required any longer.
 
@@ -131,9 +137,6 @@ ABILITYCATEGORY:Terrain Dominance Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPO
 # Copied from Bestiary files
 # Ability Category			Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object	Type of Object		Plural description for UI	Display Location
 ABILITYCATEGORY:Giant Spider Type	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal		TYPE:GiantSpiderType	PLURAL:Giant Spider Types	DISPLAYLOCATION:Racial Abilities
-
-# Monk Zen Archer feats
-ABILITYCATEGORY:Zen Archer Feat				VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ZenArcherFeat			PLURAL:Zen Archer Feats			DISPLAYLOCATION:Class Abilities
 
 #
 # End
