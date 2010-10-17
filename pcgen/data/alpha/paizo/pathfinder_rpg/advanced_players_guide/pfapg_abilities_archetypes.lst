@@ -687,15 +687,15 @@ Far Shot				KEY:Zen Monk ~ Far Shot													PREVARGTEQ:MonkBonusFeatLVL,1		C
 Point-Blank Shot			KEY:Zen Monk ~ Point-Blank Shot											PREVARGTEQ:MonkBonusFeatLVL,1		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Point-Blank Shot		VFEAT:Point-Blank Shot
 Precise Shot			KEY:Zen Monk ~ Precise Shot												PREVARGTEQ:MonkBonusFeatLVL,1		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Precise Shot			VFEAT:Precise Shot
 Rapid Shot				KEY:Zen Monk ~ Rapid Shot												PREVARGTEQ:MonkBonusFeatLVL,1		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Rapid Shot			VFEAT:Rapid Shot
-Focused Shot			KEY:Zen Monk ~ Focused Shot			PREABILITY:1,CATEGORY=Special Ability,TYPE.TierOne	PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Focused Shot			VFEAT:Focused Shot
-Improved Precise Shot		KEY:Zen Monk ~ Improved Precise Shot	PREABILITY:1,CATEGORY=Special Ability,TYPE.TierOne	PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Improved Precise Shot	VFEAT:Improved Precise Shot
-Manyshot				KEY:Zen Monk ~ Manyshot				PREABILITY:1,CATEGORY=Special Ability,TYPE.TierOne	PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Manyshot			VFEAT:Manyshot
-Mobility				KEY:Zen Monk ~ Mobility				PREABILITY:1,CATEGORY=Special Ability,TYPE.TierOne	PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Mobility			VFEAT:Mobility
-Parting Shot			KEY:Zen Monk ~ Parting Shot			PREABILITY:1,CATEGORY=Special Ability,TYPE.TierOne	PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Parting Shot			VFEAT:Parting Shot
-Improved Critical			KEY:Zen Monk ~ Improved Critical		PREABILITY:1,CATEGORY=Special Ability,TYPE.TierTwo	PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Improved Critical		VFEAT:Improved Critical
-Pinpoint Targeting		KEY:Zen Monk ~ Pinpoint Targeting		PREABILITY:1,CATEGORY=Special Ability,TYPE.TierTwo	PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Pinpoint Targeting		VFEAT:Pinpoint Targeting
-Shot on the Run			KEY:Zen Monk ~ Shot on the Run		PREABILITY:1,CATEGORY=Special Ability,TYPE.TierTwo	PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Shot on the Run		VFEAT:Shot on the Run
-Snatch Arrows			KEY:Zen Monk ~ Snatch Arrows			PREABILITY:1,CATEGORY=Special Ability,TYPE.TierTwo	PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Snatch Arrows		VFEAT:Snatch Arrows
+Focused Shot			KEY:Zen Monk ~ Focused Shot				PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Focused Shot			VFEAT:Focused Shot
+Improved Precise Shot		KEY:Zen Monk ~ Improved Precise Shot		PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Improved Precise Shot	VFEAT:Improved Precise Shot
+Manyshot				KEY:Zen Monk ~ Manyshot					PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Manyshot			VFEAT:Manyshot
+Mobility				KEY:Zen Monk ~ Mobility					PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Mobility			VFEAT:Mobility
+Parting Shot			KEY:Zen Monk ~ Parting Shot				PREVARGTEQ:MonkBonusFeatLVL,6		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Parting Shot			VFEAT:Parting Shot
+Improved Critical			KEY:Zen Monk ~ Improved Critical			PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Improved Critical		VFEAT:Improved Critical
+Pinpoint Targeting		KEY:Zen Monk ~ Pinpoint Targeting			PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Pinpoint Targeting		VFEAT:Pinpoint Targeting
+Shot on the Run			KEY:Zen Monk ~ Shot on the Run			PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Shot on the Run		VFEAT:Shot on the Run
+Snatch Arrows			KEY:Zen Monk ~ Snatch Arrows				PREVARGTEQ:MonkBonusFeatLVL,10	CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Snatch Arrows		VFEAT:Snatch Arrows
 
 
 ###Block: Paladin archetypes --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
