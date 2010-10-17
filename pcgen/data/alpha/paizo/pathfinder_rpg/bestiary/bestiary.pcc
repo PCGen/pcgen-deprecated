@@ -1,4 +1,4 @@
-# CVS $Revision: 12596 $ $Author: zaister $ -- Sat Nov 20 04:10:09 2004 -- reformated by prettylst.pl v1.34 (build 422)
+# CVS $Revision: 12957 $ $Author: zaister $ -- Sat Nov 20 04:10:09 2004 -- reformated by prettylst.pl v1.34 (build 422)
 CAMPAIGN:Paizo - Pathfinder Roleplaying Game Bestiary
 GAMEMODE:Pathfinder
 TYPE:Paizo Publishing.Pathfinder Roleplaying Game
@@ -66,6 +66,7 @@ ABILITY:pfb_abilities_monsters_stu.lst
 ABILITY:pfb_abilities_monsters_templates.lst
 ABILITY:pfb_abilities_monsters_vw.lst
 ABILITY:pfb_abilities_monsters_xyz.lst
+ABILITY:pfb_abilities_afflictions.lst
 CLASS:pfb_classes_monster_specific.lst
 EQUIPMENT:pfb_equip_monsters.lst
 KIT:pfb_kits_races_abc.lst
