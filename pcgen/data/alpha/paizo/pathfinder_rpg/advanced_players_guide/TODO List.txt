@@ -1,17 +1,17 @@
 To Do List of Pending and remaining items for the APG.
 
 ##Class
-Oracle - Fix a Spell Progression. = Complete
-Missing Prestige Classes
+
 
 ##Ability
-Archetypes - CLEAN UP // Add Bonus stuff = Stefan and Andrew
-Classes - Clean up and add bonus stuff = Stefan and Andrew
-Missing Prestige Classes Abilities
-Complete Bonus/effects for Oracle Revelations - Eric
+Archetypes - CLEAN UP // Add Bonus stuff = unassigned
+- partially completed - sorcerer / aquatic and above completed.
+
+Classes - Clean up and add bonus stuff = unassigned
+
 
 ##FEATS - 
-Enter Bonus Stuff = Andrew
+Enter Bonus Stuff = Unassigned
 
 #Equipment
 Clean up and finish up = Eric
@@ -19,10 +19,11 @@ Adding meat to Soothsayer's Ramaint and the Ring of Revelations - Eric
 General bonus/effect review and clean-up for all equipment - Eric
 
 #Spells - 
-Change to formulas (CASTERLEVEL) entries = Stefan
+Change to formulas (CASTERLEVEL) entries = unassigned
+- Partially completed by AM
 
 #All File -
 Double check sourcepage numbers.
 
 # User Comments:
-- Zen Archer monk archetype bonus feats don't work properly. I'm still stuck with the normal monk bonus feat list. Also, Stunning Fist is not being replaced with Perfect Strike. The same thing is happening with the Weapon Master archetype.
+ Also, Stunning Fist is not being replaced with Perfect Strike. The same thing is happening with the Weapon Master archetype.
