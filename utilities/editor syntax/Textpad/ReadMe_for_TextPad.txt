@@ -1,25 +1,46 @@
-Author: Terrence FitzSimons
-Date: 8 December 2006
 
-Instructions for setting up the TextPad System to use PcGen's Syntax file found here at http://groups.yahoo.com/group/pcgen_experimental/ in the folder Application Support, as well at the SVN repository at https://svn.sourceforge.net/svnroot/pcgen/Trunk/utilities/editor syntax (include the last word "syntax" as its part of the location.
+Once you have TextPad installed, get "PCGen.syn" to be copied into
+the "Textpad/system" directory.  After that you need to create a document type for PCGen.
 
-First, if you don't have it, go to http://www.textpad.com/index.html and download the version that you need and the dictionary that you need.
+1) Start TextPad
+2) Configure -> New Document Class
+3) Enter "PCGen" for the name and click the Next button.
+4) For the class members prompt, enter "*.lst" and "*.pcc" then click the Next button
+5) Check the "Enable syntax highlighting box"
+6) Use the dropdown box to select the PCGen.syn file and then click the Next button
+7) Click the Finish button
 
-Second, install the program where you want and use the instructions to setup the dictionary.
+Now you need to make some further adjustments for your new document type.
 
-Third, download the PcGen's Syntax file from the files.  Place the file in the directory Samples, under TextPad.
+1) Configure -> Preferences -> Document Classes -> PCGen
+2) Font: Set the font to a monospace font so everything will line up nicely (I use Courier)
+3) Tabulation: Set the default tab spacing to 6 spaces and set the Indent size to 6 spaces
 
-Now for the hard part.  Start TextPad.  Under Configure tab is the "New Document Class". In the dialogue boxes that follow enter:
+After this you need to make some further adjustments to the general settings of TextPad
 
-PcGen
-*.pcc, *.lst
-Enable Syntax Highlighting and select the PcGen.syn Syntax Highlighting file
-Click Finish
+1) Configure -> Preferences
 
-Go back under Configure and open the Preferences tab.  Open Document Classes and click on the PcGen entry.
+2) View - Make sure the following are checked:
+   A)  Highlight the line containing the cursor (*extremely* helpful)
+   B)  Horizontal scroll bar
+   C)  Line numbers (makes talking to each other about where to find stuff easier)
+   D)  Vertical scroll bar
+   E)  Visible white space:Paragraphs, Spaces, Tabs
 
-First page, click on the "Maintain Indentation", "Strip training spaces when saving", "Save with no breaks in lines", "Check spelling of everything", Default Encoding as ANSI, Save as PC.
+3) Associated Files - add "*.lst" and "*.pcc" so that Explorer will automatically start Textpad when you
+double click those file types.
 
-Jump to Colors age and change the keywords to what you like, but "Keyword 6" needs to be red background and green letter, or something that stands out.  Keyword 6 is the "deprecate or incorrect words" if you have red backlit 
-words you are using something your not supposed to be using.  Check the docs directory for more information, or check the issues page at http://jira.pcgen.org
-Open a PcGen file and see what Syntax Highlighting does for you.
+4) File Name Filters
+   A)  Click the New button
+   B)  Enter a name/description ("PCGen" works well here)
+   C)  Enter our two favorite wildcards "*.lst" and "*.pcc" separated by a comma
+   D)  Click Apply
+
+Ok, that's pretty much it for getting TextPad set up.  You'll also want to turn off word wrapping (the
+.lst file lines can get really long and trying to read the word-wrapped is a quick route to insanity...)
+
+Jump to Colors age and change the keywords to what you like, but "Keyword 6" needs to be red background
+and green letter, or something that stands out.  Keyword 6 is the "deprecate or incorrect words" if you
+have red backlit words you are using something your not supposed to be using.
+
+
