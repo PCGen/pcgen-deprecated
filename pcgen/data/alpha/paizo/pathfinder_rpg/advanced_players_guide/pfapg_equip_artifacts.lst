@@ -7,7 +7,7 @@ SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/
 Beacon of True Faith							TYPE:Artifact.Minor.LightSource							COST:0	WT:2																														SOURCEPAGE:p.313												QUALITY:Bright Illumination|20 ft.	QUALITY:Shadowy Illumination|40 ft.	QUALITY:Duration|Permanent
 Hammer of Thunderbolts		PROFICIENCY:WEAPON|Warhammer	TYPE:Weapon.Melee.OneHanded.Martial.Artifact.Minor.Bludgeoning.Hammer	COST:0	WT:15										CRITMULT:x3			CRITRANGE:1			DAMAGE:2d6	EQMOD:STEEL.PLUS3W.RETURN	WIELD:OneHanded	SIZE:L	SOURCEPAGE:p.314
 ##TODO: Add PRExxx for Girdle and additional capabilities.
-Knucklebone of Fickle Fortune						TYPE:Atrifact/Minor									COST:0	WT:0.01																													SOURCEPAGE:p.314
+Knucklebone of Fickle Fortune						TYPE:Artifact/Minor									COST:0	WT:0.01																													SOURCEPAGE:p.314
 Perfect Golden Lute							TYPE:Artifact.Minor									COST:0	WT:3																														SOURCEPAGE:p.314
 Spindle of Perfect Knowledge						TYPE:Artifact.Minor									COST:0	WT:0.01	CHOOSE:SKILLSNAMED|TYPE=Knowledge	SELECT:2																					SOURCEPAGE:p.314	BONUS:SKILL|LIST|5	BONUS:STAT|INT,WIS,CHA|4|TYPE=Enhancement
 Talisman of Reluctant Wishes						TYPE:Artifact.Minor									COST:0	WT:1																														SOURCEPAGE:p.314
