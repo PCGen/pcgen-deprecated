@@ -660,8 +660,8 @@ Evasion				KEY:Weapon Adept ~ Evasion						CATEGORY:Special Ability	TYPE:Special
 Uncanny Initiative		KEY:Weapon Adept ~ Uncanny Initiative				CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.MonkTimelessBody				DESC:At 17th level, a weapon adept does not need to roll for initiative. He always treats his initiative roll as if it resulted in any number of his choosing (from 1 to 20). This ability replaces timeless body.
 Pure Power				KEY:Weapon Adept ~ Pure Power						CATEGORY:Special Ability	TYPE:SpecialQuality.MonkPerfectSelf								DESC:At 20th level, a weapon adept forsakes the ideals of the perfect self to become a bastion of the physical and mental virtues monks hold dear. The monk gains a +2 bonus to Strength, Dexterity, and Wisdom. This ability replaces perfect self.
 # Weapon Master Choices
-Weapon Focus / Monk Weapon			KEY:Weapon Focus ~ Weapon Adept					CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Monk	BONUS:WEAPONPROF=LIST|TOHIT|1		PREABILITY:1,CATEGORY=Special Ability,Weapon Adept ~ Way of the Weapon Master
-Weapon Specialization / Monk Weapon		KEY:Weapon Specialization ~ Weapon Adept	PRECLASS:1,Monk=6	CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Monk	BONUS:WEAPONPROF=LIST|DAMAGE|2	PREABILITY:1,CATEGORY=Special Ability,Weapon Adept ~ Way of the Weapon Master
+Weapon Focus / Monk Weapon		SERVESAS:FEAT|Weapon Focus	KEY:Weapon Focus ~ Weapon Adept					CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Monk	BONUS:WEAPONPROF=LIST|TOHIT|1		PREABILITY:1,CATEGORY=Special Ability,Weapon Adept ~ Way of the Weapon Master
+Weapon Specialization / Monk Weapon	SERVESAS:FEAT|Weapon Specialization	KEY:Weapon Specialization ~ Weapon Adept	PRECLASS:1,Monk=6	CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Monk	BONUS:WEAPONPROF=LIST|DAMAGE|2	PREABILITY:1,CATEGORY=Special Ability,Weapon Adept ~ Way of the Weapon Master
 
 
 # Zen Archer
@@ -679,8 +679,8 @@ Trick Shot				KEY:Zen Archer ~ Trick Shot						CATEGORY:Special Ability	TYPE:Spe
 Ki Focus Bow			KEY:Zen Archer ~ Ki Focus Bow						CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.MonkTongueOfTheSunAndMoon		DESC:At 17th level, as long as he has at least 1 point of ki in his ki pool, a zen archer may treat arrows fired from his bow as if they were ki focus weapons, allowing him to use his special ki attacks as if his arrows were unarmed attacks. This ability replaces tongue of the sun and moon.
 
 # Zen Archer Weapon Choice
-Weapon Focus / Bow			KEY:Weapon Focus ~ Zen Archer						CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Bow	BONUS:WEAPONPROF=LIST|TOHIT|1		PREABILITY:1,CATEGORY=Special Ability,Zen Archer ~ Way of the Bow
-Weapon Specialization / Bow		KEY:Weapon Specialization ~ Zen Archer	PRECLASS:1,Monk=6	CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Bow	BONUS:WEAPONPROF=LIST|DAMAGE|2	PREABILITY:1,CATEGORY=Special Ability,Zen Archer ~ Way of the Bow
+Weapon Focus / Bow		SERVESAS:FEAT|Weapon Focus	KEY:Weapon Focus ~ Zen Archer						CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Bow	BONUS:WEAPONPROF=LIST|TOHIT|1		PREABILITY:1,CATEGORY=Special Ability,Zen Archer ~ Way of the Bow
+Weapon Specialization / Bow	SERVESAS:FEAT|Weapon Specialization	KEY:Weapon Specialization ~ Zen Archer	PRECLASS:1,Monk=6	CATEGORY:Special Ability	TYPE:MonkWeaponChoice	CHOOSE:NUMCHOICES=1|WEAPONPROFS|TYPE=Bow	BONUS:WEAPONPROF=LIST|DAMAGE|2	PREABILITY:1,CATEGORY=Special Ability,Zen Archer ~ Way of the Bow
 
 ###Block: Zen Archer Bonus Feats
 Combat Reflexes			KEY:Zen Monk ~ Combat Reflexes											PREVARGTEQ:MonkBonusFeatLVL,1		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Combat Reflexes		VFEAT:Combat Reflexes
