@@ -851,15 +851,44 @@ Vermin			KEY:Infiltrator ~ Vermin				CATEGORY:Special Ability	TYPE:SpecialQualit
 # TODO: climb 15 ft., darkvision 60 ft., Great Fortitude, Iron Will, swim 15 ft.
 # Adaptation Powers:
 #
+Acid Resistance 10	KEY:Adaptation ~ Acid Resistance_Ten		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.AcidResistanceTen
 Amphibious			KEY:Adaptation ~ Amphibious			CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Amphibious
-Iron Will			KEY:Adaptation ~ Iron Will			CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.IronWill
 Climb 15 Ft.		KEY:Adaptation ~ Climb				CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Climb
 Darkvision 60 ft.		KEY:Adaptation ~ Darkvision Sixty		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Darkvision
+Defensive Training	KEY:Adaptation ~ Defensive Training		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.DefensiveTraining
+Elf Blood			KEY:Adaptation ~ Elf Blood		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.ElfBlood
+Elven Immunities		KEY:Adaptation ~ Elven Immunities		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.ElvenImmunities
+Elven Magic			KEY:Adaptation ~ Elven Magic		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.ElvenMagic
+Energy Resistance 5	KEY:Adaptation ~ Energy Resistance_Five_ALL		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.EnergyResistanceFive		 CHOOSE:STRING|Acid|Cold|Electricity|Fire	MULT:YES
+Exotic Weapon Proficiency (dire flail)	KEY:Adaptation ~ Exotic Weapon Proficiency_Dire Flail		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.ExoticWeaponProficiencyDireFlail
+Fearless				KEY:Adaptation ~ Fearless		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Fearless
+Ferocity			KEY:Adaptation ~ Ferocity		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Ferocity
+Gnome Magic			KEY:Adaptation ~ Gnome Magic		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.GnomeMagic
 Great Fortitude		KEY:Adaptation ~ Great Fortitude		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.GreatFortitude
+Halfling Luck		KEY:Adaptation ~ Halfling Luck		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.HalflingLuck
+Hatred			KEY:Adaptation ~ Hatred		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Hatred
+Illusion Resistance	KEY:Adaptation ~ Illusion Resistance		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.IllusionResistance
+Intimidating		KEY:Adaptation ~ Intimidating		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Intimidating
+Iron Will			KEY:Adaptation ~ Iron Will			CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.IronWill
+Keen Senses			KEY:Adaptation ~ Keen Senses		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.KeenSenses
+Kobold Fast (as goblin fast)		KEY:Adaptation ~ Kobold Fast		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.KoboldFast
 Lightning Reflexes	KEY:Adaptation ~ Lightning Reflexes		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.LightningReflexes
+Lizardfolk Hold Breath	KEY:Adaptation ~ Lizardfolk Hold Breath		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.LizardfolkHoldBreath
 Low-Light Vision		KEY:Adaptation ~ Low Light Vision		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.LowLightVision
+Lunge				KEY:Adaptation ~ Lunge		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Lunge
 Natural Armor +2		KEY:Adaptation ~ Natural Armor Two		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.NaturalArmor
+Obsessive			KEY:Adaptation ~ Obsessive		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Obsessive
+Orc Blood			KEY:Adaptation ~ Orc_Blood		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.OrcBlood
+Resist Energy 10		KEY:Adaptation ~ Resist Energy_Ten_ALL		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.ResistEnergyTen		CHOOSE:STRING|Cold|Electricity|Fire	MULT:YES
+Skill Focus.			KEY:Adaptation ~ Skill Focus_Acrobatics_Perception_Stealth		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.SkillFocusAcrobaticsPlus		CHOOSE:STRING|Acrobatics|Perception|Stealth	MULT:YES
+Skill Focus..			KEY:Adaptation ~ Skill Focus_Climb_Escape Artist_Perception		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.SkillFocusClimbPlus			CHOOSE:STRING|Climb|Escape Artist|Perception	MULT:YES
+Skill Focus...			KEY:Adaptation ~ Skill Focus_ALL		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.SkillFocusAll						CHOOSE:SKILLSNAMED|TYPE.Strength|TYPE.Dexterity|TYPE.Intelligence|TYPE.Wisdom|TYPE.Charisma	MULT:YES
+Skill Focus (Stealth)	KEY:Adaptation ~ Skill Focus_Stealth		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.SkillFocusStealth
+Sure-Footed			KEY:Adaptation ~ Sure Footed		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.SureFooted
 Swim 15 Ft.			KEY:Adaptation ~ Swim				CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.Swim
+Throw Anything		KEY:Adaptation ~ Throw Anything		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.ThrowAnything
+Weapon Familiarity	KEY:Adaptation ~ Weapon Familiarity		CATEGORY:Special Ability	TYPE:AdaptationSelection	PREABILITY:1,CATEGORY=Special Ability,TYPE.WeaponFamiliarity
+
 
 #	PREABILITY:1,CATEGORY=Special Ability,TYPE.
 
