@@ -289,7 +289,7 @@ public class CharacterSheetPlugin extends GMBPlugin
 	{
 		JTabbedPane tp =
 				TabbedPaneUtilities.getTabbedPaneFor(model.getComponent());
-		return tp != null && JOptionPane.getFrameForComponent(tp).isFocused()
+		return tp != null && tp.getSelectedComponent() != null && JOptionPane.getFrameForComponent(tp).isFocused()
 			&& tp.getSelectedComponent().equals(model.getComponent());
 	}
 
