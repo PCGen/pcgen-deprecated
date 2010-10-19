@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pcgen.base.lang.StringUtil;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -229,7 +228,6 @@ public final class PrerequisiteUtilities
 		int runningTotal = 0;
 		final List<Ability> abilityList =
 				buildAbilityList(character, categoryName, category);
-		Logging.errorPrint("Checking for " + key + " in " + StringUtil.join(abilityList, ","));
 		if (!abilityList.isEmpty())
 		{
 			for (Ability ability : abilityList)
