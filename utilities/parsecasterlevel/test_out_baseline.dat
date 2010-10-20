@@ -1,0 +1,460 @@
+# CASTERLEVEL fixup performed by ParseCasterLevel.pl v 0.1c (comments to eballot.com)
+#should not match
+One willing, living creature whose level or Hit Dice do not exceed the caster's
+As disrupt undead, but damage increases per caster level.
+
+# Special "twice cster lvl"
+Multiple aberrations whose combined total Hit Dice do not exceed (CASTERLEVEL*2) in a spread emanating from the character to the extreme of the range
+
+# Base value plus per level increment
+(1+(CASTERLEVEL*1)) min.
+5-ft.-wide path to close range ((25+(floor(CASTERLEVEL/2)*5)) ft.)
+One ropelike object, length up to (50+(CASTERLEVEL*5)) ft.; see text
+All mindless undead within a circle (25+(floor(CASTERLEVEL/2)*5)) ft. in radius
+(100+(CASTERLEVEL*10)) ft. radius emanation.
+Four bolts, 5-ft. wide to medium range ((100+(CASTERLEVEL*10))ft.) or 10-ft. wide to (50+(CASTERLEVEL*5)) ft.
+5-ft. wide path to close range ((25+(floor(CASTERLEVEL/2)*5)) ft.)
+(25+(floor(CASTERLEVEL/2)*5)) ft. spherical emanation centered on you
+Circle centered on you, with a radius of (10+(CASTERLEVEL*1)) miles
+Ice touched, up to (10+(CASTERLEVEL*1)) cu. ft.
+Circle, centered on you, with a radius of (400+(CASTERLEVEL*40)) ft.
+(30+(CASTERLEVEL*5))-ft.-radius emanation
+TARGETAREA:(30+(CASTERLEVEL*5))-ft.-radius emanation
+Visual figment that cannot extend beyond (4+(CASTERLEVEL*1)) 10-ft. cubes (S)
+Ethereal 5 ft. by 8 ft. opening, (10+(floor(CASTERLEVEL/3)*5)) ft. deep
+Visual figment that cannot extend beyond (4+(CASTERLEVEL*1)) 10-ft. cubes (S)
+Touched nonmagical circle of vine, rope, or thong with a (2+(CASTERLEVEL*2)) ft. diameter
+Snow touched, up to (10+(CASTERLEVEL*1)) cu. ft.
+5 ft. wide to close range ((25+(floor(CASTERLEVEL/2)*5)) ft.)
+Stone object touched, up to (10+(CASTERLEVEL*1)) cu. ft.
+Stone or stone object touched, up to (10+(CASTERLEVEL*1)) cu. ft.
+Stone or stone objects touched, up to (10+(CASTERLEVEL*10)) cu. ft.
+Stone or stone objects touched, up to (10+(CASTERLEVEL*10)) cu. ft..
+Anchored plane of ice, up to (CASTERLEVEL*1) 10-ft. squares, or hemisphere of ice with a radius of up to (3+(CASTERLEVEL*1)) ft.
+(1+(CASTERLEVEL*1)) mile radius, centered on you
+One touched piece of wood no larger than (10+(CASTERLEVEL*1)) cu. ft.
+
+(min(4,(1+(floor(CASTERLEVEL/3)*1)))) tendrils of force
+(1+(floor(CASTERLEVEL/2)*1)) quasi-real mounts
+(1+(floor(CASTERLEVEL/2)*1)) creatures (each of which must be within 30 ft. of the primary target)
+5 ft. by 8 ft. opening, (10+(floor(CASTERLEVEL/3)*5)) ft. deep
+(1+(floor(CASTERLEVEL/4)*1)) creatures, no two of which can be more than 30 ft. apart
+
+# Keying off "up to"
+Extradimensional pavilion, up to (CASTERLEVEL*5) 10-ft. cubes (S), plus feast for (CASTERLEVEL*12) creatures
+You and up to (floor(max(1,(CASTERLEVEL/2)))*1) other creatures
+Ship plus extradimensional space, up to (CASTERLEVEL*3) 10-ft. cubes (S)
+Up to (floor(max(1,(CASTERLEVEL/2)))*1) animals (Gargantuan or smaller), no two of which can be more than 30 ft. apart
+Up to (CASTERLEVEL*1) willing creatures, all within 30 ft. of each other
+One location (up to a (CASTERLEVEL*10)-ft. cube) or one object
+The door, chest, or portal touched, up to (CASTERLEVEL*30) sq. ft. in size
+Door, chest, or portal touched, up to (CASTERLEVEL*30) sq. ft. in size
+Object of up to (CASTERLEVEL*200) cubic ft.
+Up to (CASTERLEVEL*2)<<TODO:add max<< contiguous 5 ft. squares, maximum 10 squares (S)
+You and up to (CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+Wall of whirling blades up to (CASTERLEVEL*20) ft. long, or a ringed wall of whirling blades with a radius of up to (floor(max(1,(CASTERLEVEL/2)))*5) ft.; either form 20 ft. high
+Up to (CASTERLEVEL*1) creatures, all within 30 ft. of each other
+One bridge of sound 5ft. wide, 1 in. think, and up to (CASTERLEVEL*10)ft. long
+Creature or creatures touched (up to (CASTERLEVEL*1))
+Up to (CASTERLEVEL*2) HD of plant creatures, no two of which can be more than 30 ft. apart
+One object of up to (CASTERLEVEL*5) lb.
+Up to (CASTERLEVEL*2) HD of deathless creatures, no two of which can be more than 30 ft. apart
+Up to (CASTERLEVEL*2) HD of plant creatures, no two of which can be more than 30 ft. apart
+Up to (CASTERLEVEL*2) HD of undead creatures, no two of which can be more than 30 ft. apart
+Up to (CASTERLEVEL*2) gallons of water
+Curtain of light whose area is up to (CASTERLEVEL*1) 5ft. squares
+One bridge of force 5 ft. wide, 1 in. thick, and up to (CASTERLEVEL*20) ft. long
+Energy wall whose area is up to (CASTERLEVEL*1) 10-ft. squares, or a sphere or hemisphere with a radius of up to (CASTERLEVEL*1) ft.
+One stone structure or rock formation, up to (CASTERLEVEL*25) cu. ft.
+Up to (CASTERLEVEL*1) animate dead creatures
+One opening, up to (CASTERLEVEL*10)-foot-cube (S)
+Up to (CASTERLEVEL*10) cu. ft.; see text
+Up to (CASTERLEVEL*1) evil creatures
+You and up to (floor(max(1,(CASTERLEVEL/3)))*1) allies, all of whom must be within 40 ft. of you
+Up to (CASTERLEVEL*2) 10-ft. cubes(S)
+You and willing creatures totaling up to (floor(max(1,(CASTERLEVEL/3)))*1); see text
+Up to (CASTERLEVEL*1) city blocks
+Object touched or up to (CASTERLEVEL*5) sq. ft.
+Up to (CASTERLEVEL*200) sq. ft. (S)
+Up to (floor(max(1,(CASTERLEVEL/2)))*1) creatures
+Up to (CASTERLEVEL*1) creatures
+One portal, up to (CASTERLEVEL*20) sq. ft.
+Up to (CASTERLEVEL*1) HD of creatures, no two of which can be more than 20 ft. apart
+An ironwood object weighing up to (CASTERLEVEL*5) lb.
+One door, box, or chest with an area of up to (CASTERLEVEL*10) sq. ft.
+You or one willing creature or one object (total weight up to (CASTERLEVEL*100) lb.)
+Wall whose area is up to (CASTERLEVEL*1) 10 ft. squares or a sphere or hemisphere with a radius of up to (CASTERLEVEL*1) ft.
+Up to (floor(max(1,(CASTERLEVEL/3)))*1) willing creatures touched
+One object or creature weighing up to (CASTERLEVEL*10) pounds
+Extradimensional mansion, up to (CASTERLEVEL*3) 10-ft. cubes (S)
+One touched object weighing up to (CASTERLEVEL*5) lb.
+Unattended, nonmagical object of matter, up to (CASTERLEVEL*1) cu. ft.
+One object of up to (CASTERLEVEL*10) cu. ft.
+Metal object weighing up to (CASTERLEVEL*5) lb.
+Unattended, nonmagical object of nonliving plant matter, up to (CASTERLEVEL*1) cu. ft.
+One object up to (CASTERLEVEL*1) cu. ft.
+A variable-width, glowing white stair or bridge of translucent force up to (CASTERLEVEL*15) ft long (see text)
+Up to (CASTERLEVEL*1) creatures, no two of which can be more than 25 ft. apart.
+Creature or object of up to (CASTERLEVEL*1) cu. ft. touched
+One object touched of up to (CASTERLEVEL*100) lb.
+Up to (CASTERLEVEL*1) HD of creatures, no two of which can be more than 20 ft. apart
+Living creature or creatures touched (up to (CASTERLEVEL*1))
+Extradimensional cave, up to (CASTERLEVEL*2) 10-ft. cubes (S)
+One creature, or one nonmagical object of up to (CASTERLEVEL*100) cu. ft.
+Up to (CASTERLEVEL*1) living creatures, no two of which can be more than 10 ft. apart
+Up to (floor(max(1,(CASTERLEVEL/4)))*1) creatures touched
+Up to (CASTERLEVEL*1) creatures
+Up to (floor(max(1,(CASTERLEVEL/2)))*1) living creatures touched
+Up to (CASTERLEVEL*10)-ft.-radius emanation centered on you
+Up to (floor(max(1,(CASTERLEVEL/2)))*1) 10-ft. cubes (S)
+Up to (CASTERLEVEL*2) 10-ft. cubes (S)
+A screen of heat, up to (CASTERLEVEL*10)-ft. square
+One chest and up to (CASTERLEVEL*1) cu. ft. of goods
+One willing creature or object (up to a (CASTERLEVEL*2)-ft. cube) touched
+Up to (CASTERLEVEL*1) touched creatures
+You and up to (CASTERLEVEL*1) touched creatures
+One touched object of up to (CASTERLEVEL*2) cu. ft.
+One door, chest, or portal up to (CASTERLEVEL*30) sq. ft. in size
+One door, chest, or portal up to (CASTERLEVEL*30) sq. ft. in size
+Creature or creatures touched (up to (CASTERLEVEL*1))
+Up to (CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+Wall whose area is up to (CASTERLEVEL*1) 10-ft. squares or a sphere or hemisphere with a radius of up to (CASTERLEVEL*1) ft
+Up to (CASTERLEVEL*10) creatures
+Up to (floor(max(1,(CASTERLEVEL/2)))*1) living creatures touched
+One location (up to a (CASTERLEVEL*10)-ft. cube) or one object
+One touched object of up to (CASTERLEVEL*50) lb and (CASTERLEVEL*3) cu. ft
+Touched objects or touched willing creatures weighing up to (CASTERLEVEL*100) lb.
+Up to (CASTERLEVEL*2) 10-ft. cubes (S)
+Unattended, nonmagical object of nonliving matter, up to (CASTERLEVEL*1) cu. ft.
+One animal of up to (CASTERLEVEL*1) HD
+Up to (floor(max(1,(CASTERLEVEL/5)))*1) 10-ft. cubes (S)
+Wall whose area is up to (CASTERLEVEL*1) 10-ft. squares
+A wall whose area is up to (CASTERLEVEL*1) 5-ft. squares (S); see text
+Wall whose area is up to (CASTERLEVEL*1) 10-ft. squares or a sphere or hemisphere with a radius of up to (floor(max(1,(CASTERLEVEL/2)))*5) ft.
+Opaque sheet of coldfire up to (CASTERLEVEL*20) ft. long or a ring of coldfire with a radius of up to (floor(max(1,(CASTERLEVEL/2)))*5) ft.; either form 20 ft. high
+A wall whose area is up to (CASTERLEVEL*1) 5-ft. squares (S); see text
+A plane of dispel magic whose area is up to (CASTERLEVEL*10)-ft. square.
+A wall whose area is up to (CASTERLEVEL*1) 5-ft. squares (S); see text
+Opaque sheet of flame up to (CASTERLEVEL*20) ft. long or a ring of fire with a radius of up to (floor(max(1,(CASTERLEVEL/2)))*5) ft.; either form 20 ft. high
+Wall whose area is up to (CASTERLEVEL*1) 10-ft. squares
+A plane of greater dispel magic whose area is up to (CASTERLEVEL*1) 10-ft. squares
+Iron wall whose area is up to (CASTERLEVEL*1) 5-ft. squares; see text
+A wall of whirling limbs up to (CASTERLEVEL*20) ft. long, or a ring of whirling limbs with a radius of up to (floor(max(1,(CASTERLEVEL/2)))*5) ft., either form 20 ft. high
+Wall of molten stone whose area is up to (CASTERLEVEL*1) 5-ft. squares (S)
+A wall whose area is up to (CASTERLEVEL*1) 5-ft. squares (S); see text
+Sand wall whose area is up to (CASTERLEVEL*1) 5-ft. squares (S)
+Sand wall whose area is up to (CASTERLEVEL*1) 10-ft. squares (S)
+Stone wall whose area is up to (CASTERLEVEL*1) 5-ft. squares (S)
+Wall of thorny brush, up to (CASTERLEVEL*1) 10-ft. cubes (S)
+Wall of water 1 ft. thick whose area is up to (CASTERLEVEL*1) 10-ft. Squares (S)
+Up to (CASTERLEVEL*1) cu. ft.
+20-ft.-radius tornado, up to (CASTERLEVEL*5)ft. tall, centered anywhere within range
+Wall up to (CASTERLEVEL*10) ft. long and (CASTERLEVEL*5) ft. high (S)
+
+# Special case of number preceded by "and"
+One column of ice, 10-ft. radius and (CASTERLEVEL*5) ft. in height
+You and (CASTERLEVEL*1) creatures in a 20-ft.-radius burst centered on you
+Vertical path 10 ft. wide and (CASTERLEVEL*20) ft. tall
+You and (floor(max(1,(CASTERLEVEL/3)))*1) other touched creatures
+You and (CASTERLEVEL*1) other creatures
+(CASTERLEVEL*5)-ft.-radius emanation, centered on a point in space, and (CASTERLEVEL*10)-ft.-radius burst centered on the same point
+You and (floor(max(1,(CASTERLEVEL/3)))*1) touched creatures
+
+# Special case of two items being incremented
+Food and water to sustain (CASTERLEVEL*3) humans or (CASTERLEVEL*1) horses for 24 hours
+Feeds (CASTERLEVEL*3) humans (or (CASTERLEVEL*1) horses).
+
+# number closest to "/level" that is not followed by a '-'
+One item of a volume no greater than (CASTERLEVEL*10) cu. ft. (see text)
+(floor(max(1,(CASTERLEVEL/2)))*1) people, no two of which can be more than 30 ft. apart.
+(CASTERLEVEL*2) 10-ft. squares (S)
+Metal equipment of (floor(max(1,(CASTERLEVEL/2)))*1) creatures, no two of which can be more than 30 ft. apart; or (CASTERLEVEL*25) lb. of metal, all of which must be within a 30-ft. circle
+(CASTERLEVEL*1) 10-ft. cubes
+One 5-ft.-by-8-ft. opening, (CASTERLEVEL*1) ft. deep
+Figment that cannot extend beyond a 20-ft. cube + (CASTERLEVEL*1) 10-ft. cubes (S)
+Visual figment that cannot extend beyond a 20-ft. cube + (CASTERLEVEL*1) 10-ft. cubes (S)
+(CASTERLEVEL*1) 5-ft. cubes of ice or 10-ft. cubes of snow, or (CASTERLEVEL*1) cold creatures
+(min(8,(CASTERLEVEL*1))) creatures
+You plus (floor(max(1,(CASTERLEVEL/3)))*1) willing creatures, no two of which can be more than 30 ft. apart
+One primary target, plus (CASTERLEVEL*1) secondary targets (each of which must be within 30 ft. of the primary target)
+You plus (floor(max(1,(CASTERLEVEL/2)))*1) willing creatures touched
+Caster, plus (floor(max(1,(CASTERLEVEL/3)))*1) creatures
+(CASTERLEVEL*1) thrown weapons touched or one projectile weapon touched
+(CASTERLEVEL*1) cold creatures
+(CASTERLEVEL*1) creatures, no two of which are more than 30 ft. apart
+(CASTERLEVEL*1) weapons, no two of which are more than 30 ft. apart
+(CASTERLEVEL*1) objects or creatures
+(CASTERLEVEL*1) Small objects; see text
+(floor(max(1,(CASTERLEVEL/3)))*1) Large plants or all plants within range; see text
+(floor(max(1,(CASTERLEVEL/2)))*1) creatures, no two of which can be more than 30 ft. apart
+(floor(max(1,(CASTERLEVEL/3)))*1) creatures
+(floor(max(1,(CASTERLEVEL/3)))*1) creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*1) creatures in a 20-ft.-radius burst centered on you
+(floor(max(1,(CASTERLEVEL/3)))*1) animals or trees, no two of which may be more than 30 ft. apart
+Trench or berm to (floor(max(1,(CASTERLEVEL/2)))*5) feet long.
+(CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+Water in a volume of (CASTERLEVEL*100) ft. by (CASTERLEVEL*100) ft. by (CASTERLEVEL*10) ft. (S)
+(CASTERLEVEL*1) 10-ft. squares
+(CASTERLEVEL*100) ft radius burst centered on you.
+(CASTERLEVEL*100) ft.-radius spread
+(floor(max(1,(CASTERLEVEL/5)))*1) duplicates
+Weapons carried by (floor(max(1,(CASTERLEVEL/2)))*1) creatures, no two of which are more than 30 ft. apart
+(CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*1) willing creatures, no two of which are more than 20 ft. apart
+(CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart.
+(CASTERLEVEL*10) ft.-radius spread
+Circle with a (CASTERLEVEL*10) ft. radius
+Touched creature or combustible object that weighs no more than (CASTERLEVEL*25) lb.
+Shadows in (CASTERLEVEL*1) 5-ft. cubes
+Dust or sand in a volume of (CASTERLEVEL*10) ft. wide by (CASTERLEVEL*10) ft. long by (CASTERLEVEL*2) ft. deep (S)
+Ice and snow in a volume of (CASTERLEVEL*10) ft. by (CASTERLEVEL*10) ft. by 2
+(CASTERLEVEL*20) cu. ft. emanation, centered on you
+Water in a volume of (CASTERLEVEL*10) ft. by (CASTERLEVEL*10) ft. by (CASTERLEVEL*2) ft. (S)
+(CASTERLEVEL*40) ft. radius cylinder 40 ft. high
+(CASTERLEVEL*1) 20-ft.-by-20-ft. squares of snow
+(CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*5) ft.-radius emanation centered on you
+(CASTERLEVEL*1) chains within range
+(min(7,(floor(max(1,(CASTERLEVEL/2)))*1))) rays
+(CASTERLEVEL*1) creatures touched
+(CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*10) ft. radius spread
+(CASTERLEVEL*1) living creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*100)-ft. radius
+(floor(max(1,(CASTERLEVEL/2)))*1) swarms of centipedes
+(CASTERLEVEL*1) incorporeal undead
+(CASTERLEVEL*1) magic-absorbing spheres.
+(floor(max(1,(CASTERLEVEL/3)))*1) creatures, each of which is adjacent to another target
+(floor(max(1,(CASTERLEVEL/2)))*1) 5-foot square force plane
+Fills pot with healing stew ((floor(max(1,(CASTERLEVEL/2)))*1) servings)
+(CASTERLEVEL*1) 5-ft.-square, all of which must be connected in one continuous path (S)
+Feast for (CASTERLEVEL*1) creatures
+(CASTERLEVEL*1) Medium or smaller freefalling objects or creatures, no two of which may be more than 20 ft. apart
+(CASTERLEVEL*1) creatures, no two of which are more than 60 ft. apart
+(CASTERLEVEL*1) mile radius, centered on you
+(floor(max(1,(CASTERLEVEL/3)))*1) magical shuriken
+(CASTERLEVEL*2) 10-ft. cubes (S)
+(CASTERLEVEL*1) 5-ft.-radius bursts (S)
+(CASTERLEVEL*1) 20-ft. cubes (S)
+(CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+Metal equipment of (CASTERLEVEL*1) creatures
+(floor(max(1,(CASTERLEVEL/2)))*1) creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*1) creatures, no two of which can be more than 30 ft. apart
+(floor(max(1,(CASTERLEVEL/3)))*1) pebbles
+(floor(max(1,(CASTERLEVEL/2)))*1) 20-ft. cubes
+(CASTERLEVEL*1) creatures
+(CASTERLEVEL*1) living creatures, no two of which may be more than 30 ft. apart
+(CASTERLEVEL*1) 10-ft. cubes (S)
+(floor(max(1,(CASTERLEVEL/5)))*1) frigid globes
+(CASTERLEVEL*1) 30-ft. cubes (S)
+Feast for (CASTERLEVEL*1) creatures
+(CASTERLEVEL*1) creatures touched
+(floor(max(1,(CASTERLEVEL/2)))*1) creatures touched
+You or a creature or object weighing no more than (CASTERLEVEL*100) lb.
+You or a creature or object weighing no more than (CASTERLEVEL*100)lb.
+(floor(max(1,(CASTERLEVEL/3)))*1) suits of armor touched
+(floor(max(1,(CASTERLEVEL/3)))*1) strands of animated kelp
+(floor(max(1,(CASTERLEVEL/2)))*1) evil humanoids, monstrous humanoids, or giants
+(floor(max(1,(CASTERLEVEL/2)))*1) rays
+(CASTERLEVEL*10) miles radius circle, centered on you
+Circle, centered on you, with a radius of (CASTERLEVEL*1) miles (see text)
+(min(10,(CASTERLEVEL*1))) pairs of disembodied, flying jaws
+A trail (CASTERLEVEL*20) ft. long
+(CASTERLEVEL*1) illusory figures
+(floor(max(1,(CASTERLEVEL/2)))*1) quasi-real, horselike creatures
+(CASTERLEVEL*1) good creatures in a 20-ft.-radius burst centered on you
+(floor(max(1,(CASTERLEVEL/2)))*1) swarms of rats, each of which must be adjacent to at least one other swarm
+Wall (CASTERLEVEL*4) ft. wide, (CASTERLEVEL*2) ft. high
+(CASTERLEVEL*1) cu. ft. of contaminated food and water
+(CASTERLEVEL*1) 20-ft. cubes (S) or one fire-based magic item
+(floor(max(1,(CASTERLEVEL/3)))*1) willing living creatures, no two of which may be more than 30 ft. apart
+(CASTERLEVEL*2) 5-ft. squares (S)
+Burst in the shape of a circular disk, (CASTERLEVEL*10) ft. wide, 5 ft. high
+(floor(max(1,(CASTERLEVEL/2)))*1) targets, no two of which can be more than 30 ft. apart
+(floor(max(1,(CASTERLEVEL/2)))*1) touched creatures.
+(CASTERLEVEL*40) ft. radius cylinder 40 ft. high
+(floor(max(1,(CASTERLEVEL/3)))*1) living creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*1) illusory figures
+(CASTERLEVEL*1) flat-footed creatures, no two of which can be more than 30 ft. apart.
+(floor(max(1,(CASTERLEVEL/2)))*1) creatures, no two of which can be more than 30 ft. apart
+(CASTERLEVEL*1) 10-ft.-cube regions of slipsand
+(CASTERLEVEL*1) 20-ft. squares
+(CASTERLEVEL*10) ft.-radius spread
+(floor(max(1,(CASTERLEVEL/3)))*1) living creatures touched
+(CASTERLEVEL*10) living creatures
+(CASTERLEVEL*1) 10-ft.-square (S)
+(CASTERLEVEL*1) invisible, mindless, shapeless servants
+Wall of moving gears whose area fills (floor(max(1,(CASTERLEVEL/2)))*1) 5-ft. squares; see text
+(CASTERLEVEL*2) 5-ft. squares that are 5 ft. thick (S)
+(floor(max(1,(CASTERLEVEL/3)))*1) gems
+(CASTERLEVEL*1) Small wooden objects, all within a 20-ft. radius
+(CASTERLEVEL*1) ounces of water
+(CASTERLEVEL*30) ft. cube
+
+# Finally, numbers with dashes.
+(CASTERLEVEL*1)-mile radius, centered on you
+(CASTERLEVEL*1)-ft.-diameter sphere, centered around a creature
+(CASTERLEVEL*5)-ft. radius emanation from willing touched creature
+(CASTERLEVEL*5)-ft.-radius spread
+(CASTERLEVEL*5)-ft radius cylinder (CASTERLEVEL*10) ft. high
+(CASTERLEVEL*5)-ft.-radius emanation
+(CASTERLEVEL*10)-mile radius, centered on you
+(CASTERLEVEL*10)-ft. square
+(CASTERLEVEL*10)-ft. square; see text
+(CASTERLEVEL*10)-ft. radius spread
+(CASTERLEVEL*10)-ft.-radius emanation
+(CASTERLEVEL*10)-ft.-radius spread; or one ice creature
+(CASTERLEVEL*10)-ft. cube
+(CASTERLEVEL*20)-ft. square of snow
+(CASTERLEVEL*20)-ft. radius emanation centered on you
+(CASTERLEVEL*20)-ft. cube
+(CASTERLEVEL*30)-ft. cube (S)
+(CASTERLEVEL*60)-ft. cube (S)
+(CASTERLEVEL*100)-ft. radius spread, centered on you
+Spread of (CASTERLEVEL*10)-ft. radius
+
+# +n/level
++1 on attack rolls and saves against fear, 1d8 temporary hp +(min(10,(CASTERLEVEL*1))).
+Allies gain +1 on attack rolls, +1 against fear, 1d8 temporary hp +(min(15,(CASTERLEVEL*1))).
+Wooden weapon grows spikes that deals +(min(10,(CASTERLEVEL*1))) piercing + bludgeoning damage.
+Immobile shield blocks sound, deflects missiles, deals 1d6+(CASTERLEVEL*1) and deafens intruders.
+Good creatures gain +2 on attacks and saves versus fear and gain 1d8+(CASTERLEVEL*1) temporary hit points, while evil creatures save or suffer -2 on attacks and saves versus fear.
+Cure 1d4 +(min(5,(CASTERLEVEL*1))) damage, even on another's turn (immediate).
+Cloud spear deals 1d8 +(floor(max(1,(CASTERLEVEL/2)))*1) piercing damage and may inflict a gaseous form effect.
+Cures 4d8 damage +(min(20,(CASTERLEVEL*1))).
+Up to +(CASTERLEVEL*1) to Str, Dex, or Con, both Int and Cha down the same.
+Shapable curtain of light does 2d4 brilliant energy damage/round to evil creatures and 2d6 +(min(20,(CASTERLEVEL*1))) to evil creatures passing through (double for undead).
+1d4+(floor(max(1,(CASTERLEVEL/2)))*1) force damage; 1d4+1 damage to (floor(max(1,(CASTERLEVEL/2)))*1) secondary targets.
+
+# "above" or "beyond"
+Launch force bolts ((1+(floor(max(0,(CASTERLEVEL-1))/2)*1))) at targets for 1d6 + 1 each.
+1d4+1 damage; +(min(5,(floor(max(0,(CASTERLEVEL-1))/2)*1))) missiles.
+1d4+1 force damage; +(min(5,(floor(max(0,(CASTERLEVEL-1))/2)*1))) missiles.
+Ranged touch, 1d6 negative energy damage; (min(5,(floor(max(0,(CASTERLEVEL-1))/2)*1)))d6.
+Creature gains +6 natural armor, +(floor(max(0,(CASTERLEVEL-11))/3)*1).
+Creates caltrops in 5-ft.-by-5-ft. square, + (floor(max(0,(CASTERLEVEL-1))/2)*5)<<TODO:add max<<-ft. square (max 5).
+
+# number + "caster level"
+Swift. You gain +2 insight bonus on attack and damage if you make a full attack, SR (5+CASTERLEVEL) if you fight defensively, and DR 5/magic if you use the total defense action.
+You gain DR 5/- and resist energy 5 vs cold, fire, and electricity.  Healing slows and requires caster level checks (DC (10+CASTERLEVEL))
+You gain spell resistance (12+CASTERLEVEL) against spells with opposite alignment descriptor.
+You gain insight bonus of (5+CASTERLEVEL) on one single skill check.
+
+#TODO
+Calms (2d4 + level) HD of animals.
+Chains (AC 20, (min(100,(CASTERLEVEL*5)))HP, DR 10/magic, energy immune) entangle target and deal 3d6 nonlethal damage. DC32 Str check to break or DC40 Escape Artist (1 minute) to free.
+Chains (AC 20 hp (min(100,(CASTERLEVEL*5))), DR 10/magic, energy immune) entangle target and deal 3d6 nonlethal damage. Strength check DC 32 break or Escape Artist DC 40 (1 minute) to get free.
+
+#New from description
+Floating magic weapon disintegrates subjects, Dealing (min(40,(CASTERLEVEL*2)))d6 disintegrate damage.
+10-ft. cylinder deals 4d6 fire damage, +2d6 damage per round for (min(6,(floor(max(1,(CASTERLEVEL/3)))*1))) rounds.
+(CASTERLEVEL*1)d6 points of nonlethal damage and if save fails, evil creatures are entangled (half speed, -2 att, -4 Dex, Concentration DC 15 + level).
+Subject faces its sins, takes (min(10,(CASTERLEVEL*1)))d6 nonlethal damage.
+Cone of acid deals (CASTERLEVEL*1)d6 damage.
+Deals (min(15,(CASTERLEVEL*1)))d6 acid damage in 20-ft radius.
+Deal (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d8 fire damage to a line.
+Line of electricity between two creatures ((CASTERLEVEL*1)d6 damage).
+Ranged touch attack; 2d4 damage for (1+(floor(CASTERLEVEL/3)*1)) rounds.
+Sheath of acid damages those who attack you ((min(30,(CASTERLEVEL*2)))), lets you make touch attacks.
+You and your allies gain +30 ft. speed for (CASTERLEVEL*1) minutes.
+Trap target in stasis sphere w/ hardness 5 and (CASTERLEVEL*10) hp.
+Subject takes -(min(10,(floor(max(1,(CASTERLEVEL/4)))*2))) penalty on attack rolls.
+(floor(max(1,(CASTERLEVEL/2)))*1) animals doubles in size.
+(CASTERLEVEL*1) allies polymorphs into chosen animal.
+As arcane lock, except you may attune (CASTERLEVEL*1) additional individuals.
+Blind evil creatures and do (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d6 divine damage
+Energy ball deals (min(15,(CASTERLEVEL*1)))d6electricity damage.
+(CASTERLEVEL*1) allies +4 Strength and +(CASTERLEVEL*1)d4 hit points.
+Ray that deals (min(10,(floor(max(1,(CASTERLEVEL/2)))*1)))d6 damage, half electricity and half evil/profane energy.
+Desecrate water, deal (floor(max(1,(CASTERLEVEL/2)))*1)d6 negative energy damage, bestow a negative level.
+Wall of blades deals (min(15,(CASTERLEVEL*1)))d6 force damage.
+60-ft. cone of fire deals (min(10,(CASTERLEVEL*1)))d6 damage.
+Ray deals (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d6 force damage and may knock down opponent.
+Cone blast deals (min(10,(CASTERLEVEL*1)))d6 damage.
+Your body emanates flame, dealing (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d4 fire damage.
+Falling rocks deal (min(20,(CASTERLEVEL*1)))d8 damage and bury targets who suffocate if they cannot climb out.
+Gust of cold wind deals (min(15,(CASTERLEVEL*1)))d4 damage and knocks creatures back.
+(min(20,(CASTERLEVEL*1)))d6 electricity damage; (CASTERLEVEL*1) secondary bolts each deals half damage.
+Kills (CASTERLEVEL*1)d4 HD of creatures.
+Cone deals (min(10,(CASTERLEVEL*1)))d6 sonic and cold damage (half each).
+Target takes (min(10,(CASTERLEVEL*1)))d8 fire damage.
+3 comets per round strike targets, each dealing 3d6 bludgeoning and (min(10,(CASTERLEVEL*1)))d4 cold damage.
+You deal 1d8 acid damage with (CASTERLEVEL*1) touches
+You hurl (min(7,(floor(max(1,(CASTERLEVEL/2)))*1))) beams of darkness, dealing 2d8 damage/round and may daze for 1 round.
+Deals (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d8 damage, half is cold damage, and stuns 1 round.
+God's punishment deals (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d6 damage. ((CASTERLEVEL*1)<<TODO:add max<<d6 max 10d6 vs undead.)
+
+Caster gains +(floor(max(1,(CASTERLEVEL/5)))*1) natural armor.
+Kills plants, damages objects in (CASTERLEVEL*100)-ft. radius.
+Dazzle evil creature for 2d6 rounds (no save) and do (min(10,(CASTERLEVEL*1)))d6 good-aligned damage.
+Deals (CASTERLEVEL*10) damage to target construct.
+Subject gains +10 to Dexterity for (CASTERLEVEL*1) rounds.
+You gain +(floor(max(1,(CASTERLEVEL/3)))*1) on attack and damage rolls.
+Creates clouds of flickering light ((CASTERLEVEL*1) 10-ft. cubes) that dazes creatures.
+Incorporeal undead gain +1 AC, +1d8 hp, +1 on attacks, +(floor(max(1,(CASTERLEVEL/3)))*2) turn resistance.
+Deals (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d6 electricity damage + stuns a single creature.
+Any attack made within 80 feet of caster causes attacker to take (min(20,(CASTERLEVEL*1)))d6 points of lethal or nonlethal damage.
+Give subject one negative level/round for (CASTERLEVEL*1) rounds.
+Your familiar gains a +2 modifier on saves, combat rolls, and AC for (CASTERLEVEL*1) hours.
+Magical heat warms plant life, healing 1d8 damage +(min(10,(CASTERLEVEL*1))) and granting immunity to cold.
+Wearer gains +(floor(max(1,(CASTERLEVEL/5)))*1) sacred bonus to AC, damage reduction 10/evil, SR (5+CASTERLEVEL), and ability damage from spell-casting.
+Evoke (min(6,(floor(max(1,(CASTERLEVEL/3)))*1))) shuriken; each deal 3d6 fire damage.
+(CASTERLEVEL*1)d6 damage, 20-ft. radius.
+(CASTERLEVEL*1) 5-ft. bursts deals (CASTERLEVEL*1)d6 fire plus burning for 1 round.
+Touch attack deals 1d8 +(min(10,(floor(max(1,(CASTERLEVEL/2)))*1))) fire damage.
+Touch deals 3d12 frostburn damage +(min(20,(CASTERLEVEL*1))).
+Converts a gem into a bomb that deal (min(5,(floor(max(1,(CASTERLEVEL/2)))*1)))d8 force damage.
+Creates a line of water that deals 1d6 nonlethal damage +(min(8,(floor(max(1,(CASTERLEVEL/2)))*1)))d6.
+Thrown pebble becomes boulder dealing 2d6 +(floor(max(1,(CASTERLEVEL/2)))*1) bludgeoning damage. Base damage increases to 2d8 at 9th level, 2d8 +2d6 fire at 13th, critical is x3 at 17th.
+Subject gains (floor(max(1,(CASTERLEVEL/4)))*1) pairs of arms.
+Wearer gains +(floor(max(1,(CASTERLEVEL/5)))*1) sacred bonus to AC and damage reduction 5/evil.
+Subject dies in 1d3 rounds or takes 3d6 damage +(CASTERLEVEL*1).
+Arcs of radiant lightning deal 3d6 electricity damage to (floor(max(1,(CASTERLEVEL/2)))*1) targets.
+
+Whirling disk of weapons, dealing 1d6 + (min(20,(CASTERLEVEL*2))) in a plane.
+Creates up to five 5-foot squares that hold (CASTERLEVEL*100) lb..
+Cures (8+(min(5,(CASTERLEVEL*1)))) damage to worshiper of your patron.
+Your familiar gains +2 natural armor and a 25% chance to avoid critical hits for (CASTERLEVEL*1) hours.
+Thrown pebble turns into boulder dealing 2d6 + (floor(max(1,(CASTERLEVEL/2)))*1) bludgeoning damage.  Base damage increases to 2d8 at 9th level, 2d8 + 2d6 fire at 13th, and critical becomes x3 at 17th.
+Arcs of radiant lightning deal 3d6 damage to (floor(max(1,(CASTERLEVEL/2)))*1) targets.
+
+Ranged attack against a target with a piercing ice sicle for 2d6 piercing damage +1d6 + (min(10,(CASTERLEVEL*1))) cold damage.  If a touch attack would hit, deal only the cold damage.
+Ranged attack with icicle for 2d6 piercing damage +1d6 +(min(10,(CASTERLEVEL*1))) cold damage. Deals only cold damage if a touch attack would hit.
+Deals 2d8 + (min(10,(CASTERLEVEL*1))) damage to a construct.
+Bearers of special insignia healed of 1d8 damage +(min(10,(CASTERLEVEL*1))) point.
+Deal 1d8 sonic damage to foes and grant a +1 morale bonus and 1d8 + (min(20,(CASTERLEVEL*1))) temporary hit points to allies.
+You and allies gain +10 increase to speed and can hustle for +(CASTERLEVEL*1) hour per day.
+As protection spells, but 10-ft. radius and (CASTERLEVEL*10) min..
+One natural weapon of subject creature gets +(min(5,(floor(max(1,(CASTERLEVEL/3)))*1))) on attack and damage rolls.
+Deal (min(10,(CASTERLEVEL*2))) damage to cold subtype creature.
+Creates decoy duplicates of you (1d4 +(min(8,(floor(max(1,(CASTERLEVEL/3)))*1)))).
+Cone of moonlight deals (min(10,(floor(max(1,(CASTERLEVEL/2)))*1)))d8 damage, magical auras glow for (CASTERLEVEL*1) rounds, illuminates as full moon, negates electricity for (CASTERLEVEL*1) rounds.
+Animal gains +10 on attack and damage, extra attack, and (CASTERLEVEL*1)d8 hp.
+1d8+(min(10,(CASTERLEVEL*1))) negative energy damage, 20-foot radius.
+Touched foe take (min(15,(CASTERLEVEL*1)))d6 damage plus 1d6+2 Con damage. Undead flee in panic 1d4 rounds.
+You gain +(min(3,(floor(max(1,(CASTERLEVEL/3)))*1))) resistance bonus and a magic missile shield for (CASTERLEVEL*5) points.  Spell ends when all damage is absorbed.
+7 orbs deal (min(20,(CASTERLEVEL*1)))d6 of damage dice divided evenly amoung the five elemental energies, force, and negative energy.
+Ray gives 1d6 + (floor(max(1,(CASTERLEVEL/2)))*1)<<TODO:add max<< (max 1d6 + 5) Strength Enhancment penalty (minimum 1 Strength).
+Ray deals 1d6 points +(floor(max(1,(CASTERLEVEL/2)))*1)d6 cold damage.
+Suppresses fear or gives +4 on saves against fear for one subject + (floor(max(1,(CASTERLEVEL/4)))*1).
+You gain +(min(5,(1+(floor(CASTERLEVEL/3)*1)))) enhancement bonus to natural armor.
+Ranged touch attack deals 4d6 fire damage, +(min(3,(floor(max(1,(CASTERLEVEL/4)))*1))) rays.
+This spell creates a number of unseen servants, up to a maximum of 2d6 +(min(15,(CASTERLEVEL*1))) servants.
+Shield grants +1 bonus on Reflex saves, +(min(5,(floor(max(1,(CASTERLEVEL/5)))*1))).
+Cudgel or quarterstaff becomes +1 weapon (1d10 damage) for (CASTERLEVEL*1) min..
+Bolt of dark energy deals 1d3 Str and Con damage +(floor(max(1,(CASTERLEVEL/4)))*1).
+Add +4 (+(floor(max(1,(CASTERLEVEL/4)))*1)) to ship's checks to weather storms.
+Subject is grappled and swallowed whole.  Extradimensional stomach deals 2d6 +(min(25,(CASTERLEVEL*1))) bludgeoning and 6 acid damage per round.
+One natural weapon of subject gets +(min(5,(floor(max(1,(CASTERLEVEL/4)))*1))) on attack and damage rolls for 1 round (swift).
+Deals 2d4 of cold damage out to 10 ft. and 1d4 out to 20 ft. Passing through wall deals 2d6 frostburn damage +(CASTERLEVEL*1).
+Deals 2d4 fire damage out to 10 ft. and 1d4 out to 20 ft. Passing through wall deals 2d6 damage +(CASTERLEVEL*1).
+Swift. Gain +2 morale bonus on attack and damage rolls, or +4 if you charge, for (CASTERLEVEL*1) rounds. Any opponent you damage must save or become panicked for 1 round.
+Creates moving (CASTERLEVEL*5)-ft. cylinder that deals ids damage/2 levels each round.
+Target dies or may be dazed and -4 on all saves for (CASTERLEVEL*1) rounds.
+
+You gain +(min(5,(1+(floor(CASTERLEVEL/3)*1)))).
+Cures (8+(min(5,(CASTERLEVEL*1)))).
+Concentration + 5 rounds, up to (CASTERLEVEL*1) min. (D)
+Deal (min(5,(CASTERLEVEL*1)))d4 with normal ranged attack
+Inflicts a disease that must be magically cured, (CASTERLEVEL*1) subjects.
+RANGE:(10+(CASTERLEVEL*1)) miles
