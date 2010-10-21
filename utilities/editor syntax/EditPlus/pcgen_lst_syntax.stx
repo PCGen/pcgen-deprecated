@@ -196,6 +196,7 @@ SKILLMULT
 SCHOOL
 SKILLLIST
 SLOTS
+SORTKEY
 SOURCE
 SOURCELONG
 SOURCEPAGE
@@ -298,6 +299,10 @@ MODIFYFEATCHOICE
 
 DONOTADD
 
+SHIELD
+ARMOR
+SELECTION
+
 #KEYWORD=2 Broken
 BROKEN
 
@@ -329,6 +334,7 @@ ANY
 Arcane
 Archaic
 Armor
+ArmorEnhancement
 AttackOption
 BAB
 BASECOST
@@ -364,7 +370,7 @@ Concussion
 Conjuration
 Constitution
 Container
-COUNT
+count
 Craft
 Creation
 Crossbow
@@ -457,6 +463,7 @@ Morale
 NAME
 Natural
 NaturalArmor
+NaturalArmorEnhancement
 Necromancy
 NE
 NEQ
@@ -506,6 +513,7 @@ See
 text
 Shadow
 Shield
+ShieldEnhancement
 Shirt
 SHORTRANGE
 Simple
@@ -558,6 +566,16 @@ Wondrous
 Wooden
 Yes
 You
+
+
+Legwear
+PsionicTattoo
+HEAD
+TORSO
+
+
+INSTANT
+
 
 ALLSPELLS
 ATTACKS
