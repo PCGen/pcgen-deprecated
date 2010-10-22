@@ -97,7 +97,7 @@ CLASS:Apprentice	SPELLTYPE:Arcane	BONUS:CASTERLEVEL|Aprentice|CL
 ###Block: Everyman ----------------------------------------------------------------------------------------------------------------------------------------------
 
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus												Combat bonus
-CLASS:Everyman	HD:6		TYPE:Base.PC	ABB:Gunsl		MAXLEVEL:10	SOURCEPAGE:p.85	BONUS:CHECKS|BASE.Reflex,BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Will|(CL+4)/2	BONUS:COMBAT|BAB|(((CL+2)*2)/3)-2|TYPE=Base.REPLACE
+CLASS:Everyman	HD:6		TYPE:Base.PC	ABB:Evm		MAXLEVEL:10	SOURCEPAGE:p.85	BONUS:CHECKS|BASE.Reflex,BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Will|(CL+4)/2	BONUS:COMBAT|BAB|(((CL+2)*2)/3)-2|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl
 CLASS:Everyman	STARTSKILLPTS:5
 ###Block: Background
