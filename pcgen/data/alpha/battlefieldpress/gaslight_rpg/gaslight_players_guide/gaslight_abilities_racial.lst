@@ -30,7 +30,7 @@ Daylight Vulnerability						CATEGORY:Special Ability	TYPE:SpecialQuality	DESC:Wh
 
 #Werewolf
 Alternate Form							CATEGORY:Special Ability	TYPE:SpecialQuality																																																																																																																					SOURCEPAGE:p.52
-Damage Reduction							CATEGORY:Special Ability	TYPE:SpecialQuality																																																																																																																					SOURCEPAGE:p.53
+Damage Reduction							CATEGORY:Special Ability	TYPE:SpecialQuality	DESC:The werewolf gains damage reduction, werewolf has damage reduction %1/silver in werewolf form.|WerewolfDR	DEFINE:WerewolfDR|0	BONUS:VAR|WerewolfDR|5																																																																																										SOURCEPAGE:p.53
 
 #Wildling
 Natural Enemy		KEY:Natural Enemy ~ Wildling	CATEGORY:Special Ability	TYPE:SpecialQuality	DESC:Ratlings and Wildlings have been at war for time immemorial. When facing a Ratling the Wildling gains the following additional bonuses: +2 bonus on Deception, Sense Motive, and Survival checks when using these skills against the Ratling. Likewise, he gets a +2 bonus on weapon damage rolls against such creatures.																																																															SOURCEPAGE:p.55
@@ -79,8 +79,8 @@ Savage Bite				CATEGORY:Talent		TYPE:WerewolfTalent.Talent.InnerBeastTalent					
 ###Block: Hybrid Damage Reduction Talent Tree
 # Ability Name			Category of Ability	Type							Required Ability																		Source Page
 #Damage Reduction 5/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:2,CATEGORY=Talent,Greater Lycanthrope,Regenerative Transformation								SOURCEPAGE:p.58
-Damage Reduction 10/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:1,CATEGORY=Talent,Damage Reduction 5/Silver	PREABILITY:1,CATEGORY=Talent,TYPE.GreaterLycanthropeTalent	SOURCEPAGE:p.58
-Damage Reduction 15/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:1,CATEGORY=Talent,Damage Reduction 10/Silver	PREABILITY:1,CATEGORY=Talent,TYPE.GreaterLycanthropeTalent	SOURCEPAGE:p.58
+Damage Reduction 10/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:1,CATEGORY=Talent,Damage Reduction 5/Silver	PREABILITY:1,CATEGORY=Talent,TYPE.GreaterLycanthropeTalent	SOURCEPAGE:p.58	BONUS:VAR|WerewolfDR|5
+Damage Reduction 15/Silver	CATEGORY:Talent		TYPE:HybridDamageReductionTalent.Talent	PREABILITY:1,CATEGORY=Talent,Damage Reduction 10/Silver	PREABILITY:1,CATEGORY=Talent,TYPE.GreaterLycanthropeTalent	SOURCEPAGE:p.58	BONUS:VAR|WerewolfDR|5
 
 
 ###Block: Instinctive Response Talent Tree
