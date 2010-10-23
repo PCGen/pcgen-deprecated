@@ -96,8 +96,7 @@ Witch			CATEGORY:Special Ability	TYPE:FavoredClass	VISIBLE:DISPLAY	STACK:NO	MULT
 # Alchemist
 
 # Barbarian
-Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	STACK:YES	MULT:YES				CHOOSE:NOCHOICE																			BONUS:VAR|RageDuration|1|PREMULT:2,[PRECLASS:1,Barbarian=1],[PRERACE:1,Dwarf,Human%]
-
+Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	STACK:YES	MULT:YES				CHOOSE:NOCHOICE		BONUS:VAR|RageDuration|1	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf,Human
 # Bard
 
 # Cavalier
