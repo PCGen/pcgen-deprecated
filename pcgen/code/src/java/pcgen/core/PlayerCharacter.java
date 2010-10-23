@@ -8426,32 +8426,66 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 		{
 			if (bonus.getTypeOfBonus().equals("MOVEADD"))
 			{
-				String moveType = bonus.getBonusInfo();
-
-				if (moveType.startsWith("TYPE"))
+				List<String> moveTypeList = buildMoveTypeList(bonus);
+				
+				for (String moveType : moveTypeList)
 				{
-					moveType = moveType.substring(5);
-				}
-
-				moveType = CoreUtility.capitalizeFirstLetter(moveType);
-
-				boolean found = false;
-
-				for (int i = 0; i < movements.length; i++)
-				{
-					if (moveType.equals(movementTypes[i]))
+					moveType = CoreUtility.capitalizeFirstLetter(moveType);
+	
+					boolean found = false;
+	
+					for (int i = 0; i < movements.length; i++)
 					{
-						found = true;
+						if (moveType.equals(movementTypes[i]))
+						{
+							found = true;
+						}
 					}
-				}
-
-				if (!found)
-				{
-					setMyMoveRates(moveType, 0.0, Double.valueOf(0.0), "", 0);
+	
+					if (!found)
+					{
+						setMyMoveRates(moveType, 0.0, Double.valueOf(0.0), "", 0);
+					}
 				}
 			}
 		}
 		setDirty(true);
+	}
+
+	/**
+     * Build up a list of the movement types affected by this bonus.
+	 * @param bonus The bonus to query
+	 * @return The list of movement types
+	 */
+	private List<String> buildMoveTypeList(final BonusObj bonus)
+	{
+		String moveType = bonus.getBonusInfo();
+
+		if (moveType.startsWith("TYPE"))
+		{
+			moveType = moveType.substring(5);
+		}
+		List<String> typeList = new ArrayList<String>();
+		if (moveType.equals("%LIST"))
+		{
+			List<BonusPair> stringList = bonus.getStringListFromBonus(this);
+			for (BonusPair bonusPair : stringList)
+			{
+				Logging.errorPrint("Got values for %LIST of " + bonusPair.bonusKey);
+				String[] parts = bonusPair.bonusKey.split("\\.");
+				String typePart = parts[parts.length-1];
+				if (typePart.startsWith("TYPE"))
+				{
+					typePart = typePart.substring(5);
+				}
+				typeList.add(typePart);
+			}
+		}
+		else if (!moveType.equals("ALL"))
+		{
+			typeList.add(moveType);
+		}
+		return typeList;
 	}
 
 	public List<Spell> aggregateSpellList(final String school,
@@ -16722,6 +16756,10 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 							}
 							List<Ability> abilities =
 								theAbilities.get(cat, nature);
+							if (abilities == null)
+							{
+								Logging.errorPrint("Failed to retrieve list of abilities for " + cat + " and " + nature);
+							}
 							for (Ability ab : ref.getContainedObjects())
 							{
 								Ability added =
