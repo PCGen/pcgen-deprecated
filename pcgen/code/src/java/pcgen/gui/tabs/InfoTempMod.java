@@ -42,6 +42,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -1326,32 +1328,30 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 				formComponentShown();
 			}
 		});
-		addComponentListener(new ComponentAdapter()
-		{
-			public void componentResized(ComponentEvent e)
+		topVertSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+			new PropertyChangeListener()
 			{
-				int s = topVertSplit.getDividerLocation();
-
-				if (s > 0)
+				public void propertyChange(PropertyChangeEvent evt)
 				{
-					SettingsHandler.setPCGenOption("InfoTempMod.topVertSplit", s); //$NON-NLS-1$
+					saveDividerLocations();
 				}
-
-				s = botHorzSplit.getDividerLocation();
-
-				if (s > 0)
+			});
+		botHorzSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+			new PropertyChangeListener()
+			{
+				public void propertyChange(PropertyChangeEvent evt)
 				{
-					SettingsHandler.setPCGenOption("InfoTempMod.botHorzSplit", s); //$NON-NLS-1$
+					saveDividerLocations();
 				}
-
-				s = centerHorzSplit.getDividerLocation();
-
-				if (s > 0)
+			});
+		centerHorzSplit.addPropertyChangeListener(
+			JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener()
+			{
+				public void propertyChange(PropertyChangeEvent evt)
 				{
-					SettingsHandler.setPCGenOption( "InfoTempMod.centerHorzSplit", s); //$NON-NLS-1$
+					saveDividerLocations();
 				}
-			}
-		});
+			});
 		applyBonusButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent evt)
@@ -1376,6 +1376,32 @@ public class InfoTempMod extends FilterAdapterPanel implements CharacterInfoTab
 		 }
 		 });
 		 */
+	}
+
+	private void saveDividerLocations()
+	{
+		if (!hasBeenSized)
+		{
+			return;
+		}
+
+		int s = topVertSplit.getDividerLocation();
+		if (s > 0)
+		{
+			SettingsHandler.setPCGenOption("InfoTempMod.topVertSpli", s); //$NON-NLS-1$
+		}
+
+		s = botHorzSplit.getDividerLocation();
+		if (s > 0)
+		{
+			SettingsHandler.setPCGenOption("InfoTempMod.botHorzSplit", s); //$NON-NLS-1$
+		}
+
+		s = centerHorzSplit.getDividerLocation();
+		if (s > 0)
+		{
+			SettingsHandler.setPCGenOption("InfoTempMod.centerHorzSplit", s); //$NON-NLS-1$
+		}
 	}
 
 	/**
