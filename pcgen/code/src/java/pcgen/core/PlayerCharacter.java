@@ -16780,12 +16780,12 @@ public final class PlayerCharacter extends Observable implements Cloneable,
 											.getSafeListFor(ListKey.NATURAL_WEAPON));
 								}
 							}
-							// May have added templates, so scan for them
-							addTemplatesIfMissing(templateList);
-							addNaturalWeaponsIfMissing(naturalWeaponsList);
 						}
 					}
 				}
+				// May have added templates, so scan for them
+				addTemplatesIfMissing(templateList);
+				addNaturalWeaponsIfMissing(naturalWeaponsList);
 			}
 			addNonAbilityAutoFeats(theAbilities.get(AbilityCategory.FEAT,
 				Ability.Nature.AUTOMATIC));
