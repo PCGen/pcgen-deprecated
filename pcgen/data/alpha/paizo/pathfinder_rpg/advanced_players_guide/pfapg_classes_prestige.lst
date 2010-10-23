@@ -59,9 +59,12 @@ CLASS:Horizon Walker	PREFEAT:1,Endurance		PRESKILL:1,Knowledge (Geography)=6
 # Class Name			Skill Pts/Lvl		Class Skill
 CLASS:Horizon Walker	STARTSKILLPTS:6		CSKILL:Climb|Diplomacy|Handle Animal|Knowledge (Geography)|Knowledge (Nature)|Knowledge (Planes)|Linguistics|Perception|Stealth|Survival|Swim
 ##Block: Normal Level Progression
-1	BONUS:VAR|FavoredTerrainLVL|CL		ABILITY:Special Ability|AUTOMATIC|Favored Terrain ~ Horizon Walker
-2	BONUS:VAR|TerrainMasteryLVL|CL		ABILITY:Special Ability|AUTOMATIC|Terrain Mastery ~ Horizon Walker		BONUS:ABILITYPOOL|Terrain Mastery Selection|min(CL/2,8)
-3	BONUS:VAR|TerrainDominanceLVL|CL		ABILITY:Special Ability|AUTOMATIC|Terrain Dominance ~ Horizon Walker		BONUS:ABILITYPOOL|Terrain Dominance Selection|CL/3
+#1	BONUS:VAR|FavoredTerrainLVL|CL		ABILITY:Special Ability|AUTOMATIC|Favored Terrain ~ Horizon Walker
+#2	BONUS:VAR|TerrainMasteryLVL|CL		ABILITY:Special Ability|AUTOMATIC|Terrain Mastery ~ Horizon Walker		BONUS:ABILITYPOOL|Terrain Mastery Selection|min(CL/2,8)
+#3	BONUS:VAR|TerrainDominanceLVL|CL		ABILITY:Special Ability|AUTOMATIC|Terrain Dominance ~ Horizon Walker		BONUS:ABILITYPOOL|Terrain Dominance Selection|CL/3
+1	BONUS:VAR|HorizonWalkerFavoredTerrainLVL|CL		ABILITY:Special Ability|AUTOMATIC|Favored Terrain ~ Horizon Walker		BONUS:ABILITYPOOL|Favored Terrain|min(2/3*(CL+1),7)
+2	BONUS:VAR|HorizonWalkerTerrainMasteryLVL|CL		ABILITY:Special Ability|AUTOMATIC|Terrain Mastery ~ Horizon Walker		BONUS:ABILITYPOOL|Terrain Mastery Selection|min(CL/2,8)
+3	BONUS:VAR|HorizonWalkerTerrainDominanceLVL|CL		ABILITY:Special Ability|AUTOMATIC|Terrain Dominance ~ Horizon Walker		BONUS:ABILITYPOOL|Terrain Dominance Selection|CL/3
 10								ABILITY:Special Ability|AUTOMATIC|Master Of All Lands ~ Horizon Walker
 
 

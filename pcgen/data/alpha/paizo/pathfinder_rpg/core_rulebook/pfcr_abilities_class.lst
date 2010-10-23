@@ -499,7 +499,8 @@ Animal Companion		KEY:Companion ~ Hunter's Bond	CATEGORY:Special Ability	TYPE:Sp
 # Ability Name		Category of Ability		Type			Visible	Define					Bonus to Ability Pool																					Source Page
 Combat Style		CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:CombatStyleLVL|0			BONUS:ABILITYPOOL|Combat Style|1	BONUS:ABILITYPOOL|Ranger Bonus Feat|(CombatStyleLVL+2)/4									SOURCEPAGE:p.65	DEFINE:RangerDefaultCombatStyle|0	BONUS:VAR|RangerDefaultCombatStyle|1
 Ranger Favored Enemy	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredEnemyLVL|0	BONUS:ABILITYPOOL|Favored Enemy|RangerFavoredEnemyLVL/5+1	BONUS:ABILITYPOOL|Favored Enemy Bonus|RangerFavoredEnemyLVL/5
-Ranger Favored Terrain	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredTerrainLVL|0	BONUS:ABILITYPOOL|Favored Terrain|(RangerFavoredEnemyLVL+2)/5	BONUS:ABILITYPOOL|Favored Terrain Bonus|max(0,(RangerFavoredTerrainLVL-3)/5)
+#Ranger Favored Terrain	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredTerrainLVL|0	BONUS:ABILITYPOOL|Favored Terrain|(RangerFavoredEnemyLVL+2)/5	BONUS:ABILITYPOOL|Favored Terrain Bonus|max(0,(RangerFavoredTerrainLVL-3)/5)
+Ranger Favored Terrain	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	DEFINE:RangerFavoredTerrainLVL|0	BONUS:ABILITYPOOL|Favored Terrain|(RangerFavoredTerrainLVL+2)/5	BONUS:ABILITYPOOL|Favored Terrain Bonus|max(0,(RangerFavoredTerrainLVL-3)/5)
 
 ###Block: Ranger Combat Styles
 # Ability Name	Category of Ability		Type				Visible		Source Page
