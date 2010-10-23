@@ -1,9 +1,10 @@
 # CVS $Revision$ $Author$ -- Sun Oct  3 17:45:35 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 
-###Block: Campaign PC Template
-# Template Name		Visible		Define							Minimum Size	Maximum Size	Required Vision			Prohibited Vision							Bonus to Ability Pool		Modify VAR									Add to vision			Weapon prof. bonus																											Bonus Languages	Vision		Natural Attacks
-Player Character Traits	VISIBLE:DISPLAY																													BONUS:ABILITYPOOL|Traits|2
+###Block: Inttial Traits template
+# Template Name				Visible	Bonus to Ability Pool
+Standard Character Traits		VISIBLE:NO	BONUS:ABILITYPOOL|Traits|2
+Adventure Path Character Traits	VISIBLE:NO	BONUS:ABILITYPOOL|Traits|1	BONUS:ABILITYPOOL|Campaign Traits|1
 
 # Eidolon
 # Template Name		Visible		Define							Minimum Size	Maximum Size	Required Vision			Prohibited Vision							Bonus to Ability Pool		Modify VAR									Add to vision			Weapon prof. bonus																											Bonus Languages	Vision		Natural Attacks
