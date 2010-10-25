@@ -48,8 +48,16 @@ Divine Retribution		KEY:Divine Retribution ~ Holy Vindicator			CATEGORY:Special 
 
 # Horizon Walker Abilities
 
-Favored Terrain			KEY:Favored Terrain ~ Horizon Walker			CATEGORY:Special Ability	TYPE:SpecialQuality		BENEFIT:At 1st level, a horizon walker may select a favored terrain from the ranger Favored Terrains table (Pathfinder RPG Core Rulebook 65). This works exactly like the ranger favored terrain ability. The horizon walker gains an additional favored terrain at 2nd, 4th, 5th, 7th, 8th and 10th level, and he can increase the bonus from an existing favored terrain as described in the ranger ability. If the horizon walker has abilities from other classes that only work in a favored terrain (such as a ranger's camouf lage and hide in plain sight abilities), those abilities work in favored terrains selected as a horizon walker.
+# NB: This took me a time to figure out, but we use the RangerFavoredTerrainLVL and HorizonWalkerFavoredTerrainLVL proxy
+#     variable in case a new class would want to add levels to this class. Like where a Ranger used to behave as a
+#     druid of four levels lower than a Druid for the Animal Companion class ability. There the Ranger would add
+#     MAX(0,CL-4) to the Druid ability level.
+#
+Horizon Walker Favored Terrain	CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO	ABILITY:Special Ability|AUTOMATIC|Common Favored Terrain	DEFINE:HorizonWalkerFavoredTerrainLVL|0		BONUS:VAR|FavoredTerrainPool|(2*(HorizonWalkerFavoredTerrainLVL+1))/3
+
+
 Terrain Mastery			KEY:Terrain Mastery ~ Horizon Walker			CATEGORY:Special Ability	TYPE:SpecialQuality		BENEFIT:At 2nd level, a horizon walker selects a favored terrain to master. When within this terrain the horizon walker may, as a move action, grant a +2 bonus on Climb, Stealth, Perception and Survival checks made by all allies within 30 feet who can see and hear him. The character masters one additional terrain at 4th, 6th, and 8th levels. Mastery of each terrain has additional benefits, outlined below; these benefits apply to the horizon walker at all times whether or not he is in the relevant terrain.
+
 #
 Astral Plane			KEY:Terrain Mastery ~ Astral Plane				CATEGORY:Special Ability	TYPE:SpecialQuality.TerrainMastery		BENEFIT:The horizon walker's fly speed increases by +30 feet on planes with no gravity or subjective gravity.
 Cold					KEY:Terrain Mastery ~ Cold					CATEGORY:Special Ability	TYPE:SpecialQuality.TerrainMastery		BENEFIT:The horizon walker gains cold resistance 10.
