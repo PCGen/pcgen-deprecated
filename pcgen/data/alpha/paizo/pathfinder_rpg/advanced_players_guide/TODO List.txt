@@ -2,6 +2,10 @@ To Do List of Pending and remaining items for the APG.
 
 ##Class
 
+Horizon Walker - Implement Terrain Dominance bonuses
+Horizon Walker - Decide on best output method for Special Qualities
+Horizon Walker - Implement Master of all Lands
+Horizon Walker - Add an attack option when a Domain Dominance is selected (+x bonus to attacks on all creatures native to the terrain)
 
 ##Ability
 Archetypes - CLEAN UP // Add Bonus stuff = unassigned
