@@ -36,7 +36,7 @@ Death Roll							CATEGORY:Special Ability	TYPE:SpecialAttack
 Poison							CATEGORY:Special Ability	TYPE:SpecialAttack
 Poison		KEY:Poison ~ Viper		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:PoisonDC|10+(HD/2)+CON	DESC:Injury; Save Fort DC %1; Frequency 1/round for 6 rounds; Effect 1d2 Con damage; Cure 1 save.|PoisonDC			BONUS:VAR|PoisonDC|2|PREFEAT:1,Ability Focus (Poison)	SOURCEPAGE:p.133
 Spit			KEY:Spit ~ Camel			CATEGORY:Special Ability	TYPE:SpecialAttack
-Sprint							CATEGORY:Special Ability	TYPE:SpecialQuality
+Sprint							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyMovement			DESC:Once per hour, a cheetah can move at 10 times its normal speed (500 feet) when it makes a charge.												SOURCEPAGE:p.40	SOURCESHORT:PFB
 Attach							CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary						DESC:When you hit with a bite attack, you automatically grapple your foe, inflicting automatic bite damage each round.										SOURCEPAGE:p.133
 Hold Breath							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DEFINE:HoldBreathDuration|0	DESC:You can hold your breath for %1 rounds before it risks drowning.|HoldBreathDuration						BONUS:VAR|HoldBreathDuration|CONSCORE*6			SOURCEPAGE:p.88
 
