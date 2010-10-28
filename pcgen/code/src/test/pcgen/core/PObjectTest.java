@@ -37,6 +37,7 @@ import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.content.ChallengeRating;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
+import pcgen.cdom.enumeration.StringKey;
 import pcgen.cdom.list.AbilityList;
 import pcgen.core.Ability.Nature;
 import pcgen.core.analysis.BonusAddition;
@@ -59,6 +60,9 @@ import pcgen.util.chooser.ChooserFactory;
 @SuppressWarnings("nls")
 public class PObjectTest extends AbstractCharacterTestCase
 {
+	private static final String NAME = "Companion (Race (Subtype))";
+
+	private PObject testObj;
 
 	/**
 	 * Constructs a new <code>PObjectTest</code>.
@@ -431,11 +435,56 @@ public class PObjectTest extends AbstractCharacterTestCase
 	}
 	
 	/**
+	 * Test method for {@link pcgen.core.analysis.OutputNameFormatting#getOutputName(pcgen.core.PObject)}.
+	 * Check that a default output name will work correctly.
+	 */
+	public final void testGetOutputNameDisplay()
+	{
+		assertEquals("Expected unmodified name", NAME, testObj.getOutputName());
+	}
+	
+	/**
+	 * Test method for {@link pcgen.core.analysis.OutputNameFormatting#getOutputName(pcgen.core.PObject)}.
+	 * Check that the [BASE] macro in output name will work correctly.
+	 */
+	public final void testGetOutputNameBase()
+	{
+		testObj.put(StringKey.OUTPUT_NAME, "[BASE]");
+		assertEquals("Expected just the name outside of brackets", "Companion",
+			testObj.getOutputName());
+
+		testObj.put(StringKey.OUTPUT_NAME, "Prefix [BASE]");
+		assertEquals("Expected the BASE macro to be ignored", "Prefix [BASE]",
+			testObj.getOutputName());
+	}
+	
+	/**
+	 * Test method for {@link pcgen.core.analysis.OutputNameFormatting#getOutputName(pcgen.core.PObject)}.
+	 * Check that the [NAME] macro in output name will work correctly.
+	 */
+	public final void testGetOutputNameName()
+	{
+		testObj.put(StringKey.OUTPUT_NAME, "[NAME]");
+		assertEquals("Incorrect [NAME] expansion", "Race (Subtype)",
+			testObj.getOutputName());
+
+		testObj.put(StringKey.OUTPUT_NAME, "Prefix [NAME]");
+		assertEquals("Incorrect [NAME] expansion", "Prefix Race (Subtype)",
+			testObj.getOutputName());
+
+		testObj.put(StringKey.OUTPUT_NAME, "Prefix [NAME]|[NAME]");
+		assertEquals("Incorrect double [NAME] expansion", "Prefix Race (Subtype)|Race (Subtype)",
+			testObj.getOutputName());
+	}
+	
+	/**
 	 * @see pcgen.AbstractCharacterTestCase#setUp()
 	 */
 	@Override
 	protected void setUp() throws Exception
 	{
+		testObj = new PObject();
+		testObj.setName(NAME);
 		super.setUp();
 	}
 
