@@ -1,8 +1,11 @@
 # CVS $Revision$ $Author$ -- Tue Jul  1 11:37:18 2008 -- reformated by prettylst.pl v1.38 (build 6887)
 SOURCELONG:Relics and Rituals	SOURCESHORT:RelicRitual	SOURCEWEB:http://www.swordsorcery.com
 
-# Skill Name		Key Stat	Untrained?		Exclusive?		Type					Source Page		Bonus to skill
-Craft (Tattoo)		KEYSTAT:INT	USEUNTRAINED:NO				TYPE:Intelligence.Craft		SOURCEPAGE:p.128
-Ritual Casting		KEYSTAT:CON	USEUNTRAINED:NO	EXCLUSIVE:YES	TYPE:Constitution			SOURCEPAGE:p.128	BONUS:SKILL|Ritual Casting|2|PRESKILL:1,Concentration=5
-Knowledge (Astrology)	KEYSTAT:INT	USEUNTRAINED:NO				TYPE:Intelligence.Knowledge	SOURCEPAGE:p.197
-Knowledge (Patron Lore)	KEYSTAT:INT	USEUNTRAINED:NO				TYPE:Intelligence.Knowledge	SOURCEPAGE:p.
+# Skill Name		Key Stat	Untrained?		Type					Source Page		Bonus to skill
+Craft (Tattoo)		KEYSTAT:INT	USEUNTRAINED:NO	TYPE:Intelligence.Craft		SOURCEPAGE:p.128
+Ritual Casting		KEYSTAT:CON	USEUNTRAINED:NO	TYPE:Constitution			SOURCEPAGE:p.128	BONUS:SKILL|Ritual Casting|2|PRESKILL:1,Concentration=5	CLASSES:Wizard,Sorcerer,Cleric
+# TODO: Code Support Request     * NEWTAG-219
+# TODO: Need to support full casters as a Class Skill; Partial Casters as a Cross-Class; and everyone else is excluded.
+# COMMENT: Removed the Exclusive Tag to allow users to use the Skill for the time being until proper code support exists.
+Knowledge (Astrology)	KEYSTAT:INT	USEUNTRAINED:NO	TYPE:Intelligence.Knowledge	SOURCEPAGE:p.197
+Knowledge (Patron Lore)	KEYSTAT:INT	USEUNTRAINED:NO	TYPE:Intelligence.Knowledge	SOURCEPAGE:p.
