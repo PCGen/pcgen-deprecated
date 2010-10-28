@@ -122,6 +122,7 @@ ABILITYCATEGORY:Hunter's Trick Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL
 
 # Fighter Archetypes
 ABILITYCATEGORY:Weapon Master Chosen Weapon	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:WeaponMasterChosenWeapon												PLURAL:Weapon Master Chosen Weapon		DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Archer Trick Shot Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ArcherTrickShot													PLURAL:Archer Trick Shot Selections		DISPLAYLOCATION:Class Abilities
 
 #COMMENT: The following are in the Core Set and shouldn't be required any longer.
 
