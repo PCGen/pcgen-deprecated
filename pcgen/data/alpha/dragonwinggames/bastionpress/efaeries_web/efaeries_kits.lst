@@ -4,11 +4,8 @@ SOURCELONG:eFaeries	SOURCESHORT:eFaeries	SOURCEWEB:http://dragonwing.net/Faeries
 #COMMENT: These kits are automatically applied
 #Original Entry: Andrew Maitland
 
-STARTPACK:The Master of the Hunt Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,The Master of the Hunt]
+STARTPACK:The Master of the Hunt	VISIBLE:NO	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,The Master of the Hunt]
 RACE:The Master of the Hunt	!PRERACE:1,%
-
-
-STARTPACK:The Master of the Hunt	VISIBLE:NO
 ALIGN:TN
 STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=11
 SKILL:Climb					RANK:3

@@ -5,7 +5,7 @@ SOURCELONG:eFaeries	SOURCESHORT:eFaeries	SOURCEWEB:http://dragonwing.net/Faeries
 ###Block: eFaeries -------------------------------
 
 # Equipment Name			Type					Source Page		Innate Spells
-The Master of the Hunt Horn	TYPE:Magic.Wondrous.Horn	SOURCEPAGE:p. 11	SPELLS:Magic Item|TIMES=ATWILL|TIMEUNIT=Hunt|CASTERLEVEL=12|Charm Person,11+WIS|Dominate Person,15+WIS|Enthrall,12+WIS
+The Master of the Hunt Horn	TYPE:Magic.Wondrous.Horn	SOURCEPAGE:p.11	SPELLS:Magic Item|TIMES=ATWILL|TIMEUNIT=Hunt|CASTERLEVEL=12|Charm Person,11+WIS|Dominate Person,15+WIS|Enthrall,12+WIS
 
 #
 # End
