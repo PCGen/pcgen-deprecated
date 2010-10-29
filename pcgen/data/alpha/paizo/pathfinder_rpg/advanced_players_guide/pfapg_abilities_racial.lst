@@ -2,7 +2,6 @@
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Stefan Radermacher & Andrew Maitland
 
-
 # INCOMPLETE
 # TO DO: Add correct bonuses
 
@@ -94,43 +93,47 @@ Witch			CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STAC
 
 # Alternate Favored Class Bonus from APG
 # Alchemist
-
+Bonus Gnome Alchemist	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Alchemist=1	PRERACE:1,Gnome	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Alchemist:  Add +1/2 to the number of bombs per day the alchemist can create.
 # Barbarian
-Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|RageDuration|1	DESC:Dwarven Barbarian: Add 1 to the dwarf ’s total number of rage rounds per day.
-Bonus Base Speed	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Elf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Barbarian: Add 1 to the elf ’s base speed. In combat this has no effect unless the elf has selected this reward 5 times (or another increment of 5); a speed of 34 feet is effectively the same as a speed of 30 feet, for example. This bonus stacks with a class’s fast movement feature and applies only under the same conditions as that ability.
+Bonus Dwarf Barbarian	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|RageDuration|1	DESC:Dwarven Barbarian: Add 1 to the dwarf ’s total number of rage rounds per day.
+Bonus Elf Barbarian	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Elf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Barbarian: Add 1 to the elf ’s base speed. In combat this has no effect unless the elf has selected this reward 5 times (or another increment of 5); a speed of 34 feet is effectively the same as a speed of 30 feet, for example. This bonus stacks with a class’s fast movement feature and applies only under the same conditions as that ability.
 # Bard
-Bonus Elf Bard CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Bard=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_Disarm|1	BONUS:VAR|CMD_Sunder|1	DESC:Elven Bard: Add +1 to the elf ’s CMD when resisting a disarm or sunder attempt.
+Bonus Elf Bard	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Bard=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_Disarm|1	BONUS:VAR|CMD_Sunder|1	DESC:Elven Bard: Add +1 to the elf ’s CMD when resisting a disarm or sunder attempt.
+Bonus Gnome Bard	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Bard=1	PRERACE:1,Gnome		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Bard: Add 1 to the gnome’s total number of bardic performance rounds per day.
 # Cavalier
-Bonus Mount HP	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Cavalier=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Cavalier:  Add +1 hit point to the cavalier’s mount. If the elf ever replaces his mount, the new mount gains these bonus hit points. These bonuses only apply to a single mount gained as part of the cavalier’s class.
+Bonus Elf Cavalier	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Cavalier=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Cavalier:  Add +1 hit point to the cavalier’s mount. If the elf ever replaces his mount, the new mount gains these bonus hit points. These bonuses only apply to a single mount gained as part of the cavalier’s class.
 # Cleric
-Bonus Domain Use	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Cleric=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Cleric: Select one domain power granted at 1st level that is normally usable for a number of times per day equal to 3 + the cleric’s Wisdom modifier. The cleric adds 1/2 to the number of uses per day of that domain power.
+Bonus Dwarf Cleric	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Cleric=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Cleric: Select one domain power granted at 1st level that is normally usable for a number of times per day equal to 3 + the cleric’s Wisdom modifier. The cleric adds 1/2 to the number of uses per day of that domain power.
 # Druid
-
+Bonus Gnome Druid	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Druid=1	PRERACE:1,Gnome	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Druid:  Gain energy resistance 1 against acid, cold, electricity, or fire. Each time the druid selects this reward, increase her resistance to one of these energy types by 1 (maximum 10 for any one type).
 # Fighter
-Bonus Dwarf Fighter CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Dwarf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_BullRush|1	BONUS:VAR|CMD_Trip|1	DESC:Dwarven Fighter: Add +1 to the fighter’s CMD when resisting a bull rush or trip.
-Bonus Elf Fighter CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_Disarm|1	BONUS:VAR|CMD_Sunder|1	DESC:Elven Fighter: Add +1 to the elf ’s CMD when resisting a disarm or sunder attempt.
+Bonus Dwarf Fighter	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Dwarf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_BullRush|1	BONUS:VAR|CMD_Trip|1	DESC:Dwarven Fighter: Add +1 to the fighter’s CMD when resisting a bull rush or trip.
+Bonus Elf Fighter	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_Disarm|1	BONUS:VAR|CMD_Sunder|1	DESC:Elven Fighter: Add +1 to the elf ’s CMD when resisting a disarm or sunder attempt.
 # Inquisitor
 
 # Monk
 
 # Oracle
-Bonus Oracle	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Oracle=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Oracle: Reduce the non-proficient penalty for one weapon by 1. When the non-prof icient penalty for a weapon becomes 0 because of this ability, the oracle is treated as having the appropriate Martial or Exotic Weapon Proficiency feat with that weapon.
+Bonus Dwarf Oracle	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Oracle=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Oracle: Reduce the non-proficient penalty for one weapon by 1. When the non-proficient penalty for a weapon becomes 0 because of this ability, the oracle is treated as having the appropriate Martial or Exotic Weapon Proficiency feat with that weapon.
+Bonus Gnome Oracle	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Oracle=1	PRERACE:1,Gnome	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Oracle: Treat the gnome’s level as +1/2 higher for the purpose of determining the effects of the oracle’s curse ability.
 # Paladin
-Bonus Concentration Check	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Paladin=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Paladin: Add a +1 bonus on concentration checks when casting paladin spells.
+Bonus Dwarf Paladin	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Paladin=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Paladin: Add a +1 bonus on concentration checks when casting paladin spells.
 # Ranger
-Bonus Wild Empathy	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Ranger: Add a +1/2 bonus on wild empathy checks to inf luence animals and magical beasts that live underground.
-Bonus Critical Confirmatin	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Elf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Ranger: Choose a weapon from the following list: longbow, longsword, rapier, shortbow, short sword, or any weapon with “elven” in its name. Add a +1/2 circumstance bonus on critical hit conf irmation rolls with that weapon (maximum bonus of +4). This bonus does not stack with Critical Focus.
+Bonus Dwarf Ranger	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Ranger: Add a +1/2 bonus on wild empathy checks to influence animals and magical beasts that live underground.
+Bonus Elf Ranger	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Elf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Ranger: Choose a weapon from the following list: longbow, longsword, rapier, shortbow, short sword, or any weapon with “elven” in its name. Add a +1/2 circumstance bonus on critical hit confirmation rolls with that weapon (maximum bonus of +4). This bonus does not stack with Critical Focus.
+Bonus Gnome Ranger	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Gnome	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Ranger: Add DR 1/magic to the ranger’s animal companion. Each time the ranger selects this benefit, the DR/magic increases by +1/2 (maximum DR 10/magic). If the gnome ever replaces his animal companion, the new companion gains this DR. 
 # Rogue
-Bonus Disable Device	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Rogue=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Rogue: Add a +1/2 bonus on Disable Device checks regarding stone traps and a +1/2 bonus to trap sense regarding stone traps.
+Bonus Dwarf Rogue	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Rogue=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Rogue: Add a +1/2 bonus on Disable Device checks regarding stone traps and a +1/2 bonus to trap sense regarding stone traps.
+Bonus Gnome Rogue	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Rogue=1	PRERACE:1,Gnome	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Rogue: Gnome rogues gain a +1 bonus on Disable Device and Use Magic Device checks related to glyphs, symbols, scrolls, and other magical writings each time they gain a level of rogue.
 # Sorcerer
-Bonus Bloodline Power	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Sorcerer=1	PRERACE:1,Elf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Sorcerer: Select one bloodline power at 1st level that is normally usable a number of times per day equal to 3 + the sorcerer’s Charisma modif ier. The sorcerer adds +1/2 to the number of uses per day of that bloodline power.
+Bonus Elf Sorcerer	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Sorcerer=1	PRERACE:1,Elf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Sorcerer: Select one bloodline power at 1st level that is normally usable a number of times per day equal to 3 + the sorcerer’s Charisma modifier. The sorcerer adds +1/2 to the number of uses per day of that bloodline power.
 # Summoner
-
+Bonus Gnome Summoner	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Sorcerer=1	PRERACE:1,Gnome		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Summoner: Add +1 hit point to the summoner’s eidolon.
 # Witch
 
 # Wizard
-Bonus School Power	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Wizard=1	PRERACE:1,Elf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Wizard: Select one arcane school power at 1st level that is normally usable a number of times per day equal to 3 + the wizard’s Intelligence modif ier. The wizard adds +1/2 to the number of uses per day of that arcane school power.
-
+Bonus Elf Wizard	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Wizard=1	PRERACE:1,Elf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Wizard: Select one arcane school power at 1st level that is normally usable a number of times per day equal to 3 + the wizard’s Intelligence modifier. The wizard adds +1/2 to the number of uses per day of that arcane school power.
+Bonus Gnome Wizard	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Wizard=1	PRERACE:1,Gnome		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Gnome Wizard: Add +1/2 to the number of uses per day of arcane school powers. This increase only applies to arcane school powers available at 1st level and normally usable a number of times per day equal to 3 + the wizard’s Intelligence modifier.
 #
 # End
 #
