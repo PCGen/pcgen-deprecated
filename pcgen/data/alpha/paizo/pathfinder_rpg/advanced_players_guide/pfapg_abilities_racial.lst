@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Oct  2 19:33:06 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Thu Oct 28 22:37:39 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Stefan Radermacher & Andrew Maitland
 
@@ -84,19 +84,19 @@ Heart of the Wilderness	KEY:Heart of the Wilderness ~ Human	CATEGORY:Special Abi
 
 
 ###Block: Favored Classes
-# Ability Name	Category of Ability		Type			Visible		Stackable?	Multiple?	Bonus to Ability Pool
-Achemist		CATEGORY:Special Ability	TYPE:FavoredClass	VISIBLE:DISPLAY	STACK:NO	MULT:NO	BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Alchemist")
-Cavalier		CATEGORY:Special Ability	TYPE:FavoredClass	VISIBLE:DISPLAY	STACK:NO	MULT:NO	BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Cavalier")
-Inquisitor		CATEGORY:Special Ability	TYPE:FavoredClass	VISIBLE:DISPLAY	STACK:NO	MULT:NO	BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Inquisitor")
-Oracle		CATEGORY:Special Ability	TYPE:FavoredClass	VISIBLE:DISPLAY	STACK:NO	MULT:NO	BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Oracle")
-Summoner		CATEGORY:Special Ability	TYPE:FavoredClass	VISIBLE:DISPLAY	STACK:NO	MULT:NO	BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Summoner")
-Witch			CATEGORY:Special Ability	TYPE:FavoredClass	VISIBLE:DISPLAY	STACK:NO	MULT:NO	BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Witch")
+# Ability Name	Category of Ability		Type				Visible		Required Class		Required Race		Stackable?	Multiple?	Choose		Bonus to Ability Pool							Modify VAR
+Achemist		CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STACK:NO	MULT:NO				BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Alchemist")
+Cavalier		CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STACK:NO	MULT:NO				BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Cavalier")
+Inquisitor		CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STACK:NO	MULT:NO				BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Inquisitor")
+Oracle		CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STACK:NO	MULT:NO				BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Oracle")
+Summoner		CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STACK:NO	MULT:NO				BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Summoner")
+Witch			CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STACK:NO	MULT:NO				BONUS:ABILITYPOOL|Favored Class Bonus|var("CL=Witch")
 
 # Alternate Favored Class Bonus from APG
 # Alchemist
 
 # Barbarian
-Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	STACK:YES	MULT:YES				CHOOSE:NOCHOICE		BONUS:VAR|RageDuration|1	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf,Human
+Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf,Human	STACK:YES	MULT:YES	CHOOSE:NOCHOICE											BONUS:VAR|RageDuration|1
 # Bard
 
 # Cavalier

@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sun Oct  3 17:46:38 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Thu Oct 28 22:37:39 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 #SOURCELONG:Pathfinder Roleplaying Game Advanced Player's Guide Playtest	SOURCESHORT:PFAPGP1	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8bcj	SOURCEDATE:2009-11
 # Original Entry by: Stefan Radermacher, Eric Smith (Maredudd) and Andrew Maitland
 
@@ -33,7 +33,7 @@ ABILITYCATEGORY:Wind Mystery Revelation		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:
 ABILITYCATEGORY:Soothsayer Revelation		VISIBLE:NO		EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:SoothsayerRevelation	PLURAL:Soothsayer Revelations
 ABILITYCATEGORY:Oracle Maneuver Mastery		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:OracleManeuverMastery	PLURAL:Oracle Maneuver Masteries	DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Oracle Weapon Mastery		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:OracleWeaponMastery	PLURAL:Oracle Weapon Masteries	DISPLAYLOCATION:Class Abilities
-ABILITYCATEGORY:Oracle Spell Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:OracleSpellChoice			PLURAL:Oracle Spell Choices		DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Oracle Spell Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:OracleSpellChoice		PLURAL:Oracle Spell Choices		DISPLAYLOCATION:Class Abilities
 
 ###Block: Witch Ability Categories
 # Ability Category		Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object	Plural description for UI	Display Location
@@ -112,8 +112,8 @@ ABILITYCATEGORY:Adaptation Ability Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITP
 ABILITYCATEGORY:Zen Archer Feat			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ZenArcherFeat													PLURAL:Zen Archer Feats				DISPLAYLOCATION:Feats
 ABILITYCATEGORY:Monk Weapon Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:MonkWeaponChoice													PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
 
-ABILITYCATEGORY:Monk Weapon Choice Bow			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT		ABILITYLIST:Weapon Focus(Longbow)|Weapon Focus(Shortbow)													PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
-ABILITYCATEGORY:Monk Weapon Choice Monk Weapons			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT	TYPE:MonkWeaponChoice													PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Monk Weapon Choice Bow		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT								ABILITYLIST:Weapon Focus(Longbow)|Weapon Focus(Shortbow)		PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Monk Weapon Choice Monk Weapons	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:MonkWeaponChoice													PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
 
 
 # Ranger Arcehtypes
