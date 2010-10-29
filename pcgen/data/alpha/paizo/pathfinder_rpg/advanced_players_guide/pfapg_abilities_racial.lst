@@ -97,17 +97,18 @@ Witch			CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STAC
 
 # Barbarian
 Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|RageDuration|1	DESC:Dwarven Barbarian: Add 1 to the dwarf ’s total number of rage rounds per day.
+Bonus Base Speed	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Elf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Barbarian: Add 1 to the elf ’s base speed. In combat this has no effect unless the elf has selected this reward 5 times (or another increment of 5); a speed of 34 feet is effectively the same as a speed of 30 feet, for example. This bonus stacks with a class’s fast movement feature and applies only under the same conditions as that ability.
 # Bard
-
+Bonus Elf Bard CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Bard=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_Disarm|1	BONUS:VAR|CMD_Sunder|1	DESC:Elven Bard: Add +1 to the elf ’s CMD when resisting a disarm or sunder attempt.
 # Cavalier
-
+Bonus Mount HP	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Cavalier=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Cavalier:  Add +1 hit point to the cavalier’s mount. If the elf ever replaces his mount, the new mount gains these bonus hit points. These bonuses only apply to a single mount gained as part of the cavalier’s class.
 # Cleric
 Bonus Domain Use	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Cleric=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Cleric: Select one domain power granted at 1st level that is normally usable for a number of times per day equal to 3 + the cleric’s Wisdom modifier. The cleric adds 1/2 to the number of uses per day of that domain power.
 # Druid
 
 # Fighter
-Bonus CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_BullRush|1	BONUS:VAR|CMD_Trip|1	DESC:Dwarven Fighter: Add +1 to the fighter’s CMD when resisting a bull rush or trip.
-
+Bonus Dwarf Fighter CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Dwarf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_BullRush|1	BONUS:VAR|CMD_Trip|1	DESC:Dwarven Fighter: Add +1 to the fighter’s CMD when resisting a bull rush or trip.
+Bonus Elf Fighter CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Elf			STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_Disarm|1	BONUS:VAR|CMD_Sunder|1	DESC:Elven Fighter: Add +1 to the elf ’s CMD when resisting a disarm or sunder attempt.
 # Inquisitor
 
 # Monk
@@ -118,16 +119,17 @@ Bonus Oracle	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRE
 Bonus Concentration Check	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Paladin=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Paladin: Add a +1 bonus on concentration checks when casting paladin spells.
 # Ranger
 Bonus Wild Empathy	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Ranger: Add a +1/2 bonus on wild empathy checks to inf luence animals and magical beasts that live underground.
+Bonus Critical Confirmatin	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Elf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Ranger: Choose a weapon from the following list: longbow, longsword, rapier, shortbow, short sword, or any weapon with “elven” in its name. Add a +1/2 circumstance bonus on critical hit conf irmation rolls with that weapon (maximum bonus of +4). This bonus does not stack with Critical Focus.
 # Rogue
 Bonus Disable Device	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Rogue=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Rogue: Add a +1/2 bonus on Disable Device checks regarding stone traps and a +1/2 bonus to trap sense regarding stone traps.
 # Sorcerer
-
+Bonus Bloodline Power	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Sorcerer=1	PRERACE:1,Elf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Sorcerer: Select one bloodline power at 1st level that is normally usable a number of times per day equal to 3 + the sorcerer’s Charisma modif ier. The sorcerer adds +1/2 to the number of uses per day of that bloodline power.
 # Summoner
 
 # Witch
 
 # Wizard
-
+Bonus School Power	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Wizard=1	PRERACE:1,Elf		STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Elven Wizard: Select one arcane school power at 1st level that is normally usable a number of times per day equal to 3 + the wizard’s Intelligence modif ier. The wizard adds +1/2 to the number of uses per day of that arcane school power.
 
 #
 # End
