@@ -96,29 +96,30 @@ Witch			CATEGORY:Special Ability	TYPE:FavoredClass		VISIBLE:DISPLAY									STAC
 # Alchemist
 
 # Barbarian
-Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf,Human	STACK:YES	MULT:YES	CHOOSE:NOCHOICE											BONUS:VAR|RageDuration|1
+Bonus Rage Point	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Barbarian=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|RageDuration|1	DESC:Dwarven Barbarian: Add 1 to the dwarf ’s total number of rage rounds per day.
 # Bard
 
 # Cavalier
 
 # Cleric
-
+Bonus Domain Use	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Cleric=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Cleric: Select one domain power granted at 1st level that is normally usable for a number of times per day equal to 3 + the cleric’s Wisdom modifier. The cleric adds 1/2 to the number of uses per day of that domain power.
 # Druid
 
 # Fighter
+Bonus CMD	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Fighter=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	BONUS:VAR|CMD_BullRush|1	BONUS:VAR|CMD_Trip|1	DESC:Dwarven Fighter: Add +1 to the fighter’s CMD when resisting a bull rush or trip.
 
 # Inquisitor
 
 # Monk
 
 # Oracle
-
+Bonus Oracle	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Oracle=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Oracle: Reduce the non-proficient penalty for one weapon by 1. When the non-prof icient penalty for a weapon becomes 0 because of this ability, the oracle is treated as having the appropriate Martial or Exotic Weapon Proficiency feat with that weapon.
 # Paladin
-
+Bonus Concentration Check	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Paladin=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Paladin: Add a +1 bonus on concentration checks when casting paladin spells.
 # Ranger
-
+Bonus Wild Empathy	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Ranger=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Ranger: Add a +1/2 bonus on wild empathy checks to inf luence animals and magical beasts that live underground.
 # Rogue
-
+Bonus Disable Device	CATEGORY:Special Ability	TYPE:FavoredClassBonus	VISIBLE:DISPLAY	PRECLASS:1,Rogue=1	PRERACE:1,Dwarf	STACK:YES	MULT:YES	CHOOSE:NOCHOICE	DESC:Dwarven Rogue: Add a +1/2 bonus on Disable Device checks regarding stone traps and a +1/2 bonus to trap sense regarding stone traps.
 # Sorcerer
 
 # Summoner
