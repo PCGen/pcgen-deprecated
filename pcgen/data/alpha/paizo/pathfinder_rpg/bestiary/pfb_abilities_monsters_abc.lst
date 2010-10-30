@@ -148,7 +148,7 @@ Savage Bite		KEY:Savage Bite ~ Bulette	CATEGORY:Special Ability	TYPE:SpecialAtta
 
 ###Block: Cat (Cheetah) Abilities
 # Ability Name	Unique Key			Category of Ability		Type									Description																	Source Page
-Sprint		KEY:Sprint ~ Cheetah	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyMovement	DESC:Once per hour, a cheetah can move at 10 times its normal speed (500 feet) when it makes a charge.	SOURCEPAGE:p.40
+#Sprint in Core Bestiary
 
 ###Block: Cave Fisher Abilities
 # Ability Name	Unique Key				Category of Ability		Type						Description																											Source Page		Aspects							Description of the Benefits

@@ -336,6 +336,9 @@ Stampede		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary						DESC:A 
 # Camel
 Spit			KEY:Spit ~ Camel			CATEGORY:Special Ability	TYPE:SpecialAttack
 
+# Cat, Cheetah
+Sprint		KEY:Sprint ~ Cheetah	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyMovement	DESC:Once per hour, a cheetah can move at 10 times its normal speed (500 feet) when it makes a charge.	SOURCEPAGE:p.40
+
 # Crocodile
 Death Roll		KEY:Death Roll ~ Crocodile	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary				DEFINE:DeathRollDice|1	DEFINE:DeathRollDie|6	DEFINE:DeathRollDamage|STR*1.5	DESC:When grappling a foe of its size or smaller, a crocodile can perform a death roll upon making a successful grapple check.	SOURCEPAGE:p.51	ASPECT:Ability Benefit|(%1d%2+%3 Plus Trip)|DeathRollDice|DeathRollDie|DeathRollDamage	BENEFIT:When grappling a foe of its size or smaller, a crocodile can perform a death roll upon making a successful grapple check. As it clings to its foe, it tucks in its legs and rolls rapidly, twisting and wrenching its victim. The crocodile inflicts its bite damage and knocks the creature prone. If successful, the crocodile maintains its grapple.
 Hold Breath		KEY:Hold Breath ~ Crocodile	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary				DEFINE:HoldBreathRounds|CONSCORE*4									DESC:A crocodile can hold its breath for %1 rounds before it risks drowning.|HoldBreathRounds							SOURCEPAGE:p.51	ASPECT:Ability Benefit|(%1 rounds)|HoldBreathRounds
@@ -353,6 +356,10 @@ Poison		KEY:Poison ~ Venomous Snake	CATEGORY:Special Ability	TYPE:SpecialAttack.
 # Weasel
 Attach							CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary						DESC:When you hit with a bite attack, you automatically grapple your foe, inflicting automatic bite damage each round.										SOURCEPAGE:p.133
 
+
+#-------------------------------------------------------
+###Block: *** Shared Monster Abilities ***
+#-------------------------------------------------------
 #
 # End
 #
