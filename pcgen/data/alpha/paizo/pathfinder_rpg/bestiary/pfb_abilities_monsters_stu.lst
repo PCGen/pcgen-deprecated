@@ -59,7 +59,7 @@ Susceptible to Salt	KEY:Susceptible to Salt ~ Giant Slug	CATEGORY:Special Abilit
 
 ###Block: Snake Abilities
 # Ability Name	Unique Key				Category of Ability		Type						Define					Description																			Modify VAR								Source Page		Aspects
-Poison		KEY:Poison ~ Venomous Snake	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:PoisonSaveDC|10+(HD/2)+CON	DESC:Bite-injury; save Fort DC %1; frequency 1/round for 6 rounds; effect 1d2 Con damage; cure 1 save.|PoisonSaveDC	BONUS:VAR|PoisonDC|2|PREFEAT:1,Ability Focus (Poison)	SOURCEPAGE:p.255	ASPECT:Ability Benefit|(Fort DC %1; 1/round for 6 rounds;1d2 Con;1 save)|PoisonSaveDC
+# MOVED TO BESTIARY CORE
 
 ###Block: Spectre Abilities
 # Ability Name			Unique Key						Category of Ability		Type								Define				Description																										Modify VAR											Source Page		Aspects					Description of the Benefits

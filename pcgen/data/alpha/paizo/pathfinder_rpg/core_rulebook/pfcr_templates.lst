@@ -21,8 +21,6 @@ Armor Training workaround	VISIBLE:NO	BONUS:MISC|MAXDEX|ArmorTraining|PREEQUIP:1,
 # Template Name		Visible	Stat bonus			Add 					Ability
 Augment Summoning		VISIBLE:YES	BONUS:STAT|STR,CON|4
 
-
-
 Raven Familiar Language	VISIBLE:NO					ADD:LANGUAGE|1|TYPE=Spoken	ABILITY:Special Ability|AUTOMATIC|Speak One Language
 
 

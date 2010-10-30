@@ -194,9 +194,7 @@ Water Dependency	KEY:Water Dependency ~ Crab	CATEGORY:Special Ability	TYPE:Speci
 
 ###Block: Crocodile Abilities
 # Ability Name	Unique Key				Category of Ability		Type									Define													Description																					Source Page		Aspects														Description of the Benefits
-Death Roll		KEY:Death Roll ~ Crocodile	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary				DEFINE:DeathRollDice|1	DEFINE:DeathRollDie|6	DEFINE:DeathRollDamage|STR*1.5	DESC:When grappling a foe of its size or smaller, a crocodile can perform a death roll upon making a successful grapple check.	SOURCEPAGE:p.51	ASPECT:Ability Benefit|(%1d%2+%3 Plus Trip)|DeathRollDice|DeathRollDie|DeathRollDamage	BENEFIT:When grappling a foe of its size or smaller, a crocodile can perform a death roll upon making a successful grapple check. As it clings to its foe, it tucks in its legs and rolls rapidly, twisting and wrenching its victim. The crocodile inflicts its bite damage and knocks the creature prone. If successful, the crocodile maintains its grapple.
-Hold Breath		KEY:Hold Breath ~ Crocodile	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary				DEFINE:HoldBreathRounds|CONSCORE*4									DESC:A crocodile can hold its breath for %1 rounds before it risks drowning.|HoldBreathRounds							SOURCEPAGE:p.51	ASPECT:Ability Benefit|(%1 rounds)|HoldBreathRounds
-Sprint		KEY:Sprint ~ Crocodile		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyMovement															DESC:Once per minute a crocodile may sprint, increasing its land speed to 40 feet for 1 round.							SOURCEPAGE:p.51
+# Moved to Bestiary CORE
 
 ###Block: Cyclops Abilities
 # Ability Name	Unique Key					Category of Ability		Type						Description																																																					Source Page

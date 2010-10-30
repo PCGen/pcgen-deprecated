@@ -332,33 +332,26 @@ Stampede		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary						DESC:A 
 #-------------------------------------------------------
 ###Block: *** Shared Abilities between Companions ***
 #-------------------------------------------------------
-###Block: Companion Specials
-# Ability Name	Unique Key				Category of Ability		Type						Define				Description																			Modify VAR								Source Page		Natural Attacks
-
-
-
-Blindsense							CATEGORY:Special Ability	TYPE:SpecialQuality
-Poison							CATEGORY:Special Ability	TYPE:SpecialAttack
-Poison		KEY:Poison ~ Viper		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:PoisonDC|10+(HD/2)+CON	DESC:Injury; Save Fort DC %1; Frequency 1/round for 6 rounds; Effect 1d2 Con damage; Cure 1 save.|PoisonDC			BONUS:VAR|PoisonDC|2|PREFEAT:1,Ability Focus (Poison)	SOURCEPAGE:p.133
+#Block: Shared
+# Camel
 Spit			KEY:Spit ~ Camel			CATEGORY:Special Ability	TYPE:SpecialAttack
-Attach							CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary						DESC:When you hit with a bite attack, you automatically grapple your foe, inflicting automatic bite damage each round.										SOURCEPAGE:p.133
 
-###Block: Dire Rat abilities
-# Ability Name	Unique Key			Category of Ability		Type						Visible	Define					Description																										Source Page
-Disease		KEY:Disease ~ Dire Rat	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	VISIBLE:YES	DEFINE:DiseaseDC|10+(HD/2)+CON	DESC:Filth Fever: Bite injury; Save Fort DC %1; Onset 1d3 days; Frequency 1/day; Effect 1d3 Dex damage and 1d3 Con damage; Cure 2 consecutive saves.|DiseaseDC	SOURCEPAGE:p.232
-
-# Need to swap to these
 # Crocodile
 Death Roll		KEY:Death Roll ~ Crocodile	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary				DEFINE:DeathRollDice|1	DEFINE:DeathRollDie|6	DEFINE:DeathRollDamage|STR*1.5	DESC:When grappling a foe of its size or smaller, a crocodile can perform a death roll upon making a successful grapple check.	SOURCEPAGE:p.51	ASPECT:Ability Benefit|(%1d%2+%3 Plus Trip)|DeathRollDice|DeathRollDie|DeathRollDamage	BENEFIT:When grappling a foe of its size or smaller, a crocodile can perform a death roll upon making a successful grapple check. As it clings to its foe, it tucks in its legs and rolls rapidly, twisting and wrenching its victim. The crocodile inflicts its bite damage and knocks the creature prone. If successful, the crocodile maintains its grapple.
 Hold Breath		KEY:Hold Breath ~ Crocodile	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary				DEFINE:HoldBreathRounds|CONSCORE*4									DESC:A crocodile can hold its breath for %1 rounds before it risks drowning.|HoldBreathRounds							SOURCEPAGE:p.51	ASPECT:Ability Benefit|(%1 rounds)|HoldBreathRounds
 Sprint		KEY:Sprint ~ Crocodile		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyMovement															DESC:Once per minute a crocodile may sprint, increasing its land speed to 40 feet for 1 round.							SOURCEPAGE:p.51
-# Old Abilities - Phase out with above.
-Hold Breath							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DEFINE:HoldBreathDuration|0	DESC:You can hold your breath for %1 rounds before it risks drowning.|HoldBreathDuration						BONUS:VAR|HoldBreathDuration|CONSCORE*6			SOURCEPAGE:p.88
-Sprint							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyMovement			DESC:Once per hour, a cheetah can move at 10 times its normal speed (500 feet) when it makes a charge.												SOURCEPAGE:p.40	SOURCESHORT:PFB
-Death Roll							CATEGORY:Special Ability	TYPE:SpecialAttack
 
+# Dire Rat
+Disease		KEY:Disease ~ Dire Rat		CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:DiseaseDC|10+(HD/2)+CON	DESC:Filth Fever: Bite injury; Save Fort DC %1; Onset 1d3 days; Frequency 1/day; Effect 1d3 Dex damage and 1d3 Con damage; Cure 2 consecutive saves.|DiseaseDC	SOURCEPAGE:p.232
 
+# Horse
+Docile			KEY:Docile ~ Horse	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DESC:Unless specifically trained for combat, a horse's hooves are treated as secondary attacks.	SOURCEPAGE:p.177	BONUS:WEAPONPROF=Hoof|TOHIT|-5	BONUS:WEAPONPROF=Hoof|DAMAGE|-ceil(STR/2)	
 
+### Snake
+Poison		KEY:Poison ~ Venomous Snake	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:PoisonSaveDC|10+(HD/2)+CON	DESC:Bite-injury; save Fort DC %1; frequency 1/round for 6 rounds; effect 1d2 Con damage; cure 1 save.|PoisonSaveDC	BONUS:VAR|PoisonDC|2|PREFEAT:1,Ability Focus (Poison)	SOURCEPAGE:p.255	ASPECT:Ability Benefit|(Fort DC %1; 1/round for 6 rounds;1d2 Con;1 save)|PoisonSaveDC
+
+# Weasel
+Attach							CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary						DESC:When you hit with a bite attack, you automatically grapple your foe, inflicting automatic bite damage each round.										SOURCEPAGE:p.133
 
 #
 # End

@@ -150,9 +150,8 @@ Fire			KEY:Fire ~ Hell Hound			CATEGORY:Special Ability	TYPE:SpecialAttack			DEF
 Poison		KEY:Poison ~ Homunculus			CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary			DEFINE:HomunculusPoisonDC|10+(HD/2)+CON	DESC:Bite--injury; save Fort DC %1; frequency 1/minute for 60 minutes; effect sleep for 1 minute; cure 1 save.|HomunculusPoisonDC	BONUS:VAR|HomunculusPoisonDC|2|PREFEAT:1,Ability Focus (Poison)	SOURCEPAGE:p.176	ASPECT:Ability Benefit|(DC %1)|HomunculusPoisonDC
 Telepathic Link	KEY:Telepathic Link ~ Homunculus	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Communicate								DESC:A homunculus cannot speak, but the process of creating one links it telepathically with its creator.																SOURCEPAGE:p.176										BENEFIT:A homunculus cannot speak, but the process of creating one links it telepathically with its creator. A homunculus knows what its master knows and can convey to him or her everything it sees and hears, out to a distance of 1,500 feet.
 
-###Block: Horse abilities
-# Ability Name		Unique Key			Category of Ability		Type						Visible	Description															Source Page
-Docile			KEY:Docile ~ Horse	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	VISIBLE:YES	DESC:Unless specifically trained for combat, a horse's hooves are treated as secondary attacks.	SOURCEPAGE:p.177	BONUS:WEAPONPROF=Hoof|TOHIT|-5	BONUS:WEAPONPROF=Hoof|DAMAGE|-ceil(STR/2)	
+# Horse Moved to Core Bestiary
+
 
 ###Block: Hydra Abilities
 # Ability Name	Unique Key				Category of Ability		Type								Define				Description																												Choose												Modify VAR						Source Page		Aspects							Description of the Benefits																																																																																																													Temporary effect description
