@@ -7,11 +7,11 @@ SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/
 ##
 
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Define			Save checks bonus											Combat bonus					Modify VAR
-CLASS:Alchemist	HD:8		TYPE:Base.PC	ABB:Alc		MAXLEVEL:20	SOURCEPAGE:p.26	DEFINE:AlchemistLVL|0	BONUS:CHECKS|BASE.Will|CL/3	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE	BONUS:VAR|AlchemistLVL|CL
+CLASS:Alchemist	HD:8		TYPE:Base.PC	ABB:Alc		MAXLEVEL:20	SOURCEPAGE:p.26	DEFINE:AlchemistLVL|0	BONUS:CHECKS|BASE.Will|CL/3	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Alchemist	STARTSKILLPTS:4	CSKILL:Appraise|TYPE.Craft|Disable Device|Fly|Heal|Knowledge (Arcana)|Knowledge (Nature)|Perception|TYPE.Profession|Sleight of Hand|Spellcraft|Survival|Use Magic Device
 # Class Name	Spell Stat		Spell Type		Memorize		Spellbook		Caster level
-CLASS:Alchemist	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BONUS:CASTERLEVEL|Alchemist|CL
+CLASS:Alchemist	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BONUS:CASTERLEVEL|Alchemist|CL		DEFINE:AlchemistLvl|CL
 ###Block:Proficiencies
 1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1												AUTO:FEAT|Armor Proficiency (Light)	AUTO:WEAPONPROF|Bomb
@@ -54,7 +54,7 @@ CLASS:Alchemist	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BONUS:
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Base class as subclass?	Source Page		Save checks bonus											Combat bonus
 CLASS:Cavalier	HD:10		TYPE:Base.PC	ABB:Cav		MAXLEVEL:20	ALLOWBASECLASS:NO		SOURCEPAGE:p.32	BONUS:CHECKS|BASE.Fortitude|CL/2+2	BONUS:CHECKS|BASE.Will,BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Cavalier	STARTSKILLPTS:4	CSKILL:Bluff|Climb|TYPE.Craft|Diplomacy|Handle Animal|Intimidate|TYPE.Profession|Ride|Sense Motive|Swim
+CLASS:Cavalier	STARTSKILLPTS:4	CSKILL:Bluff|Climb|TYPE.Craft|Diplomacy|Handle Animal|Intimidate|TYPE.Profession|Ride|Sense Motive|Swim	DEFINE:CavalierLvl|CL
 #
 1	BONUS:ABILITYPOOL|Cavalier Order|1
 ###Block:Proficiencies
@@ -80,7 +80,7 @@ CLASS:Inquisitor	PREVARLT:ExInquisitor,1
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Inquisitor	STARTSKILLPTS:6	CSKILL:Bluff|Climb|TYPE.Craft|Diplomacy|Disguise|Heal|Intimidate|Knowledge (Arcana)|Knowledge (Dungeoneering)|Knowledge (Nature)|Knowledge (Planes)|Knowledge (Religion)|Perception|TYPE.Profession|Ride|Sense Motive|Spellcraft|Stealth|Survival|Swim
 # Class Name	Spell Stat		Spell Type		Memorize	Caster level
-CLASS:Inquisitor	SPELLSTAT:WIS	SPELLTYPE:Divine	MEMORIZE:NO	BONUS:CASTERLEVEL|Inquisitor|CL
+CLASS:Inquisitor	SPELLSTAT:WIS	SPELLTYPE:Divine	MEMORIZE:NO	BONUS:CASTERLEVEL|Inquisitor|CL	DEFINE:InquisitorLvl|CL
 #COMMENT: Unable to enact properly for the Domain, Inquisitor does not get a domain slot, or bonus spells from it
 ###Block:Proficiencies
 1																																ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
@@ -136,7 +136,7 @@ CLASS:Inquisitor	SPELLSTAT:WIS	SPELLTYPE:Divine	MEMORIZE:NO	BONUS:CASTERLEVEL|In
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Visible	Save checks bonus											Combat bonus
 CLASS:Ex-Inquisitor	HD:8		TYPE:Base.PC	ABB:Inq		MAXLEVEL:20	VISIBLE:NO	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4|TYPE=Base.REPLACE
 # Class Name		Skill Pts/Lvl	Class Skill
-CLASS:Ex-Inquisitor	STARTSKILLPTS:6	CSKILL:Bluff|Climb|TYPE.Craft|Diplomacy|Disguise|Heal|Intimidate|Knowledge (Arcana)|Knowledge (Dungeoneering)|Knowledge (Nature)|Knowledge (Planes)|Knowledge (Religion)|Perception|TYPE.Profession|Ride|Sense Motive|Spellcraft|Stealth|Survival|Swim
+CLASS:Ex-Inquisitor	STARTSKILLPTS:6	CSKILL:Bluff|Climb|TYPE.Craft|Diplomacy|Disguise|Heal|Intimidate|Knowledge (Arcana)|Knowledge (Dungeoneering)|Knowledge (Nature)|Knowledge (Planes)|Knowledge (Religion)|Perception|TYPE.Profession|Ride|Sense Motive|Spellcraft|Stealth|Survival|Swim	DEFINE:InquisitorLvl|CL
 #Block:
 1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1												AUTO:FEAT|Armor Proficiency (Light)|Armor Proficiency (Medium)|Armor Proficiency (Heavy)|Shield Proficiency
@@ -160,7 +160,7 @@ CLASS:Oracle	HD:8		TYPE:Base.PC	ABB:Ocl		MAXLEVEL:20	SOURCEPAGE:p.42	BONUS:CHECK
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Oracle	STARTSKILLPTS:4	CSKILL:TYPE.Craft|Diplomacy|Heal|Knowledge (History)|Knowledge (Planes)|Knowledge (Religion)|TYPE.Profession|Sense Motive|Spellcraft
 # Class Name	Spell Stat		Stat for Bonus Spells	Spell Type		Memorize	Caster level			Use Spell List
-CLASS:Oracle	SPELLSTAT:CHA	SPELLTYPE:Divine	MEMORIZE:NO	BONUS:CASTERLEVEL|Oracle|CL	SPELLLIST:1|Cleric
+CLASS:Oracle	SPELLSTAT:CHA	SPELLTYPE:Divine	MEMORIZE:NO	BONUS:CASTERLEVEL|Oracle|CL	SPELLLIST:1|Cleric			DEFINE:OracleLvl|CL
 ###Block:Proficiencies
 1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1												AUTO:FEAT|Armor Proficiency (Light)|Armor Proficiency (Medium)
@@ -201,7 +201,7 @@ CLASS:Summoner	HD:8		TYPE:Base.PC	ABB:Sum		MAXLEVEL:20	SOURCEPAGE:p.54	BONUS:CHE
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Summoner	STARTSKILLPTS:2	CSKILL:TYPE.Craft|Fly|Handle Animal|TYPE.Knowledge|Linguistics|TYPE.Profession|Ride|Spellcraft|Use Magic Device
 # Class Name	Spell Stat		Spell Type		Memorize	Caster level
-CLASS:Summoner	SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|Summoner|CL
+CLASS:Summoner	SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|Summoner|CL	DEFINE:SummonerLvl|CL
 ###Block:Proficiencies
 1																							ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies		AUTO:FEAT|Simple Weapon Proficiency|Armor Proficiency (Light)
 #
@@ -234,11 +234,10 @@ CLASS:Witch		HD:6		TYPE:Base.PC	ABB:Wit		MAXLEVEL:20	SOURCEPAGE:p.65	ABILITY:Spe
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Witch		STARTSKILLPTS:2	CSKILL:TYPE.Craft|Fly|Heal|Intimidate|Knowledge (Arcana)|Knowledge (History)|Knowledge (Nature)|Knowledge (Planes)|TYPE.Profession|Spellcraft|Use Magic Device
 # Class Name	Spell Stat		Spell Type		Automatically Known Spell Levels	Caster level
-CLASS:Witch		SPELLSTAT:INT	SPELLTYPE:Arcane	KNOWNSPELLS:LEVEL=0			BONUS:CASTERLEVEL|Witch|CL
+CLASS:Witch		SPELLSTAT:INT	SPELLTYPE:Arcane	KNOWNSPELLS:LEVEL=0			BONUS:CASTERLEVEL|Witch|CL			DEFINE:WitchLvl|CL
 #
 ###Block:Proficiencies
 1								ABILITY:Special Ability|AUTOMATIC|Witch Weapon Proficiencies|All Automatic Proficiencies
-1	BONUS:VAR|WitchLVL|CL	DEFINE:WitchLVL|0
 ###Block: Level progression
 1	CAST:3,1				BONUS:ABILITYPOOL|Witch Hex|1	BONUS:ABILITYPOOL|Witch Patron|1	BONUS:VAR|FMLevel|CL	DEFINE:SpellMasteryQualify|1	ABILITY:Special Ability|AUTOMATIC|Witch ~ Familiar|Cantrips ~ Witch
 2	CAST:4,2				BONUS:ABILITYPOOL|Witch Hex|CL/2
@@ -296,7 +295,7 @@ CLASS:Antipaladin	PREALIGN:1,CE
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Antipaladin	STARTSKILLPTS:2	CSKILL:Bluff|TYPE.Craft|Disguise|Handle Animal|Intimidate|Knowledge (Religion)|TYPE.Profession|Ride|Sense Motive|Spellcraft|Stealth
 # Class Name	Spell Stat		Spell Type		Automatically Known Spell Levels			Craft Level Mult.	Caster level
-CLASS:Antipaladin	SPELLSTAT:CHA	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=1|LEVEL=2|LEVEL=3|LEVEL=4	ITEMCREATE:CL-3	BONUS:CASTERLEVEL|Antipaladin|CL|PRECLASS:1,Paladin=4
+CLASS:Antipaladin	SPELLSTAT:CHA	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=1|LEVEL=2|LEVEL=3|LEVEL=4	ITEMCREATE:CL-3	BONUS:CASTERLEVEL|Antipaladin|CL|PRECLASS:1,Paladin=4		DEFINE:AntiPaladinLvl|CL
 ###Block: Proficiencies
 1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
 1																	AUTO:FEAT|Armor Proficiency (Light)|Armor Proficiency (Medium)|Armor Proficiency (Heavy)
@@ -328,7 +327,7 @@ CLASS:Antipaladin	SPELLSTAT:CHA	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=1|LEVEL=2|LEV
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Ex Class			Source Page		Visible	Define				Save checks bonus											Combat bonus
 CLASS:Ex-Antipaladin	HD:10		TYPE:Base.PC	ABB:Apl		MAXLEVEL:20	EXCLASS:Ex-Antipaladin	SOURCEPAGE:p.118	VISIBLE:NO	DEFINE:AntipaladinLVL|CL	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
 # Class Name		Skill Pts/Lvl	Class Skill
-CLASS:Ex-Antipaladin	STARTSKILLPTS:2	CSKILL:Bluff|TYPE.Craft|Disguise|Handle Animal|Intimidate|Knowledge (Religion)|TYPE.Profession|Ride|Sense Motive|Spellcraft|Stealth
+CLASS:Ex-Antipaladin	STARTSKILLPTS:2	CSKILL:Bluff|TYPE.Craft|Disguise|Handle Animal|Intimidate|Knowledge (Religion)|TYPE.Profession|Ride|Sense Motive|Spellcraft|Stealth	DEFINE:AntiPaladinLvl|CL
 ###Block: Proficiencies
 1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
 1																	AUTO:FEAT|Armor Proficiency (Light)|Armor Proficiency (Medium)|Armor Proficiency (Heavy)
