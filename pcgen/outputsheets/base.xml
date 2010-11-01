@@ -2396,6 +2396,21 @@ Immune
 |ENDFOR|
 	</traits>
 
+	<!--
+	  ====================================
+	  ====================================
+			Afflictions
+	  ====================================
+	  ====================================-->
+	<afflictions>
+|FOR,%affliction,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Affliction","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+		<affliction>
+			<name>|ABILITYALL.Special Ability.VISIBLE.%affliction.TYPE=Affliction|</name>
+			<description>|ABILITYALL.Special Ability.VISIBLE.%affliction.TYPE=Affliction.DESC|</description>
+			<source>|ABILITYALL.Special Ability.VISIBLE.%affliction.TYPE=Affliction.SOURCE|</source>
+		</affliction>
+|ENDFOR|
+	</afflictions>
 
 
 	<!--
