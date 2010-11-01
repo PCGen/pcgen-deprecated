@@ -245,7 +245,7 @@ $Date$
   <td colspan="1" class="h">|ALIGNMENT|</td>
   <td colspan="1" class="h">|DEITY|</td>
   <td class="h">|POOL.COST|</td>
-  <td rowspan="6" align="center" width="1%" class="border"><font style="font-size:10pt"><a href="#Bio"><img src="|PORTRAIT|" height="100" alt="Click for Bio" border="0" /></a><br /></font></td>
+  <td rowspan="6" align="center" width="1%" class="border"><font style="font-size:10pt"><a href="#Bio"><img src="file://localhost/|PORTRAIT|" height="100" alt="Click for Bio" border="0" /></a><br /></font></td>
  </tr>
  <tr>
   <td colspan="2" class="topline">CHARACTER NAME</td>
@@ -2057,6 +2057,24 @@ Immune
 	</table>
 |ENDIF|
 <!-- STOP Disadvantages Table -->
+
+<!-- START Afflictions Table -->
+|IIF(count("ABILITIES";"CATEGORY=Affliction";"TYPE=Affliction";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
+   <table width="100%" cellspacing="0" cellpadding="2" summary="Affliction Table">
+    <tr>
+     <td bgcolor="black" align="center"><font color="white" style="font-size: 9pt"><b>Afflictions</b></font></td>
+    </tr>
+|FOR,%Affliction,0,count("ABILITIES","CATEGORY=Affliction","TYPE=Affliction","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|OIF(EVEN:%affliction,<tr bgcolor="#DDDDDD">,<tr bgcolor="white">)|
+     <td valign="top" class="font8"><b>|ABILITYALL.Affliction.VISIBLE.%affliction.TYPE=Affliction|
+</b>
+|ABILITYALL.Affliction.VISIBLE.%affliction.TYPE=Affliction.DESC|</td>
+    </tr>
+|ENDFOR|
+   </table>
+|ENDIF|
+<!-- STOP Afflictions Table -->
+
 
 <!-- START Traits Table -->
 |IIF(count("ABILITIES";"CATEGORY=Special Ability";"TYPE=Trait";"VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")>0)|
