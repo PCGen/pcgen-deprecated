@@ -2403,11 +2403,11 @@ Immune
 	  ====================================
 	  ====================================-->
 	<afflictions>
-|FOR,%affliction,0,count("ABILITIES","CATEGORY=Affliction","TYPE=Affliction","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+|FOR,%affliction,0,count("ABILITIES","CATEGORY=Afflictions","TYPE=Affliction","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
 		<affliction>
-			<name>|ABILITYALL.Affliction.VISIBLE.%affliction.TYPE=Affliction|</name>
-			<description>|ABILITYALL.Affliction.VISIBLE.%affliction.TYPE=Affliction.DESC|</description>
-			<source>|ABILITYALL.Affliction.VISIBLE.%affliction.TYPE=Affliction.SOURCE|</source>
+			<name>|ABILITYALL.Afflictions.VISIBLE.%affliction.TYPE=Affliction|</name>
+			<description>|ABILITYALL.Afflictions.VISIBLE.%affliction.TYPE=Affliction.DESC|</description>
+			<source>|ABILITYALL.Afflictions.VISIBLE.%affliction.TYPE=Affliction.SOURCE|</source>
 		</affliction>
 |ENDFOR|
 	</afflictions>
