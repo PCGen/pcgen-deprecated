@@ -269,7 +269,6 @@ World Wave																CLASSES:Druid,Sorcerer,Wizard=9								SCHOOL:Transmut
 Wrath																	CLASSES:Inquisitor=1										SCHOOL:Enchantment	SUBSCHOOL:Compulsion	DESCRIPTOR:Mind-Affecting					COMPS:V, S, M (a thorny vine)															CASTTIME:1 standard action						RANGE:Personal				TARGETAREA:You																				DURATION:1 minute																											DESC:+1 attack and damage against target creature.																																																																																																SOURCEPAGE:p.257
 Wrathful Mantle															CLASSES:Cleric=3|Paladin=3									SCHOOL:Evocation						DESCRIPTOR:Force|Light						COMPS:V, S, DF																	CASTTIME:1 standard action						RANGE:Touch or 5 ft.; see text	TARGETAREA:creature touched or all creatures within 5 ft.; see text											DURATION:(CASTERLEVEL) minutes								SAVEINFO:Will negates (harmless)					SPELLRES:Yes (harmless)			DESC:Subject shines and gets (CASTERLEVEL/4) on all saves.																																																																																															SOURCEPAGE:p.257
 
-
 #Block: Oracle Only Spells
 Borrow Fortune															CLASSES:Oracle=3											SCHOOL:Evocation															COMPS:V																		CASTTIME:1 Immediate action						RANGE:Personal				TARGETAREA:You																				DURATION:Instantaneous; see text																								DESC:Retry attack or check, but do worse on next two.																																																																																																SOURCEPAGE:p.206
 Divine Vessel															CLASSES:Oracle=8											SCHOOL:Transmutation					DESCRIPTOR:Chaotic|Evil|Good|Lawful				COMPS:V, S																		CASTTIME:1 standard action						RANGE:Personal				TARGETAREA:You																				DURATION:(CASTERLEVEL) rounds (D)																								DESC:Change into a huge, otherworldly creature.																																																																																																	SOURCEPAGE:p.216
@@ -294,9 +293,12 @@ Call Lightning Storm.COPY=Call Lightning Storm (Starsoul)																							
 
 ###
 
-
-
-
+###Block: Hero Points Spells
+Heroic Fortune								CLASSES:Alchemist,Bard,Cleric=2|Paladin=3	SCHOOL:Evocation					COMPS:V, S, DF, M	CASTTIME:1 standard action	RANGE:Touch	TARGETAREA:Creature touched										DURATION:(CASTERLEVEL) rounds							SAVEINFO:Will negates (harmless)	SPELLRES:No			DESC:Subject gains 1 temporary hero point.				SOURCEPAGE:p.324
+Heroic Fortune (Mass)	OUTPUTNAME:Heroic Fortune, [NAME]	CLASSES:Bard=4|Cleric=5				SCHOOL:Evocation					COMPS:V, S, DF, M	CASTTIME:1 standard action	RANGE:Close	TARGETAREA:One or more creatures, no two of which can be more thatn 30 ft. apart	DURATION:(CASTERLEVEL) rounds							SAVEINFO:Will negates (harmless)	SPELLRES:No			DESC:Subjects gain 1 temporary hero point.				SOURCEPAGE:p.324
+Malediction									CLASSES:Sorcerer,Wizard,Witch=3		SCHOOL:Necromancy	DESCRIPTOR:Death|Evil	COMPS:V, S, F	CASTTIME:1 standard action	RANGE:Touch	TARGETAREA:Living creature touched									DURATION:Instantaneous/1 minute per HD pof the target; see test	SAVEINFO:Will negates			SPELLRES:Yes		DESC:Gain temporary hero points by killing a dying creature.	SOURCEPAGE:p.324
+Severed Fate								CLASSES:Cleric=3|Witch=2			SCHOOL:Enchantment				COMPS:V, S		CASTTIME:1 standard action	RANGE:Close	TARGETAREA:One living creature									DURATION:(CASTERLEVEL*10) minutes						SAVEINFO:Will negates			SPELLRES:Yes		DESC:Target is shaken and cannot use hero points.			SOURCEPAGE:p.324
+Unravel Destiny								CLASSES:Cleric,Sorcerer,Wizard,Witch=3	SCHOOL:Divination					COMPS:V, S, DF	CASTTIME:1 standard action	RANGE:Close	TARGETAREA:One creature											DURATION:(CASTERLEVEL) rounds							SAVEINFO:Will negates			SPELLRES:Yes		DESC:Target gets -2 on ability checks, attack rolls, saving throws, adn skill check per hero point it possesses and takes 2d6 damage when spending hero points.	SOURCEPAGE:p.325
 
 #
 # END OF SPELLS

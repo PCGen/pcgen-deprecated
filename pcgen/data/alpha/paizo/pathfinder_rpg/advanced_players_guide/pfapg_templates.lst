@@ -44,6 +44,10 @@ Vision Lowlight																				PREVISION:1,Low-Light=ANY																				
 Vision Darkvision																				PREVISION:1,Darkvision=1																															BONUS:VISION|Darkvision|30
 # TODO: Test these thoroughly, I recall an issue with Low-Light having a NULL value.
 
+### Block: Hero Points
+# Template Name		Visible		Define							Choose									Automatically Gained Feat	Temporary effect description
+Hero Points 		VISIBLE:DISPLAY	DEFINE:HeroPoints|0	DEFINE:HeroPointsMax|3	CHOOSE:NUMBER|MIN=1|MAX=HeroPointsMax|TITLE=Hero Points
+
 #
 # End
 #
