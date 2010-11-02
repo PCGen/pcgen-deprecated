@@ -46,6 +46,7 @@
 		<name>|NAME|</name>
 		<followerof>|FOLLOWEROF|</followerof>
 		<playername>|PLAYERNAME|</playername>
+		<hero_points>|VAR.HEROPOINTS.INTVAL|</hero_points>
 		<age>|AGE|</age>
 		<alignment>
 			<long>|ALIGNMENT|</long>
@@ -326,7 +327,7 @@
 			<exclusive_total>|SKILL.%skill.EXCLUSIVE_TOTAL|</exclusive_total>
 			<type>|SKILL.%skill.TYPE|</type>
 		</skill>
-|ENDFOR|	
+|ENDFOR|
 
 <!-- Skills -->
 	</skills>
@@ -1532,7 +1533,7 @@ Immune
 			<virtual>F</virtual>
 			<category>Talent</category>
 			<source>|ABILITYALL.Talent.VISIBLE.%talent.TYPE=Talent.SOURCE|</source>
-		</talent>	
+		</talent>
 |ENDFOR|
 	</talents>
 
@@ -2487,7 +2488,7 @@ Immune
 |%FOLLOWERTYPE.FAMILIAR|
 |FOR,%companion,0,COUNT[FOLLOWERTYPE.FAMILIAR]-1,1,0|
 		<familiar>
-			<!-- Note that only one familiar is allowed, so no support for multiple familiars 
+			<!-- Note that only one familiar is allowed, so no support for multiple familiars
 			New: 4/8/2010 - Added Support for multiple Familiars-->
 			<name>|FOLLOWERTYPE.FAMILIAR.0.NAME|</name>
 			<race>|FOLLOWERTYPE.FAMILIAR.0.RACE|</race>
