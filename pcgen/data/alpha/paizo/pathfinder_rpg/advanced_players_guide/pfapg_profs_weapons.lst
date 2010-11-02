@@ -25,7 +25,7 @@ Sword Cane			TYPE:Martial.Melee.Piercing.MeleePiercing.Sword
 Bardiche			TYPE:Martial.Melee.Slashing.MeleeSlashing.Axe.TwoHanded
 Bec de Corbin		TYPE:Martial.Melee,Bludgeoning.Piercing.MeleeBlidgeoning.MeleePiercing.Hammer.TwoHanded
 Bill				TYPE:Martial.Melee.Slashing.MeleeSlashing.Axe.TwoHanded
-Glaive-guisarme		TYPE:Martial.Melee.Slashing.MeleeSlashing.Axe.TwoHanded
+Glaive-Guisarme		TYPE:Martial.Melee.Slashing.MeleeSlashing.Axe.TwoHanded
 Lucern Hammer		TYPE:Martial.Melee.Bludgeoning.Piercing.MeleeBludgeoning.MeleePiercing.Hammer.TwoHanded
 
 # --ranged
