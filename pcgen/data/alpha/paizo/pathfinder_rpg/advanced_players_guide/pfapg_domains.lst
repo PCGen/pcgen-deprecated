@@ -1,7 +1,6 @@
 # CVS $Revision$ $Author$ -- Sun Oct  3 17:45:35 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
-# Original Entry by: Andrew Maitland
-
+# Original Entry by: Andrew Maitland with a bit of help from Paul Shipley (elro the onk)
 
 ###Block: Subdomains
 # Domain Name		Required AL			Multiple Requirements														Class Skill				Ability																																			Define																										Save checks bonus								Add to base move			Modify VAR																																				Source Page		Description																												List of Domain Spells by Level
@@ -58,8 +57,25 @@ Murder Subdomain						PREMULT:1,[PREDOMAIN:1,Murder Subdomain],[PREVARLT:DeathDo
 Night Subdomain						PREMULT:1,[PREDOMAIN:1,Night Subdomain],[PREVARLT:DarknessDomain,1]											ABILITY:FEAT|AUTOMATIC|Blind-Fight	ABILITY:Special Ability|AUTOMATIC|Night Hunter ~ Night Subdomain	ABILITY:Special Ability|AUTOMATIC|Eyes of Darkness ~ Darkness Domain|PREVARGTEQ:DomainDarknessLVL,8			DEFINE:DarknessDomain|1	DEFINE:DomainDarknessLVL|0	DEFINE:DomainDarknessDC|0	DEFINE:DomainDarknessTimes|0																								BONUS:VAR|DomainDarknessLVL|DomainLVL	BONUS:VAR|DomainDarknessDC|10+(DomainDarknessLVL/2)+CHA	BONUS:VAR|DomainDarknessTimes|DomainPowerTimes													SOURCEPAGE:p.42																														SPELLLEVEL:DOMAIN|Night Subdomain=1|Sleep|Night Subdomain=2|Blindness/Deafness (Blindness Only)|Night Subdomain=3|Deeper Darkness|Night Subdomain=4|Shadow Conjuration|Night Subdomain=5|Summon Monster V (1d3 Shadows)|Night Subdomain=6|Nightmare|Night Subdomain=7|Power Word Blind|Night Subdomain=8|Shadow Evocation (Greater)|Night Subdomain=9|Shades
 Nightmare Subdomain					PREMULT:1,[PREDOMAIN:1,Nightmare Subdomain],[PREVARLT:MadnessDomain,1]											ABILITY:Special Ability|AUTOMATIC|Fearful Touch ~ Nightmare Subdomain	ABILITY:Special Ability|AUTOMATIC|Aura of Madness ~ Madness Domain|PREVARGTEQ:DomainMadnessLVL,8								DEFINE:MadnessDomain|1	DEFINE:DomainMadnessLVL|0	DEFINE:DomainMadnessDC|0	DEFINE:DomainMadnessTimes|0																								BONUS:VAR|DomainMadnessLVL|DomainLVL	BONUS:VAR|DomainMadnessDC|10+(DomainMadnessLVL/2)+CHA	BONUS:VAR|DomainMadnessTimes|DomainPowerTimes														SOURCEPAGE:p.45																														SPELLLEVEL:DOMAIN|Nightmare Subdomain=1|Confusion (Lesser)|Nightmare Subdomain=2|Touch of Idiocy|Nightmare Subdomain=3|Rage|Nightmare Subdomain=4|Phantasmal Killer|Nightmare Subdomain=5|Nightmare|Nightmare Subdomain=6|Nightmare|Nightmare Subdomain=7|Insanity|Nightmare Subdomain=8|Scintillating Pattern|Nightmare Subdomain=9|Weird
 Oceans Subdomain						PREMULT:1,[PREDOMAIN:1,Oceans Subdomain],[PREVARLT:WaterDomain,1]												ABILITY:Special Ability|AUTOMATIC|Surge ~ Oceans Subdomain	ABILITY:Special Ability|AUTOMATIC|Cold Resistance ~ Water Domain|PREVARGTEQ:DomainWaterLVL,6											DEFINE:WaterDomain|1	DEFINE:DomainWaterLVL|0	DEFINE:DomainWaterDC|0	DEFINE:DomainWaterTimes|0																										BONUS:VAR|DomainWaterLVL|DomainLVL	BONUS:VAR|DomainWaterDC|10+(DomainWaterLVL/2)+CHA	BONUS:VAR|DomainWaterTimes|DomainPowerTimes															SOURCEPAGE:p.48																														SPELLLEVEL:DOMAIN|Oceans Subdomain=1|Obscuring Mist|Oceans Subdomain=2|Slipstream|Oceans Subdomain=3|Water Walk|Oceans Subdomain=4|Control Water|Oceans Subdomain=5|Ice Storm|Oceans Subdomain=6|Cone of Cold|Oceans Subdomain=7|Elemental Body IV (Water Only)|Oceans Subdomain=8|Horrid Wilting|Oceans Subdomain=9|Tsunami
-
-
+Protean Subdomain
+Purity Subdomain
+Rage Subdomain
+Resolve Subdomain
+Restoration Subdomain
+Resurrection Subdomain
+Revolution Subdomain
+Seasons Subdomain
+Smoke Subdomain
+Souls Subdomain
+Storms Subdomain
+Tactics Subdomain
+Thievery Subdomain
+Thought Subdomain
+Toil Subdomain
+Trade Subdomain
+Undead Subdomain
+Wards Subdomain
+Wind Subdomain
 
 #Block: Mods to Core Domains:
 Air.MOD							PREMULT:1,[PREDOMAIN:1,Air],[PREVARLT:AirDomain,1]																																																		DEFINE:AirDomain|1
