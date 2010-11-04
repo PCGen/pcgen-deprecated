@@ -2,6 +2,7 @@ To Do List of Pending and remaining items for the APG.
 
 # Abilities
 pfapg_abilities_traits.lst - Need to implement all the TRAITS from Campaign, Regional, Racial and Religion. No Bonuses are currently being implemented. This is reflected by the "Not Implemented. " Comment in the Description.
+- Looks to be done. - AM
 pfapg_abilities_racial.lst - Most of the racial favored class bonuses are unimplemented // They now show up on the OS.
 
 ##Class

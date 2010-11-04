@@ -8,7 +8,7 @@ pfapg_abilities_traits.lst: Pass
 pfapg_classes_base.lst: Pass
 pfapg_classes_prestige.lst: Pass
 pfapg_companion_mods.lst: Pass
-pfapg_domains.lst: Pass. Sourcepage numbers need to be reviewed and corrected.
+pfapg_domains.lst: Pass. Sourcepage numbers need to be reviewed and corrected. - done AM 11/4
 pfapf_equip_x.lst: Pass
 pfapg_feats.lst: Pass
 pfapf_kits_x.lst: Pass
