@@ -39,6 +39,7 @@ CLASS:pfbb_classes_monster_specific.lst
 KIT:pfbb_kits_races.lst
 RACE:pfbb_races.lst
 
+FEAT:pfbb_feat_mods.lst
 #
 # End
 #
