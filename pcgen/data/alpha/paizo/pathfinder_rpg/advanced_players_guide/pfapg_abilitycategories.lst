@@ -125,6 +125,7 @@ ABILITYCATEGORY:Weapon Master Chosen Weapon	VISIBLE:QUALIFY	EDITABLE:YES		EDITPO
 ABILITYCATEGORY:Archer Trick Shot Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ArcherTrickShot													PLURAL:Archer Trick Shot Selections		DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Expanded Repertoire Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ExpandedRepertoire													PLURAL:Expanded Repertoire Selections	DISPLAYLOCATION:Class Abilities
 
+ABILITYCATEGORY:Beastmaster Companion Choice	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:BeastmasterCompanionChoice											PLURAL:Beastmaster Companion Choices	DISPLAYLOCATION:Class Abilities
 
 # Traits Sub Selections
 ABILITYCATEGORY:Campaign Trait Choice	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TraitCampaignChoice													PLURAL:Campaign Trait Choices			DISPLAYLOCATION:Racial Abilities
