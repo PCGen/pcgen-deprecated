@@ -1,5 +1,5 @@
 advanced_players_guide.pcc: Pass
-pfapg_abilities_archetypes.lst: Pass. I don't see sourcepage numbers. Not sure if they are required here.
+pfapg_abilities_archetypes.lst: Pass. I don't see sourcepage numbers. Not sure if they are required here.- done AM 11/4
 pfapg_abilities_class_common.lst: Pass.
 pfapg_abilities_class.lst: Pass
 pfapg_abilities_companions.lst: Pass
