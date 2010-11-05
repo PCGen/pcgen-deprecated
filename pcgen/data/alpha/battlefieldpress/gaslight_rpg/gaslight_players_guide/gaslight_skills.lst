@@ -64,7 +64,7 @@ Ride						KEYSTAT:DEX											TYPE:Dexterity.LevelMod				SOURCEPAGE:p.148
 Search					KEYSTAT:INT											TYPE:Intelligence.LevelMod				SOURCEPAGE:p.149
 Sense Motive				KEYSTAT:WIS											TYPE:Wisdom.LevelMod					SOURCEPAGE:p.149
 Sleight of Hand				KEYSTAT:DEX	USEUNTRAINED:NO	ACHECK:YES						TYPE:Dexterity.LevelMod				SOURCEPAGE:p.150
-Speak Language						USEUNTRAINED:NO								TYPE:None.Language			SOURCEPAGE:p.150	CHOOSE:LANGUAGE|Spoken
+Speak Language						USEUNTRAINED:NO								TYPE:None.Language			SOURCEPAGE:p.150				BONUS:VAR|LangSpoken|skillinfo("TOTALRANK","Speak Language")
 Stealth					KEYSTAT:DEX				ACHECK:YES						TYPE:Dexterity.LevelMod				SOURCEPAGE:p.151
 Survival					KEYSTAT:WIS											TYPE:Wisdom.LevelMod					SOURCEPAGE:p.152
 Treat Injury				KEYSTAT:WIS											TYPE:Wisdom.LevelMod					SOURCEPAGE:p.153

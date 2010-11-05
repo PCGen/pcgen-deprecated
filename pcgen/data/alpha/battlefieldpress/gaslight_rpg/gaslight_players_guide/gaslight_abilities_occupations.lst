@@ -4,7 +4,7 @@ SOURCELONG:Gaslight - Players Guide	SOURCESHORT:Gaslight	SOURCEWEB:www.battlefie
 
 ###Block: Wealth
 # Ability Name	Category of Ability	Type				Visible	Define			Bonus to Ability Pool			Modify VAR				Source Page
-Starting Wealth	CATEGORY:Wealth		TYPE:StartingWealth	VISIBLE:NO	DEFINE:WealthBonus|0	BONUS:ABILITYPOOL|Wealth Roll|1	BONUS:VAR|Wealth|WealthBonus	SOURCEPAGE:p.193
+Starting Wealth	CATEGORY:Wealth		TYPE:StartingWealth	VISIBLE:NO	DEFINE:WealthBonus|0	BONUS:ABILITYPOOL|Wealth Roll|TL	BONUS:VAR|Wealth|WealthBonus	SOURCEPAGE:p.193
 
 ###Block: Wealth Roll
 # Ability Name	Category of Ability	Type				Visible		Modify VAR			Source Page
