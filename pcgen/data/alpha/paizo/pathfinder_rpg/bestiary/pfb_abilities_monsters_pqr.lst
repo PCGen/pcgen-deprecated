@@ -25,8 +25,7 @@ Special Memory Loss Arrow	KEY:Memory Loss ~ Pixie		CATEGORY:Special Ability	TYPE
 Special Sleep Arrow		KEY:Sleep ~ Pixie			CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural			DESC:Sleep; The target must succeed on a DC %1 Will save or fall asleep for 5 minutes.|SpecialArrowDC																																												SOURCEPAGE:p.228
 
 ###Block: Pseudodragon abilities
-# Ability Name	Unique Key				Category of Ability		Type								Define				Description																			Modify VAR								Source Page
-Poison		KEY:Poison ~ Pseudodragon	CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.AttackOption	DEFINE:PoisonDC|10+(HD/2)+CON	DESC:Sting-injury; save Fort DC %1; frequency 1/minute for 10 minutes; effect sleep for 1 minute; cure 1 save.|PoisonDC	BONUS:VAR|PoisonDC|2|PREFEAT:1,Ability Focus (Poison)	SOURCEPAGE:p.229
+# Poison in Core Bestiary
 
 ###Block: Purple Worm abilities
 # Ability Name	Unique Key				Category of Ability		Type						Define				Description																						Modify VAR								Source Page		Aspects

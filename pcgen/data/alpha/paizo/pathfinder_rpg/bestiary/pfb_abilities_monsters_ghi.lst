@@ -146,9 +146,7 @@ Breath Weapon	KEY:Breath Weapon ~ Hell Hound	CATEGORY:Special Ability	TYPE:Speci
 Fire			KEY:Fire ~ Hell Hound			CATEGORY:Special Ability	TYPE:SpecialAttack			DEFINE:HellHoundDice|1																		DESC:A Hell Hound's bite deals an additional %1d6 fire damage.|HellHoundDice																									SOURCEPAGE:p.173	ASPECT:Ability Benefit|(%1d6/bite)|HellHoundDice
 
 ###Block: Homunculus Abilities
-# Ability Name	Unique Key					Category of Ability		Type								Define						Description																					Modify VAR										Source Page		Aspects								Description of the Benefits
-Poison		KEY:Poison ~ Homunculus			CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary			DEFINE:HomunculusPoisonDC|10+(HD/2)+CON	DESC:Bite--injury; save Fort DC %1; frequency 1/minute for 60 minutes; effect sleep for 1 minute; cure 1 save.|HomunculusPoisonDC	BONUS:VAR|HomunculusPoisonDC|2|PREFEAT:1,Ability Focus (Poison)	SOURCEPAGE:p.176	ASPECT:Ability Benefit|(DC %1)|HomunculusPoisonDC
-Telepathic Link	KEY:Telepathic Link ~ Homunculus	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Communicate								DESC:A homunculus cannot speak, but the process of creating one links it telepathically with its creator.																SOURCEPAGE:p.176										BENEFIT:A homunculus cannot speak, but the process of creating one links it telepathically with its creator. A homunculus knows what its master knows and can convey to him or her everything it sees and hears, out to a distance of 1,500 feet.
+# Poison & Telepathic Link in Core Bestiary
 
 # Horse Moved to Core Bestiary
 
