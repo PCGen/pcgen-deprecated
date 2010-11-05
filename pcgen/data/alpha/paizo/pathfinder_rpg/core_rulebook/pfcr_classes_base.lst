@@ -316,7 +316,7 @@ CLASS:Ranger	SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=1|LEVEL=2|LEVEL=3|
 9	CAST:0,2,1												ABILITY:Special Ability|AUTOMATIC|Evasion|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerEvasion
 10	CAST:0,2,1,0
 11	CAST:0,2,1,1											ABILITY:Special Ability|AUTOMATIC|Quarry|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerQuarry
-12	CAST:0,2,2,1											ABILITY:Special Ability|AUTOMATIC|Camouflage|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerCamoflage
+12	CAST:0,2,2,1											ABILITY:Special Ability|AUTOMATIC|Camouflage|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerCamouflage
 13	CAST:0,3,2,1,0
 14	CAST:0,3,2,1,1
 15	CAST:0,3,2,2,1
