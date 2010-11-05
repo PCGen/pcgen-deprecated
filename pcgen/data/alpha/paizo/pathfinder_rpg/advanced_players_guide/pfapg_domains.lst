@@ -2,8 +2,6 @@
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Andrew Maitland and Paul Shipley
 
-# Blocker Bug Noted: VARs stay assigned when Domain is removed. CODE-372
-
 ###Block: Subdomains
 # Domain Name		Required AL			Multiple Requirements																		Class Skill				Ability																																			Define																										Save checks bonus								Add to base move			Modify VAR																																									Source Page		Description																												List of Domain Spells by Level
 Agathion Subdomain	PREALIGN:1,LG,NG,CG	PREMULT:1,[PREDOMAIN:1,Agathion Subdomain],[PREVARLT:GoodDomain,1]															ABILITY:Special Ability|AUTOMATIC|Touch of Good ~ Good Domain	ABILITY:Special Ability|AUTOMATIC|Protective Aura ~ Agathion Subdomain|PREVARGTEQ:DomainGoodLVL,8									DEFINE:GoodDomain|0	DEFINE:DomainGoodLVL|0	DEFINE:DomainGoodDC|0	DEFINE:DomainGoodTimes|0																										BONUS:VAR|GoodDomain|1	BONUS:VAR|DomainGoodLVL|DomainLVL	BONUS:VAR|DomainGoodDC|10+(DomainGoodLVL/2)+CHA	BONUS:VAR|DomainGoodTimes|DomainPowerTimes																	SOURCEPAGE:p.86																														SPELLLEVEL:DOMAIN|Agathion Subdomain=1|Shield of Faith|Agathion Subdomain=2|Align Weapon (Good Only)|Agathion Subdomain=3|Tongues|Agathion Subdomain=4|Holy Smite|Agathion Subdomain=5|Dispel Evil|Agathion Subdomain=6|Planar Ally (Agathions Only)|Agathion Subdomain=7|Holy Word|Agathion Subdomain=8|Holy Aura|Agathion Subdomain=9|Summon Monster IX (Good Spell Only)
