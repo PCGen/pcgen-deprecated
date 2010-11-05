@@ -215,8 +215,11 @@ ABILITYCATEGORY:Internal	VISIBLE:NO		EDITABLE:NO		EDITPOOL:NO		FRACTIONALPOOL:NO
 ###COMMENT: Internal Category is for all hidden abilities.
 
 
-PREVIEWDIR:d20/gaslight
-PREVIEWSHEET:gaslight_statblock.htm
+PREVIEWDIR:d20/modern
+PREVIEWSHEET:Standard.htm
+
+#PREVIEWDIR:d20/gaslight
+#PREVIEWSHEET:gaslight_statblock.htm
 
 # DIESIZES values are used by the HITEDIE tag to bump up/down HD per level.
 DIESIZES:1,2,3,MIN=4,6,8,10,MAX=12,20,100,1000 
