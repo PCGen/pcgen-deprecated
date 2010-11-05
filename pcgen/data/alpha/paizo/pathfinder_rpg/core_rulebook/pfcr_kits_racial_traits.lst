@@ -4,7 +4,7 @@ SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:
 
 ###Block: These Set the Default Racial Traits
 #Block: Dwarf Racial
-STARTPACK:Dwarf Racial Trait Default	VISIBLE:NO	APPLY:INSTANT
+STARTPACK:Dwarf Racial Trait Default	VISIBLE:QUALIFY	APPLY:INSTANT	PRERACE:1,RACESUBTYPE=Dwarf
 ABILITY:CATEGORY=Dwarf Racial Trait|Defensive Training ~ Dwarf
 ABILITY:CATEGORY=Dwarf Racial Trait|Greed ~ Dwarf
 ABILITY:CATEGORY=Dwarf Racial Trait|Hardy ~ Dwarf
@@ -15,14 +15,14 @@ ABILITY:CATEGORY=Dwarf Racial Trait|Steady ~ Dwarf
 ABILITY:CATEGORY=Dwarf Racial Trait|Weapon Familiarity ~ Dwarf
 
 #Block: Elf Racial
-STARTPACK:Elf Racial Trait Default	VISIBLE:NO	APPLY:INSTANT
+STARTPACK:Elf Racial Trait Default	VISIBLE:QUALIFY	APPLY:INSTANT	PRERACE:1,RACESUBTYPE=Elf
 ABILITY:CATEGORY=Elf Racial Trait|Elven Immunities ~ Elf
 ABILITY:CATEGORY=Elf Racial Trait|Elven Magic ~ Elf
 ABILITY:CATEGORY=Elf Racial Trait|Weapon Familiarity ~ Elf
 ABILITY:CATEGORY=Elf Racial Trait|Keen Senses ~ Elf
 
 #Block: Gnome Racial
-STARTPACK:Gnome Racial Trait Default	VISIBLE:NO	APPLY:INSTANT
+STARTPACK:Gnome Racial Trait Default	VISIBLE:QUALIFY	APPLY:INSTANT	PRERACE:1,RACESUBTYPE=Gnome
 ABILITY:CATEGORY=Gnome Racial Trait|Defensive Training ~ Gnome
 ABILITY:CATEGORY=Gnome Racial Trait|Gnome Magic ~ Gnome
 ABILITY:CATEGORY=Gnome Racial Trait|Hatred ~ Gnome
@@ -32,20 +32,20 @@ ABILITY:CATEGORY=Gnome Racial Trait|Keen Senses ~ Gnome
 ABILITY:CATEGORY=Gnome Racial Trait|Weapon Familiarity ~ Gnome
 
 #Block: Half-Elf Racial
-STARTPACK:Half Elf Racial Trait Default	VISIBLE:NO	APPLY:INSTANT
+STARTPACK:Half Elf Racial Trait Default	VISIBLE:QUALIFY	APPLY:INSTANT	PRERACE:1,Half-Elf
 ABILITY:CATEGORY=Half Elf Racial Trait|Adaptability ~ Half-Elf
 ABILITY:CATEGORY=Half Elf Racial Trait|Multitalented ~ Half-Elf
 ABILITY:CATEGORY=Half Elf Racial Trait|Elven Immunities ~ Half-Elf
 ABILITY:CATEGORY=Half Elf Racial Trait|Keen Senses ~ Half-Elf
 
 #Block: Half-Orc Racial
-STARTPACK:Half Orc Racial Trait Default	VISIBLE:NO	APPLY:INSTANT
+STARTPACK:Half Orc Racial Trait Default	VISIBLE:QUALIFY	APPLY:INSTANT	PRERACE:1,Half-Orc
 ABILITY:CATEGORY=Half Orc Racial Trait|Intimidating ~ Half-Orc
 ABILITY:CATEGORY=Half Orc Racial Trait|Orc Ferocity ~ Half-Orc
 ABILITY:CATEGORY=Half Orc Racial Trait|Weapon Familiarity ~ Orc
 
 #Block: Halfling Racial
-STARTPACK:Halfling Racial Trait Default	VISIBLE:NO	APPLY:INSTANT
+STARTPACK:Halfling Racial Trait Default	VISIBLE:QUALIFY	APPLY:INSTANT	PRERACE:1,RACESUBTYPE=Halfling
 ABILITY:CATEGORY=Halfling Racial Trait|Fearless ~ Halfling
 ABILITY:CATEGORY=Halfling Racial Trait|Halfling Luck ~ Halfling
 ABILITY:CATEGORY=Halfling Racial Trait|Keen Senses ~ Halfling
@@ -53,14 +53,14 @@ ABILITY:CATEGORY=Halfling Racial Trait|Sure-Footed ~ Halfling
 ABILITY:CATEGORY=Halfling Racial Trait|Weapon Familiarity ~ Halfling
 
 #Block: Human Racial
-STARTPACK:Human Racial Trait Default	VISIBLE:NO	APPLY:INSTANT
+STARTPACK:Human Racial Trait Default	VISIBLE:QUALIFY	APPLY:INSTANT	PRERACE:1,RACESUBTYPE=Human
 ABILITY:CATEGORY=Human Racial Trait|Bonus Feat ~ Human
 ABILITY:CATEGORY=Human Racial Trait|Skilled ~ Human
 
 #Block: Class Auto's
 
 # Monk Flurry of Blows Issue
-STARTPACK:Monk Flurry of Blows	VISIBLE:NO	APPLY:INSTANT	EQUIPBUY:0
+STARTPACK:Monk Flurry of Blows	VISIBLE:QUALIFY	APPLY:INSTANT	EQUIPBUY:0
 GEAR:Flurry of Blows	LOCATION:Unarmed
 
 
