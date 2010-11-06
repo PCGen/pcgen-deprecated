@@ -1,8 +1,8 @@
-# CVS $Revision: 12348 $ $Author: eddyanthony $ -- Mon Mar 15 11:43:24 2010 -- reformated by prettylst.pl v1.39 (build 11455)
-SOURCELONG:Kingmaker Player's Guide	SOURCESHORT:KMPG	SOURCEWEB:http://paizo.com/store/paizo/pathfinder/adventurePath/kingmaker/v5748btpy8dqh	SOURCEDATE:2010-03
+# CVS $Revision: 12348 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Kingmaker Player's Guide	SOURCESHORT:KPG	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/kingmaker/v5748btpy8dqh	SOURCEDATE:2010-03
 # Original Entry by: Stefan Radermacher
 
-STARTPACK:Character Traits	TYPE:Internal	KEY:APCT	VISIBLE:NO
+STARTPACK:Character Traits	TYPE:Internal	VISIBLE:NO	KEY:APCT
 TEMPLATE:Adventure Path Character Traits
 ABILITY:CATEGORY=Traits|No Traits ~ Trait
 ABILITY:CATEGORY=Campaign Traits|No Campaign Trait ~ Trait

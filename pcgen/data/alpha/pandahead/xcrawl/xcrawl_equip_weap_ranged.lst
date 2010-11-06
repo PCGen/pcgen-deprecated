@@ -1,8 +1,8 @@
-# CVS $Revision$ $Author$ -- Sat May 17 17:46:58 2008 -- reformated by prettylst.pl v1.38 (build 5869)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:XCrawl: Adventures in the Xtreme Dungeon Crawl League	SOURCESHORT:XCrawl	SOURCEWEB:http://www.pandahead.com/Xcrawl/index.php
 
 ##Block:Simple weapons-ranged
-# Equipment Name		Output Name					Required Proficiency				Type												Contains				Cost		Weight	Required Stat	Critical Hit Multiplier	Critical Hit Range	Damage	Range		Size		Special Property
+# Equipment Name		Output Name					Required Weapon Proficiency			Type												Contains				Cost		Weight	Required Stat	Critical Hit Multiplier	Critical Hit Range	Damage	Range		Size		Special Property
 Slingshot									PROFICIENCY:WEAPON|Slingshot			TYPE:Weapon.Simple.Ranged.Standard.Bludgeoning.Projectile.Container	CONTAINS:UNLIM|SlingStone=1	COST:10	WT:2					CRITMULT:x2			CRITRANGE:1			DAMAGE:1d4	RANGE:30	SIZE:S
 
 ##Block:Martial weapons-ranged

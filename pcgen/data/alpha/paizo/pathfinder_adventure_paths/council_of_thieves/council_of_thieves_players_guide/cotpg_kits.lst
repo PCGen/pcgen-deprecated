@@ -1,5 +1,5 @@
-# CVS $Revision: 12348 $ $Author: eddyanthony $ -- Mon Apr 19 10:33:00 2010 -- reformated by prettylst.pl v1.39 (build 11455)
-SOURCELONG:Council of Thieves Player's Guide	SOURCESHORT:CTPG	SOURCEWEB:http://paizo.com/store/paizo/pathfinder/adventurePath/councilOfThieves/v5748btpy89m7	SOURCEDATE:2009-08
+# CVS $Revision: 12348 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Council of Thieves Player's Guide	SOURCESHORT:CoTPG	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/councilOfThieves/v5748btpy89m7	SOURCEDATE:2009-08
 # Original Entry by: Stefan Radermacher
 
 STARTPACK:Character Traits	TYPE:Internal	VISIBLE:NO
