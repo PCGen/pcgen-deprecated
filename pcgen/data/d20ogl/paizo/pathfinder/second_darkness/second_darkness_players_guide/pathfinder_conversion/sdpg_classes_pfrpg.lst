@@ -1,5 +1,5 @@
-# CVS $Revision: 11088 $ $Author: eddyanthony $ -- Wed Nov 25 16:12:12 2009 -- reformated by prettylst.pl v1.39 (build 10232)
-SOURCELONG:Pathfinder Companion: Second Darkness Player's Guide	SOURCESHORT:SDPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderCompanion/v5748btpy84en	SOURCEDATE:2008-08
+# CVS $Revision: 11088 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Second Darkness Player's Guide	SOURCESHORT:SDPG	SOURCEWEB:http://paizo.com/pathfinder/companion/35E/v5748btpy84en	SOURCEDATE:2008-08
 
 # Class Name		Clear Prereq.	Required AL				Req. Att.	Required Feat						Required Skill
 CLASS:Liberator.MOD	PRE:.CLEAR		PREALIGN:NG,CG,TN,CN,NE,CE	PREATT:5	PREFEAT:3,Improved Sunder,Power Attack,Stealthy	PRESKILL:2,Escape Artist=3,Disable Device=3

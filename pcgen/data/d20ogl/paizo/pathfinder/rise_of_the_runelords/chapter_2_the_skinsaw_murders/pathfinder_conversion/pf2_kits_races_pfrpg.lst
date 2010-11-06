@@ -1,5 +1,5 @@
-# CVS $Revision: 11684 $ $Author: eddyanthony $ -- Mon Mar 31 10:57:37 2008 -- reformated by prettylst.pl v1.38 (build 5580)
-SOURCELONG:Rise of the Runelords - Chapter 2: The Skinsaw Murders	SOURCESHORT:PF2	SOURCEWEB:http://paizo.com/pathfinder/v5748btpy8029	SOURCEDATE:2007-10
+# CVS $Revision: 11684 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Rise of the Runelords, Chapter 2: The Skinsaw Murders	SOURCESHORT:PF2	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/riseOfTheRunelords/v5748btpy8029	SOURCEDATE:2007-10
 # Original Entry by: Stefan Radermacher
 
 STARTPACK:Carrionstorm Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Carrionstorm]	SOURCEPAGE:p.83

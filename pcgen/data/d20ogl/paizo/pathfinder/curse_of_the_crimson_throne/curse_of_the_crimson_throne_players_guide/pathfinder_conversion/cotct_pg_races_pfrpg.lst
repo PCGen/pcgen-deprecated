@@ -1,5 +1,5 @@
-# CVS $Revision: 12010 $ $Author: eddyanthony $ -- Sat May 29 15:13:43 2010 -- reformated by prettylst.pl v1.39 (build 11455)
-SOURCELONG:Curse of the Crimson Throne Player's Guide	SOURCESHORT:CCTPG	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/v5748btpy806v	SOURCEDATE:2008-02
+# CVS $Revision: 12010 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Curse of the Crimson Throne Player's Guide	SOURCESHORT:CotCTPG	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/curseOfTheCrimsonThrone/v5748btpy8bdb	SOURCEDATE:2008-02
 
 
 # Race Name			Output Name		Starting Feats	Size		Move				Face/Space	Reach		Vision					Bonus to Ability Pool										Combat bonus						Bonus to skill				Stat bonus																	Modify VAR				Ability										Nb Legs	Nb Hands	Natural Attacks													Monster Class Name and Starting Level	Main Race Type		Type				Source Page		Apply Kit

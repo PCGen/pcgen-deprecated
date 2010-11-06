@@ -1,5 +1,5 @@
-# CVS $Revision: 11088 $ $Author: eddyanthony $ -- Tue Aug 19 23:22:56 2008 -- reformated by prettylst.pl v1.38 (build 7233)
-SOURCELONG:Second Darkness - Chapter 1: Shadow in the Sky	SOURCESHORT:PF13	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/v5748btpy84em	SOURCEDATE:2008-08
+# CVS $Revision: 11088 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Second Darkness, Chapter 1: Shadow in the Sky	SOURCESHORT:PF13	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/secondDarkness/v5748btpy84em	SOURCEDATE:2008-08
 
 
 STARTPACK:Darklands Sentinel Default	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Darklands Sentinel],[!PRERACE:1,%]	SOURCEPAGE:p. 80

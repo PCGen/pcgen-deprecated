@@ -1,5 +1,5 @@
-# CVS $Revision: 11690 $ $Author: eddyanthony $ -- Tue Apr 27 12:59:12 2010 -- reformated by prettylst.pl v1.39 (build 11455)
-SOURCELONG:Rise of the Runelords - Chapter 3: The Hook Mountain Massacre	SOURCESHORT:PF3	SOURCEWEB:http://paizo.com/pathfinder/v5748btpy80e8	SOURCEDATE:2007-08
+# CVS $Revision: 11690 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Rise of the Runelords, Chapter 3: The Hook Mountain Massacre	SOURCESHORT:PF3	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/riseOfTheRunelords/v5748btpy80e8	SOURCEDATE:2007-08
 
 # Race Name			Bonus to skill										Modify VAR																																	Racial HD Class Skills	Ability												Define				Hit Dice Size	Monster Class Name and Starting Level
 Smoke Haunt.MOD		BONUS:SKILL|Perception|2|TYPE=Racial																																								MONCSKILL:.CLEAR		ABILITY:Special Ability|AUTOMATIC|Flight Maneuverability				DEFINE:Maneuverability|5
