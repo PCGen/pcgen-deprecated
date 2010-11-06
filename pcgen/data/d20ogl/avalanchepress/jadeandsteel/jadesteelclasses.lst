@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Feb  5 21:02:36 2009 -- reformated by prettylst.pl v1.39 (build 9132)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Avalanche Press - Jade and Steel	SOURCESHORT:JadeSteel	SOURCEWEB:http://www.avalanchepress.com
 
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus											Combat bonus
@@ -37,6 +37,7 @@ CLASS:Dim Mak Practitioner	STARTSKILLPTS:4	CSKILL:Balance|Climb|Concentration|TY
 
 # Class Name	Unique Key		Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus											Combat bonus
 CLASS:Diviner	KEY:Diviner ~JS	HD:4		TYPE:PC.Prestige	ABB:Div		MAXLEVEL:10	SOURCEPAGE:p.15	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL/2|TYPE=Base.REPLACE
+
 # Class Name	Required Feat				Required Skill					Required Spell School
 CLASS:Diviner ~JS	PREFEAT:1,Spell Focus (Divination)	PRESKILL:2,Knowledge (Arcana)=8,Scry=8	PRESPELLSCHOOL:7,Divination=3
 # Class Name	Skill Pts/Lvl	Class Skill

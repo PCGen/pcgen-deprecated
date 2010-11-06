@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Feb  6 23:46:57 2009 -- reformated by prettylst.pl v1.39 (build 9132)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Heroes of High Favor - Dwarves	SOURCESHORT:HoHF-D	SOURCEWEB:www.badaxegames.com	SOURCEDATE:2002-07
 
 #Block:Battle-Rager ------------------------------------------------------------
@@ -17,7 +17,7 @@ Captivate		CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	VISIBLE:YES
 Instill Fear	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	VISIBLE:YES
 
 ###Block:Rune-Priest ------------------------------------------------------------
-# Ability Name		Unique Key					Category of Ability		Type				Visible	Define					Description					ASPECT
+# Ability Name		Unique Key					Category of Ability		Type				Visible	Define					Description					Aspects
 Runecraft									CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES	DEFINE:RunecraftBonus|0			DESC:+%1|RunecraftBonus			ASPECT:Ability Benefit|+%1|RunecraftBonus
 Divine Inspiration	KEY:Rune-Priest Divine Inspiration	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES	DEFINE:DivineInspirationBonus|0	DESC:+%1|DivineInspirationBonus	ASPECT:Ability Benefit|+%1|DivineInspirationBonus
 
@@ -51,7 +51,7 @@ Quick and Quiet	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
 Tunnel Fighting	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES	DEFINE:TunnelFightWall|0	DESC:%1 Walls|TunnelFightWall
 
 ###Block:Artificer -------------------------------------------------------------
-# Ability Name		Category of Ability		Type				Visible	Define			Description			ASPECT
+# Ability Name		Category of Ability		Type				Visible	Define			Description			Aspects
 Magical Craftsman		CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
 Curse Resistance		CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
 Magical Familiarity	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
