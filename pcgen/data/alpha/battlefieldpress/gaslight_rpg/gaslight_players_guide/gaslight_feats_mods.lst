@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Aug 17 20:35:47 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Gaslight - Players Guide	SOURCESHORT:Gaslight	SOURCEWEB:www.battlefieldpress.com	SOURCEDATE:2009-12
 #Original Entry: Andrew Maitland
 
@@ -180,7 +180,7 @@ Sideways Trip.MOD																													SOURCEPAGE:p.186
 Silhouette.MOD																													SOURCEPAGE:p.186
 Silent Spell.MOD																													SOURCEPAGE:p.186
 Simple Weapons Proficiency.MOD																										SOURCEPAGE:p.186
-Spiritual Heritage.MOD			TYPE:Initial																							SOURCEPAGE:p.187
+Spiritual Heritage.MOD				TYPE:Initial																						SOURCEPAGE:p.187
 #Skill Focus.MOD								SOURCEPAGE:p.187
 Skip Shot.MOD																													SOURCEPAGE:p.187
 Spell Penetration.MOD																												SOURCEPAGE:p.187
@@ -304,7 +304,7 @@ Fortune Teller ~ Skill Focus (Sense Motive)					TYPE:Fortuneteller		VISIBLE:DISP
 Renown.MOD											TYPE:Fortuneteller
 
 # Hunter
-Skill Focus (Survival)									TYPE:Hunter.World_Traveler				VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Survival)
+Skill Focus (Survival)									TYPE:Hunter.World_Traveler	VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Survival)
 Skill Focus (Stealth)									TYPE:Hunter				VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Stealth)
 Far Shot.MOD										TYPE:Hunter
 Point Blank Shot.MOD									TYPE:Hunter

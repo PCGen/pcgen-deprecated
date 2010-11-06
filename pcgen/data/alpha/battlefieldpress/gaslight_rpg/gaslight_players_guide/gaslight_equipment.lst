@@ -1,4 +1,4 @@
-# CVS $Revision: 11656 $ $Author: eddyanthony $ -- Sun Apr 18 19:24:04 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 11656 $ $Author: eddyanthony $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Gaslight - Players Guide	SOURCESHORT:Gaslight	SOURCEWEB:www.battlefieldpress.com	SOURCEDATE:2009-12
 #Original Entry: Andrew Maitland
 # Source page is to the master chart as that is where all the details are held.
@@ -138,43 +138,43 @@ Range Pack (Standard)		OUTPUTNAME:[NAME] Range Pack															TYPE:Goods.Con
 Range Pack (Oversized)		OUTPUTNAME:[NAME] Range Pack															TYPE:Goods.Container.General																		CONTAINS:18|Any=18	COST:9	WT:3																																										SOURCEPAGE:p.218
 
 ###Block: Clothing
-# Equipment Name			Type				Cost		Weight	Source Page
-Bandana				TYPE:Goods.Clothing	COST:4			SOURCEPAGE:p.218
-Boots (Military)			TYPE:Goods.Clothing	COST:10	WT:3.5	SOURCEPAGE:p.218
-Boots (Cowboy)			TYPE:Goods.Clothing	COST:10	WT:3.5	SOURCEPAGE:p.218
-Boots (Custom)			TYPE:Goods.Clothing	COST:16	WT:3.5	SOURCEPAGE:p.218
-Cap (Broadcloth)			TYPE:Goods.Clothing	COST:5			SOURCEPAGE:p.218
-Dress					TYPE:Goods.Clothing	COST:7	WT:4		SOURCEPAGE:p.218
-Gloves				TYPE:Goods.Clothing	COST:7			SOURCEPAGE:p.218
-Hat (Derby)				TYPE:Goods.Clothing	COST:7	WT:.5		SOURCEPAGE:p.218
-Hat (Cowboy)			TYPE:Goods.Clothing	COST:8	WT:1		SOURCEPAGE:p.218
-Hat (Stetson)			TYPE:Goods.Clothing	COST:15	WT:1		SOURCEPAGE:p.218
-Hat (Lady's Feathered)		TYPE:Goods.Clothing	COST:9	WT:1		SOURCEPAGE:p.218
-Hat (Sombrero)			TYPE:Goods.Clothing	COST:9	WT:.5		SOURCEPAGE:p.218
-Overcoat (Cloth)			TYPE:Goods.Clothing	COST:12	WT:10		SOURCEPAGE:p.218
-Overcoat (Fur)			TYPE:Goods.Clothing	COST:14	WT:20		SOURCEPAGE:p.218
-Shirt (Average)			TYPE:Goods.Clothing	COST:5			SOURCEPAGE:p.218
-Shirt (Good)			TYPE:Goods.Clothing	COST:6			SOURCEPAGE:p.218
-Shirt (Women's/Good Quality)	TYPE:Goods.Clothing	COST:7			SOURCEPAGE:p.218
-Shoes (Men's or Women's)	TYPE:Goods.Clothing	COST:9	WT:2		SOURCEPAGE:p.218
-Skirt (Women's)			TYPE:Goods.Clothing	COST:9			SOURCEPAGE:p.218
-Slicker (Rain)			TYPE:Goods.Clothing	COST:9	WT:4.5	SOURCEPAGE:p.218
-Socks (One pair)			TYPE:Goods.Clothing	COST:2			SOURCEPAGE:p.218
-Suit (men's/plain)		TYPE:Goods.Clothing	COST:10	WT:6		SOURCEPAGE:p.218
-Suit (men's/fancy)		TYPE:Goods.Clothing	COST:14	WT:6		SOURCEPAGE:p.218
-Suit (men's or women's)		TYPE:Goods.Clothing	COST:14	WT:6		SOURCEPAGE:p.218
-Trousers				TYPE:Goods.Clothing	COST:7	WT:3		SOURCEPAGE:p.218
-Wrap (women's)			TYPE:Goods.Clothing	COST:14			SOURCEPAGE:p.218
-Vest					TYPE:Goods.Clothing	COST:6			SOURCEPAGE:p.218
+# Equipment Name			Output Name				Type							Cost		Weight	Source Page
+Bandana									TYPE:Goods.Clothing				COST:4			SOURCEPAGE:p.218
+Boots (Military)								TYPE:Goods.Clothing				COST:10	WT:3.5	SOURCEPAGE:p.218
+Boots (Cowboy)								TYPE:Goods.Clothing				COST:10	WT:3.5	SOURCEPAGE:p.218
+Boots (Custom)								TYPE:Goods.Clothing				COST:16	WT:3.5	SOURCEPAGE:p.218
+Cap (Broadcloth)								TYPE:Goods.Clothing				COST:5			SOURCEPAGE:p.218
+Dress										TYPE:Goods.Clothing				COST:7	WT:4		SOURCEPAGE:p.218
+Gloves									TYPE:Goods.Clothing				COST:7			SOURCEPAGE:p.218
+Hat (Derby)									TYPE:Goods.Clothing				COST:7	WT:.5		SOURCEPAGE:p.218
+Hat (Cowboy)								TYPE:Goods.Clothing				COST:8	WT:1		SOURCEPAGE:p.218
+Hat (Stetson)								TYPE:Goods.Clothing				COST:15	WT:1		SOURCEPAGE:p.218
+Hat (Lady's Feathered)							TYPE:Goods.Clothing				COST:9	WT:1		SOURCEPAGE:p.218
+Hat (Sombrero)								TYPE:Goods.Clothing				COST:9	WT:.5		SOURCEPAGE:p.218
+Overcoat (Cloth)								TYPE:Goods.Clothing				COST:12	WT:10		SOURCEPAGE:p.218
+Overcoat (Fur)								TYPE:Goods.Clothing				COST:14	WT:20		SOURCEPAGE:p.218
+Shirt (Average)								TYPE:Goods.Clothing				COST:5			SOURCEPAGE:p.218
+Shirt (Good)								TYPE:Goods.Clothing				COST:6			SOURCEPAGE:p.218
+Shirt (Women's/Good Quality)						TYPE:Goods.Clothing				COST:7			SOURCEPAGE:p.218
+Shoes (Men's or Women's)						TYPE:Goods.Clothing				COST:9	WT:2		SOURCEPAGE:p.218
+Skirt (Women's)								TYPE:Goods.Clothing				COST:9			SOURCEPAGE:p.218
+Slicker (Rain)								TYPE:Goods.Clothing				COST:9	WT:4.5	SOURCEPAGE:p.218
+Socks (One pair)								TYPE:Goods.Clothing				COST:2			SOURCEPAGE:p.218
+Suit (men's/plain)							TYPE:Goods.Clothing				COST:10	WT:6		SOURCEPAGE:p.218
+Suit (men's/fancy)							TYPE:Goods.Clothing				COST:14	WT:6		SOURCEPAGE:p.218
+Suit (men's or women's)							TYPE:Goods.Clothing				COST:14	WT:6		SOURCEPAGE:p.218
+Trousers									TYPE:Goods.Clothing				COST:7	WT:3		SOURCEPAGE:p.218
+Wrap (women's)								TYPE:Goods.Clothing				COST:14			SOURCEPAGE:p.218
+Vest										TYPE:Goods.Clothing				COST:6			SOURCEPAGE:p.218
 
 # Fantasy Outfits to Keep Window Pop up Happy.
-Outfit (Artisan's)	OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:1	WT:4		SOURCEPAGE:Equipment.rtf
-Outfit (Entertainer's)	OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:3	WT:4		SOURCEPAGE:Equipment.rtf
-Outfit (Explorer's)	OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:10	WT:8		SOURCEPAGE:Equipment.rtf
-Outfit (Monk's)		OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:5	WT:2		SOURCEPAGE:Equipment.rtf
-Outfit (Peasant's)	OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:0.1	WT:2		SOURCEPAGE:Equipment.rtf
-Outfit (Scholar's)	OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:5	WT:6		SOURCEPAGE:Equipment.rtf
-Outfit (Traveler's)	OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:1	WT:5		SOURCEPAGE:Equipment.rtf
+Outfit (Artisan's)		OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:1	WT:4		SOURCEPAGE:Equipment.rtf
+Outfit (Entertainer's)		OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:3	WT:4		SOURCEPAGE:Equipment.rtf
+Outfit (Explorer's)		OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:10	WT:8		SOURCEPAGE:Equipment.rtf
+Outfit (Monk's)			OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:5	WT:2		SOURCEPAGE:Equipment.rtf
+Outfit (Peasant's)		OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:0.1	WT:2		SOURCEPAGE:Equipment.rtf
+Outfit (Scholar's)		OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:5	WT:6		SOURCEPAGE:Equipment.rtf
+Outfit (Traveler's)		OUTPUTNAME:[NAME] Outfit	TYPE:Goods.Clothing.Resizable.Starting	COST:1	WT:5		SOURCEPAGE:Equipment.rtf
 
 
 

@@ -1,11 +1,11 @@
-# CVS $Revision: 12965 $ $Author: amaitland $ -- Sun Feb 28 12:12:14 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 12965 $ $Author: amaitland $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Gaslight - Players Guide	SOURCESHORT:Gaslight	SOURCEWEB:www.battlefieldpress.com	SOURCEDATE:2009-12
 #Original Entry: Andrew Maitland
 
 
 ###Block: Automatic Proficiencies for all classes
-# Ability Name			Category of Ability		Visible	Automatically Gained Weapon Prof.
-All Automatic Proficiencies	CATEGORY:Special Ability	VISIBLE:NO	AUTO:WEAPONPROF|Unarmed Strike	TEMPLATE:World Law ~ Skills
+# Ability Name			Category of Ability		Visible	Template				Automatically Gained Weapon Prof.
+All Automatic Proficiencies	CATEGORY:Special Ability	VISIBLE:NO	TEMPLATE:World Law ~ Skills	AUTO:WEAPONPROF|Unarmed Strike
 
 ###Block: Swap a Feat for a Racial Talent
 # Ability Name						Category of Ability	Type																					Visible		Required Race		Stackable?	Multiple?	Choose		Bonus to Ability Pool
