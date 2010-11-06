@@ -206,7 +206,7 @@ Power Attack (One-Handed)	VISIBLE:NO	BONUS:WEAPON|TOHIT|-PowerAttackModifier|TYP
 Power Attack (Two-Handed)	VISIBLE:NO	BONUS:WEAPON|TOHIT|-PowerAttackModifier|TYPE=Temporary|PREAPPLY:Weapon,Melee,TwoHanded;OneHanded	BONUS:WEAPON|DAMAGE|3*PowerAttackModifier|TYPE=Temporary|PREAPPLY:Weapon,Melee,TwoHanded;OneHanded
 
 ###Block: Modified Feats for Sorcerer Bloodlines
-# Feat Name				Type																Allowed Companions
+# Feat Name				Type
 Arcane Strike.MOD			TYPE:DestinedBloodline
 Augment Summoning.MOD		TYPE:AbyssalBloodline
 Blind-Fight.MOD			TYPE:DraconicBloodline.InfernalBloodline
@@ -247,16 +247,17 @@ Toughness.MOD			TYPE:DraconicBloodline.UndeadBloodline
 Weapon Finesse.MOD		TYPE:CelestialBloodline.ElementalBloodline
 Weapon Focus.MOD			TYPE:DestinedBloodline
 
-# Improved Familiar Block:
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Bat/Celestial),Familiar (Cat/Celestial),Familiar (Hawk/Celestial),Familiar (Lizard/Celestial),Familiar (Monkey/Celestial),Familiar (Owl/Celestial),Familiar (Rat/Celestial),Familiar (Raven/Celestial),Familiar (Toad/Celestial),Familiar (Viper/Celestial),Familiar (Weasel/Celestial)|PRECLASS:1,SPELLCASTER.Arcane=3|PREALIGN:LG,NG,CG,TN
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Bat/Fiendish),Familiar (Cat/Fiendish),Familiar (Hawk/Fiendish),Familiar (Lizard/Fiendish),Familiar (Monkey/Fiendish),Familiar (Owl/Fiendish),Familiar (Rat/Fiendish),Familiar (Raven/Fiendish),Familiar (Toad/Fiendish),Familiar (Viper/Fiendish),Familiar (Weasel/Fiendish)|PRECLASS:1,SPELLCASTER.Arcane=3|PREALIGN:TN,LE,NE,CE
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Rat (Dire))|PRECLASS:1,SPELLCASTER.Arcane=3|PREALIGN:NG,LN,TN;CN,NE
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Stirge),Familiar (Elemental (Air/Small)),Familiar (Elemental (Earth/Small)),Familiar (Elemental (Fire/Small)),Familiar (Elemental (Water/Small))|PRECLASS:1,SPELLCASTER.Arcane=5|PREALIGN:NG,LN,TN;CN,NE
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Devil (Imp))|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:LN,TN,LE,NE
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Demon (Quasit))|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:TN,CN,NE,CE
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Homunculus)|PRECLASS:1,SPELLCASTER.Arcane=7
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Mephit (Air)),Familiar (Mephit (Dust)),Familiar (Mephit (Earth)),Familiar (Mephit (Fire)),Familiar (Mephit (Ice)),Familiar (Mephit (Magma)),Familiar (Mephit (Ooze)),Familiar (Mephit (Salt)),Familiar (Mephit (Steam)),Familiar (Mephit (Water))|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:NG,LN,TN;CN,NE
-Improved Familiar.MOD																		COMPANIONLIST:Familiar|Familiar (Pseudodragon)|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:LG,NG,CG,TN
+###Block: Improved Familiar ---------------------------------------------------------------------------------------------------------------------------------------------
+# Feat Name			Allowed Companions
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Bat/Celestial),Familiar (Cat/Celestial),Familiar (Hawk/Celestial),Familiar (Lizard/Celestial),Familiar (Monkey/Celestial),Familiar (Owl/Celestial),Familiar (Rat/Celestial),Familiar (Raven/Celestial),Familiar (Toad/Celestial),Familiar (Viper/Celestial),Familiar (Weasel/Celestial)|PRECLASS:1,SPELLCASTER.Arcane=3|PREALIGN:LG,NG,CG,TN
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Bat/Fiendish),Familiar (Cat/Fiendish),Familiar (Hawk/Fiendish),Familiar (Lizard/Fiendish),Familiar (Monkey/Fiendish),Familiar (Owl/Fiendish),Familiar (Rat/Fiendish),Familiar (Raven/Fiendish),Familiar (Toad/Fiendish),Familiar (Viper/Fiendish),Familiar (Weasel/Fiendish)|PRECLASS:1,SPELLCASTER.Arcane=3|PREALIGN:TN,LE,NE,CE
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Rat (Dire))|PRECLASS:1,SPELLCASTER.Arcane=3|PREALIGN:NG,LN,TN;CN,NE
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Stirge),Familiar (Elemental (Air/Small)),Familiar (Elemental (Earth/Small)),Familiar (Elemental (Fire/Small)),Familiar (Elemental (Water/Small))|PRECLASS:1,SPELLCASTER.Arcane=5|PREALIGN:NG,LN,TN;CN,NE
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Devil (Imp))|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:LN,TN,LE,NE
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Demon (Quasit))|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:TN,CN,NE,CE
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Homunculus)|PRECLASS:1,SPELLCASTER.Arcane=7
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Mephit (Air)),Familiar (Mephit (Dust)),Familiar (Mephit (Earth)),Familiar (Mephit (Fire)),Familiar (Mephit (Ice)),Familiar (Mephit (Magma)),Familiar (Mephit (Ooze)),Familiar (Mephit (Salt)),Familiar (Mephit (Steam)),Familiar (Mephit (Water))|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:NG,LN,TN;CN,NE
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Familiar (Pseudodragon)|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:LG,NG,CG,TN
 
 
 #
