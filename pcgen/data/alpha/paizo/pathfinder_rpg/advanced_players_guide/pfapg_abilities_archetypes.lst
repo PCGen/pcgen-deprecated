@@ -10,6 +10,12 @@ SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/
 # Fighter and Below needs to have the Prime Ability and Class Granting Set up.
 
 # TODO: Temp Bonuses for the Rage Powers - Skipping for now as they only come into play while raging.
+
+
+#------------------#
+##	BARBARIAN	##
+#------------------#
+
 ###Block: Barbarian rage powers
 # Rage Powers - The following new rage powers can be taken by any barbarian that meets the prerequisites. Totem rage powers grant powers in a theme. A barbarian cannot select from more than one group of totem rage powers. For example, a barbarian that selects a beast totem rage power cannot later chose to gain any of the spirit totem rage powers.
 # Ability Name			Unique Key						Output Name						Category of Ability		Type								Required Ability											Var. Min. Value			Description																																																																																																																			Source Page
@@ -120,8 +126,9 @@ Scent					KEY:Keen Senses ~ Scent					CATEGORY:Special Ability	TYPE:SpecialQuali
 Blindsense				KEY:Keen Senses ~ Blindsense				CATEGORY:Special Ability	TYPE:SpecialQuality										DESC:she gains blindsense 30 feet																																																																																																																																																																																																																																				BONUS:VISION|Blindsense|30																																																									SOURCEPAGE:p.79
 Blindsight				KEY:Keen Senses ~ Blindsight				CATEGORY:Special Ability	TYPE:SpecialQuality										DESC:she gains blindsight 30 feet																																																																																																																																																																																																																																				BONUS:VISION|Blindsight|30																																																									SOURCEPAGE:p.79
 
-
-
+#------------------#
+##	BARD		##
+#------------------#
 
 ###Block: Bard archetypes
 # Ability Name	Unique Key						Category of Ability	Type																																			Required Class	Multiple Requirements																																																								Description																																										Ability																																																																																																																																					Cost		Source Page
@@ -242,6 +249,10 @@ Gladhanding							KEY:Gladhanding ~ Street Performer			CATEGORY:Special Ability	
 Streetwise							KEY:Streetwise ~ Street Performer			CATEGORY:Special Ability	TYPE:SpecialQuality.BardBardicKnowledge																DESC:A street performer gains a bonus equal to half his level on Bluff, Disguise, Knowledge (local), and Sleight of Hand checks, Diplomacy or Intimidate checks made to influence crowds, and Diplomacy checks to gather information (minimum +1). This replaces bardic knowledge.																																																																																																																																																																																																																																	BONUS:SKILL|Bluff,Disguise,Knowledge (Local),Sleight of Hand|min(1,BardLvl/2)																												SOURCEPAGE:p.85
 Quick Change						KEY:Quick Change ~ Street Performer			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.BardLoreMaster														DESC:At 5th level, a street performer can don a disguise as a standard action by taking a -5 penalty on his check. He can take 10 on Bluff and Disguise checks and use Bluff to create a diversion to hide as a swift action. He can take 20 on a Bluff or Disguise check once per day, plus one time per six levels beyond 5th. This ability replaces lore master.																																																																																																																																																																																																																																																											SOURCEPAGE:p.85
 
+#------------------#
+##	CLERIC	##
+#------------------#
+
 ###Block: Cleric subdomain abilities
 # Ability Name			Unique Key								Category of Ability		Type						Description																																																																																																																																			Source Page
 Protective Aura			KEY:Protective Aura ~ Agathion Subdomain			CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	DESC:At 8th level, you can emit a 30-foot protective aura as a standard action. Allies in this aura receive a +2 Deflection bonus to AC and a +2 resistance bonus on all saving throws. In addition, allies in the area gain the benefits of protection from evil (although the AC bonus and saving throw bonus do not stack with those granted by this effect). You can use this ability for a number of rounds per day equal to your cleric level. These rounds do not have to be consecutive.																																																				SOURCEPAGE:p.86
@@ -311,7 +322,11 @@ Death's Kiss			KEY:Death's Kiss ~ Undead Subdomain				CATEGORY:Special Ability	T
 Warding Rune			KEY:Warding Rune ~ Wards Subdomain				CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	DESC:At 6th level, when a creature is damaged by your blast rune, it cannot attack you for a number of rounds equal to 1/2 your cleric level unless it succeeds at a Will save, as per the spell sanctuary. Using this ability is an immediate action when a creature triggers one of your blast runes. The ability does not prevent you from being attacked or affected by area of effect spells or abilities. You can use this ability once per day at 8th level, plus one addditional time per day at 14th level and 20th level.																																															SOURCEPAGE:p.97
 Wind Blast				KEY:Wind Blast ~ Wind Subdomain				CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural	DESC:As a standard action, you can unleash a blast of air in a 30-foot line. Make a combat maneuver check against each creature in the line, using your caster level as your base attack bonus and your Wisdom modifier in place of your Strength modifier. Treat the results as a bull rush attempt. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.																																																																					SOURCEPAGE:p.97
 
-###Block: Druid  archetypes
+#------------------#
+##	DRUID		##
+#------------------#
+
+###Block: Druid Archetypes ---------------------------------------------------------------------------------------------------------------------------------------------------------
 # Ability Name	Unique Key						Category of Ability	Type																											Required Class		Multiple Requirements																																														Description																																																														Ability																																																																																																Cost		Source Page
 Aquatic Druid	KEY:Druid Archetype ~ Aquatic Druid		CATEGORY:Archetype	TYPE:Archetype.DruidWoodlandStride.DruidTracklessStep.DruidNaturesLure.DruidVenomImmunity.DruidThousandFaces.DruidWildShape							PRECLASS:1,Druid=1	PREMULT:1,[PREABILITY:1,CATEGORY=Archetype,Druid Archetype ~ Aquatic Druid],[!PREABILITY:1,CATEGORY=Archetype,TYPE.DruidWoodlandStride,TYPE.DruidTracklessStep,TYPE.DruidNaturesLure,TYPE.DruidVenomImmunity,TYPE.DruidThousandFaces,TYPE.DruidWildShape]								DESC:Shepherds of the lakes and seas, aquatic druids guard ecosystems ranging from shallows streams to deep ocean trenches, ministering to their residents and communing with the tides.																																	ABILITY:Special Ability|AUTOMATIC|Wild Empathy ~ Aquatic Druid	ABILITY:Special Ability|AUTOMATIC|Aquatic Adaptation ~ Aquatic Druid|PRECLASS:1,Druid=2	ABILITY:Special Ability|AUTOMATIC|Natural Swimmer ~ Aquatic Druid|PRECLASS:1,Druid=3	ABILITY:Special Ability|AUTOMATIC|Resist Oceans Fury ~ Aquatic Druid|PRECLASS:1,Druid=4	ABILITY:Special Ability|AUTOMATIC|Wild Shape ~ Aquatic Druid|PRECLASS:1,Druid=6	ABILITY:Special Ability|AUTOMATIC|Seaborn ~ Aquatic Druid|PRECLASS:1,Druid=9	ABILITY:Special Ability|AUTOMATIC|Deep Diver ~ Aquatic Druid|PRECLASS:1,Druid=13	COST:0	SOURCEPAGE:p.98
 Arctic Druid	KEY:Druid Archetype ~ Arctic Druid		CATEGORY:Archetype	TYPE:Archetype.DruidWoodlandStride.DruidTracklessStep.DruidNaturesLure.DruidVenomImmunity.DruidThousandFaces.DruidWildShape							PRECLASS:1,Druid=1	PREMULT:1,[PREABILITY:1,CATEGORY=Archetype,Druid Archetype ~ Arctic Druid],[!PREABILITY:1,CATEGORY=Archetype,TYPE.DruidWoodlandStride,TYPE.DruidTracklessStep,TYPE.DruidNaturesLure,TYPE.DruidVenomImmunity,TYPE.DruidThousandFaces,TYPE.DruidWildShape]								DESC:An arctic druid watches over the stark landscape of the far frozen reaches of the world, tending the stunted and rugged life that ekes out its survival in the least habitable climes.																																ABILITY:Special Ability|AUTOMATIC|Arctic Native ~ Artic Druid|PRECLASS:1,Druid=2	ABILITY:Special Ability|AUTOMATIC|Icewalking ~ Artic Druid|PRECLASS:1,Druid=3	ABILITY:Special Ability|AUTOMATIC|Arctic Endurance ~ Artic Druid|PRECLASS:1,Druid=4	ABILITY:Special Ability|AUTOMATIC|Wild Shape ~ Artic Druid|PRECLASS:1,Druid=6	ABILITY:Special Ability|AUTOMATIC|Snowcaster ~ Artic Druid|PRECLASS:1,Druid=9	ABILITY:Special Ability|AUTOMATIC|Flurry Form ~ Artic Druid|PRECLASS:1,Druid=13																	COST:0	SOURCEPAGE:p.98
@@ -480,6 +495,9 @@ CATEGORY=Special Ability|Druid Domain ~ Air.MOD																																P
 CATEGORY=Special Ability|Druid Domain ~ Weather.MOD																															PREVARLT:DruidWeatherNotAllowed,1
 Darkness								KEY:Druid Domain ~ Darkness	OUTPUTNAME:Druid Domain (Darkness)	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.DruidDomain	PREVAREQ:DruidDarknessAllowed,1							SOURCEPAGE:p.98
 
+#------------------#
+##	FIGHTER	##
+#------------------#
 
 ###Block: Fighter archetypes ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Ability Name		Unique Key							Category of Ability	Type																																																			Required Class		Multiple Requirements																																																														Description																																																													Ability																																																																																																																																																												Cost		Source Page
@@ -623,6 +641,9 @@ Unstoppable Strike		KEY:Fighter Weapon Master ~ Unstoppable Strike		CATEGORY:Spe
 #
 Weapon Choice			KEY:Weapon Choice ~ Weapon Training				CATEGORY:Special Ability	TYPE:WeaponMasterChosenWeapon																																																																																																																																																							CHOOSE:WEAPONPROFS|LIST	SELECT:1																																																						BONUS:WEAPONPROF=LIST|TOHIT,DAMAGE|1+((FighterLvl-3)/4)		SOURCEPAGE:p.109
 
+#------------------#
+##	MONK		##
+#------------------#
 
 ###Block: Monk archetypes -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Ability Name			Unique Key								Category of Ability	Type																													Required Class	Multiple Requirements																																										Description																																																																																			Ability																																																																																																																																																																				Cost		Source Page
@@ -751,6 +772,9 @@ Pinpoint Targeting	KEY:Zen Monk ~ Pinpoint Targeting		CATEGORY:Special Ability	T
 Shot on the Run		KEY:Zen Monk ~ Shot on the Run		CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Shot on the Run		PREVARGTEQ:MonkBonusFeatLVL,10	VFEAT:Shot on the Run		SOURCEPAGE:p.115
 Snatch Arrows		KEY:Zen Monk ~ Snatch Arrows			CATEGORY:Special Ability	TYPE:ZenArcher.ZenArcherFeat	!PREFEAT:1,Snatch Arrows		PREVARGTEQ:MonkBonusFeatLVL,10	VFEAT:Snatch Arrows		SOURCEPAGE:p.115
 
+#------------------#
+##	PALADIN	##
+#------------------#
 
 ###Block: Paladin archetypes --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Ability Name			Unique Key								Category of Ability	Type														Required Class		Multiple Requirements																																														Description																																																																													Ability																																																									Cost		Source Page
@@ -1216,6 +1240,10 @@ Trap Master		KEY:Trap Master ~ Trapsmith		CATEGORY:Special Ability	TYPE:SpecialQ
 Careful Disarm	KEY:Careful Disarm ~ Rogue		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary																					DESC:Whenever you attempt to disarm a trap using Disable Device, you do not spring the trap unless you fail by 10 or more. If you do set off a trap you were attempting to disarm, you adds double your trap sense bonus to avoid the trap. This ability replaces uncanny dodge.																																																																			
 Poison Use		KEY:Poison Use ~ Rogue			CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary																					DESC:You are trained in the use of poison and cannot accidentally poison yourself when applying poison to a blade. This ability replaces trap sense.																																																																																								
 
+#------------------#
+##	SORCERER	##
+#------------------#
+
 ###Block: Sorcerer bloodlines --------------------------------------------------------------------------------------------------------
 # Ability Name		Unique Key						Category of Ability		Type										Description																																																																																																						Ability																																																																																																								Bonus to Ability Pool								Class Skill					Source Page
 Aquatic Bloodline		KEY:Bloodline ~ Aquatic Bloodline		CATEGORY:Special Ability	TYPE:SpecialQuality.ClassSpecialization.SorcererBloodline	DESC:Your family traces its heritage back to the ocean depths, whether scions of undersea empires left in the wake of nomadic sea-tribes, or the spawn of creeping ichthyic infiltrators into remote seaside villages. The song of the sea hums in your blood, calling the waves and all those within to your command. Your family traces its heritage back to the ocean depths, whether scions of undersea empires left in the wake of nomadic sea-tribes, or the spawn of creeping ichthyic infiltrators into remote seaside villages. The song of the sea hums in your blood, calling the waves and all those within to your command.	ABILITY:Special Ability|AUTOMATIC|Bloodline Bonus Spells ~ Aquatic|Bloodline Arcana ~ Aquatic|Bloodline Powers ~ Aquatic	ABILITY:Special Ability|AUTOMATIC|Aquatic Bloodline ~ Dehydrating Touch|PREVARGTEQ:BloodlineLVL,1	ABILITY:Special Ability|AUTOMATIC|Aquatic Bloodline ~ Aquatic Adaptation|PREVARGTEQ:BloodlineLVL,3	ABILITY:Special Ability|AUTOMATIC|Aquatic Bloodline ~ Aquatic Telepathy|PREVARGTEQ:BloodlineLVL,9	ABILITY:Special Ability|AUTOMATIC|Aquatic Bloodline ~ Raise the Deep|PREVARGTEQ:BloodlineLVL,15	ABILITY:Special Ability|AUTOMATIC|Aquatic Bloodline ~ Deep One|PREVARGTEQ:BloodlineLVL,20			BONUS:ABILITYPOOL|Aquatic Bloodline Feat|(BloodlineLVL-1)/6		CSKILL:Swim					SOURCEPAGE:p.136
@@ -1335,6 +1363,10 @@ Photosynthesis				KEY:Verdant Bloodline ~ Photosynthesis		CATEGORY:Special Abili
 Massmorph					KEY:Verdant Bloodline ~ Massmorph			CATEGORY:Special Ability	TYPE:SpecialQuality.SpellLike																						DESC:At 9th level, as a full-round action, you can alter the size and health of plant life, as if using plant growth or diminish plants. Alternatively, you can transform one willing non-plant creature per sorcerer level (no two of which can be more than 30 feet apart) as tree shape. You may transform creatures as plant shape I at 15th level, or plant shape II at 20th level. You can transform non-plant creatures using this power once per day.																																																																																																																																																																				SOURCEPAGE:p.141
 Rooting					KEY:Verdant Bloodline ~ Rooting			CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary																					DESC:At 15th level, as a move action, you can extend roots into the ground. Your speed is reduced to 5 feet, but you gain a +4 bonus to natural armor and a +10 bonus to CMD against bull rush, overrun, reposition, and trip maneuvers. You also gain tremorsense 30 feet and fast healing 1. You can use this power for a number of minutes per day equal to your sorcerer level. This duration need not be consecutive, but it must be used in 1-minute increments.																																																																																																																																																																			SOURCEPAGE:p.141
 Shepherd of the Trees			KEY:Verdant Bloodline ~ Shepherd of the Trees	CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural																					DESC:At 20th level, your verdant heritage fully manifests. You gain a +4 natural armor bonus. You gain immunity to paralysis, poison, polymorph, sleep, and stunning, and you gain tremorsense 30 feet even when not rooted.																																																																																		ABILITY:Special ABility|AUTOMATIC|Immunity to Paralysis|Immunity to Poison|Immunity to Polymorph|Immunity to Sleep|Immunity to Stunning												BONUS:COMBAT|AC|4|TYPE=NaturalArmor.STACK																																																																								VISION:Tremorsense (30')				SOURCEPAGE:p.141
+
+#------------------#
+##	WIZARD	##
+#------------------#
 
 ###Block: Wizard schools
 # These are loaded from the Sub Class Choice at Wizard Creation.
