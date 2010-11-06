@@ -1,9 +1,9 @@
-# CVS $Revision$ $Author$ -- Fri Jan  9 00:09:00 2009 -- reformated by prettylst.pl v1.38 (build 8180)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Elements of Magic (Revised)	SOURCESHORT:EOM	SOURCEWEB:http://www.enworld.org/forum/e-n-publishing/
 #Original Entry: Joe Frazier, Clean up by Andrew Maitland
 
 
-# Ability Name		Output Name				Category of Ability		Type				Visible	Define																						Description																					Ability															Bonus to Ability Pool				Modify VAR									ASPECT
+# Ability Name		Output Name				Category of Ability		Type				Visible	Define																						Description																					Ability															Bonus to Ability Pool				Modify VAR									Aspects
 Elements of Magic							CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:NO	DEFINE:EOMCasterlevel|0	DEFINE:CantripsPerDay|0	DEFINE:BaseSpellPoints|0	DEFINE:BonusSpellPoints|0	DEFINE:TotalSpellPoints|0	DESC:Base Magic Points (%1), Bonus Magic Points (%2), Total Magic Points (%3)|BaseSpellPoints|BonusSpellPoints|TotalSpellPoints	ABILITY:Special Ability|AUTOMATIC|Magic Points ~ Base|Magic Points ~ Bonus|Magic Points ~ Total	BONUS:ABILITYPOOL|Magical Tradition|1	BONUS:VAR|TotalSpellPoints|BaseSpellPoints+BonusSpellPoints
 
 Magic Points ~ Base	OUTPUTNAME:Base Magic Points	CATEGORY:Special Ability	TYPE:SpecialQuality																										DESC:%1|BaseSpellPoints																																																				ASPECT:Ability Benefit|(%1)|BaseSpellPoints
