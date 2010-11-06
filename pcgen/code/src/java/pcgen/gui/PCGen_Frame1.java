@@ -1105,6 +1105,7 @@ public class PCGen_Frame1 extends JFrame implements GMBComponent, Observer,
 		try
 		{
 			(new PCGIOHandler()).write(aPC, file.getAbsolutePath());
+			SettingsHandler.setLastUsedPcgPath(file.getParentFile());
 		}
 		catch (Exception ex)
 		{
@@ -1236,6 +1237,7 @@ public class PCGen_Frame1 extends JFrame implements GMBComponent, Observer,
 		{
 			if (filter.accept(pcFiles[i]))
 			{
+				SettingsHandler.setLastUsedPcgPath(pcFiles[i].getParentFile());
 				loadPCFromFile(pcFiles[i]);
 			}
 		}
@@ -1525,7 +1527,7 @@ public class PCGen_Frame1 extends JFrame implements GMBComponent, Observer,
 				SettingsHandler.isShowImagePreview() ? ImagePreview
 					.decorateWithImagePreview(new JFileChooser())
 					: new JFileChooser();
-		fc.setCurrentDirectory(SettingsHandler.getPcgPath());
+		fc.setCurrentDirectory(SettingsHandler.getLastUsedPcgPath());
 		FileTypeMessage ftMessage = new FileTypeMessage(this);
 		GMBus.send(ftMessage);
 		FileFilter[] ffs = ftMessage.getFileypes();
@@ -1594,6 +1596,7 @@ public class PCGen_Frame1 extends JFrame implements GMBComponent, Observer,
 		if (returnVal == JFileChooser.APPROVE_OPTION)
 		{
 			File file = fc.getSelectedFile();
+			SettingsHandler.setLastUsedPcgPath(file.getParentFile());
 			loadPartyFromFile(file);
 		}
 
