@@ -1,5 +1,5 @@
-# CVS $Revision$ $Author$ -- Sat Jun  5 14:44:02 2010 -- reformated by prettylst.pl v1.39 (build 11455)
-SOURCELONG:Pathfinder Roleplaying Game Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy8255	SOURCEDATE:2009-08
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:27:22 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy88yj	SOURCEDATE:2009-08
 # Original RSRD Entry by: PCGen Data Team
 # Pathfinder RPG Entry by: Stefan Radermacher
 
@@ -102,12 +102,13 @@ Spell Effect (Single Use/Completion)	KEY:D_1USEME	NAMEOPT:SPELL	TYPE:Scroll.Divi
 Spell Effect (Single Use/Completion)	KEY:D_1USEMA	NAMEOPT:SPELL	TYPE:Scroll.Divine.Major	COST:(25*(max((%SPELLLEVEL),(1/2)))*%CASTERLEVEL)+%SPELLCOST+(5*%SPELLXPCOST)	VISIBLE:QUALIFY	ITYPE:Enhancement.Magic.Consumable	SOURCEPAGE:MagicItemsI.rtf	PRETYPE:3,Scroll,Divine,Major							CHOOSE:EQBUILDER.SPELL|Divine|4|9
 
 ###Block: Greater Size Items
-Wield One Step Greater				KEY:PLUS1STEP					TYPE:Weapon.Melee					VISIBLE:QUALIFY														BONUS:WEAPON|WIELDCATEGORY|-1
-Wield Two Step Greater				KEY:PLUS2STEP					TYPE:Weapon.Melee					VISIBLE:QUALIFY														BONUS:WEAPON|WIELDCATEGORY|-2
-Wield Three Step Greater			KEY:PLUS3STEP					TYPE:Weapon.Melee					VISIBLE:QUALIFY														BONUS:WEAPON|WIELDCATEGORY|-3
-Wield One Step Greater No Penalty		KEY:PLUS1STEP_NO_PENALTY			TYPE:Weapon.Melee					VISIBLE:QUALIFY														BONUS:WEAPON|WIELDCATEGORY|-1	BONUS:WEAPON|TOHIT|2
-Wield Two Step Greater No Penalty		KEY:PLUS2STEP_NO_PENALTY			TYPE:Weapon.Melee					VISIBLE:QUALIFY														BONUS:WEAPON|WIELDCATEGORY|-2	BONUS:WEAPON|TOHIT|4
-Wield Three Step Greater No Penalty		KEY:PLUS3STEP_NO_PENALTY			TYPE:Weapon.Melee					VISIBLE:QUALIFY														BONUS:WEAPON|WIELDCATEGORY|-3	BONUS:WEAPON|TOHIT|6
+# Modifier Name				Unique Key				Type			Visible		Weapon prop. bonus
+Wield One Step Greater			KEY:PLUS1STEP			TYPE:Weapon.Melee	VISIBLE:QUALIFY	BONUS:WEAPON|WIELDCATEGORY|-1
+Wield Two Step Greater			KEY:PLUS2STEP			TYPE:Weapon.Melee	VISIBLE:QUALIFY	BONUS:WEAPON|WIELDCATEGORY|-2
+Wield Three Step Greater		KEY:PLUS3STEP			TYPE:Weapon.Melee	VISIBLE:QUALIFY	BONUS:WEAPON|WIELDCATEGORY|-3
+Wield One Step Greater No Penalty	KEY:PLUS1STEP_NO_PENALTY	TYPE:Weapon.Melee	VISIBLE:QUALIFY	BONUS:WEAPON|WIELDCATEGORY|-1	BONUS:WEAPON|TOHIT|2
+Wield Two Step Greater No Penalty	KEY:PLUS2STEP_NO_PENALTY	TYPE:Weapon.Melee	VISIBLE:QUALIFY	BONUS:WEAPON|WIELDCATEGORY|-2	BONUS:WEAPON|TOHIT|4
+Wield Three Step Greater No Penalty	KEY:PLUS3STEP_NO_PENALTY	TYPE:Weapon.Melee	VISIBLE:QUALIFY	BONUS:WEAPON|WIELDCATEGORY|-3	BONUS:WEAPON|TOHIT|6
 
 #
 # End
