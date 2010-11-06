@@ -272,7 +272,7 @@
 		<deflection>|AC.Deflection|</deflection>
 		<class_bonus>|AC.ClassDefense|</class_bonus>
 		<dodge_bonus>|AC.Dodge|</dodge_bonus>
-|IIF(isgamemode("Modern").OR.isgamemode("Darwins_World_2").OR.isgamemode("Sidewinder"))|
+|IIF(isgamemode("Modern").OR.isgamemode("Darwins_World_2").OR.isgamemode("Sidewinder")).OR.isgamemode("Gaslight")|
 		<equipment_bonus>|AC.Equipment|</equipment_bonus>
 |ENDIF|
 		<misc>|AC.Misc|</misc>
