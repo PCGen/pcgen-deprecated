@@ -1,5 +1,5 @@
-# CVS $Revision: 12047 $ $Author: eddyanthony $ -- Wed Jun  2 17:32:11 2010 -- reformated by prettylst.pl v1.39 (build 11455)
-SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
+# CVS $Revision: 12047 $ $Author: eddyanthony $ -- Fri Nov  5 22:27:22 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8auu	SOURCEDATE:2009-10
 
 ###Block: Dark Folk Abilities
 # Ability Name	Unique Key					Category of Ability		Type							Define					Description																																Modify VAR										Source Page		Aspects																				Description of the Benefits
@@ -123,7 +123,8 @@ Powerful Bite	KEY:Powerful Bite ~ Tyrannosaurus	CATEGORY:Special Ability	TYPE:Sp
 Stun			KEY:Stun ~ Ankylosaurus			CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary	DEFINE:StunDC|10+(HD/2)+STR	DESC:The ankylosaurus's tail can deliver a powerful, stunning blow.		BONUS:VAR|StunDC|2|PREFEAT:1,Ability Focus (Stun)								SOURCEPAGE:p.83	ASPECT:Ability Benefit|(DC %1)|StunDC	BENEFIT:The ankylosaurus's tail can deliver a powerful, stunning blow. A creature struck by this attack must make a DC %1 save or be dazed for 1 round. If the strike is a critical hit and the target fails its save, it is instead stunned for 1d4 rounds.|StunDC
 
 ###Block: Dolphin Abilities
-Hold Breath		KEY:Hold Breath ~ Dolphin		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DEFINE:HoldBreathMinutes|CONSCORE*6	DESC:A dolphin can hold its breath for a %1 minutes before it risks drowning.|HoldBreathMinutes			ASPECT:Ability Benefit|(%1 minutes)|HoldBreathMinutes
+# Ability Name	Unique Key				Category of Ability		Type						Define					Description															Aspects
+Hold Breath		KEY:Hold Breath ~ Dolphin	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary	DEFINE:HoldBreathMinutes|CONSCORE*6	DESC:A dolphin can hold its breath for a %1 minutes before it risks drowning.|HoldBreathMinutes	ASPECT:Ability Benefit|(%1 minutes)|HoldBreathMinutes
 
 ###Block: Doppelganger Abilities
 # Ability Name	Unique Key					Category of Ability		Type						Description																							Automatically Gained Armor Prof.						Automatically Gained Shield Prof.							Automatically Gained Weapon Prof.				Bonus to skill																						Source Page		Aspects					Description of the Benefits
