@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Nov  1 17:22:30 2008 -- reformated by prettylst.pl v1.38 (build 8180)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Mongoose Publishing - Quintessential Ranger	SOURCESHORT:QR	SOURCEWEB:http://mongoosepublishing.com	SOURCEDATE:2003-01
 #Original Entry by: Andrew Maitland
 
@@ -137,9 +137,9 @@ SUBCLASSLEVEL:3						ABILITY:Special Ability|AUTOMATIC|Wolverine's Steadfastness
 SUBCLASSLEVEL:6						ABILITY:Special Ability|AUTOMATIC|Wolverine's Tricks
 SUBCLASSLEVEL:9						ABILITY:Special Ability|AUTOMATIC|Wolverine's Fearlessness
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies
-1	AUTO:FEAT|Armor Proficiency (Light)
-1	AUTO:FEAT|Shield Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
+1																	AUTO:FEAT|Armor Proficiency (Light)
+1																	AUTO:FEAT|Shield Proficiency
 ###Block: Level Abilities
 1	BONUS:VAR|CompLevel|CL							ABILITY:Special Ability|AUTOMATIC|Animal Friendship|Chosen Species|Animal Champion Companion
 2											ABILITY:Special Ability|AUTOMATIC|Charm Animal
@@ -159,9 +159,9 @@ CLASS:Ex Animal Champion	HD:8		TYPE:PC.Prestige	ABB:XAC		MAXLEVEL:10	SOURCEPAGE:
 # Class Name			Skill Pts/Lvl	Class Skill
 CLASS:Ex Animal Champion	STARTSKILLPTS:4	CSKILL:Balance|Climb|Handle Animal|Heal|Hide|Knowledge (Nature)|Jump|Listen|Move Silently|Ride|Search|Spot|Survival|Swim
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies
-1	AUTO:FEAT|Armor Proficiency (Light)
-1	AUTO:FEAT|Shield Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
+1																	AUTO:FEAT|Armor Proficiency (Light)
+1																	AUTO:FEAT|Shield Proficiency
 
 
 ###Block:Briar Archer -------------------------------------------------------------------------------------------------------------------------------------------
@@ -174,9 +174,9 @@ CLASS:Briar Archer	PREALIGN:TN	PREATT:7	PREFEAT:4,Point Blank Shot,Precise Shot,
 CLASS:Briar Archer	STARTSKILLPTS:4	CSKILL:Craft (Bowyer)|Craft (Fletcher)|Hide|Knowledge (Geography)|Knowledge (Local)|Knowledge (Nature)|Listen|Move Silently|Spot|Survival
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies
-1	AUTO:FEAT|Armor Proficiency (Light)
-1	AUTO:FEAT|Shield Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
+1																	AUTO:FEAT|Armor Proficiency (Light)
+1																	AUTO:FEAT|Shield Proficiency
 ###Block: Level Abilities
 1	BONUS:VAR|BriarArrowsPlus|CL+1/2	BONUS:VAR|SpeakWithPlantsTimes|CL	ABILITY:Special Ability|AUTOMATIC|Briar Arrows|Speak with Plants
 2	BONUS:VAR|SpecialArrowLVL|CL/2							ABILITY:Special Ability|AUTOMATIC|Special Arrow
@@ -192,9 +192,9 @@ CLASS:Green Knight	!PREALIGN:LE,NE,CE	PREATT:8	PREFEAT:1,Weapon Focus(Greataxe)	
 CLASS:Green Knight	STARTSKILLPTS:4	CSKILL:Climb|TYPE.Craft|Diplomacy|Handle Animal|Intimidate|Hide|Jump|Knowledge (Geography)|Knowledge (Local)|Knowledge (Nature)|Listen|TYPE.Profession|Spot|Survival|Swim
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies
-1	AUTO:FEAT|Armor Proficiency (Light)
-1	AUTO:FEAT|Shield Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
+1																	AUTO:FEAT|Armor Proficiency (Light)
+1																	AUTO:FEAT|Shield Proficiency
 
 ###Block: Level Abilities
 1	BONUS:VAR|GreenAxeProgression|1	BONUS:VAR|GreenDemeanourProgression|1	ABILITY:Special Ability|AUTOMATIC|Green Axe|Wild Empathy|Code of Green Chivalry|Green Demeanour
@@ -242,8 +242,8 @@ CLASS:Master of the Staff	PREATT:5	PREFEAT:3,Stunning Staff,Combat Expertise,Imp
 CLASS:Master of the Staff	STARTSKILLPTS:2	CSKILL:Climb|Jump|Knowledge (Geography)|Knowledge (Local)|Listen|Move Silently|Spot|Survival
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies
-1	AUTO:FEAT|Armor Proficiency (Light)
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
+1																	AUTO:FEAT|Armor Proficiency (Light)
 
 ###Block: Level Abilities
 1								ABILITY:Special Ability|AUTOMATIC|Spinning Defence
@@ -266,8 +266,8 @@ CLASS:Outlaw	PREATT:5	PREFEAT:3,Point Blank Shot,Track,Weapon Focus(Longbow)
 CLASS:Outlaw	STARTSKILLPTS:4	CSKILL:TYPE.Craft|Climb|Disguise|Gather Information|Hide|Intimidate|Knowledge (Geography)|Knowledge (Local)|Listen|Move Silently|TYPE.Perform|Ride|Search|Spot|Survival
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies
-1	AUTO:FEAT|Armor Proficiency (Light)
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency|Martial Weapon Proficiency
+1																	AUTO:FEAT|Armor Proficiency (Light)
 
 ###Block: Level Abilities
 1							ABILITY:Special Ability|AUTOMATIC|Forest Expertise
