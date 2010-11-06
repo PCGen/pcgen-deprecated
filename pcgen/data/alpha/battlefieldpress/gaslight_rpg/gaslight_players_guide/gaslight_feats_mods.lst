@@ -304,7 +304,7 @@ Fortune Teller ~ Skill Focus (Sense Motive)					TYPE:Fortuneteller		VISIBLE:DISP
 Renown.MOD											TYPE:Fortuneteller
 
 # Hunter
-Skill Focus (Survival)									TYPE:Hunter				VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Survival)
+Skill Focus (Survival)									TYPE:Hunter.World_Traveler				VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Survival)
 Skill Focus (Stealth)									TYPE:Hunter				VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Stealth)
 Far Shot.MOD										TYPE:Hunter
 Point Blank Shot.MOD									TYPE:Hunter
@@ -324,9 +324,9 @@ Stage Magician ~ Skill Focus (Deception)						TYPE:Stage_Magician		VISIBLE:DISPL
 Stage Magician ~ Skill Focus (Sleight of Hand)					TYPE:Stage_Magician		VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Sleight of Hand)
 
 # World Traveler
-Renown
+Renown.MOD											TYPE:World_Traveler
 Skill Focus (any two Knowledge skills)						TYPE:World_Traveler					STACK:NO	MULT:YES	CHOOSE:SKILLSNAMED|TYPE.Knowledge	SELECT:2														BONUS:SKILL|%LIST|2|TYPE=SkillFocus
 Skill Focus (Investigate and Sense Motive)					TYPE:World_Traveler		VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus +2 to Two Skills(Investigate,Sense Motive)
 Skill Focus (Gamble and Intimidate)							TYPE:World_Traveler		VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus +2 to Two Skills(Gamble,Intimidate)
-Skill Focus (Survival)									TYPE:World_Traveler		VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Survival)
+#Skill Focus (Survival)									TYPE:World_Traveler		VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus(Survival)
 Skill Focus +2 to Two Skills(Diplomacy and Gather Information)		TYPE:World_Traveler		VISIBLE:DISPLAY													AUTO:FEAT|Skill Focus +2 to Two Skills(Diplomacy and Gather Information)
