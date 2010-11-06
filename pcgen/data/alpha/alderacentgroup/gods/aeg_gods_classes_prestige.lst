@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Tue Feb 17 12:20:24 2009 -- reformated by prettylst.pl v1.39 (build 9329)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Gods	SOURCESHORT:Gods	SOURCEWEB:http://alderac.com/d20	SOURCEDATE:2002-05
 
 #
@@ -165,9 +165,6 @@ CLASS:Karhollan Guard	STARTSKILLPTS:2	CSKILL:Climb|Craft (Stoneworking)|Diplomac
 
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus					Combat bonus
 CLASS:The Returned	HD:8		TYPE:PC.Prestige	ABB:Rtnd		MAXLEVEL:10	SOURCEPAGE:pg.50	BONUS:CHECKS|Fortitude,Reflex|CL/2+2	BONUS:COMBAT|BAB|(((CL+1)/2)-(1/CL)+(1/2))
-# COMMENT: Missing the BONUS:COMBAT Progression 
-# TRACKER: DATA-86
-
 # Class Name		Required AL					Req. Att.	Prohibited Check		Required Text
 CLASS:The Returned	PREALIGN:LN,LE,NG,TN,NE,CG,CN,CE	PREATT:4	!PRECHECK:1,Will=6	PRETEXT:The character must be a hero to a group of people and must undergo blasphemous rites. See text.
 # Class Name		Skill Pts/Lvl	Class Skill
