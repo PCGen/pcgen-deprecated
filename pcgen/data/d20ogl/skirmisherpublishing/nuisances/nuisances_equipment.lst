@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Sep 18 16:14:10 2008 -- reformated by prettylst.pl v1.38 (build 7233)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Nuisances - Director's Cut	SOURCESHORT:Nuisances	SOURCEWEB:http://skirmisher.cerizmo.com/items/94-nuisances-director-s-cut-pdf-download	SOURCEDATE:2007-08
 
 # Equipment Name							Type						Contains		Cost		Weight	Slot Needed	Source Page		Combat bonus				Multiply base move							Bonus to skill													Stat bonus					Special Property
@@ -53,7 +53,7 @@ Urn of Curses							TYPE:Magic.Wondrous						COST:3600	WT:3				SOURCEPAGE:p. 88
 Wand of Defects							TYPE:Magic.Wondrous						COST:21000	WT:.5				SOURCEPAGE:p. 89
 
 ###Block: Weapons
-# Equipment Name		Output Name				Required Proficiency				Type												Alternative Type					Cost		Weight	Slot Needed	Critical Hit Multiplier	Critical Hit Range	Alternative Critical	Alternative Critical Range	Damage	Alternative Damage	Modifier		Alternative Modifier	Wield Category	Requires Modification?	Range		Size		Source Page		Virtual Feat
+# Equipment Name		Output Name				Required Weapon Proficiency			Type												Alternative Type					Cost		Weight	Slot Needed	Critical Hit Multiplier	Critical Hit Range	Alternative Critical	Alternative Critical Range	Damage	Alternative Damage	Modifier		Alternative Modifier	Wield Category	Requires Modification?	Range		Size		Source Page		Virtual Feat
 Cane of the Mac Daddy						PROFICIENCY:WEAPON|Club				TYPE:Weapon.Melee.Ranged.Thrown.Simple.Bludgeoning.Club.Magic.Wondrous								COST:2000	WT:2				CRITMULT:x2			CRITRANGE:1												DAMAGE:1d6					EQMOD:WOOD.PLUS1W					WIELD:OneHanded	MODS:NO			RANGE:10	SIZE:M	SOURCEPAGE:p. 82	VFEAT:Pimp Slap|PRESKILL:1,Profession (Pimp)=4
 Urkrutch (Dire Dwarven)	OUTPUTNAME:Urgrosh, Dwarven	PROFICIENCY:WEAPON|Urgrosh (Dwarven)	TYPE:Weapon.Melee.Exotic.Double.Standard.Dwarven.Slashing.Axe		ALTTYPE:Weapon.Melee.Exotic.Piercing	COST:50	WT:12		SLOTS:2	CRITMULT:x3			CRITRANGE:1			ALTCRITMULT:x3		ALTCRITRANGE:1			DAMAGE:1d8	ALTDAMAGE:1d6		EQMOD:STEEL		ALTEQMOD:STEEL		WIELD:TwoHanded							SIZE:M
 

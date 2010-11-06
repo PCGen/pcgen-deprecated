@@ -1,8 +1,8 @@
-# CVS $Revision$ $Author$ -- Tue Jan  6 17:08:43 2009 -- reformated by prettylst.pl v1.38 (build 8180)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Darwin's World 2nd Edition - Survivor's Guide (v2.5)	SOURCESHORT:DW2_SG	SOURCEWEB:http://www.rpgobjects.com/index.php?page=dw
 
 # DW2 & MSRD Armor
-# Equipment Name			Output Name				Required Proficiency		Type								Contains			Cost		Weight	AC Penalty Check	Modifier																				Maximum DEX Bonus	Source Page		Combat bonus																	Stat bonus												Special Property																Automatically Added to Inventory
+# Equipment Name			Output Name				Required Shield Proficiency	Type								Contains			Cost		Weight	AC Penalty Check	Modifier																				Maximum DEX Bonus	Source Page		Combat bonus																	Stat bonus												Special Property																Automatically Added to Inventory
 Leather Jacket.MOD																								COST:25
 Leather Armor.MOD																									COST:40
 Light Undercover Shirt.MOD																							COST:50
