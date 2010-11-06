@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author: $ -- Sun Sep 23 07:50:11 2007 -- reformated by prettylst.pl v1.38 (build 2788)
+# CVS $Revision$ $Author: $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Roles and Classes - Combat Hero	SOURCESHORT:RnC - Cmbt	SOURCEWEB:http://www.swordsedgepublishing.ca/Products.html
 #Original Entry by: Frank Kliewe
 
@@ -8,7 +8,7 @@ CLASS:Combat Hero	HD:10		TYPE:PC.Specialized	ABB:Cmbt		MAXLEVEL:10	SOURCEPAGE:p.
 CLASS:Combat Hero	PREATT:1	PREFEAT:1,Brawl,Combat Martial Arts,Defensive Martial Arts,Personal Firearms Proficiency
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Combat Hero	STARTSKILLPTS:4	CSKILL:Climb|Craft (Chemical)|Craft (Electronic)|Craft (Mechanical)|Craft (Structural)|Demolitions|Gather Information|Intimidate|Jump|Read/Write Language|Ride|Speak Language|Spot|Swim|Treat Injury|Tumble
-1								ADD:FEAT|1|TYPE=CombatHero	BONUS:ABILITYPOOL|Combat Hero Talent|1	TEMPLATE:Combat Hero Talent Qualification
+1	BONUS:ABILITYPOOL|Combat Hero Talent|1	ADD:FEAT|1|TYPE=CombatHero	TEMPLATE:Combat Hero Talent Qualification
 2								ADD:FEAT|1|TYPE=CombatHero
 3	BONUS:ABILITYPOOL|Combat Hero Talent|1
 4								ADD:FEAT|1|TYPE=CombatHero

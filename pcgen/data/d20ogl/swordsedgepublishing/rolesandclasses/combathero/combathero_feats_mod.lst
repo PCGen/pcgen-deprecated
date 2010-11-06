@@ -1,8 +1,8 @@
-# CVS $Revision$ $Author: $ -- Sun Sep 23 07:50:11 2007 -- reformated by prettylst.pl v1.38 (build 2788)
+# CVS $Revision$ $Author: $ -- Fri Nov  5 22:46:23 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Roles and Classes - Combat Hero	SOURCESHORT:RnC - Cmbt	SOURCEWEB:http://www.swordsedgepublishing.ca/Products.html
 #Original Entry by: Frank Kliewe
 
-# Feat Name					Type			Restricted Ability
+# Feat Name					Type
 Advanced Combat Martial Arts.MOD	TYPE:CombatHero
 Advanced Firearms Proficiency.MOD	TYPE:CombatHero
 Archaic Weapons Proficiency.MOD	TYPE:CombatHero
