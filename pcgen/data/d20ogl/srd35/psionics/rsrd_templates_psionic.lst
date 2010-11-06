@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Nov  3 22:48:47 2008 -- reformated by prettylst.pl v1.38 (build 8180)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:33:59 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 # Original entry by: Arknight
 # update by: TaluronIscandar
@@ -15,12 +15,12 @@ Phrenic		VISIBLE:YES		LEVELADJUSTMENT:2	TEMPLATE:CHOOSE:Phrenic (Animal)	TEMPLAT
 Phrenic (Animal)	VISIBLE:NO														SOURCEPAGE:PsionicMonsters.rtf	PRERACE:1,RACETYPE=Animal																																																									RACETYPE:Magical Beast	RACESUBTYPE:Augmented Animal
 
 ###Block: Dromite Chitin
-# Template Name			Visible	Template																Combat bonus						Modify VAR						Ability
+# Template Name			Visible	Template																Combat bonus					Modify VAR						Ability
 Dromite Chitin			VISIBLE:NO	TEMPLATE:CHOOSE:Cold Resist Chitin|Electricity Resist Chitin|Fire Resist Chitin|Sonic Resist Chitin	BONUS:COMBAT|AC|3|TYPE=NaturalArmor.STACK
-Cold Resist Chitin		VISIBLE:NO																										BONUS:VAR|ColdResistanceBonus|5		ABILITY:Special Ability|AUTOMATIC|Resistance To Cold
-Fire Resist Chitin		VISIBLE:NO																										BONUS:VAR|FireResistanceBonus|5		ABILITY:Special Ability|AUTOMATIC|Resistance To Fire
-Electricity Resist Chitin	VISIBLE:NO																										BONUS:VAR|ElectricityResistanceBonus|5	ABILITY:Special Ability|AUTOMATIC|Resistance To Electricity
-Sonic Resist Chitin		VISIBLE:NO																										BONUS:VAR|SonicResistanceBonus|5		ABILITY:Special Ability|AUTOMATIC|Resistance To Sonic
+Cold Resist Chitin		VISIBLE:NO																									BONUS:VAR|ColdResistanceBonus|5		ABILITY:Special Ability|AUTOMATIC|Resistance To Cold
+Fire Resist Chitin		VISIBLE:NO																									BONUS:VAR|FireResistanceBonus|5		ABILITY:Special Ability|AUTOMATIC|Resistance To Fire
+Electricity Resist Chitin	VISIBLE:NO																									BONUS:VAR|ElectricityResistanceBonus|5	ABILITY:Special Ability|AUTOMATIC|Resistance To Electricity
+Sonic Resist Chitin		VISIBLE:NO																									BONUS:VAR|SonicResistanceBonus|5		ABILITY:Special Ability|AUTOMATIC|Resistance To Sonic
 
 #
 # End

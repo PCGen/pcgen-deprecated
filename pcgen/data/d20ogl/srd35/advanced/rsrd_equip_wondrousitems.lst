@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Nov 16 12:47:59 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:33:59 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 # Author: Chipoulou/Thomas tjannes@vub.ac.be based on srdequipwondrous
 
@@ -306,10 +306,10 @@ Robe of Useful Items			TYPE:Magic.Wondrous.Robe					COST:7000	WT:1								SOURCE
 Rope of Climbing				TYPE:Magic.Wondrous						COST:3000	WT:3								SOURCEPAGE:MagicItemsV.rtf
 Rope of Entanglement			TYPE:Magic.Wondrous						COST:21000	WT:5								SOURCEPAGE:MagicItemsV.rtf
 ###Block: S's
-# Equipment Name					Output Name				Type						Cost		Weight	Slot Needed	Modifier					Source Page				Spell Res.	Save checks bonus						Bonus to skill																		Modify VAR					Special Property
+# Equipment Name					Output Name				Type						Cost		Weight	Slot Needed	Modifier					Source Page				Spell Res.	Innate Spells							Save checks bonus						Bonus to skill																		Modify VAR					Special Property
 Salve of Slipperiness									TYPE:Magic.Wondrous.Vial.Consumable	COST:1000	WT:0										SOURCEPAGE:MagicItemsV.rtf
 Scabbard of Keen Edges									TYPE:Magic.Wondrous			COST:16000	WT:1										SOURCEPAGE:MagicItemsV.rtf
-Scarab of Protection									TYPE:Magic.Wondrous.Amulet		COST:38000	WT:0				EQMOD:CHARGED_ITEM_12|CHARGES[12]	SOURCEPAGE:MagicItemsV.rtf	SR:20																																				SPROP:Absorbs energy drains, negative levels and death effects
+Scarab of Protection									TYPE:Magic.Wondrous.Amulet		COST:38000	WT:0				EQMOD:CHARGED_ITEM_12|CHARGES[12]	SOURCEPAGE:MagicItemsV.rtf	SR:20																																													SPROP:Absorbs energy drains, negative levels and death effects
 Scarab (Golembane)				OUTPUTNAME:Scarab, [NAME]	TYPE:Magic.Wondrous.Amulet		COST:2500	WT:0										SOURCEPAGE:MagicItemsV.rtf
 Shrouds of Disintegration								TYPE:Magic.Wondrous.Consumable	COST:6600	WT:10										SOURCEPAGE:MagicItemsV.rtf
 Silversheen											TYPE:Magic.Wondrous.Vial.Consumable	COST:250	WT:0										SOURCEPAGE:MagicItemsV.rtf
@@ -317,7 +317,7 @@ Slippers of Spider Climbing								TYPE:Magic.Wondrous.Boot		COST:4800	WT:0.5	SL
 Sovereign Glue										TYPE:Magic.Wondrous.Vial.Consumable	COST:2400	WT:0										SOURCEPAGE:MagicItemsV.rtf
 Stone of Alarm										TYPE:Magic.Wondrous			COST:2700	WT:2										SOURCEPAGE:MagicItemsV.rtf
 Stone of Controlling Earth Elementals						TYPE:Magic.Wondrous			COST:100000	WT:5										SOURCEPAGE:MagicItemsV.rtf
-Stone of Good Luck (Luckstone)							TYPE:Magic.Wondrous			COST:20000	WT:0										SOURCEPAGE:MagicItemsV.rtf			BONUS:CHECKS|Fortitude,Reflex,Will|1|TYPE=Luck	BONUS:SKILL|TYPE.Strength,TYPE.Dexterity,TYPE.Constitution,TYPE.Intelligence,TYPE.Wisdom,TYPE.Charisma|1|TYPE=Luck	BONUS:VAR|TurnCheckBase|1|TYPE=Luck	SPROP:+1 Luck bonus to ability checks
+Stone of Good Luck (Luckstone)							TYPE:Magic.Wondrous			COST:20000	WT:0										SOURCEPAGE:MagicItemsV.rtf												BONUS:CHECKS|Fortitude,Reflex,Will|1|TYPE=Luck	BONUS:SKILL|TYPE.Strength,TYPE.Dexterity,TYPE.Constitution,TYPE.Intelligence,TYPE.Wisdom,TYPE.Charisma|1|TYPE=Luck	BONUS:VAR|TurnCheckBase|1|TYPE=Luck	SPROP:+1 Luck bonus to ability checks
 Stone Horse (Courser)									TYPE:Magic.Wondrous			COST:10000	WT:6000									SOURCEPAGE:MagicItemsV.rtf
 Stone Horse (Destrier)									TYPE:Magic.Wondrous			COST:14800	WT:6000									SOURCEPAGE:MagicItemsV.rtf
 Stone Salve											TYPE:Magic.Wondrous.Vial.Consumable	COST:4000	WT:0										SOURCEPAGE:MagicItemsV.rtf
@@ -342,11 +342,11 @@ Tome of Understanding +4								TYPE:Magic.Wondrous.Book.Consumable	COST:110000	
 Tome of Understanding +5								TYPE:Magic.Wondrous.Book.Consumable	COST:137500	WT:5										SOURCEPAGE:MagicItemsV.rtf
 Unguent of Timelessness									TYPE:Magic.Wondrous.Vial.Consumable	COST:150	WT:0										SOURCEPAGE:MagicItemsV.rtf
 Universal Solvent										TYPE:Magic.Wondrous.Vial.Consumable	COST:50	WT:0										SOURCEPAGE:MagicItemsV.rtf
-Vest of Escape										TYPE:Magic.Wondrous.Shirt		COST:5200	WT:0										SOURCEPAGE:MagicItemsV.rtf											BONUS:SKILL|Escape Artist|6|TYPE=Competence	BONUS:SKILL|Open Lock|4|TYPE=Competence
-Vestments (Druid)					OUTPUTNAME:Vestments, [NAME]	TYPE:Magic.Wondrous.Clothing		COST:10000	WT:0										SOURCEPAGE:MagicItemsV.rtf																															BONUS:VAR|WildShapeTimes|1
+Vest of Escape										TYPE:Magic.Wondrous.Shirt		COST:5200	WT:0										SOURCEPAGE:MagicItemsV.rtf																				BONUS:SKILL|Escape Artist|6|TYPE=Competence	BONUS:SKILL|Open Lock|4|TYPE=Competence
+Vestments (Druid)					OUTPUTNAME:Vestments, [NAME]	TYPE:Magic.Wondrous.Clothing		COST:10000	WT:0										SOURCEPAGE:MagicItemsV.rtf																																								BONUS:VAR|WildShapeTimes|1
 Well of Many Worlds									TYPE:Magic.Wondrous			COST:82000	WT:0										SOURCEPAGE:MagicItemsV.rtf
 Wind Fan											TYPE:Magic.Wondrous			COST:5500	WT:0										SOURCEPAGE:MagicItemsV.rtf
-Wings of Flying										TYPE:Magic.Wondrous.Cape		COST:54000	WT:2										SOURCEPAGE:MagicItemsV.rtf		SPELLS:Magic Item|TIMES=ATWILL|CASTERLEVEL=17|Fly,13
+Wings of Flying										TYPE:Magic.Wondrous.Cape		COST:54000	WT:2										SOURCEPAGE:MagicItemsV.rtf			SPELLS:Magic Item|TIMES=ATWILL|CASTERLEVEL=17|Fly,13
 
 ###Block: Magic items detailed in Monster entries
 # Equipment Name					Output Name			Type					Cost		Weight	Source Page				Save checks bonus

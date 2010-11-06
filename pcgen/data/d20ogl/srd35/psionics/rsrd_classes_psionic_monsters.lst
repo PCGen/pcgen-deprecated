@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Sep  5 15:26:57 2008 -- reformated by prettylst.pl v1.38 (build 7233)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:33:59 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 #Original Entry: Eddy Anthony
 
@@ -13,7 +13,7 @@ CLASS:Unbodied	STARTSKILLPTS:2	MODTOSKILLS:YES
 3	BONUS:PCLEVEL|Psion|1
 4	BONUS:PCLEVEL|Psion|1
 ###Block: Psionic Power Points
-1	BONUS:VAR|PsionML|CL																												DEFINE:PsionML|0	TEMPLATE:Psionic
+1	BONUS:VAR|PsionML|CL																													DEFINE:PsionML|0	TEMPLATE:Psionic
 1	BONUS:VAR|BasePowerPoints|2	BONUS:VAR|BasePowerPoints|4|PREVARGTEQ:PsionML,2	BONUS:VAR|BasePowerPoints|5|PREVARGTEQ:PsionML,3	BONUS:VAR|BasePowerPoints|6|PREVARGTEQ:PsionML,4
 1	BONUS:VAR|BonusPowerPoints|(INT*PsionML)/2|TYPE=PsionBonusPP
 

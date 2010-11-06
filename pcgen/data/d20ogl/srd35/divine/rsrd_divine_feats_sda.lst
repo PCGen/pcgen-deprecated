@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Nov  3 13:32:36 2008 -- reformated by prettylst.pl v1.38 (build 8180)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:33:59 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 
 #Divine Blessing can't enforce the prerequisite
@@ -57,7 +57,7 @@ Divine Storm							CATEGORY:Salient Divine Ability	VISIBLE:YES																		
 Divine Water Mastery						CATEGORY:Salient Divine Ability	VISIBLE:YES																																						PREDOMAIN:1,Water																																																						PREVARGTEQ:DivineRank,1																																																							COST:1	SOURCEPAGE:DivineAbilitiesandFeats.rtf
 Divine Weapon Focus						CATEGORY:Salient Divine Ability	VISIBLE:YES																																																																																														PREVARGTEQ:DivineRank,1								MULT:YES	CHOOSE:WEAPONPROFS|Spellcaster.Ray|ADD.Grapple|LIST																														BONUS:WEAPONPROF=%LIST|TOHIT|4		COST:1	SOURCEPAGE:DivineAbilitiesandFeats.rtf
 Divine Weapon Mastery						CATEGORY:Salient Divine Ability	VISIBLE:YES																												PRECLASS:1,Fighter=20							PREDOMAIN:1,War																																																						PREVARGTEQ:DivineRank,1																																																							COST:1	SOURCEPAGE:DivineAbilitiesandFeats.rtf
-Divine Weapon Specialization					CATEGORY:Salient Divine Ability	VISIBLE:YES	PREABILITY:1,CATEGORY=Salient Divine Ability,Divine Weapon Focus															PREATT:20																																																																			PREVARGTEQ:DivineRank,1								MULT:YES	CHOOSE:WEAPONPROFS|Spellcaster.Ray|ADD.Grapple|LIST																																		BONUS:WEAPONPROF=%LIST|DAMAGE|DivineRank	COST:1	SOURCEPAGE:DivineAbilitiesandFeats.rtf
+Divine Weapon Specialization					CATEGORY:Salient Divine Ability	VISIBLE:YES	PREABILITY:1,CATEGORY=Salient Divine Ability,Divine Weapon Focus															PREATT:20																																																																			PREVARGTEQ:DivineRank,1								MULT:YES	CHOOSE:WEAPONPROFS|Spellcaster.Ray|ADD.Grapple|LIST																														BONUS:WEAPONPROF=%LIST|DAMAGE|DivineRank	COST:1	SOURCEPAGE:DivineAbilitiesandFeats.rtf
 # Issue with this till we get CHOOSE:ABILITY resolved
 #CHOOSE:FEAT=Divine Weapon Focus																																	BONUS:WEAPONPROF=%LIST|DAMAGE|DivineRank	COST:1	SOURCEPAGE:DivineAbilitiesandFeats.rtf
 

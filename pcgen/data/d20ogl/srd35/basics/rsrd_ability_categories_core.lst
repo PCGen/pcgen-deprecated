@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Wed Jun 11 18:42:35 2008 -- reformated by prettylst.pl v1.38 (build 6503)
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:33:59 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 #SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
 # Original Entry by: Tir Gwaith, Eddy Anthony
 #
@@ -6,11 +6,12 @@
 #
 
 ###Block: Master Category
-# Ability Category			Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object
-ABILITYCATEGORY:Special Ability	VISIBLE:NO		EDITABLE:NO			EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability
+# Ability Category			Visible	Editable or Static?	Change Pool?	Fractional values?	Category of Object
+ABILITYCATEGORY:Special Ability	VISIBLE:NO	EDITABLE:NO			EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability
 
 ###Block: Animal Tricks and Training
-ABILITYCATEGORY:Animal Trick		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AnimalTrick		PLURAL:Animal Tricks		DISPLAYLOCATION:Class Abilities
+# Ability Category		Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object	Plural description for UI	Display Location
+ABILITYCATEGORY:Animal Trick	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AnimalTrick	PLURAL:Animal Tricks		DISPLAYLOCATION:Class Abilities
 
 ###Block: Bonus FEATs and subgroups
 # Ability Category			Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object	Type of Object				Plural description for UI	Display Location
@@ -29,9 +30,9 @@ ABILITYCATEGORY:Turn Undead			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIO
 ABILITYCATEGORY:Expert Class Skills		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO						CATEGORY:Special Ability	TYPE:ExpertClassSkills	PLURAL:Expert Class Skills		DISPLAYLOCATION:Class Abilities
 
 ###Block: Alternate Class Features
-# Ability Category				Visible	Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object				Plural description for UI		Display Location
+# Ability Category				Visible	Editable or Static?	Change Pool?	Fractional values?	Category of Object	Type of Object	Plural description for UI		Display Location
 ABILITYCATEGORY:ACF				VISIBLE:NO	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:ACF
-ABILITYCATEGORY:Alternate Class Feature	VISIBLE:YES	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:ACF		TYPE:ACF					PLURAL:Alternate Class Features	DISPLAYLOCATION:Alternate Class Features
+ABILITYCATEGORY:Alternate Class Feature	VISIBLE:YES	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:ACF		TYPE:ACF		PLURAL:Alternate Class Features	DISPLAYLOCATION:Alternate Class Features
 
 #
 # End
