@@ -1,4 +1,6 @@
+# CVS $Revision$ $Author$ -- Fri Nov  5 22:27:22 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 
 
 
-Improved Familiar.MOD	COMPANIONLIST:Familiar|Dragon (Faerie)|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:LG,NG,CG,TN	
+# Feat Name			Allowed Companions
+Improved Familiar.MOD	COMPANIONLIST:Familiar|Dragon (Faerie)|PRECLASS:1,SPELLCASTER.Arcane=7|PREALIGN:LG,NG,CG,TN
