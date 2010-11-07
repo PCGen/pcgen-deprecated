@@ -23,7 +23,6 @@ Augment Summoning		VISIBLE:YES					BONUS:STAT|STR,CON|4
 
 Raven Familiar Language	VISIBLE:NO									ADD:LANGUAGE|1|TYPE=Spoken	ABILITY:Special Ability|AUTOMATIC|Speak One Language
 
-Lycanthrope			VISIBLE:YES	DEFINE:Lycanthrope|1
 
 ###Block: Fractional Hit Die Adjustments for Monster classes
 # Template Name	Hit Dice Size			Visible
