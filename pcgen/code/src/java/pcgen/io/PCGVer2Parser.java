@@ -1388,6 +1388,13 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 					loaded.add(aCamp);
 				}
 			}
+			// Check for the special condition - sources are nto yet loaded
+			if (loaded.isEmpty())
+			{
+				chosenCampaignSourcefiles.clear();
+				PersistenceManager.getInstance().setChosenCampaignSourcefiles(
+					chosenCampaignSourcefiles);
+			}
 			
 			for (final String line : lines)
 			{
@@ -1511,7 +1518,7 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 		{
 			throw new PCGParseException("parseCampaignLines", "N/A", //$NON-NLS-1$ //$NON-NLS-2$
 				PropertyFactory
-					.getString("Exceptions.PCGenParser.NoCampainInfo")); //$NON-NLS-1$
+					.getString("Exceptions.PCGenParser.NoCampaignInfo")); //$NON-NLS-1$
 		}
 	}
 
