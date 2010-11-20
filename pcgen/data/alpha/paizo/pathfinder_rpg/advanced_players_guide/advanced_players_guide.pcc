@@ -43,6 +43,8 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Advanced Pla
 #EXTRAFILE:OGL.txt
 
 ABILITY:pfapg_abilities_archetypes.lst
+ABILITY:pfapg_abilities_archetypes_druid.lst
+ABILITY:pfapg_abilities_archetypes_ranger.lst
 ABILITY:pfapg_abilities_class.lst
 ABILITY:pfapg_abilities_class_common.lst
 ABILITY:pfapg_abilities_class_prestige.lst
