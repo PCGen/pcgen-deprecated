@@ -118,7 +118,8 @@ ABILITYCATEGORY:Monk Weapon Choice Monk Weapons	VISIBLE:QUALIFY	EDITABLE:YES		ED
 
 # Ranger Arcehtypes
 ABILITYCATEGORY:Hunter's Trick Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:HuntersTrickChoice														PLURAL:Hunter's Trick Selections		DISPLAYLOCATION:Class Abilities
-
+ABILITYCATEGORY:Favored Community		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:FavoredCommunity		PLURAL:Favored Community		DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Favored Community Bonus	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:FavoredCommunityBonus	PLURAL:Favored Community Bonuses	DISPLAYLOCATION:Class Abilities
 
 # Fighter Archetypes
 ABILITYCATEGORY:Weapon Master Chosen Weapon	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:WeaponMasterChosenWeapon													PLURAL:Weapon Master Chosen Weapon		DISPLAYLOCATION:Class Abilities
