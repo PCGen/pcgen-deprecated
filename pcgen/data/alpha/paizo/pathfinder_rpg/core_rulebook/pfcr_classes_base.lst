@@ -292,7 +292,7 @@ CLASS:Ex-Paladin	STARTSKILLPTS:2	CSKILL:TYPE.Craft|Diplomacy|Handle Animal|Heal|
 
 
 # Class Name	Hit Dice	Type			Abbreviation	Max Level	Source Page		Ability																Define			Save checks bonus											Combat bonus
-CLASS:Ranger	HD:10		TYPE:Base.PC	ABB:Rgr		MAXLEVEL:20	SOURCEPAGE:p.64	ABILITY:Internal|AUTOMATIC|Ranger Base Skills|!PREABILITY:1,CATEGORY=Archetype,RangerClassSkills	DEFINE:RangerLvl|CL	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
+CLASS:Ranger	HD:10		TYPE:Base.PC	ABB:Rgr		MAXLEVEL:20	SOURCEPAGE:p.64	ABILITY:Internal|AUTOMATIC|Ranger Base Skills|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerClassSkills	DEFINE:RangerLvl|CL	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
 # Class Name	Skill Pts/Lvl
 CLASS:Ranger	STARTSKILLPTS:6
 # Class Name	Spell Stat		Spell Type		Automatically Known Spell Levels			Craft Level Mult.	Caster level
@@ -302,12 +302,12 @@ CLASS:Ranger	SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=1|LEVEL=2|LEVEL=3|
 1																														AUTO:FEAT|Armor Proficiency (Light)|Armor Proficiency (Medium)
 1																														AUTO:FEAT|Shield Proficiency
 ###Block: Favored Enemies and Terrains
-1	BONUS:VAR|RangerFavoredEnemyLVL|CL		ABILITY:Special Ability|AUTOMATIC|Basic Favored Enemy|Ranger Favored Enemy
-1	BONUS:VAR|RangerFavoredTerrainLVL|CL	ABILITY:Special Ability|AUTOMATIC|Basic Favored Terrain|Ranger Favored Terrain
+1	BONUS:VAR|RangerFavoredEnemyLVL|CL		ABILITY:Special Ability|AUTOMATIC|Basic Favored Enemy|Ranger Favored Enemy|!PREABILITY:1,CATEGORY=Special Ability,TYPE.RangerFavoredEnemy
+1	BONUS:VAR|RangerFavoredTerrainLVL|CL	ABILITY:Special Ability|AUTOMATIC|Basic Favored Terrain|Ranger Favored Terrain|!PREABILITY:1,CATEGORY=Special Ability,TYPE.RangerFavoredTerrain
 ###Block: Level progression
-1				BONUS:VAR|WildEmpathy|CL	BONUS:VAR|TrackLVL|CL		ABILITY:Special Ability|AUTOMATIC|Track|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerTrack	ABILITY:Special Ability|AUTOMATIC|Wild Empathy|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerWildEmpathy
+1	BONUS:VAR|WildEmpathy|CL	BONUS:VAR|TrackLVL|CL		ABILITY:Special Ability|AUTOMATIC|Track|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerTrack	ABILITY:Special Ability|AUTOMATIC|Wild Empathy|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerWildEmpathy
 2				BONUS:VAR|CombatStyleLVL|CL						ABILITY:Special Ability|AUTOMATIC|Combat Style|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerCombatStyle
-3																																															AUTO:FEAT|Endurance
+3																																															AUTO:FEAT|Endurance|!PREABILITY:1,CATEGORY=Special Ability,TYPE.RangerEndurance
 4	CAST:0,0		BONUS:VAR|HuntersBondLVL|CL	BONUS:VAR|CompLevel|CL-3	ABILITY:Special Ability|AUTOMATIC|Hunter's Bond|!PREABILITY:1,CATEGORY=Archetype,TYPE.RangerHuntersBond
 5	CAST:0,1
 6	CAST:0,1
