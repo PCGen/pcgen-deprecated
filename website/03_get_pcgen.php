@@ -127,9 +127,9 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=129606" style="font-size: 80%;">[View Older Production Releases]</a>
         </p>
 
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5163_win_install.exe">Download PCGen 5.16.3 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5163_mac_build.dmg">Download PCGen 5.16.3 for Mac<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5163_full.zip">Download PCGen 5.16.3 for Other Systems<small>&nbsp;</small></a></div><br/>
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5164_win_install.exe">Download PCGen 5.16.4 for Windows<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5164_mac_build.dmg">Download PCGen 5.16.4 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5164_full.zip">Download PCGen 5.16.4 for Other Systems<small>&nbsp;</small></a></div><br/>
 
         <h3>Download Stable Data Sets<a class="" title="data" name="data"></a></h3>
         <p>These are stable data sets that are developed in between stable releases of PCGen but can be installed and used with a stable version of PCGen.
