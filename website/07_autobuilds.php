@@ -17,9 +17,9 @@ require_once('include/header.php.inc');
         <p>These are regular scheduled builds from the development branch of PCGen. Every night, 
         the project is checked for changes and if any have been made a new build is generated.</p>
         <ul>
-	        <li><a href="http://pcgen.sourceforge.net/autobuilds/index.html">Index of Autobuilds and Links</a>
-			<li><a href="http://pcgen.sourceforge.net/autobuilds/download.html">Download Autobuilds</a>
-			<li><a href="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/index.html">Autobuild Online Documentation</a>
+	        <li><a href="http://www.pcgen-test.org/autobuilds/index.html">Index of Autobuilds and Links</a>
+			<li><a href="http://www.pcgen-test.org/autobuilds/download.html">Download Autobuilds</a>
+			<li><a href="http://www.pcgen-test.org/autobuilds/pcgen-docs/index.html">Autobuild Online Documentation</a>
             <li><a href="http://wiki.pcgen.org/index.php?title=Roadmap">Roadmap</a> - Find out when you get your next stable fix!                   
         </ul>
 
