@@ -17,8 +17,8 @@
 		<p>This is the first OOC update to PCGen's alpha data set for the Pathfinder Advanced Players Guide.</p>
 
         <p>Please note that this is a patch installer. In addition to the APG update it patches (overwrites) the 
-        Pathfinder Roleplaying Game Core Rulebook dataset with the latest data fixes we've made in our ongoing effort. 
-        The installer requires 5.16.4 and will not install in earlier versions.</p>
+        Pathfinder Roleplaying Game Core Rulebook dataset and the Bestiary with the latest data fixes we've made 
+        in our ongoing effort. The installer requires 5.16.4 and will not install in earlier versions.</p>
 
         <p>This release is an alpha release. This "alpha" status refers to the status of the data set. As an alpha 
         data set, this  release is bound to contain errors. The PCGen team is dedicated to providing full support for 
@@ -66,6 +66,7 @@
 		<blockquote> 
 		  <p><em>Title</em>: <strong>Pathfinder Roleplaying Game Advanced Players Guide</strong><br>
 			<em>Title</em>: <strong>Pathfinder Roleplaying Game Core Rulebook</strong><br>
+			<em>Title</em>: <strong>Pathfinder Bestiary</strong><br>
 			<em>File</em>: <a href="">5164_piazo_pathfinder_alpha_update_01.pcz</a><br>
 			<em>Publisher</em>: PCGen<br>
 			<em>Game Mode</em>: Pathfinder_RPG<em><br>
@@ -75,27 +76,42 @@
 		</blockquote>
 
 		<p></p>
-	<!--
- 	DATA-102	Calculate Staff costs automatically
- 	DATA-151	[Pathfinder] Headband of Vast Intelligence - skill rank bonus only allows knowledge skills
- 	DATA-153	PF Qadira and all PF Players Guides needs to allow APG as a precursor
- 	DATA-154	Ring TYPE missing from Bonded Object eqmod PRETYPE tag
- 	DATA-155	Simple Template, Young Creature, is incorrect
- 	DATA-156	[Gaslight] Talents not showing up on Character Sheet
- 	DATA-159	Loremaster missing class abilities
- 	DATA-161	Unique keys for Sorcerer Fey bloodline reference wrong bloodline
- 	DATA-162	Animal Tricks not granted at proper level.
-	-->
+		<h2><a name="Release_History">Release History</a></h2>
+		<blockquote>
+		  <p><strong>Release 1: November 30, 2010</strong></p>
+		  <ul>
+		    <li><a href="http://jira.pcgen.org/browse/DATA-102">DATA-102</a> Calculate Staff costs automatically</li>
+		    <li><a href="http://jira.pcgen.org/browse/DATA-151">DATA-151</a> [Pathfinder] Headband of Vast Intelligence - skill rank bonus only allows knowledge skills</li>
+		    <li><a href="http://jira.pcgen.org/browse/DATA-154">DATA-154</a> Ring TYPE missing from Bonded Object eqmod PRETYPE tag</li>
+		    <li><a href="http://jira.pcgen.org/browse/DATA-155">DATA-155</a> Simple Template, Young Creature, is incorrect</li>
+		    <li><a href="http://jira.pcgen.org/browse/DATA-159">DATA-159</a> Loremaster missing class abilities</li>
+		    <li><a href="http://jira.pcgen.org/browse/DATA-161">DATA-161</a> Unique keys for Sorcerer Fey bloodline reference wrong bloodline</li>
+		    <li><a href="http://jira.pcgen.org/browse/DATA-162">DATA-162</a> Animal Tricks not granted at proper level.</li>
+		  </ul>
+		</blockquote>
+
+	<h2><a name="Known_Issues">Known Issues</a></h2>
 		
+<!--
+        <ul>
+		  <ul>
+		    <li>Monk Flurry has incorrect attack bonus on iterative attacks after level 8. For example, an 8th livel 
+		      monk should have a fluffy attack bonus of +6/+6/+1/+1, PCGen will, however, display +6/+6/+6/+1.</li>
+		    <li>Spells from opposing arcane schools do not use two slots of the appropriate spell level.</li>
+	      </ul>
+    	</ul>
+-->
+
 		<h2><a name="Data_Installation">Installing Data Sets</a></h2>
 		
 		<p>To install any of these data sets follow these instructions.</p>
 		<ol>
-		  <li>Download the data set packages you are interested in. <strong>Do not unzip 
-			them</strong>, PCGen reads the zip file directly so you need to retain that 
-			file.</li>
+		  <li>Download the data set packages you are interested in. The packages currently available can be found in the 
+		  <a href="https://sourceforge.net/projects/pcgen/files/">PCGen Stable Datasets</a> folder. These files are zip 
+		  files that have had the zip extension changed to pcz. <strong>DO NOT</strong> unzip these files. PCGen reads 
+		  and unzips the archive files directly as part of the Data Install process.</li>
 		  <li>
-			Launch PCGen and select <strong>Tools &gt; Install Dataset</strong>.<br><br>
+			Launch PCGen and select <strong>Tools &gt; Install Data</strong>.<br><br>
 			  
 			  	<img src="http://pcgen.sourceforge.net/autobuilds/pcgen-docs/images/windows/data_installer.png">
 			  <br><br>
