@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+build.xml - an Ant build file for assembling data sets
+ - Should be placed in the same folder as the install.lst 
+ - Run the default target to generate an OOC data install zip
+
+$Id: build.xml 192 2008-04-30 12:19:47Z James $
+-->
+<project name="pcgen" default="packageall" basedir=".">
+	<basename property="datasetname" file="5164_piazo_pathfinder_alpha_update_01"/>
+	<property name="zipfile" value="../${datasetname}.pcz" />
+
+	<target name="init">
+		<echo>Generating install pack for ${datasetname}</echo> 
+		<echo>... install pack will be called ${zipfile}</echo> 
+	</target>
+	<target name="cleanall">
+		<delete file="${zipfile}" />
+	</target>
+	<target name="packageall" depends="init,cleanall">
+		<zip zipfile="${zipfile}">
+			<fileset dir="${basedir}" includes="**/*" excludes="build.xml"/>
+		</zip>
+	</target>
+</project>
