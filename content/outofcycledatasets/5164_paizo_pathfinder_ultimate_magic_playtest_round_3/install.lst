@@ -1,19 +1,19 @@
-CAMPAIGN:Paizo - Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 1
-MINVER:5.16.3
+CAMPAIGN:Paizo - Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 2
+MINVER:5.16.4
 MINDEVVER: 5.17.4
 DEST:DATA
 
 PUBNAMELONG:Paizo Publishing LLC
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://paizo.com
-SOURCELONG:Ultimate Magic Playtest, Round 1
-SOURCESHORT:PFUMP1
-SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8gte
-SOURCEDATE:2010-09
+SOURCELONG:Ultimate Magic Playtest, Round 3
+SOURCESHORT:PFUMP3
+SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8i0z
+SOURCEDATE:2010-12
 
 INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This dataset is not published, endorsed, or specifically approved by Paizo Publishing. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Publishing and Paizo products, please visit paizo.com.
+COPYRIGHT:Open Game License v 1.0a Copyright 2000, Wizards of the Coast, Inc.
 COPYRIGHT:System Reference Document. Copyright 2000, Wizards of the Coast, Inc.; Authors Jonathan Tweet, Monte Cook, Skip Williams, based on material by E. Gary Gygax and Dave Arneson.
-COPYRIGHT:Ultimate Magic Playtest, Round 1. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
-COPYRIGHT:Advanced Player's Guide. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
+COPYRIGHT:Ultimate Magic Playtest, Round 3. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
+COPYRIGHT:Advanced Player’s Guide. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
 COPYRIGHT:Pathfinder RPG Core Rulebook. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn, based on material by Jonathan Tweet, Monte Cook, and Skip Williams.
-COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 1" Copyright 2010, PCGen Data team (Including, but not limited to Stefan Radermacher).
