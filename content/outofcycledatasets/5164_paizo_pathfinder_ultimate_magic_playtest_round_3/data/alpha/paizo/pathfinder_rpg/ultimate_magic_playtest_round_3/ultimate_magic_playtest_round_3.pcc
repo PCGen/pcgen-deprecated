@@ -1,6 +1,6 @@
 CAMPAIGN:Paizo - Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 3
 GAMEMODE:Pathfinder
-TYPE:Paizo Publishing.Pathfinder Roleplaying Game
+TYPE:Alpha Datasets.Paizo Publishing.Pathfinder Roleplaying Game
 RANK:3
 GENRE:Fantasy
 BOOKTYPE:Supplement
@@ -24,11 +24,12 @@ URL:Paizo Publishing|http://paizo.com/paizo/messageboards/paizoPublishing/pathfi
 DESC:Welcome to the third round of the Ultimate Magic playtest, with another look at the new magus base class. This is a class that many of you have already been playing with since the first playtest round a few months ago. We took a great deal of your feedback and heavily revised a number of elements of this class. While it is not yet perfect, it is a huge step in the right direction.
 
 INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This dataset is not published, endorsed, or specifically approved by Paizo Publishing. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Publishing and Paizo products, please visit paizo.com.
+COPYRIGHT:Open Game License v 1.0a Copyright 2000, Wizards of the Coast, Inc.
 COPYRIGHT:System Reference Document. Copyright 2000, Wizards of the Coast, Inc.; Authors Jonathan Tweet, Monte Cook, Skip Williams, based on material by E. Gary Gygax and Dave Arneson.
-COPYRIGHT:Ultimate Magic Playtest, Round 1. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
-COPYRIGHT:Advanced Player's Guide. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
+COPYRIGHT:Ultimate Magic Playtest, Round 3. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
+COPYRIGHT:Advanced Player’s Guide. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn.
 COPYRIGHT:Pathfinder RPG Core Rulebook. Copyright 2010, Paizo Publishing, LLC; Author: Jason Bulmahn, based on material by Jonathan Tweet, Monte Cook, and Skip Williams.
-COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 1" Copyright 2010, PCGen Data team (Including, but not limited to Stefan Radermacher).
+COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 3" Copyright 2010, PCGen Data team (Including, but not limited to Stefan Radermacher and Eric Smith).
 
 # Do not remove the EXTRAFILE comment.
 #EXTRAFILE:OGL.txt
