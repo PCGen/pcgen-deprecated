@@ -1,10 +1,10 @@
 CAMPAIGN:Paizo - Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 3
 GAMEMODE:Pathfinder
-TYPE:Alpha Datasets.Paizo Publishing.Pathfinder Roleplaying Game
+TYPE:Paizo Publishing.Pathfinder Roleplaying Game
 RANK:3
 GENRE:Fantasy
 BOOKTYPE:Supplement
-PRECAMPAIGN:1,BOOKTYPE=Core Rules
+PRECAMPAIGN:2,BOOKTYPE=Core Rules,Paizo - Pathfinder Roleplaying Game Advanced Player's Guide
 PUBNAMELONG:Paizo Publishing LLC
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://paizo.com
@@ -38,7 +38,7 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Ultimate Mag
 ABILITY:pfump3_abilities_class.lst
 ABILITYCATEGORY:pfump3_abilitycategories.lst
 CLASS:pfump3_classes_base.lst
-SPELL:pfump3_spells_apg.lst
+#SPELL:pfump3_spells_apg.lst
 SPELL:pfump3_spells_mod.lst
 
 #

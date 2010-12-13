@@ -20,6 +20,7 @@ Spark.MOD				CLASSES:Magus=0
 
 # 1st-Level Magus Spells
 Burning Hands.MOD			CLASSES:Magus=1
+Chill Touch				CLASSES:Magus=1
 Color Spray.MOD			CLASSES:Magus=1
 Enlarge Person.MOD		CLASSES:Magus=1
 Expeditious Retreat.MOD		CLASSES:Magus=1
@@ -90,6 +91,7 @@ Phantom Steed.MOD			CLASSES:Magus=3
 Sleet Storm.MOD			CLASSES:Magus=3
 Slow.MOD				CLASSES:Magus=3
 Stinking Cloud.MOD		CLASSES:Magus=3
+Vampiric Touch			CLASSES:Magus=3
 Versatile Weapon.MOD		CLASSES:Magus=3
 Water Breathing.MOD		CLASSES:Magus=3
 Wind Wall.MOD			CLASSES:Magus=3

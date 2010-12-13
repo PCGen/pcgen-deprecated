@@ -14,14 +14,14 @@ CLASS:Magus		SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BONUS:CAS
 1	CAST:3,1											BONUS:VAR|MagusArmorProficiencyLVL|CL	ABILITY:Special Ability|AUTOMATIC|Armor Proficiency ~ Magus|Cantrips ~ Magus|Arcane Pool ~ Magus|Spell Combat ~ Magus
 2	CAST:4,2																		ABILITY:Special Ability|AUTOMATIC|Spellstrike ~ Magus
 3	CAST:4,3											BONUS:VAR|MagusArcanaLVL|CL			ABILITY:Special Ability|AUTOMATIC|Magus Arcana ~ Magus
-4	CAST:4,3,1											BONUS:VAR|MagusArcaneWeaponLVL|CL		ABILITY:Special Ability|AUTOMATIC|Arcane Weapon ~ Magus
+4	CAST:4,3,1																				ABILITY:Special Ability|AUTOMATIC|Pool Spell ~ Magus
 5	CAST:4,4,2			BONUS:ABILITYPOOL|Magus Bonus Feat|(CL+1)/6
 6	CAST:5,4,3
-7	CAST:5,4,3,1
+7	CAST:5,4,3,1																	ABILITY:Special Ability|AUTOMATIC|Knowledge Pool ~ Magus
 8	CAST:5,4,4,2																	ABILITY:Special Ability|AUTOMATIC|Improved Spell Combat ~ Magus
 9	CAST:5,5,4,3
 10	CAST:5,5,4,3,1										BONUS:VAR|MagusFighterTrainingLVL|CL	ABILITY:Special Ability|AUTOMATIC|Fighter Training ~ Magus
-11	CAST:5,5,4,4,2
+11	CAST:5,5,4,4,2																			ABILITY:Special Ability|AUTOMATIC|Improved Pool Spell ~ Magus
 12	CAST:5,5,5,4,3
 13	CAST:5,5,5,4,3,1
 14	CAST:5,5,5,4,4,2																	ABILITY:Special Ability|AUTOMATIC|Greater Spell Combat ~ Magus
@@ -29,7 +29,7 @@ CLASS:Magus		SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BONUS:CAS
 16	CAST:5,5,5,5,4,3,1																ABILITY:Special Ability|AUTOMATIC|Counterstrike ~ Magus
 17	CAST:5,5,5,5,4,4,2
 18	CAST:5,5,5,5,5,4,3
-19	CAST:5,5,5,5,5,5,4																ABILITY:Special Ability|AUTOMATIC|Weapon Bond ~ Magus
+19	CAST:5,5,5,5,5,5,4																ABILITY:Special Ability|AUTOMATIC|Greater Pool Spell ~ Magus
 20	CAST:5,5,5,5,5,5,5																ABILITY:Special Ability|AUTOMATIC|True Magus ~ Magus
 
 #
