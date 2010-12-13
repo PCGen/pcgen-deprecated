@@ -38,7 +38,6 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Roleplaying Game Ultimate Mag
 ABILITY:pfump3_abilities_class.lst
 ABILITYCATEGORY:pfump3_abilitycategories.lst
 CLASS:pfump3_classes_base.lst
-#SPELL:pfump3_spells_apg.lst
 SPELL:pfump3_spells_mod.lst
 
 #
