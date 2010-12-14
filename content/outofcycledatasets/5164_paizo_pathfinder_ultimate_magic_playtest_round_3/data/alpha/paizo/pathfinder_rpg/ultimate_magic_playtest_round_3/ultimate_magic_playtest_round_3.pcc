@@ -2,6 +2,7 @@ CAMPAIGN:Paizo - Pathfinder Roleplaying Game Ultimate Magic Playtest, Round 3
 GAMEMODE:Pathfinder
 TYPE:Alpha Datasets.Paizo Publishing.Pathfinder Roleplaying Game
 RANK:3
+#STATUS:Beta
 GENRE:Fantasy
 BOOKTYPE:Supplement
 PRECAMPAIGN:2,BOOKTYPE=Core Rules,Paizo - Pathfinder Roleplaying Game Advanced Player's Guide
