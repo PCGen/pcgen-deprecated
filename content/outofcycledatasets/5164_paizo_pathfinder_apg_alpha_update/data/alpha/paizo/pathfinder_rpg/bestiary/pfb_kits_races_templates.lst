@@ -1,4 +1,4 @@
-# CVS $Revision: 13408 $ $Author: amaitland $ -- Mon Dec  7 13:28:14 2009 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision: 14822 $ $Author: zaister $ -- Mon Dec  7 13:28:14 2009 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Human Ghost Aristocrat	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Human],[!PRERACE:1,%]	SOURCEPAGE:p.144
@@ -103,7 +103,7 @@ ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
 ABILITY:CATEGORY=Arcane Bond|Arcane Bond ~ Bonded Object
 ABILITY:CATEGORY=Arcane Opposition School|Illusion Opposition School
 ABILITY:CATEGORY=Arcane Opposition School|Transmutation Opposition School
-ABILITY:CATEGORY=Necromancer Channeling|Command Undead ~ Necromancer
+ABILITY:CATEGORY=Necromancer Channeling|Command Undead
 ABILITY:CATEGORY=Wizard Bonus Feat|Quicken Spell
 ABILITY:CATEGORY=Wizard Bonus Feat|Scribe Scroll
 SKILL:Craft (Alchemy)		RANK:11
