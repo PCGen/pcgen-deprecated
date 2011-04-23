@@ -1,4 +1,4 @@
-# CVS $Revision: 13955 $ $Author: amaitland $ -- Sat Oct  2 19:33:06 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 14797 $ $Author: gjorbjond $ -- Sat Oct  2 19:33:06 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Stefan Radermacher & Andrew Maitland
 
@@ -140,6 +140,12 @@ Ride-By Attack.MOD			TYPE:MountedMastery
 Spirited Charge.MOD			TYPE:MountedMastery
 Trample.MOD					TYPE:MountedMastery
 Unseat.MOD					TYPE:MountedMastery
+
+
+# Trait bonuses to Turn Undead and Command Undead
+Command Undead.MOD	BONUS:VAR|CommandUndeadDC|1|PREABILITY:1,CATEGORY=Special Ability,Sacred Conduit ~ Trait
+Turn Undead.MOD		BONUS:VAR|TurnUndeadDC|1|PREABILITY:1,CATEGORY=Special Ability,Sacred Conduit ~ Trait
+
 #
 # End
 #

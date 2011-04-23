@@ -1,8 +1,8 @@
-# CVS $Revision: 14304 $ $Author: elrotheonk $ -- Sat Nov 20 04:10:09 2004 -- reformated by prettylst.pl v1.34 (build 422)
+# CVS $Revision: 14743 $ $Author: zaister $ -- Sat Nov 20 04:10:09 2004 -- reformated by prettylst.pl v1.34 (build 422)
 CAMPAIGN:Paizo - Pathfinder Roleplaying Game Advanced Player's Guide
 GAMEMODE:Pathfinder
-TYPE:Alpha Datasets.Paizo Publishing.Pathfinder Roleplaying Game
-#STATUS:Alpha
+TYPE:Paizo Publishing.Pathfinder Roleplaying Game
+STATUS:Alpha
 RANK:3
 GENRE:Fantasy
 BOOKTYPE:Supplement
@@ -102,6 +102,12 @@ SPELL:pfapg_spells.lst
 SPELL:pfapg_spells_mods.lst
 
 TEMPLATE:pfapg_templates.lst
+
+#Hide internal feat types
+HIDETYPE:FEAT|AquaticBloodline|BorealBloodline|DeepearthBloodline|DreamspunBloodline|ProteanBloodline|SerpentineBloodline|ShadowBloodline|StarsoulBloodline|StormbornBloodline|VerdantBloodline
+HIDETYPE:FEAT|DruidShamanBear|DruidShamanEagle|DruidShamanLion|DruidShamanSerpent|DruidShamanWolf
+HIDETYPE:FEAT|MartialWeaponProficiency|MountedMastery|OracleWeaponmastery
+
 #
 # End
 #

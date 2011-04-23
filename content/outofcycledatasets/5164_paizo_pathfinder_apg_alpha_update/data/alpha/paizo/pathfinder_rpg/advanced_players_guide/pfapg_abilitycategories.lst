@@ -1,4 +1,4 @@
-# CVS $Revision: 14596 $ $Author: gjorbjond $ -- Thu Feb 24 12:08:22 2011 -- reformated by prettylst.pl v1.39 (build )
+# CVS $Revision: 14800 $ $Author: amaitland $ -- Thu Feb 24 12:08:22 2011 -- reformated by prettylst.pl v1.39 (build )
 #SOURCELONG:Pathfinder Roleplaying Game Advanced Player's Guide Playtest	SOURCESHORT:PFAPGP1	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8bcj	SOURCEDATE:2009-11
 # Original Entry by: Stefan Radermacher, Eric Smith (Maredudd) and Andrew Maitland
 
@@ -8,14 +8,14 @@ ABILITYCATEGORY:Alchemist Discovery			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES
 ABILITYCATEGORY:Alchemist Grand Discovery		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AlchemistGrandDiscovery	PLURAL:Alchemist Grand Discoveries	DISPLAYLOCATION:Class Abilities
 
 # Cavalier
-ABILITYCATEGORY:Tactician Feat			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:TeamWork			PLURAL:Tactician Feats			DISPLAYLOCATION:Feats
+ABILITYCATEGORY:Tactician Feat			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:Teamwork			PLURAL:Tactician Feats			DISPLAYLOCATION:Feats
 ABILITYCATEGORY:Cavalier Order			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:CavalierOrder		PLURAL:Cavalier Orders			DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Cavalier Feat				VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:CavalierFeat.Combat	PLURAL:Cavalier Feats			DISPLAYLOCATION:Feats
 
 # Inquisitor Categories
 ABILITYCATEGORY:Inquisitor Domain Choice		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:InquisitorDomain		PLURAL:Inquisitor Domain Choices	DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Inquisitor Judgment Effect	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:InquisitorJudgment		PLURAL:Inquisitor Judgment Effects	DISPLAYLOCATION:Class Abilities
-ABILITYCATEGORY:Teamwork Feat				VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:TeamWork			PLURAL:Tactician Feats			DISPLAYLOCATION:Feats
+ABILITYCATEGORY:Teamwork Feat				VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:Teamwork			PLURAL:Tactician Feats			DISPLAYLOCATION:Feats
 
 ###Block: Oracular Ability Categories
 # Ability Category					Visible		Editable or Static?	Change Pool?	Fractional values?	Category of Object		Type of Object			Plural description for UI		Display Location
@@ -33,7 +33,7 @@ ABILITYCATEGORY:Waves Mystery Revelation		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL
 ABILITYCATEGORY:Wind Mystery Revelation		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:WindRevelation		PLURAL:Wind Mystery Revelations	DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Soothsayer Revelation		VISIBLE:NO		EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:SoothsayerRevelation	PLURAL:Soothsayer Revelations
 ABILITYCATEGORY:Oracle Maneuver Mastery		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:OracleManeuverMastery	PLURAL:Oracle Maneuver Masteries	DISPLAYLOCATION:Class Abilities
-ABILITYCATEGORY:Oracle Weapon Mastery		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:OracleWeaponMastery	PLURAL:Oracle Weapon Masteries	DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Oracle Weapon Mastery		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:OracleWeaponMastery	PLURAL:Oracle Weapon Masteries	DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Oracle Spell Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:OracleSpellChoice		PLURAL:Oracle Spell Choices		DISPLAYLOCATION:Class Abilities
 
 ###Block: Witch Ability Categories
@@ -113,15 +113,18 @@ ABILITYCATEGORY:Terrain Dominance Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPO
 ABILITYCATEGORY:Adaptation Ability Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:AdaptationSelection													PLURAL:Adaptation Ability Selections	DISPLAYLOCATION:Class Abilities
 
 
-# Monk Archetypes
-ABILITYCATEGORY:Zen Archer Feat			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ZenArcherFeat														PLURAL:Zen Archer Feats				DISPLAYLOCATION:Feats
-ABILITYCATEGORY:Monk Weapon Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:MonkWeaponChoice														PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
+### Monk Archetypes
 
-ABILITYCATEGORY:Monk Weapon Choice Bow		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT									ABILITYLIST:Weapon Focus(Longbow)|Weapon Focus(Shortbow)		PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
-ABILITYCATEGORY:Monk Weapon Choice Monk Weapons	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:MonkWeaponChoice														PLURAL:Monk Weapon Choices			DISPLAYLOCATION:Class Abilities
+# Weapon Adept
+ABILITYCATEGORY:Weapon Adept Monk Weapon Focus Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability						ABILITYLIST:Weapon Focus ~ Weapon Adept					PLURAL:Weapon Adept Monk Weapon Focus Choices					DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Weapon Adept Monk Weapon Specialization Choice	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability						ABILITYLIST:Weapon Specialization ~ Weapon Adept			PLURAL:Weapon Adept Monk Weapon Specialization Choices			DISPLAYLOCATION:Class Abilities
 
+# Zen Archer
+ABILITYCATEGORY:Zen Archer Feat					VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ZenArcherFeat														PLURAL:Zen Archer Feats										DISPLAYLOCATION:Feats
+ABILITYCATEGORY:Zen Archer Weapon Focus Choice			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability									ABILITYLIST:Weapon Focus ~ Zen Archer					PLURAL:Zen Archer Weapon Focus Choices							DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Zen Archer Weapon Specialization Choice	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability									ABILITYLIST:Weapon Specialization ~ Zen Archer				PLURAL:Zen Archer Weapon Specialization Choices						DISPLAYLOCATION:Class Abilities
 
-# Ranger Arcehtypes
+# Ranger Archetypes
 ABILITYCATEGORY:Hunter's Trick Selection		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:HuntersTrickChoice														PLURAL:Hunter's Trick Selections		DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Favored Community			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:FavoredCommunity														PLURAL:Favored Community			DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Favored Community Bonus		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:FavoredCommunityBonus													PLURAL:Favored Community Bonuses		DISPLAYLOCATION:Class Abilities
@@ -132,6 +135,11 @@ ABILITYCATEGORY:Archer Trick Shot Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPO
 ABILITYCATEGORY:Expanded Repertoire Selection	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:ExpandedRepertoire														PLURAL:Expanded Repertoire Selections	DISPLAYLOCATION:Class Abilities
 
 ABILITYCATEGORY:Beastmaster Companion Choice	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:BeastmasterCompanionChoice												PLURAL:Beastmaster Companion Choices	DISPLAYLOCATION:Class Abilities
+
+# Favored Bonus Spells:
+ABILITYCATEGORY:Bard Favored Bonus Spell		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:BonusSpellKnownBard													PLURAL:Bard Favored Bonus Spells		DISPLAYLOCATION:Racial Abilities
+ABILITYCATEGORY:Inquisitor Favored Bonus Spell	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:BonusSpellKnownInquisistor												PLURAL:Inquisitor Favored Bonus Spells	DISPLAYLOCATION:Racial Abilities
+ABILITYCATEGORY:Sorcerer Favored Bonus Spell	VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:BonusSpellKnownSorcerer													PLURAL:Sorcerer Favored Bonus Spells	DISPLAYLOCATION:Racial Abilities
 
 # Traits Sub Selections
 ABILITYCATEGORY:Campaign Trait Choice		VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:TraitCampaignChoice													PLURAL:Campaign Trait Choices			DISPLAYLOCATION:Racial Abilities
