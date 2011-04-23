@@ -1,4 +1,4 @@
-<!-- $Id: fantasy_master_std.xslt 14559 2011-02-12 21:14:22Z amaitland $ -->
+<!-- $Id: fantasy_master_std.xslt 14724 2011-03-17 04:09:21Z amaitland $ -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -3117,6 +3117,43 @@
 					</fo:table-cell>
 				</fo:table-row>
 				<fo:table-row keep-with-next.within-column="always">
+<!-- DATA-73 Temporary Work Around -->
+					<fo:table-cell>
+						<xsl:call-template name="attrib">
+							<xsl:with-param name="attribute" select="'weapon.hilight'"/>
+						</xsl:call-template>
+						<fo:block font-size="8pt">
+							<xsl:choose>
+								<xsl:when test="contains(name, 'Flurry')">
+									<xsl:variable name="flurry_base" select="number(substring(substring-before($to_hit,'/'),2))"/>
+									<xsl:variable name="monk_level" select="number(substring-before(substring-after(class,'Mnk'),' '))"/>
+									<xsl:choose>
+										<xsl:when test="($monk_level &gt;= 8) and ($monk_level &lt;= 10)">
+											<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>
+										</xsl:when>
+										<xsl:when test="($monk_level &gt;= 11) and ($monk_level &lt;= 14)">
+											<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 10,'+#;-#')"/>
+										</xsl:when>
+										<xsl:when test="$monk_level = 15">
+											<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 10,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 10,'+#;-#')"/>
+										</xsl:when>
+										<xsl:when test="$monk_level &gt;= 16">
+											<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 5,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 10,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 10,'+#;-#')"/>/<xsl:value-of select="format-number($flurry_base - 15,'+#;-#')"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$to_hit"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$to_hit"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</fo:block>
+					</fo:table-cell>
+					
+					
+<!-- DATA-73 Replacing This Block>
 					<fo:table-cell>
 						<xsl:call-template name="attrib">
 							<xsl:with-param name="attribute" select="'weapon.hilight'"/>
@@ -3125,6 +3162,8 @@
 							<xsl:value-of select="$to_hit"/>
 						</fo:block>
 					</fo:table-cell>
+<End DATA-73 Work Around -->
+					
 					<fo:table-cell>
 						<xsl:call-template name="attrib">
 							<xsl:with-param name="attribute" select="'weapon.hilight'"/>
