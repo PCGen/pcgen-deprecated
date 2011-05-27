@@ -2403,6 +2403,7 @@ my %master_order = (
 		'DESC:*',
 		'TEMPDESC',
 		'UNENCUMBEREDMOVE',
+		'ICON',
 	],
 
 	'EQUIPMOD' => [
