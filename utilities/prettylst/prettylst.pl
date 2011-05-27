@@ -3711,7 +3711,8 @@ my @token_AUTO_tag = (
 # validate the different CHOOSE types.
 my %token_CHOOSE_tag = map { $_ => 1 } (
 	'ABILITY',
-	'ARMORPROF',
+	'ARMORPROF',			# Deprecated 5.15 - Remove 6.0
+	'ARMORPROFICIENCY'
 	'ARMORTYPE',
 	'CCSKILLLIST',		# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
 	'CSKILLS',
@@ -3721,9 +3722,9 @@ my %token_CHOOSE_tag = map { $_ => 1 } (
 	'EQUIPMENT',
 	'EQUIPTYPE',
 	'FEAT',
-	'FEATADD',
-	'FEATLIST',
-	'FEATSELECT',
+	'FEATADD',				# Deprecated 5.15 - Remove 6.0
+	'FEATLIST',				# Deprecated 5.15 - Remove 6.0
+	'FEATSELECT',			# Deprecated 5.15 - Remove 6.0
 	'HP',
 	'NOCHOICE',
 	'NUMBER',
@@ -9557,6 +9558,43 @@ sub scan_for_deprecated_tags {
 			$line_for_error
 		);
 	}
+
+	# [ NEWTAG-19 ] CHOOSE:ARMORPROF= is deprecated
+	if ( $line =~ /\sCHOOSE:ARMORPROF\=/) {
+		$logging->ewarn( $error_level,
+			qq{CHOOSE:ARMORPROF= is deprecated 5.15 - Remove 6.0. Use CHOOSE:ARMORPROFICIENCY instead},
+			$file_for_error,
+			$line_for_error
+		);
+	}
+
+	# [ NEWTAG-17 ] CHOOSE:FEATADD= is deprecated
+	if ( $line =~ /\sCHOOSE:FEATADD\=/) {
+		$logging->ewarn( $error_level,
+			qq{CHOOSE:FEATADD= is deprecated 5.15 - Remove 6.0. Use CHOOSE:FEAT instead},
+			$file_for_error,
+			$line_for_error
+		);
+	}
+
+	# [ NEWTAG-17 ] CHOOSE:FEATLIST= is deprecated
+	if ( $line =~ /\sCHOOSE:FEATLIST\=/) {
+		$logging->ewarn( $error_level,
+			qq{CHOOSE:FEATLIST= is deprecated 5.15 - Remove 6.0. Use CHOOSE:FEAT instead},
+			$file_for_error,
+			$line_for_error
+		);
+	}
+
+	# [ NEWTAG-17 ] CHOOSE:FEATSELECT= is deprecated
+	if ( $line =~ /\sCHOOSE:FEATSELECT\=/) {
+		$logging->ewarn( $error_level,
+			qq{CHOOSE:FEATSELECT= is deprecated 5.15 - Remove 6.0. Use CHOOSE:FEAT instead},
+			$file_for_error,
+			$line_for_error
+		);
+	}
+
 
 	# [ 1888288 ] CHOOSE:COUNT= is deprecated
 	if ( $line =~ /\sCHOOSE:COUNT\=/) {
