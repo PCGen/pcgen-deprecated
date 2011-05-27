@@ -1873,6 +1873,7 @@ my %master_order = (
 	'ABILITY' => [
 		'000AbilityName',
 		'KEY',
+		'SORTKEY',
 		'NAMEISPI',
 		'OUTPUTNAME',
 		'CATEGORY',
