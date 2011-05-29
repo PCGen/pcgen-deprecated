@@ -3713,7 +3713,7 @@ my @token_AUTO_tag = (
 my %token_CHOOSE_tag = map { $_ => 1 } (
 	'ABILITY',
 	'ARMORPROF',			# Deprecated 5.15 - Remove 6.0
-	'ARMORPROFICIENCY'
+	'ARMORPROFICIENCY',
 	'ARMORTYPE',
 	'CCSKILLLIST',		# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
 	'CSKILLS',
