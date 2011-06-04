@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	$Id: base.xml 14560 2011-02-12 21:16:06Z amaitland $
+	$Id: base.xml 15035 2011-05-28 01:36:10Z amaitland $
 -->
 <character>
 	<export>
@@ -52,6 +52,14 @@
 			<long>|ALIGNMENT|</long>
 			<short>|ALIGNMENT.SHORT|</short>
 		</alignment>
+		<archetypes>
+|FOR,%trait,0,count("ABILITIES","CATEGORY=Archetype","TYPE=Archetype","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
+			<archetype>
+				<name>|ABILITY.Archetype.VISIBLE.%trait.TYPE=Archetype|</name>
+				<type>|ABILITY.Archetype.VISIBLE.%trait.TYPE=Archetype.TYPE|</type>
+			</archetype>
+|ENDFOR|
+		</archetypes>
 		<bab>|ATTACK.MELEE.BASE|</bab>
 		<bio>|BIO|</bio>
 		<birthday>|BIRTHDAY|</birthday>
@@ -65,6 +73,7 @@
 				<level>|CLASS.%class.LEVEL|</level>
 				<bonuslist>|CLASS.%class.BONUSLIST|</bonuslist>
 				<sequence>|%class|</sequence>
+				<sequence_shortform>|FOR.0,10,1,\CLASSABB.%\\CLASS.%.LEVEL\, , ,1|</sequence_shortform>
 			</class>
 |ENDFOR|	<!-- Classes -->
 			<levels_total>|TOTALLEVELS|</levels_total>
@@ -299,11 +308,49 @@
 			SKILLS
 	  ====================================
 	  ====================================-->
+<skillinfo>
+			<conditional_modifiers>
+|FOR,%ability,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SkillBonus")-1,1,0|
+|IIF(ABILITYALL.Special Ability.%ability.TYPE=SkillBonus.HASASPECT.SkillBonus:Y)|
+				<skillbonus>
+					<description>|ABILITYALL.Special Ability.%ability.TYPE=SkillBonus.ASPECT.SkillBonus|</description>
+				</skillbonus>
+|ENDIF|
+|ENDFOR|
+
+|FOR,%feat,0,COUNT[FEATTYPE.SkillBonus]-1,1,0|
+|IIF(FEAT.%feat.TYPE=SkillBonus.HASASPECT.SkillBonus:Y)|
+				<skillbonus>
+					<description>|FEAT.%feat.TYPE=SkillBonus.ASPECT.SkillBonus|</description>
+				</skillbonus>
+|ENDIF|
+|ENDFOR|
+			</conditional_modifiers>
+</skillinfo>
 	<skills>
+			<conditional_modifiers>
+|FOR,%ability,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SkillBonus")-1,1,0|
+|IIF(ABILITYALL.Special Ability.%ability.TYPE=SkillBonus.HASASPECT.SkillBonus:Y)|
+				<skillbonus>
+					<description>|ABILITYALL.Special Ability.%ability.TYPE=SkillBonus.ASPECT.SkillBonus|</description>
+				</skillbonus>
+|ENDIF|
+|ENDFOR|
+
+
+|FOR,%feat,0,COUNT[FEATTYPE.SkillBonus]-1,1,0|
+|IIF(FEAT.%feat.TYPE=SkillBonus.HASASPECT.SkillBonus:Y)|
+				<skillbonus>
+					<description>|FEAT.%feat.TYPE=SkillBonus.ASPECT.SkillBonus|</description>
+				</skillbonus>
+|ENDIF|
+|ENDFOR|
+			</conditional_modifiers>
 		<skillpoints>
 			<total>|SKILLPOINTS.TOTAL|</total>
 			<used>|SKILLPOINTS.USED|</used>
 			<unused>|SKILLPOINTS.UNUSED|</unused>
+			<eclipse_total>|VAR.CharacterSkillPts.INTVAL|</eclipse_total>
 		</skillpoints>
 		<list_mods>|SKILLLISTMODS|</list_mods>
 		<max_class_skill_level>|MAXSKILLLEVEL|</max_class_skill_level>
@@ -326,6 +373,9 @@
 			<trained_total>|SKILL.%skill.TRAINED_TOTAL|</trained_total>
 			<exclusive_total>|SKILL.%skill.EXCLUSIVE_TOTAL|</exclusive_total>
 			<type>|SKILL.%skill.TYPE|</type>
+
+
+
 		</skill>
 |ENDFOR|	
 
@@ -339,13 +389,24 @@
 	  ====================================-->
 	<saving_throws>
 		<conditional_modifiers>
-|FOR,%ability,0,count("ABILITIES","CATEGORY=Special Ability","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY","NATURE=AUTOMATIC","TYPE=SaveBonus")-1,1,0|
-|IIF(ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=SaveBonus.HASASPECT.SaveBonus:Y)|
+|FOR,%ability,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=SaveBonus")-1,1,0|
+|IIF(ABILITYALL.Special Ability.VISIBLE.%ability.TYPE=SaveBonus.HASASPECT.SaveBonus:Y)|
 			<savebonus>
-				<description>|ABILITYAUTO.Special Ability.%ability.TYPE=SaveBonus.ASPECT.SaveBonus|</description>
+				<description>|ABILITYALL.Special Ability.%ability.TYPE=SaveBonus.ASPECT.SaveBonus|</description>
 			</savebonus>
 |ENDIF|
 |ENDFOR|
+
+|FOR,%ability,0,count("ABILITIES","CATEGORY=FEAT","TYPE=SaveBonus")-1,1,0|
+|IIF(ABILITYALL.FEAT.VISIBLE.%ability.TYPE=SaveBonus.HASASPECT.SaveBonus:Y)|
+			<savebonus>
+				<description>|ABILITYALL.FEAT.%ability.TYPE=SaveBonus.ASPECT.SaveBonus|</description>
+			</savebonus>
+|ENDIF|
+|ENDFOR|
+
+
+
 		</conditional_modifiers>
 		<saving_throw>
 			<name>
@@ -578,6 +639,18 @@ Immune
 		</spiritweaponranged>
 |ENDIF|
 <!-- End Spirit Weapon - Ranged -->
+
+	<!-- Natural Attack -->
+|IIF(ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.HASASPECT.NaturalAttackName:Y)|			
+	<naturalattack>	
+		<name>|ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.ASPECT.NaturalAttackName|</name>
+		<tohit>|ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.ASPECT.NaturalAttackToHit|</tohit>
+		<damage>|ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.ASPECT.NaturalAttackDamage|</damage>
+		<damage_bonus>|ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.ASPECT.NaturalAttackDamageBonus.INTVAL.SIGN|</damage_bonus>
+		<reach>|ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.ASPECT.NaturalAttackReach.INTVAL|</reach>
+		<notes>|ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.ASPECT.NaturalAttackNotes||ABILITYALL.Natural Attack.%NaturalAttack.TYPE=NaturalAttack.DESC|</notes>
+	</naturalattack>
+|ENDIF|
 
 |FOR,%weap,0,COUNT[EQTYPE.WEAPON]-1,1,1|
 |IIF(WEAPON.%weap.CATEGORY:BOTH)|
@@ -850,6 +923,10 @@ Immune
 				<to_hit>|WEAPON.%weap.TOTALHIT|</to_hit>
 				<damage>|WEAPON.%weap.DAMAGE|</damage>
 				<range>|WEAPON.%weap.RANGE|</range>
+<!-- This is an Addition by Itwally for the Monk Flurry of Blows Fix per DATA-73 -->
+				<name>|WEAPON.%weap.NAME|</name>
+				<class>|FOR.0,10,1,\CLASSABB.%\\CLASS.%.LEVEL\, , ,1|</class>
+<!-- End DATA-73 Work Around-->
 			</simple>
 		</weapon>
 |ELSE|  <!-- IIF(WEAPON.%weap.ISTYPE.Double.OR.WEAPON.%weap.CATEGORY:Non-Standard-Melee) -->
@@ -1095,16 +1172,17 @@ Immune
 |ENDFOR|
 
 <!-- Eclipse Channeling -->
-|FOR,%eclipsecount,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=ChannelingBase"),1,0|
-|IIF(ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.HASASPECT.ChannelingType:Y)|			
-	<eclipse_channeling kind="|TEXT.UPPER.ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingKind|" type="|TEXT.UPPER.ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingType|">	
-		<level>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingLevel.INTVAL|</level>
-		<channeling_check>1d20|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingCheck.INTVAL.SIGN|</channeling_check>
-		<intensity>1d20|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingIntensity.INTVAL.SIGN|</intensity>
-		<damage>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingMagnitude|</damage>
-		<uses_per_day>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingUses.INTVAL|</uses_per_day>
-		<range>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingRange.INTVAL|</range>
-		<notes>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingBase.ASPECT.ChannelingNotes|</notes>
+|FOR,%eclipsecount,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=ChannelingOutput"),1,0|
+|IIF(ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.HASASPECT.ChannelingType:Y)|			
+	<eclipse_channeling kind="|TEXT.UPPER.ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingKind|" type="|TEXT.UPPER.ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingType|">	
+		<level>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingLevel.INTVAL|</level>
+		<channeling_check>1d20|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingCheck.INTVAL.SIGN|</channeling_check>
+		<intensity>1d20|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingIntensity.INTVAL.SIGN|</intensity>
+		<damage>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingMagnitude|</damage>
+		<damage_bonus>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingMagnitudeBonus|</damage_bonus>
+		<uses_per_day>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingUses.INTVAL|</uses_per_day>
+		<range>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingRange.INTVAL|</range>
+		<notes>|ABILITYALL.Special Ability.%eclipsecount.TYPE=ChannelingOutput.ASPECT.ChannelingNotes|</notes>
 	</eclipse_channeling>
 |ENDIF|
 |ENDFOR|
@@ -1206,31 +1284,44 @@ Immune
 
 	<!-- Abilites with check lists -->
 	<checklists>
-|FOR,%ability,0,count("ABILITIES","CATEGORY=Special Ability","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY","NATURE=AUTOMATIC","TYPE=CheckList")-1,1,0|
-|IIF(ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList.HASASPECT.CheckCount:Y)|
+|FOR,%ability,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=CheckList")-1,1,0|
+|IIF(ABILITYALL.Special Ability.%ability.TYPE=CheckList.HASASPECT.CheckCount:Y)|
 		<checklist>
-|IIF(ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList.TYPE:Extraordinary)|
-			<name>|ABILITYAUTO.Special Ability.%ability.TYPE=CheckList| (Ex)</name>
+|IIF(ABILITYALL.Special Ability.%ability.TYPE=CheckList.TYPE:Extraordinary)|
+			<name>|ABILITYALL.Special Ability.%ability.TYPE=CheckList| (Ex)</name>
 |ELSE|
-|IIF(ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList.TYPE:Supernatural)|
-			<name>|ABILITYAUTO.Special Ability.%ability.TYPE=CheckList| (Su)</name>
+|IIF(ABILITYALL.Special Ability.%ability.TYPE=CheckList.TYPE:Supernatural)|
+			<name>|ABILITYALL.Special Ability.%ability.TYPE=CheckList| (Su)</name>
 |ELSE|
-|IIF(ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList.TYPE:SpellLike)|
-			<name>|ABILITYAUTO.Special Ability.%ability.TYPE=CheckList| (Sp)</name>
+|IIF(ABILITYALL.Special Ability.%ability.TYPE=CheckList.TYPE:SpellLike)|
+			<name>|ABILITYALL.Special Ability.%ability.TYPE=CheckList| (Sp)</name>
 |ELSE|
 |ENDIF|
 |ENDIF|
 |ENDIF|
-			<header>|ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList|</header>
-			<description>|ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList.DESC|</description>
-			<type>|ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList.TYPE|</type>
-			<source>|ABILITYAUTO.Special Ability.VISIBLE.%ability.TYPE=CheckList.SOURCE|</source>
-			<check_count>|ABILITYAUTO.Special Ability.%ability.TYPE=CheckList.ASPECT.CheckCount.INTVAL|</check_count>
-			<check_type>|ABILITYAUTO.Special Ability.%ability.TYPE=CheckList.ASPECT.CheckType|</check_type>
+			<header>|ABILITYALL.Special Ability.%ability.TYPE=CheckList|</header>
+			<description>|ABILITYALL.Special Ability.%ability.TYPE=CheckList.DESC|</description>
+			<type>|ABILITYALL.Special Ability.%ability.TYPE=CheckList.TYPE|</type>
+			<source>|ABILITYALL.Special Ability.VISIBLE.%ability.TYPE=CheckList.SOURCE|</source>
+			<check_count>|ABILITYALL.Special Ability.%ability.TYPE=CheckList.ASPECT.CheckCount.INTVAL|</check_count>
+			<check_type>|ABILITYALL.Special Ability.%ability.TYPE=CheckList.ASPECT.CheckType|</check_type>
 		</checklist>
 |ENDIF|
 |ENDFOR|
 	</checklists>
+
+	<!-- Proficiency lists -->
+	<proficiency_specials>
+|FOR,%ability,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=ProficiencyOutputDisplay")-1,1,0|
+|IIF(ABILITYALL.Special Ability.%ability.TYPE=ProficiencyOutputDisplay)|
+		<proficiency>
+			<name>|ABILITYALL.Special Ability.%ability.TYPE=ProficiencyOutputDisplay|</name>
+			<proficient>|ABILITYALL.Special Ability.%ability.TYPE=ProficiencyOutputDisplay.ASPECT.Proficiency|</proficient>
+			<forte>|ABILITYALL.Special Ability.%ability.TYPE=ProficiencyOutputDisplay.ASPECT.Forte|</forte>
+		</proficiency>
+|ENDIF|
+|ENDFOR|
+</proficiency_specials>
 
 <!--
 	  ====================================
@@ -1284,6 +1375,7 @@ Immune
 			<attacks>|EQ.MERGELOC.%equip.ATTACKS|</attacks>
 			<prof>|EQ.MERGELOC.%equip.PROF|</prof>
 			<source>|EQ.MERGELOC.%equip.SOURCE|</source>
+			<quality>|EQ.MERGELOC.%equip.QUALITY|</quality>
 		</item>
 |ENDFOR|	<!-- Equipment -->
 		<total>
@@ -1338,6 +1430,7 @@ Immune
 					<attacks>|EQ.MERGELOC.%equip.ATTACKS|</attacks>
 					<prof>|EQ.MERGELOC.%equip.PROF|</prof>
 					<source>|EQ.MERGELOC.%equip.SOURCE|</source>
+					<quality>EQ.0.QUALITY</quality>
 				</item>
 |ENDFOR|	<!-- Equipment -->
 			</equipmentset>
@@ -1414,7 +1507,7 @@ Immune
 		<!-- Virtual Feats -->
 |FOR,%feat,0,COUNT[VFEATS.VISIBLE]-1,1,0|
 		<feat>
-			<name>|VFEAT.VISIBLE.%feat|</name>
+			<name>|VFEAT.VISIBLE.%feat| (Granted)</name>
 			<description>|VFEAT.VISIBLE.%feat.DESC|</description>
 			<type>|VFEAT.VISIBLE.%feat.TYPE|</type>
 			<associated>|VFEAT.VISIBLE.%feat.ASSOCIATED|</associated>
@@ -2750,7 +2843,11 @@ Immune
 	<traits>
 |FOR,%trait,0,count("ABILITIES","CATEGORY=Special Ability","TYPE=Trait","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1,1,0|
 		<trait>
+|IIF(VABILITY.Special Ability.VISIBLE.%trait.TYPE=Trait)|
+			<name>|VABILITY.Special Ability.VISIBLE.%trait.TYPE=Trait| (Granted)</name>
+|ELSE|
 			<name>|ABILITYALL.Special Ability.VISIBLE.%trait.TYPE=Trait|</name>
+|ENDIF|			
 			<description>|ABILITYALL.Special Ability.VISIBLE.%trait.TYPE=Trait.DESC|</description>
 			<source>|ABILITYALL.Special Ability.VISIBLE.%trait.TYPE=Trait.SOURCE|</source>
 		</trait>
@@ -3099,6 +3196,7 @@ Immune
 					<components>|SPELLMEM.%class.%spellbook.%level.%spell.COMPONENTS|</components>
 					<castingtime>|SPELLMEM.%class.%spellbook.%level.%spell.CASTINGTIME|</castingtime>
 					<casterlevel>|SPELLMEM.%class.%spellbook.%level.%spell.CASTERLEVEL|</casterlevel>
+					<concentration>|SPELLMEM.%class.%spellbook.%level.%spell.CONCENTRATION|</concentration>
 					<dc>|SPELLMEM.%class.%spellbook.%level.%spell.DC|</dc>
 					<duration>|SPELLMEM.%class.%spellbook.%level.%spell.DURATION|</duration>
 					<effect>|SPELLMEM.%class.%spellbook.%level.%spell.EFFECT|</effect>
@@ -3142,6 +3240,7 @@ Immune
 						<components>|SPELLMEM.%class.%spellbook.%level.%spell.COMPONENTS|</components>
 						<castingtime>|SPELLMEM.%class.%spellbook.%level.%spell.CASTINGTIME|</castingtime>
 						<casterlevel>|SPELLMEM.%class.%spellbook.%level.%spell.CASTERLEVEL|</casterlevel>
+						<concentration>|SPELLMEM.%class.%spellbook.%level.%spell.CONCENTRATION|</concentration>
 						<dc>|SPELLMEM.%class.%spellbook.%level.%spell.DC|</dc>
 						<duration>|SPELLMEM.%class.%spellbook.%level.%spell.DURATION|</duration>
 						<effect>|SPELLMEM.%class.%spellbook.%level.%spell.EFFECT|</effect>
@@ -3178,7 +3277,7 @@ Immune
 |FOR,%spellbook,0,0,1,0|
 |FOR,%class,COUNT[SPELLRACE],COUNT[SPELLRACE]+COUNT[CLASSES]-1,1,1|
 |%SPELLLISTCLASS.%class|
-		<class number="%class" spelllistclass="|SPELLLISTCLASS.%class|" spellcasterlevel="|SPELLLISTCLASS.%class.LEVEL|" spellcastertype="|SPELLLISTTYPE.%class|" memorize="|SPELLLISTMEMORIZE.%class|">
+	<class number="%class" spelllistclass="|SPELLLISTCLASS.%class|" spellcasterlevel="|SPELLLISTCLASS.%class.CASTERLEVEL|" spellcastertype="|SPELLLISTTYPE.%class|" memorize="|SPELLLISTMEMORIZE.%class|" concentration="|SPELLLISTCLASS.%class.CONCENTRATION|">
 |FOR,%level,0,MAXSPELLLEVEL.%class,1,1|
 |FOR,%spellcount,COUNT[SPELLSINBOOK.%class.%spellbook.%level],COUNT[SPELLSINBOOK.%class.%spellbook.%level],1,0|
 			<level number="%level" known="|SPELLLISTKNOWN.%class.%level|" cast="|SPELLLISTCAST.%class.%level|">
@@ -3193,6 +3292,7 @@ Immune
 						<components>|SPELLMEM.%class.%spellbook.%level.%spell.COMPONENTS|</components>
 						<castingtime>|SPELLMEM.%class.%spellbook.%level.%spell.CASTINGTIME|</castingtime>
 						<casterlevel>|SPELLMEM.%class.%spellbook.%level.%spell.CASTERLEVEL|</casterlevel>
+						<concentration>|SPELLMEM.%class.%spellbook.%level.%spell.CONCENTRATION|</concentration>
 						<dc>|SPELLMEM.%class.%spellbook.%level.%spell.DC|</dc>
 						<duration>|SPELLMEM.%class.%spellbook.%level.%spell.DURATION|</duration>
 						<effect>|SPELLMEM.%class.%spellbook.%level.%spell.EFFECT|</effect>
@@ -3251,6 +3351,7 @@ Immune
 					<components>|SPELLMEM.%class.%spellbook.%level.%spell.COMPONENTS|</components>
 					<castingtime>|SPELLMEM.%class.%spellbook.%level.%spell.CASTINGTIME|</castingtime>
 					<casterlevel>|SPELLMEM.%class.%spellbook.%level.%spell.CASTERLEVEL|</casterlevel>
+					<concentration>|SPELLMEM.%class.%spellbook.%level.%spell.CONCENTRATION|</concentration>
 					<dc>|SPELLMEM.%class.%spellbook.%level.%spell.DC|</dc>
 					<duration>|SPELLMEM.%class.%spellbook.%level.%spell.DURATION|</duration>
 					<effect>|SPELLMEM.%class.%spellbook.%level.%spell.EFFECT|</effect>
@@ -3295,6 +3396,7 @@ Immune
 						<components>|SPELLMEM.%class.%spellbook.%level.%spell.COMPONENTS|</components>
 						<castingtime>|SPELLMEM.%class.%spellbook.%level.%spell.CASTINGTIME|</castingtime>
 						<casterlevel>|SPELLMEM.%class.%spellbook.%level.%spell.CASTERLEVEL|</casterlevel>
+						<concentration>|SPELLMEM.%class.%spellbook.%level.%spell.CONCENTRATION|</concentration>
 						<dc>|SPELLMEM.%class.%spellbook.%level.%spell.DC|</dc>
 						<duration>|SPELLMEM.%class.%spellbook.%level.%spell.DURATION|</duration>
 						<effect>|SPELLMEM.%class.%spellbook.%level.%spell.EFFECT|</effect>
@@ -3354,6 +3456,7 @@ Immune
 							<components>|SPELLMEM.%class.%spellbook.%level.%spell.COMPONENTS|</components>
 							<castingtime>|SPELLMEM.%class.%spellbook.%level.%spell.CASTINGTIME|</castingtime>
 							<casterlevel>|SPELLMEM.%class.%spellbook.%level.%spell.CASTERLEVEL|</casterlevel>
+							<concentration>|SPELLMEM.%class.%spellbook.%level.%spell.CONCENTRATION|</concentration>
 							<dc>|SPELLMEM.%class.%spellbook.%level.%spell.DC|</dc>
 							<duration>|SPELLMEM.%class.%spellbook.%level.%spell.DURATION|</duration>
 							<effect>|SPELLMEM.%class.%spellbook.%level.%spell.EFFECT|</effect>
@@ -3396,5 +3499,9 @@ Immune
 |ENDFOR|
 <!-- ### END class Spellbook memorized spells ### -->
 	</spells>
-
+<!-- ### Additional House Rules for Variables in the xsl:fo code ### -->
+	<house_var>
+		<spelldisplaydc>|VAR.SpellDisplayDC|</spelldisplaydc>
+		<OldStyleAbilityStatBlockDisplay>|VAR.OldStyleAbilityStatBlockDisplay|</OldStyleAbilityStatBlockDisplay>
+	</house_var>
 </character>

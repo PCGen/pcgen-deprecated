@@ -1,4 +1,4 @@
-# CVS $Revision: 14380 $ $Author: amaitland $ -- Mon Jan 17 06:06:23 2011 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 14951 $ $Author: amaitland $ -- Mon Jan 17 06:06:23 2011 -- reformated by prettylst.pl v1.39 (build 11455)
 # Abilities for Intelligent Magic Items
 
 # Ability Name																Unique Key						Category of Ability		Type											Required Ability											Restricted Ability								Define																Description																																							Stackable?	Multiple?	Choose										Selections	Ability																																				Bonus to Ability Pool																Modify VAR																																							Cost
@@ -137,6 +137,9 @@ EQMOD ~ PurposePower_CastFiveAtWill																				CATEGORY:Intelligent Item
 EQMOD ~ PurposePower_CastSixAtWill																				CATEGORY:Intelligent Item																																																																																																																																																			BONUS:ABILITYPOOL|Intelligent Item Purpose Power|1
 EQMOD ~ PurposePower_CastSevenAtWill																			CATEGORY:Intelligent Item																																																																																																																																																			BONUS:ABILITYPOOL|Intelligent Item Purpose Power|1
 
+
+# Other Objects granting abilities:
+Siren Move	CATEGORY:Internal	MOVE:Swim,60
 
 #
 # EOF
