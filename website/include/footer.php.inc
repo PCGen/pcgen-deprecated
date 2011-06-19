@@ -4,7 +4,7 @@
 
     <img src="images/logo.png" border="0" alt="banner" title="Greek goddess Athena"/>
     <div style="clear: both;"></div>
-    <h1>What Is PCGen?</h1>
+    <h1>Creating RPG Characters has never been easier!</h1>
     <p>PCGen is a character generator for role-playing games. It currently is aimed at supporting as many RPGs as is humanly possible. The project's current focus is on OGL games (OGL is <a href="http://www.wizards.com">Wizards of the Coast</a>'s <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's Open Gaming License">Open Gaming License</a>). PCGen runs on Windows, Mac OS X and Unix/Linux using Java 1.4/1.5.</p>
 
     <h1>Statistics</h1>
@@ -19,9 +19,9 @@ writeStatItems("http://sourceforge.net/export/rss2_projsummary.php?group_id=2557
     </p>
 
     <h1>Licensing</h1>
-    <p>PCGen is free, open-source software, and is distributed under the <a href="http://www.gnu.org/licenses/licenses.html#LGPL">GNU Lesser General Public License</a> (LGPL).  
-    Its various data sources are licensed under individual agreements, see the <a href="http://wiki.pcgen.org/index.php?title=Data_License">Data License</a> team on our wiki for details.
-    </p>
+    <p>PCGen is free, open-source software, and is distributed under the <a href="http://www.gnu.org/licenses/licenses.html#LGPL">GNU Lesser General Public License</a> (LGPL).</p>
+    
+    <p>PCGen's data sources are licensed under the Open Gaming License (OGL) along with individual agreements with the various publishers supported; see the <a href="http://wiki.pcgen.org/index.php?title=Data_License">Data License</a> team on our wiki for details.</p>
 
     <h1>Associations</h1>
     <p>
