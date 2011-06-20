@@ -8,7 +8,10 @@ require_once('include/header.php.inc');
 
         <h1>PCGen Overview</h1>
 
-        <p>PCGen is a <strong>FREE</strong> Open Source RPG character generator and maintenance program (d20 Systems mainly) that works on most personal computers (It's Java-based so: Windows, Mac OS X, Linux, Unix are supported). All datafiles are ASCII so they can be modified by users. All of this work is performed under the watchful gaze of the PCGen <a href="http://wiki.pcgen.org/index.php?title=Board_of_Directors">Board Of Directors</a>.</p>
+		<p>PCGen is a <strong>FREE</strong> Open Source character generator and maintenance program for role-playing games. It currently supports the 
+		d20 RPG system and includes data sets based upon gsming material from Wizards of the Coast, Paizo Publishing and dozens of other publishers. The project's 
+		current focus is on gaming material released under Wizards of the Coast's <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's 
+		Open Gaming License">Open Gaming License</a> (OGL). PCGen runs on Windows, Mac OS X and Unix/Linux using Java 1.5+.</p>
 
         <h1>Mission Statement</h1>
 
@@ -35,7 +38,7 @@ require_once('include/header.php.inc');
             <li>Allows you to Create and Maintain multiple Characters.</li>
             <li>Is FREE and works on all major operating systems (Windows, Linux, UNIX, Mac OS).</li>
             <li>Data and character files are operating system independent.</li>
-            <li>Supports d20 based Game Systems including D&amp;D (3E, 3.5E, 4E), d20 Modern, Pathfinder, d20 Modern.</li>
+            <li>Supports d20 based Game Systems including D&amp;D (3E, 3.5E, 4E), d20 Modern, Pathfinder.</li>
             <li>Supports Tons of Publishers and their products.</li>
             <li>Is highly configurable, allowing the user to add or remove races, classes, feats, and house rules such as unusual class or race restrictions.</li>
             <li>Supports level advancement, with configurable progressions of feats, skills and ability score bonuses.</li>
@@ -59,7 +62,7 @@ require_once('include/header.php.inc');
 
         <ul>
             <li>All versions of PCGen need Sun's Java Runtime Environment (JRE) which is available for all common OS's, including Windows, Mac OS, UNIX and Linux.</li>
-            <li>PCGen 5.10.2 (and above) needs to run under Sun's JRE (Java) 1.5.x (or above).</li>
+            <li>PCGen 5.14 (and above) needs to run under Sun's JRE (Java) 1.5.x (or above).</li>
             <li>If you wish to view PDF output sheets, you'll need a PDF viewer.</li>
             <li>Minimum RAM is 256MB (recommended 1-2GB)</li>
             <li>Minimum CPU is 1GHz (recommended 2Ghz+)</li>
