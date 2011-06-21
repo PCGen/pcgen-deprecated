@@ -9,9 +9,10 @@ require_once('include/header.php.inc');
         <h1>PCGen Overview</h1>
 
 		<p>PCGen is a <strong>FREE</strong> Open Source character generator and maintenance program for role-playing games. It currently supports the 
-		d20 RPG system and includes data sets based upon gsming material from Wizards of the Coast, Paizo Publishing and dozens of other publishers. The project's 
+		d20 RPG system and includes data sets based upon gaming material from Wizards of the Coast, Paizo Publishing and dozens of other publishers. The project's 
 		current focus is on gaming material released under Wizards of the Coast's <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's 
-		Open Gaming License">Open Gaming License</a> (OGL). PCGen runs on Windows, Mac OS X and Unix/Linux using Java 1.5+.</p>
+		Open Gaming License">Open Gaming License</a> (OGL) but the PCGen team works with publishers to get permission to include limited Closed Content as well. PCGen 
+		runs on Windows, Mac OS X and Unix/Linux using Java 1.5+.</p>
 
         <h1>Mission Statement</h1>
 
