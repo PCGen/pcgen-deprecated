@@ -11,8 +11,8 @@ require_once('include/header.php.inc');
 		<p>PCGen is a <strong>FREE</strong> Open Source character generator and maintenance program for role-playing games. It currently supports the 
 		d20 RPG system and includes data sets based upon gaming material from Wizards of the Coast, Paizo Publishing and dozens of other publishers. The project's 
 		current focus is on gaming material released under Wizards of the Coast's <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's 
-		Open Gaming License">Open Gaming License</a> (OGL) but the PCGen team works with publishers to get permission to include limited Closed Content as well. PCGen 
-		runs on Windows, Mac OS X and Unix/Linux using Java 1.5+.</p>
+		Open Gaming License">Open Gaming License</a> (OGL) but the PCGen team also works with publishers to get permission to include limited Closed Content as well. 
+		PCGen runs on Windows, Mac OS X and Unix/Linux using Java 1.5+.</p>
 
         <h1>Mission Statement</h1>
 
@@ -37,12 +37,13 @@ require_once('include/header.php.inc');
 
         <ul>
             <li>Allows you to Create and Maintain multiple Characters.</li>
-            <li>Is FREE and works on all major operating systems (Windows, Linux, UNIX, Mac OS).</li>
+            <li>Is FREE and works on all major operating systems (Windows, UNIX/Linux and Mac OS).</li>
             <li>Data and character files are operating system independent.</li>
-            <li>Supports d20 based Game Systems including D&amp;D (3E, 3.5E, 4E), d20 Modern, Pathfinder.</li>
+            <li>Supports d20 based Game Systems including D&amp;D (3E, 3.5E, 4E), d20 Modern and Pathfinder.</li>
             <li>Supports Tons of Publishers and their products.</li>
             <li>Is highly configurable, allowing the user to add or remove races, classes, feats, and house rules such as unusual class or race restrictions.</li>
             <li>Supports level advancement, with configurable progressions of feats, skills and ability score bonuses.</li>
+            <li>Supports Deity/Domain selection and the granting of the appropriate level dependent abilities.</li>
             <li>Produces numerous customized character and party sheets in HTML, TEXT and PDF formats.</li>
         </ul>
 
