@@ -5,7 +5,7 @@
     <img src="images/logo.png" border="0" alt="banner" title="Greek goddess Athena"/>
     <div style="clear: both;"></div>
     <h1>Creating RPG Characters has never been easier!</h1>
-	<p>PCGen is a free, open-source program that allows you to create, maintain and print RPG characters using sources from Wizards of the Coast, Paizo Publishing and dozens of other publishers. Let us do all the math for you!</p>
+	<p>PCGen is a free, open-source program that allows you to create, maintain and print RPG characters using sources from Wizards of the Coast, Paizo Publishing and dozens of other publishers. Let us do the math for you!</p>
 
     <h1>Statistics</h1>
     <p>
@@ -19,9 +19,11 @@ writeStatItems("http://sourceforge.net/export/rss2_projsummary.php?group_id=2557
     </p>
 
     <h1>Licensing</h1>
-    <p>PCGen is free, open-source software, and is distributed under the <a href="http://www.gnu.org/licenses/licenses.html#LGPL">GNU Lesser General Public License</a> (LGPL).</p>
+    <p>The PCGen is distributed is distributed under the <a href="http://www.gnu.org/licenses/licenses.html#LGPL">GNU Lesser General Public License</a> (LGPL).</p>
     
-    <p>PCGen's data sources are licensed under the <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's Open Gaming License">Open Gaming License (OGL)</a> along with individual agreements with the various publishers supported; see the <a href="http://wiki.pcgen.org/index.php?title=Data_License">Data License</a> team on our wiki for details.</p>
+    <p>PCGen's data sources are licensed under the <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's Open Gaming License">Open Gaming License (OGL)</a> 
+    	and the <a href="http://paizo.com/paizo/about/communityuse" title="Paizo Publishing, LLC Community Use Policy">Paizo Community Use Policy</a> along with individual agreements with 
+    	the various publishers supported; see the <a href="http://wiki.pcgen.org/index.php?title=Data_License">Data License</a> team on our wiki for details.</p>
 
     <h1>Associations</h1>
     <p>
