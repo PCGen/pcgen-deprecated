@@ -19,7 +19,7 @@ writeStatItems("http://sourceforge.net/export/rss2_projsummary.php?group_id=2557
     </p>
 
     <h1>Licensing</h1>
-    <p>The PCGen is distributed is distributed under the <a href="http://www.gnu.org/licenses/licenses.html#LGPL">GNU Lesser General Public License</a> (LGPL).</p>
+    <p>PCGen's source-code is distributed under the <a href="http://www.gnu.org/licenses/licenses.html#LGPL">GNU Lesser General Public License</a> (LGPL).</p>
     
     <p>PCGen's data sources are licensed under the <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's Open Gaming License">Open Gaming License (OGL)</a> 
     	and the <a href="http://paizo.com/paizo/about/communityuse" title="Paizo Publishing, LLC Community Use Policy">Paizo Community Use Policy</a> along with individual agreements with 
