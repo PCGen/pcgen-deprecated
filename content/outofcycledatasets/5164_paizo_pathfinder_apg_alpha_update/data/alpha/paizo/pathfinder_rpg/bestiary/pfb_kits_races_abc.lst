@@ -1,4 +1,4 @@
-# CVS $Revision: 13618 $ $Author: amaitland $ -- Tue Jan  5 15:20:00 2010 -- reformated by prettylst.pl v1.39 (build 10232)
+# CVS $Revision: 15234 $ $Author: gjorbjond $ -- Tue Jan  5 15:20:00 2010 -- reformated by prettylst.pl v1.39 (build 10232)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 STARTPACK:Aasimar Cleric	TYPE:DefaultMonster.Outsider	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[PRERACE:1,Aasimar],[!PRERACE:1,%]	SOURCEPAGE:p.7
@@ -10,7 +10,7 @@ DEITY:Sarenrae
 CLASS:Cleric	LEVEL:1
 ABILITY:CATEGORY=Favored Class|Cleric
 ABILITY:CATEGORY=Favored Class Bonus|Bonus Hit Point
-ABILITY:CATEGORY=Channel Energy|Channel Positive Energy
+ABILITY:CATEGORY=Channel Energy|Channel Positive Energy ~ Cleric
 DEITY:Sarenrae	DOMAIN:Good|Healing
 LANGBONUS:Draconic
 SKILL:Diplomacy			RANK:1

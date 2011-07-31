@@ -1,4 +1,4 @@
-# CVS $Revision: 15007 $ $Author: henkslaaf2 $ -- Mon Jan 17 06:06:23 2011 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 15238 $ $Author: gjorbjond $ -- Mon Jan 17 06:06:23 2011 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy88yj	SOURCEDATE:2009-08
 # Original Entry by: Stefan Radermacher
 
@@ -48,7 +48,20 @@ Aura of Evil	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Aura	VIS
 Aura of Good	CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Aura	VISIBLE:YES	DEFINE:AuraGoodLVL|0	DEFINE:AlignmentAuraLVL|0	DESC:You project a faint good aura.|PREVAREQ:AuraGoodLVL,1	DESC:You project a moderate good aura.|PREVARGTEQ:AuraGoodLVL,2|PREVARLTEQ:AuraGoodLVL,4	DESC:You project a strong good aura.|PREVARGTEQ:AuraGoodLVL,5|PREVARLTEQ:AuraGoodLVL,10	DESC:You project an overwhelming good aura.|PREVARGTEQ:AuraGoodLVL,11					BONUS:VAR|AuraGoodLVL|AlignmentAuraLVL
 Aura of Law		CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Aura	VISIBLE:YES	DEFINE:AuraLawLVL|0	DEFINE:AlignmentAuraLVL|0	DESC:You project a faint lawful aura.|PREVAREQ:AuraLawLVL,1	DESC:You project a moderate lawful aura.|PREVARGTEQ:AuraLawLVL,2|PREVARLTEQ:AuraLawLVL,4	DESC:You project a strong lawful aura.|PREVARGTEQ:AuraLawLVL,5|PREVARLTEQ:AuraLawLVL,10	DESC:You project an overwhelming lawful aura.|PREVARGTEQ:AuraLawLVL,11					BONUS:VAR|AuraLawLVL|AlignmentAuraLVL
 
+###Block: Channel Energies for copying to new classes.
+#Channel Positive Energy	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:ClassChannelPositiveEnergyDC|0	DEFINE:ClassChannelPositiveEnergyDice|0	DEFINE:ClassChannelPositiveEnergyDieSize|6	DEFINE:ClassChannelPositiveEnergyLVL|0	DESC:You can unleash a wave of positive energy dealing %1d%2 (DC %3 for half) %4/day.|ClassChannelPositiveEnergyDice|ClassChannelPositiveEnergyDieSize|ClassChannelPositiveEnergyDC|ClassChannelEnergyTimes								BONUS:VAR|ClassChannelPositiveEnergyDice|(ClassChannelPositiveEnergyLVL+1)/2	BONUS:VAR|ClassChannelPositiveEnergyDC|10+(ClassChannelPositiveEnergyLVL/2)+CHA	BONUS:VAR|ClassChannelPositiveEnergyLVL|ClassChannelEnergyLVL	SOURCEPAGE:p.40	ASPECT:Ability Benefit|(%1d%2, DC %3, %4/day)|ClassChannelPositiveEnergyDice|ClassChannelPositiveEnergyDieSize|ClassChannelPositiveEnergyDC|ClassChannelEnergyTimes	BENEFIT:You can unleash a wave of positive energy. You must choose to deal %1d%2 points of positive energy damage to undead creatures or to heal living creatures of %1d%2 points of damage. Creatures that take damage from channeled energy receive a DC %3 Will save to halve the damage. You can use this abilty %4 times per day.|ClassChannelPositiveEnergyDice|ClassChannelPositiveEnergyDieSize|ClassChannelPositiveEnergyDC|ClassChannelEnergyTimes
+#Channel Negative Energy	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	DEFINE:ClassChannelNegativeEnergyDC|0	DEFINE:ClassChannelNegativeEnergyDice|0	DEFINE:ClassChannelNegativeEnergyDieSize|6	DEFINE:ClassChannelNegativeEnergyLVL|0	DESC:You can unleash a wave of negative energy dealing %1d%2 (DC %3 for half) %4/day.|ClassChannelNegativeEnergyDice|ClassChannelNegativeEnergyDieSize|ClassChannelNegativeEnergyDC|ClassChannelEnergyTimes								BONUS:VAR|ClassChannelNegativeEnergyDice|(ClassChannelNegativeEnergyLVL+1)/2	BONUS:VAR|ClassChannelNegativeEnergyDC|10+(ClassChannelNegativeEnergyLVL/2)+CHA	BONUS:VAR|ClassChannelNegativeEnergyLVL|ClassChannelEnergyLVL	SOURCEPAGE:p.40	ASPECT:Ability Benefit|(%1d%2, DC %3, %4/day)|ClassChannelNegativeEnergyDice|ClassChannelNegativeEnergyDieSize|ClassChannelNegativeEnergyDC|ClassChannelEnergyTimes	BENEFIT:You can unleash a wave of negative energy. You must choose to deal %1d%2 points of negative energy damage to living creatures or to heal undead creatures of %1d%2 points of damage. Creatures that take damage from channeled energy receive a DC %3 Will save to halve the damage. You can use this abilty %4 times per day.|ClassChannelNegativeEnergyDice|ClassChannelNegativeEnergyDieSize|ClassChannelNegativeEnergyDC|ClassChannelEnergyTimes
+Channel Positive Energy				CATEGORY:Special Ability	TYPE:Internal
+Channel Negative Energy				CATEGORY:Special Ability	TYPE:Internal
 
+# Once generic ability for prestige classes that advance any channeling ability such as the Holy Vindicator.
+Channel Energy ~ Prestige Class		CATEGORY:Special Ability	TYPE:Internal	DEFINE:PrestigeClassChannelEnergyLVL|0	BONUS:VAR|ClericChannelEnergyLVL|PrestigeClassChannelEnergyLVL	BONUS:VAR|PaladinChannelLVL|PrestigeClassChannelEnergyLVL	BONUS:VAR|PowerOverUndeadLVL|PrestigeClassChannelEnergyLVL
+
+
+##Block: Extra Channel Energy support
+Cleric Extra Channel		CATEGORY:Special Ability	TYPE:ExtraChannel	PRECLASS:1,Cleric=1										BONUS:VAR|ClericChannelEnergyTimes|2
+Paladin Extra Channel		CATEGORY:Special Ability	TYPE:ExtraChannel	PRECLASS:1,Paladin=4										BONUS:VAR|LayOnHandsTimes|4
+Necromancer Extra Channel	CATEGORY:Special Ability	TYPE:ExtraChannel	PREABILITY:1,CATEGORY=Special Ability,Power Over Undead ~ Necromancy School	BONUS:VAR|PowerOverUndeadTimes|2
 
 ###Block: CMB output and basic setup
 # Ability Name	Category of Ability	Type			Visible	Define
@@ -65,4 +78,4 @@ CATEGORY=FEAT|CMB Output.MOD	DEFINE:CMB_Disarm|0	DEFINE:CMD_Disarm|0										BO
 CATEGORY=FEAT|CMB Output.MOD	DEFINE:CMB_Grapple|0	DEFINE:CMD_Grapple|0										BONUS:VAR|CMB_Grapple|CMB	BONUS:VAR|CMD_Grapple|CMD	BONUS:VAR|CMB_Grapple|1|PREFEAT:1,Weapon Focus(Grapple)	BONUS:VAR|CMB_Grapple|1|PREFEAT:1,Greater Weapon Focus(Grapple)
 CATEGORY=FEAT|CMB Output.MOD	DEFINE:CMB_Overrun|0	DEFINE:CMD_Overrun|0										BONUS:VAR|CMB_Overrun|CMB	BONUS:VAR|CMD_Overrun|CMD
 CATEGORY=FEAT|CMB Output.MOD	DEFINE:CMB_Sunder|0	DEFINE:CMD_Sunder|0										BONUS:VAR|CMB_Sunder|CMB	BONUS:VAR|CMD_Sunder|CMD
-CATEGORY=FEAT|CMB Output.MOD	DEFINE:CMB_Trip|0	DEFINE:CMD_Trip|0												BONUS:VAR|CMB_Trip|CMB	BONUS:VAR|CMD_Trip|CMD	BONUS:VAR|CMD_Trip|2|PRELEGSEQ:3	BONUS:VAR|CMD_Trip|4|PRELEGSEQ:4	BONUS:VAR|CMD_Trip|8|PRELEGSEQ:6	BONUS:VAR|CMD_Trip|12|PRELEGSEQ:8
+CATEGORY=FEAT|CMB Output.MOD	DEFINE:CMB_Trip|0		DEFINE:CMD_Trip|0											BONUS:VAR|CMB_Trip|CMB	BONUS:VAR|CMD_Trip|CMD	BONUS:VAR|CMD_Trip|2|PRELEGSEQ:3	BONUS:VAR|CMD_Trip|4|PRELEGSEQ:4	BONUS:VAR|CMD_Trip|8|PRELEGSEQ:6	BONUS:VAR|CMD_Trip|12|PRELEGSEQ:8

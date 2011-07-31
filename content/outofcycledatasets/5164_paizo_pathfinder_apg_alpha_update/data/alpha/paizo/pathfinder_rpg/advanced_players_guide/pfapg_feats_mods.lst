@@ -1,4 +1,4 @@
-# CVS $Revision: 15049 $ $Author: henkslaaf2 $ -- Sat Oct  2 19:33:06 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 15233 $ $Author: gjorbjond $ -- Sat Oct  2 19:33:06 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Stefan Radermacher & Andrew Maitland
 
@@ -141,16 +141,8 @@ Spirited Charge.MOD			TYPE:MountedMastery
 Trample.MOD					TYPE:MountedMastery
 Unseat.MOD					TYPE:MountedMastery
 
-
-# Trait bonuses to Turn Undead and Command Undead
-Command Undead.MOD	BONUS:VAR|CommandUndeadDC|1|PREABILITY:1,CATEGORY=Special Ability,Sacred Conduit ~ Trait
-Turn Undead.MOD		BONUS:VAR|TurnUndeadDC|1|PREABILITY:1,CATEGORY=Special Ability,Sacred Conduit ~ Trait
-
-# Improved Channeling adds a bonus to Life Oracle channel DC
-# Extra Channeling adds a bonus to Life Oracle daily limit
-Extra Channel.MOD	BONUS:VAR|ChannelEnergyOracleLifeTimes|2
-Improved Channel.MOD	BONUS:VAR|ChannelEnergyOracleLifeDC|2
-Turn Undead.MOD		BONUS:VAR|TurnUndeadDC|ChannelEnergyOracleLifeLVL/2
+# Channel Feats
+Improved Channel.MOD			BONUS:VAR|OracleChannelDC|2	BONUS:VAR|UndeadServitudeDC|2
 
 #
 # End

@@ -1,4 +1,4 @@
-# CVS $Revision: 13408 $ $Author: amaitland $ -- Wed Jun  2 17:32:11 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 15243 $ $Author: maredudd800 $ -- Wed Jun  2 17:32:11 2010 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Pathfinder Roleplaying Game Bestiary	SOURCESHORT:PFB	SOURCEWEB:http://paizo.com/store/byCompany/p/paizoPublishingLLC/pathfinder/pathfinderRPG/v5748btpy85k5	SOURCEDATE:2009-10
 
 
@@ -831,7 +831,7 @@ ABILITY:CATEGORY=Favored Class|Cleric
 ABILITY:CATEGORY=Favored Class Bonus|Bonus Skill Point (Spellcraft)
 ABILITY:CATEGORY=Favored Class Bonus|Bonus Skill Point (Spellcraft)
 ABILITY:CATEGORY=Favored Class Bonus|Bonus Skill Point (Spellcraft)
-ABILITY:CATEGORY=Channel Energy|Channel Negative Energy
+ABILITY:CATEGORY=Special Ability|Channel Negative Energy
 SKILL:Knowledge (Religion)	RANK:3
 SKILL:Sense Motive		RANK:3
 FEAT:Channel Smite

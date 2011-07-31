@@ -1,4 +1,4 @@
-# CVS $Revision: 14419 $ $Author: amaitland $ -- Mon Jan 17 06:06:23 2011 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 15251 $ $Author: zaister $ -- Mon Jan 17 06:06:23 2011 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Core Rulebook	SOURCESHORT:PFCR	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy88yj	SOURCEDATE:2009-08
 # Original RSRD Entry by: PCGen Data Team
 # Pathfinder RPG Entry by: Stefan Radermacher
@@ -45,8 +45,8 @@ Scarab		TYPE:Amulet					COST:0	WT:0				MODS:REQUIRED
 # Ring slot
 Ring			TYPE:Ring					COST:0	WT:0				MODS:REQUIRED
 # Shoulders slot
-Cape			TYPE:Cape					COST:0	WT:0				MODS:REQUIRED
-Cloak			TYPE:Cape					COST:0	WT:0				MODS:REQUIRED
+Cape			TYPE:Cloak					COST:0	WT:0				MODS:REQUIRED
+Cloak			TYPE:Cloak					COST:0	WT:0				MODS:REQUIRED
 # Wrist slot
 Bracelets		TYPE:Bracer					COST:0	WT:0		SLOTS:2	MODS:REQUIRED
 Bracers		TYPE:Bracer					COST:0	WT:0		SLOTS:2	MODS:REQUIRED

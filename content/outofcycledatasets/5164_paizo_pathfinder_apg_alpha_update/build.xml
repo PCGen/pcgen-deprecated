@@ -7,7 +7,7 @@ build.xml - an Ant build file for assembling data sets
 $Id: build.xml 192 2008-04-30 12:19:47Z James $
 -->
 <project name="pcgen" default="packageall" basedir=".">
-	<basename property="datasetname" file="5164_piazo_pathfinder_alpha_update_06"/>
+	<basename property="datasetname" file="5164_piazo_pathfinder_alpha_update_07"/>
 	<property name="zipfile" value="../${datasetname}.pcz" />
 
 	<target name="init">

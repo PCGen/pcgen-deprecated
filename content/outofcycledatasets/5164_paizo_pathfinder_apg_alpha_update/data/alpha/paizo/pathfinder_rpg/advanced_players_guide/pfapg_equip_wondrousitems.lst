@@ -1,4 +1,4 @@
-# CVS $Revision: 14381 $ $Author: amaitland $ -- Mon Jan 17 06:10:47 2011 -- reformated by prettylst.pl v1.39 (build 11455)
+# CVS $Revision: 15242 $ $Author: gjorbjond $ -- Mon Jan 17 06:10:47 2011 -- reformated by prettylst.pl v1.39 (build 11455)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Eric C. Smith (Maredudd)
 
@@ -46,7 +46,7 @@ Cauldron of Seeing (True Seeing)		TYPE:Magic.Wondrous			COST:80000	WT:5		SOURCEP
 Cauldron of the Dead				TYPE:Magic.Wondrous			COST:30000	WT:35		SOURCEPAGE:p.303
 Clamor Box						TYPE:Magic.Wondrous			COST:2000	WT:2		SOURCEPAGE:p.303
 Construct Channel Brick				TYPE:Magic.Wondrous			COST:10000	WT:1		SOURCEPAGE:p.303
-Cowardly Crouching Cloak			TYPE:Magic.Wondrous.Cloak		COST:1800	WT:4		SOURCEPAGE:p.303
+Cowardly Crouching Cloak			TYPE:Magic.Wondrous.Cape		COST:1800	WT:4		SOURCEPAGE:p.303
 Crystal of Healing Hands			TYPE:Magic.Wondrous.Neck		COST:12000	WT:1		SOURCEPAGE:p.303
 
 ###Block:D
@@ -143,3 +143,9 @@ Riot Pipes				TYPE:Magic.Wondrous.Instrument.Cursed	COST:0	WT:3		SOURCEPAGE:p.31
 ###Block:Special
 # Equipment Name		Type					Cost		Source Page
 Brooch (Folding Plate)	TYPE:Magic.Wondrous.Brooch	COST:12650	SOURCEPAGE:p.284
+
+
+
+
+Phylactery of Negative Channeling.MOD	BONUS:VAR|AntipaladinChannelDice|2|PREABILITY:1,CATEGORY=Special Ability,Channel Negative Energy ~ Antipaladin
+Phylactery of Positive Channeling.MOD	BONUS:VAR|OracleChannelDice|2|PREABILITY:1,CATEGORY=Special Ability,Channel ~ Life Mystery
