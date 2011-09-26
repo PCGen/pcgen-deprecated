@@ -1,0 +1,10 @@
+# CVS $Revision: 12858 $ $Author: zaister $ -- Mon Jul 19 16:03:21 2010 -- reformated by prettylst.pl v1.39 (build 11455)
+SOURCELONG:Rise of the Runelords, Chapter 1: Burnt Offerings	SOURCESHORT:PF1	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/riseOfTheRunelords/v5748btpy7zkq	SOURCEDATE:2007-08
+
+
+# Ability Name	Unique Key				Category of Ability		Type						Visible
+Bay			KEY:Bay ~ Sandpoint Devil	CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural	VISIBLE:YES
+
+#
+# End
+#

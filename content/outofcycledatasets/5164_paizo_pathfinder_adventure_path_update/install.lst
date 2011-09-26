@@ -1,0 +1,71 @@
+CAMPAIGN:Paizo - Pathfinder Roleplaying Game Adventure Paths
+MINVER:5.16.4
+MINDEVVER: 5.17.0
+DEST:DATA
+
+PUBNAMELONG:Paizo Publishing LLC
+PUBNAMESHORT:Paizo
+PUBNAMEWEB:http://paizo.com
+SOURCELONG:Pathfinder Adventure Path
+SOURCESHORT:AP
+SOURCEWEB:http://paizo.com/pathfinder/adventurePath
+SOURCEDATE:2010-08
+
+INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Publishing, LLC, which are used under Paizo's Community Use Policy. We are expressly prohibited from charging you to use or access this content. This dataset is not published, endorsed, or specifically approved by Paizo Publishing. For more information about Paizo's Community Use Policy, please visit paizo.com/communityuse. For more information about Paizo Publishing and Paizo products, please visit paizo.com.
+COPYRIGHT:Open Game License v 1.0a Copyright 2000, Wizards of the Coast, Inc.
+COPYRIGHT:System Reference Document. Copyright 2000, Wizards of the Coast, Inc.; Authors Jonathan Tweet, Monte Cook, Skip Williams, based on material by E. Gary Gygax and Dave Arneson.
+COPYRIGHT:Rise of the Runelords Player's Guide. Copyright 2007 Paizo Publishing LLC. Author James Jacobs and Mike McArtor.
+COPYRIGHT:Pathfinder Companion: Second Darkness Player's Guide, Copyright 2008, Paizo Publishing, LLC; Authors James Jacobs, F. Wesley Schneider, Amber Scott, Greg A. Vaughan.
+COPYRIGHT:Pathfinder Companion: Legacy of Fire Player's Guide, Copyright 2009, Paizo Publishing, LLC; Authors: Brian Cortijo, Stephen S. Greer, James Jacobs, Jonathan H. Keith, F. Wesley Schneider, Amber E. Scott, and James L. Sutter.
+COPYRIGHT:Council of Thieves Player's Guide, Copyright 2009, Paizo Publishing, LLC; Authors: James Jacobs, F. Wesley Schneider, Amber Scott, and Hank Woon.
+COPYRIGHT:Kingmaker Player's Guide. Copyright 2010, Paizo Publishing, LLC; Authors: James Jacobs, Mark Moreland, and F. Wesley Schneider.
+COPYRIGHT:Serpent's Skull Player's Guide. Copyright 2010, Paizo Publishing, LLC; Author: Mark Moreland.
+COPYRIGHT:Carrion Crown Player's Guide. Copyright 2011, Paizo Publishing, LLC; Authors: James Jacobs, Mark Moreland, and F. Wesley Schneider.
+COPYRIGHT:Pathfinder 1: Burnt Offerings. Copyright 2007 Paizo Publishing LLC. Author: James Jacobs
+COPYRIGHT:Pathfinder 2: The Skinsaw Murders. Copyright 2007 Paizo Publishing LLC. Author: Richard Pett
+COPYRIGHT:Pathfinder 3: The Hook Mountain Massacre. Copyright 2007 Paizo Publishing LLC. Author: Nicolas Logue
+COPYRIGHT:Pathfinder 4: Fortress of the Stone Giants, Copyright 2007, Paizo Publishing, LLC; Author Wolfgang Baur.
+COPYRIGHT:Pathfinder 5: Sins of the Saviors, Copyright 2007, Paizo Publishing, LLC; Author: Stephen S. Greer.
+COPYRIGHT:Pathfinder 6: Spires of Xin-Shalast, Copyright 2008, Paizo Publishing, LLC; Author: Greg A. Vaughan.
+COPYRIGHT:Pathfinder 7: Edge of Anarchy. Copyright 2008, Paizo Publishing, LLC; Author: Nicolas Logue.
+COPYRIGHT:Pathfinder 8: Seven Days to the Grave. Copyright 2008, Paizo Publishing, LLC; Author: F. Wesley Schneider.
+COPYRIGHT:Pathfinder 9: Escape from Old Korvosa. Copyright 2008, Paizo Publishing, LLC; Author: Richard Pett.
+COPYRIGHT:Pathfinder 10: A History of Ashes. Copyright 2008, Paizo Publishing, LLC; Author: Michael Kortes
+COPYRIGHT:Pathfinder 11: Skeletons of Scarwall. Copyright 2008, Paizo Publishing, LLC; Author: Greg A. Vaughan.
+COPYRIGHT:Pathfinder 12: Crown of Fangs. Copyright 2008, Paizo Publishing, LLC; Author: Tito Leati.
+COPYRIGHT:Pathfinder 13: Shadow in the Sky. Copyright 2008, Paizo Publishing, LLC; Author: Greg A. Vaughan.
+COPYRIGHT:Pathfinder 14: Children of the Void. Copyright 2008, Paizo Publishing, LLC; Author: Mike McArtor.
+COPYRIGHT:Pathfinder 15: The Armageddon Echo. Copyright 2008, Paizo Publishing, LLC; Author: Jason Bulmahn.
+COPYRIGHT:Pathfinder 16: Endless Night. Copyright 2008, Paizo Publishing, LLC; Author: F. Wesley Schneider.
+COPYRIGHT:Pathfinder 17: A Memory of Darkness. Copyright 2008, Paizo Publishing, LLC; Author: J. D. Wiker.
+COPYRIGHT:Pathfinder 18: Descent into Midnight. Copyright 2009, Paizo Publishing, LLC; Author: Brian Cortijo.
+COPYRIGHT:PCGen dataset conversion for "Pathfinder Companion: Legacy of Fire Player's Guide" Copyright 2009, PCGen Data Team (including, but not limited to Eddy Anthony)
+COPYRIGHT:PCGen dataset conversion for "Rise of the Runelords Player's Guide" Copyright 2007-2010, PCGen Data Team (including, but not limited to Stefan Radermacher, Eric C. Smith).
+COPYRIGHT:PCGen dataset conversion for "Rise of the Runelords - Chapter 1: Burnt Offerings" Copyright 2007-2008, PCGen Data Team (including, but not limited to, Stefan Radermacher.)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 2: The Skinsaw Murders" Copyright 2007-2008, PCGen Data Team (including, but not limited to, Stefan Radermacher.)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 3: The Hook Mountain Massacre" Copyright 2008, PCGen Data Team (including, but not limited to Eric C. Smith)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 4: Fortress of the Stone Giants" Copyright 2008, PCGen Data Team (including, but not limited to Eric C. Smith)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 5: Sins of the Saviors" Copyright 2007-2008, PCGen Data Team (including, but not limited to, Andrew Maitland.)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 6: Spires of Xin-Shalast" Copyright 2007-2008, PCGen Data Team (including, but not limited to, Andrew Maitland.)
+COPYRIGHT:PCGen dataset conversion for the Curse of the Crimson Throne Player's Guide Copyright 2008, PCGen Data Team (including, but not limited to Eddy Anthony)
+COPYRIGHT:PCGen dataset conversion for "Curse of the Crimson Throne, Chapter 1: Edge of Anarchy" Copyright 2008-2010, PCGen Data Team (including, but not limited to Eddy Anthony).
+COPYRIGHT:PCGen dataset conversion for Pathfinder 8: Seven Days to the Grave Copyright 2008, PCGen Data team (Including, but not limited to Eddy Anthony)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 9: Escape From Old Korvosa" Copyright 2008, PCGen Data Team (including, but not limited to Andrew Maitland and Eric Smith)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 10: A History of Ashes" Copyright 2008, PCGen Data Team (including, but not limited to, Paul Grosse, Eric C Smith)
+COPYRIGHT:PCGen dataset conversion for Curse of the "Pathfinder 11: Skeletons of Scarwall" Copyright 2008, PCGen Data team (Including, but not limited to Terrence FitzSimons)
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 12: Crown of Fangs" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony)
+COPYRIGHT:PCGen dataset conversion for "Second Darkness - Player's Guide" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
+COPYRIGHT:PCGen dataset conversion for "Second Darkness - Chapter 1: Shadow in the Sky" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
+COPYRIGHT:PCGen dataset conversion for "Second Darkness - Chapter 2: Children of the Void" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
+COPYRIGHT:PCGen dataset conversion for "Second Darkness - Chapter 3: The Armageddon Echo" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
+COPYRIGHT:PCGen dataset conversion for "Second Darkness - Chapter 4: Endless Night" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 17: A Memory of Darkness" Copyright 2008, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
+COPYRIGHT:PCGen dataset conversion for "Pathfinder 18: Descent Into Midnight" Copyright 2009, PCGen Data Team (including, but not limited to, Eddy Anthony (MoSaT))
+COPYRIGHT:PCGen dataset conversion for "Council of Thieves Player's Guide" Copyright 2009-2010, PCGen Data Team (including, but not limited to Stefan Radermacher).
+COPYRIGHT:PCGen dataset conversion for "Kingmaker Player's Guide" Copyright 2010, PCGen Data Team (including, but not limited to Stefan Radermacher).
+COPYRIGHT:PCGen dataset conversion for "Pathfinder Adventure Path: Serpent's Skull Player's Guide" Copyright 2010, PCGen Data Team (including, but not limited to Stefan Radermacher)
+COPYRIGHT:PCGen dataset conversion for "Carrion Crown Player's Guide" Copyright 2010, PCGen Data Team (including, but not limited to David R. Bender).
+
+
+
+
