@@ -37,15 +37,15 @@ COPYRIGHT:PCGen dataset conversion for "Curse of the Crimson Throne, Chapter 2: 
 #EXTRAFILE:OGL.txt
 
 # Imported 35e data files
-ABILITYCATEGORY:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_ability_category.lst
-ABILITY:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_ability.lst
-CLASS:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_class.lst
-EQUIPMENT:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_equipment.lst
-FEAT:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_feat.lst
-RACE:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_race.lst
-SKILL:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_skill.lst
-SPELL:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_spells.lst
-TEMPLATE:@/d20ogl/paizo/pathfinder_adventure_path/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_template.lst
+ABILITYCATEGORY:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_ability_category.lst
+ABILITY:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_ability.lst
+CLASS:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_class.lst
+EQUIPMENT:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_equipment.lst
+FEAT:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_feat.lst
+RACE:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_race.lst
+SKILL:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_skill.lst
+SPELL:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_spells.lst
+TEMPLATE:@/d20ogl/paizo/pathfinder/curse_of_the_crimson_throne/chapter_2_seven_days_to_the_grave/pf8_template.lst
 
 # Customized Pathfinder RPG data files
 ABILITY:pf8_ability_pfrpg.lst
