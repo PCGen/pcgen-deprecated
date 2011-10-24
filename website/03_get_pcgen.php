@@ -54,7 +54,7 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
 			{
 				$display = false;
 			}
-			
+
 			// Check its PRD status
 			$verNum = split("\.", $ver);
             $isProd = false;
@@ -134,7 +134,7 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         <h3>Download Stable Data Sets<a class="" title="data" name="data"></a></h3>
         <p>These are stable data sets that are developed in between stable releases of PCGen but can be installed and used with a stable version of PCGen.
         </p>
-        <div class="downloadbar"><a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/5.16.4%20OOC%20Data%20Sets/5164_piazo_pathfinder_alpha_update_06.pcz/download">Download Pathfinder RPG APG dataset Update 6 for PCGen 5.16.4</a></div><br />
+        <div class="downloadbar"><a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/5.16.4%20OOC%20Data%20Sets/5164_piazo_pathfinder_alpha_update_07.pcz/download">Download Pathfinder RPG APG dataset Update 7 for PCGen 5.16.4</a></div><br />
         <p>
         <a href="http://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/" style="font-size: 80%;">[View Stable Data Sets]</a>
         </p>
