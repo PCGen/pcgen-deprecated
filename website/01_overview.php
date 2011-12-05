@@ -12,7 +12,7 @@ require_once('include/header.php.inc');
 		d20 RPG system and includes data sets based upon gaming material from Wizards of the Coast, Paizo Publishing and dozens of other publishers. The project's 
 		current focus is on gaming material released under Wizards of the Coast's <a href="http://www.opengamingfoundation.org/ogl.html" title="Wizards of the Coast's 
 		Open Gaming License">Open Gaming License</a> (OGL) but the PCGen team also works with publishers to get permission to include limited Closed Content as well. 
-		PCGen runs on Windows, Mac OS X and Unix/Linux using Java 1.5+.</p>
+    PCGen runs on Windows, Mac OS X and Unix/Linux using Java (see <strong>Technical Requirements</strong> section below).</p>
 
         <h1>Mission Statement</h1>
 
@@ -60,11 +60,12 @@ require_once('include/header.php.inc');
             <li>Create 'dice bags' with any dice expression (such as 1d6-2d4+3).</li>
         </ul>
 
-        <h2>Technical Requirements</h2>
+      <h2>Technical Requirements</h2>
 
         <ul>
             <li>All versions of PCGen need Sun's Java Runtime Environment (JRE) which is available for all common OS's, including Windows, Mac OS, UNIX and Linux.</li>
-            <li>PCGen 5.14 (and above) needs to run under Sun's JRE (Java) 1.5.x (or above).</li>
+            <li>PCGen 5.14.x, 5.16.x  needs to run under Sun/Oracle's JRE (Java) 1.5.x or 1.6.x (1.7.x or above is <strong>not</strong> supported).</li>
+            <li>PCGen 5.17.x+  needs to run under Sun/Oracle's JRE (Java) 1.6.x or above.</li>
             <li>If you wish to view PDF output sheets, you'll need a PDF viewer.</li>
             <li>Minimum RAM is 256MB (recommended 1-2GB)</li>
             <li>Minimum CPU is 1GHz (recommended 2Ghz+)</li>
