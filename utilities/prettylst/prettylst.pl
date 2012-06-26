@@ -1906,6 +1906,7 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
+		'AUTO:LANG:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'UDAM',
@@ -1929,8 +1930,8 @@ my %master_order = (
 		'ADD:WEAPONPROFS',
 		'ADDSPELLLEVEL',
 		'REMOVE',
-		'LANGAUTO:.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
+		'LANGAUTO:*',		# Deprecated - 6.0
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'FOLLOWERS',
 		'CHANGEPROF',
@@ -2028,8 +2029,8 @@ my %master_order = (
 		'HASSUBSTITUTIONLEVEL',
 		'EXCLASS',
 		@SOURCE_Tags,
-		'LANGAUTO:.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
+		'LANGAUTO:*',		# Deprecated - 6.0
 		'LANGBONUS:.CLEAR',
 		'LANGBONUS:*',
 		'WEAPONBONUS',
@@ -2051,6 +2052,7 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
+		'AUTO:LANG:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'ADD:.CLEAR',
@@ -2160,17 +2162,18 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
+		'AUTO:LANG:&',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'CHANGEPROF:*',
-		'LANGAUTO:.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
+		'LANGAUTO:*',		# Deprecated - 6.0
 		'ADDDOMAINS',			# [ 1973660 ] ADDDOMAINS is supported on Class Level lines
 		@QUALIFY_Tags,
 		'SERVESAS',
 		'WEAPONBONUS',
-		'FEATAUTO:.CLEAR',
-		'FEATAUTO:*',
+		'FEATAUTO:.CLEAR',	# Deprecated - 6.0
+		'FEATAUTO:*',		# Deprecated - 6.0
 		'SUBCLASS',
 		'SPELLKNOWN:CLASS:*',
 		'SPELLKNOWN:DOMAIN:*',
@@ -2293,6 +2296,7 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
+		'AUTO:LANG:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'FEATAUTO',
@@ -2494,6 +2498,7 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
+		'AUTO:LANG:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'UDAM',
@@ -2516,8 +2521,8 @@ my %master_order = (
 		'ADD:VFEAT:*',
 		'ADD:WEAPONPROFS',
 		'ADDSPELLLEVEL',
-		'LANGAUTO:.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
+		'LANGAUTO:*',		# Deprecated - 6.0
 		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
 		'BONUS:WEAPON:*',
 		'CHANGEPROF:*',
@@ -2820,8 +2825,8 @@ my %master_order = (
 		@PRE_Tags,
 		@QUALIFY_Tags,
 		'SERVESAS',
-		'LANGAUTO:.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
+		'LANGAUTO:*',		# Deprecated - 6.0
 		'LANGBONUS:.CLEAR',
 		'LANGBONUS:*',
 		'WEAPONBONUS:*',
@@ -2836,6 +2841,7 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
+		'AUTO:LANG:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'VFEAT:*',
@@ -3184,8 +3190,8 @@ my %master_order = (
 		'CSKILL:*',
 		'CCSKILL:.CLEAR',
 		'CCSKILL:*',
-		'LANGAUTO.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO.CLEAR',	# Deprecated - Remove 6.0
+		'LANGAUTO:*',		# Deprecated - Remove 6.0
 		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
@@ -3256,8 +3262,8 @@ my %master_order = (
 		'CSKILL',
 		'CCSKILL:.CLEAR',
 		'CCSKILL',
-		'LANGAUTO.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO.CLEAR',	# Deprecated - Remove 6.0
+		'LANGAUTO:*',		# Deprecated - Remove 6.0
 		'ADD:.CLEAR',
 		'ADD:*',
 		'ADD:ABILITY:*',
@@ -3356,14 +3362,15 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
+		'AUTO:LANG:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'REMOVE:*',
 		'CHANGEPROF:*',
 #		'HEIGHT',		# Deprecated
 		'KIT',
-		'LANGAUTO:.CLEAR',
-		'LANGAUTO:*',
+		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
+		'LANGAUTO:*',		# Deprecated - 6.0
 		'LANGBONUS:.CLEAR',
 		'LANGBONUS:*',
 		'MOVE',
@@ -3706,6 +3713,7 @@ my @token_AUTO_tag = (
 	'ARMORPROF',
 	'EQUIP',
 	'FEAT',
+	'LANG',
 	'SHIELDPROF',
 	'WEAPONPROF',
 );
@@ -3729,7 +3737,6 @@ my %token_CHOOSE_tag = map { $_ => 1 } (
 	'FEATADD',				# Deprecated 5.15 - Remove 6.0
 	'FEATLIST',				# Deprecated 5.15 - Remove 6.0
 	'FEATSELECT',			# Deprecated 5.15 - Remove 6.0
-	'FEATSELECTION',		# [NEWTAG-96 added 5.17]
 	'HP',
 	'NOCHOICE',
 	'NUMBER',
@@ -3886,6 +3893,7 @@ my %tagheader = (
 		'AUTO:ARMORPROF'		=> 'Automatically Gained Armor Prof.',
 		'AUTO:EQUIP'		=> 'Automatically Added to Inventory',
 		'AUTO:FEAT'			=> 'Automatically Gained Feat',
+		'AUTO:LANG'			=> 'Automatically Gained Language',
 		'AUTO:SHIELDPROF'		=> 'Automatically Gained Shield Prof.',
 		'AUTO:WEAPONPROF'		=> 'Automatically Gained Weapon Prof.',
 		'BASEQTY'			=> 'Base Quantity',
