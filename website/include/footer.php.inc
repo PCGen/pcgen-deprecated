@@ -5,7 +5,8 @@
     <img src="images/logo.png" border="0" alt="banner" title="Greek goddess Athena"/>
     <div style="clear: both;"></div>
     <h1>Creating RPG Characters has never been easier!</h1>
-	<p>PCGen is a free, open-source program that allows you to create, maintain and print RPG characters using sources from Wizards of the Coast, Paizo Publishing and dozens of other publishers. Let us do the math for you!</p>
+	<p>When creating your next RPG character, let PCGen do the math for you!</p>
+	<p>PCGen is a free, open-source program that allows you to create, maintain and print RPG characters using sources from Wizards of the Coast, Paizo Publishing and dozens of other publishers.</p>
 
     <h1>Statistics</h1>
     <p>
