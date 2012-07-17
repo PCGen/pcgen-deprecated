@@ -2162,7 +2162,7 @@ my %master_order = (
 		'AUTO:ARMORPROF:*',
 		'AUTO:EQUIP:*',
 		'AUTO:FEAT:*',
-		'AUTO:LANG:&',
+		'AUTO:LANG:*',
 		'AUTO:SHIELDPROF:*',
 		'AUTO:WEAPONPROF:*',
 		'CHANGEPROF:*',
