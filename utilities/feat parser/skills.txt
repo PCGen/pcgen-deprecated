@@ -1,0 +1,87 @@
+Acrobatics
+Appraise
+Bluff
+Climb
+Craft
+Diplomacy
+Disable Device
+Disguise
+Escape Artist
+Fly
+Handle Animal
+Heal
+Intimidate
+Knowledge (Arcana)
+Knowledge (Dungeoneering)
+Knowledge (Engineering)
+Knowledge (Geography)
+Knowledge (History)
+Knowledge (Local)
+Knowledge (Nature)
+Knowledge (Nobility)
+Knowledge (Planes)
+Knowledge (Religion)
+Linguistics
+Perception
+Perform
+Profession
+Ride
+Sense Motive
+Sleight of Hand
+Spellcraft
+Stealth
+Survival
+Swim
+Use Magic Device
+Craft (alchemy)
+Craft (armor)
+Craft (baskets)
+Craft (books)
+Craft (bows)
+Craft (calligraphy)
+Craft (carpentry)
+Craft (cloth)
+Craft (clothing)
+Craft (glass)
+Craft (jewelry)
+Craft (leather)
+Craft (locks)
+Craft (paintings)
+Craft (pottery)
+Craft (sculptures)
+Craft (ships)
+Craft (shoes)
+Craft (stonemasonry)
+Craft (traps)
+Craft (weapons)
+Profession (architect)
+Profession (baker)
+Profession (barrister)
+Profession (brewer)
+Profession (butcher)
+Profession (clerk)
+Profession (cook)
+Profession (courtesan)
+Profession (driver)
+Profession (engineer)
+Profession (farmer)
+Profession (fisherman)
+Profession (gambler)
+Profession (gardener)
+Profession (herbalist)
+Profession (innkeeper)
+Profession (librarian)
+Profession (merchant)
+Profession (midwife)
+Profession (miller)
+Profession (miner)
+Profession (porter)
+Profession (sailor)
+Profession (scribe)
+Profession (shepherd)
+Profession (stable master)
+Profession (soldier)
+Profession (tanner)
+Profession (trapper)
+Profession (woodcutter)
+
