@@ -1,0 +1,744 @@
+#  to create a new item
+# SET xxxxx 
+#     xxxxx being the name of the group
+# items that can be set:
+#    IGNORECASE           - ignore case on match
+#    MATCHES data         - sets the given regex or string as a match item
+#                           can have multiple MATCHES
+#                           VALUE and KEY are special keywords
+#                           KEY requires a LIST xxxxx set to match against
+#                           VALUE is always a +-integer  
+#                           bracketed [] items are a | delimited alt list
+#    OUTPUT [NOKEY] data  - string to output for match, if NOKEY is given,
+#                           the output expects the KEY to not be used
+#                           KEY and VALUE are special keywords that get replaced
+#    TOKEN data           - sets the token used as the KEY: in the dataset
+#    COUNTPREMULT         - if an 'or' is detected in the prereq line, this tells
+#                           the dataset entry to include a number of items that
+#                           must match (ex PREFEAT:1,xxx,yyy)
+#    JOIN                 - joins the list of items on one line, instead of 
+#                           each having their own TOKEN entry
+#    LIST xxxxx           - sets a list of items that will be used to match the
+#                           KEY in the MATCHES - this is required if KEY is used
+#    KEYLEN num           - limits the output length of the KEY to the given num
+#    UPPERCASE            - uppercases the key output
+#    LOWERCASE            - lowercases the key output
+#    UCASEFIRST           - uppercases the first letter of all words
+#    SIGNED               - puts a + or - on the value
+
+#  note that (match|one|of|these) pattern matching will be enclosed in [] instead of ()
+SET CLASSES
+  IGNORECASE
+  MATCHES VALUE[th|rd|st][ |-]level KEY
+  MATCHES KEY level VALUE[th|rd|st]
+  OUTPUT KEY=VALUE
+  TOKEN PRECLASS
+	COUNTPREMULT
+  UCASEFIRST
+  JOIN
+
+#  class items can be tab delimited to limit vertical real estate
+LIST CLASSES
+barbarian	bard	cleric	druid	fighter	monk	paladin	ranger	rogue	sorcerer	wizard	alchemist		cavalier	gunslinger
+inquisitor	magus	oracle	summoner	witch	antipaladin	ninja	samurai	arcane	archer	arcane	trickster	assassin	dragon
+disciple	duelist	eldritch	knight	loremaster	mystic	theurge	pathfinder	chronicler	shadowdancer
+
+SET CLASSFEATURES
+  IGNORECASE
+  MATCHES KEY class feature
+  MATCHES KEY
+  OUTPUT KEY
+  TOKEN PREABILITY
+  UCASEFIRST
+  COUNTPREMULT
+  JOIN
+
+LIST CLASSFEATURES
+rage
+ 
+
+
+SET CASTERLEVEL
+  MATCHES caster level VALUE[th|st|rd]
+  OUTPUT SPELLCASTER=VALUE
+  TOKEN PRECLASS
+  IGNORECASE
+  COUNTPREMULT
+
+SET DARKVISION
+  IGNORECASE
+  MATCHES darkvision (VALUE) ft
+  TOKEN PREVISION
+  COUNTPREMULT
+  JOIN
+  UCASEFIRST
+
+SET LOWLIGHT
+  IGNORECASE
+  MATCHES KEY
+  TOKEN PREVISION
+  COUNTPREMULT
+  JOIN
+  UCASEFIRST
+  KEYLEN 9
+  OUTPUT KEY=ANY
+  
+
+LIST LOWLIGHT
+low-light vision
+low-light
+
+
+SET PRETEXT
+  IGNORECASE
+  MATCHES KEY
+  OUTPUT KEY
+  TOKEN PRETEXT
+
+LIST PRETEXT
+daylight spell-like ability
+sufficiently high level (see below)
+Aspect of the Beast (claws of the beast manifestation)
+Able to use drow spell-like abilities
+Ability to cast summon nature's ally spells
+shadow walk spell-like ability
+Bomb class feature
+Hydraulic push spell-like ability
+Drow-blooded and drow magics
+Ability to cast summon monster
+
+
+SET RACES
+  MATCHES KEY
+  OUTPUT KEY
+  TOKEN PRERACE
+  COUNTPREMULT
+  IGNORECASE
+  UCASEFIRST
+  JOIN
+
+LIST RACES
+aasimar	drow	ratfolk	dwarf	gnome	human	half-elf	elf	goblin	hobgoblin	halfling	half-orc	catfolk
+dhampir	fetchling	ifrit	tengu	oread	sylph	kobold	orc	tiefling	undine
+
+SET RACIALTRAITS
+  IGNORECASE
+  MATCHES KEY
+  OUTPUT KEY
+  TOKEN PREABILITY
+  COUNTPREMULT
+  UCASEFIRST
+  JOIN
+
+LIST RACIALTRAITS
+fearless	swarming	natural weapon	sprinter	ferocity	hardy	gnome magic	illusion resistance	hatred	keen senses
+multitalented	orc ferocity	adaptable luck	low-blow	fleet of foot	cat's claws	mountaineer	stability	craven
+
+SET CHANNELENERGYCF
+  IGNORECASE
+  MATCHES KEY class feature
+  OUTPUT KEY
+  UCASEFIRST
+  TOKEN PREABILITY
+  COUNTPREMULT
+  JOIN
+
+LIST CHANNELENERGYCF
+channel energy
+channel positive energy
+channel negative energy
+
+
+SET CHANNELENERGYDICE
+  IGNORECASE
+  MATCHES KEY VALUEd6
+  TOKEN PREVARGTEQ
+  OUTPUT OracleChannelDice,VALUE
+  OUTPUT ClericChannelPositiveEnergyDice,VALUE
+  OUTPUT PaladinChannelDice,VALUE
+
+LIST CHANNELENERGYDICE
+channel energy
+
+
+SET BAB
+  IGNORECASE
+  MATCHES base attack bonus VALUE
+  TOKEN PREATT
+  OUTPUT VALUE
+
+
+SET SKILLS
+  MATCHES KEY VALUE [rank|ranks]
+  OUTPUT KEY=VALUE
+  TOKEN PRESKILL
+  COUNTPREMULT
+  JOIN
+
+LIST SKILLS
+Acrobatics		Appraise		Bluff		Climb		Craft		Diplomacy		Disable Device		Disguise		Escape Artist		Fly		Handle Animal
+Heal		Intimidate		Knowledge (Arcana)		Knowledge (Dungeoneering)		Knowledge (Engineering)		Knowledge (Geography)
+Knowledge (History)		Knowledge (Local)		Knowledge (Nature)		Knowledge (Nobility)		Knowledge (Planes)		Knowledge (Religion)
+Linguistics		Perception		Perform		Profession		Ride		Sense Motive		Sleight of Hand		Spellcraft		Stealth		Survival
+Swim		Use Magic Device		Craft (alchemy)		Craft (armor)		Craft (baskets)		Craft (books)		Craft (bows)		Craft (calligraphy)
+Craft (carpentry)		Craft (cloth)		Craft (clothing)		Craft (glass)		Craft (jewelry)		Craft (leather)		Craft (locks)
+Craft (paintings)		Craft (pottery)		Craft (sculptures)		Craft (ships)		Craft (shoes)		Craft (stonemasonry)		Craft (traps)
+Craft (weapons)		Profession (architect)		Profession (baker)		Profession (barrister)		Profession (brewer)		Profession (butcher)
+Profession (clerk)		Profession (cook)		Profession (courtesan)		Profession (driver)		Profession (engineer)		Profession (farmer)
+Profession (fisherman)		Profession (gambler)		Profession (gardener)		Profession (herbalist)		Profession (innkeeper)
+Profession (librarian)		Profession (merchant)		Profession (midwife)		Profession (miller)		Profession (miner)
+Profession (porter)		Profession (sailor)		Profession (scribe)		Profession (shepherd)		Profession (stable master)
+Profession (soldier)		Profession (tanner)		Profession (trapper)		Profession (woodcutter)
+
+
+SET OTHERFEATS
+  IGNORECASE
+  DEFAULT
+  MATCHES KEY
+  OUTPUT KEY
+  TOKEN PREFEAT
+	COUNTPREMULT
+  JOIN
+
+LIST OTHERFEATS
+Spell Focus (conjuration)
+Agile Feet
+Armor of Law
+Blessed Spell
+Dastardly Deception
+Flame Strike
+Flash of Divine Insight
+Held at Death's Door
+Holy Inspiration
+In Glorious Madness
+Lucky Dodge
+Additional Traits
+Acadamae Graduate
+Harrowed
+Sable Company Marine
+Shingle Runner
+Big Game Hunter
+City Born
+Country Born
+Country Born
+Lone Wolf
+Totem Spirit
+Varisian Tattoo
+Lamashtu's Mark
+Thunder and Fang
+Bloatmage Initiate
+Harmonic Spell
+Dark Adept
+Umbral Scion
+Brew Fleshcrafting Potion
+Advance Warning
+Fiendish Facade
+Fiendish Heritage
+Monstrous Mask
+Iomedaean Sword Oath
+Possess Creature
+Possess Location
+Possess Object
+Invested Magic
+Stone Magic
+Inscribe Rune Item
+Altitude Affinity
+Burn Rider
+Elephant Stomp
+Jaguar Pounce
+Monkey Lunge
+Piranha Strike
+Rhino Charge
+Ability Focus
+Acrobatic
+Acrobatic Steps
+Agile Maneuvers
+Alertness
+Alignment Channel
+Animal Affinity
+Arcane Armor Mastery
+Arcane Armor Training
+Arcane Strike
+Armor Proficiency, Heavy
+Armor Proficiency, Light
+Armor Proficiency, Medium
+Athletic
+Augment Summoning
+Awesome Blow
+Bleeding Critical
+Bleeding Critical
+Blind-Fight
+Blinding Critical
+Blinding Critical
+Brew Potion
+Catch Off-Guard
+Channel Smite
+Cleave
+Combat Casting
+Combat Expertise
+Combat Reflexes
+Command Undead
+Craft Construct
+Craft Magic Arms and Armor
+Craft Rod
+Craft Staff
+Craft Wand
+Craft Wondrous Item
+Critical Focus
+Critical Mastery
+Dazzling Display
+Deadly Aim
+Deadly Stroke
+Deafening Critical
+Deafening Critical
+Deceitful
+Defensive Combat Training
+Deflect Arrows
+Deft Hands
+Diehard
+Disruptive
+Dodge
+Double Slice
+Elemental Channel
+Empower Spell
+Empower Spell-Like Ability
+Endurance
+Enlarge Spell
+Eschew Materials
+Exhausting Critical
+Exhausting Critical
+Exotic Weapon Proficiency
+Extend Spell
+Extra Channel
+Extra Ki
+Extra Lay On Hands
+Extra Mercy
+Extra Performance
+Extra Rage
+Far Shot
+Fleet
+Flyby Attack
+Forge Ring
+Gorgon's Fist
+Great Cleave
+Great Fortitude
+Greater Bull Rush
+Greater Disarm
+Greater Feint
+Greater Grapple
+Greater Overrun
+Greater Penetrating Strike
+Greater Shield Focus
+Greater Spell Focus
+Greater Spell Penetration
+Greater Sunder
+Greater Trip
+Greater Two-Weapon Fighting
+Greater Vital Strike
+Greater Weapon Focus
+Greater Weapon Specialization
+Heighten Spell
+Hover
+Improved Bull Rush
+Improved Channel
+Improved Counterspell
+Improved Critical
+Improved Disarm
+Improved Familiar
+Improved Feint
+Improved Grapple
+Improved Great Fortitude
+Improved Initiative
+Improved Iron Will
+Improved Lightning Reflexes
+Improved Natural Armor
+Improved Natural Attack
+Improved Overrun
+Improved Precise Shot
+Improved Shield Bash
+Improved Sunder
+Improved Trip
+Improved Two-Weapon Fighting
+Improved Unarmed Strike
+Improved Vital Strike
+Improvised Weapon Mastery
+Intimidating Prowess
+Iron Will
+Leadership
+Lightning Reflexes
+Lightning Stance
+Lunge
+Magical Aptitude
+Manyshot
+Martial Weapon Proficiency
+Master Craftsman
+Maximize Spell
+Medusa's Wrath
+Mobility
+Mounted Archery
+Mounted Combat
+Multiattack
+Multiweapon Fighting
+Natural Spell
+Nimble Moves
+Noxious Bite
+Penetrating Strike
+Persuasive
+Pinpoint Targeting
+Point Blank Shot
+Power Attack
+Precise Shot
+Quick Draw
+Quicken Spell
+Quicken Spell-Like Ability
+Rapid Reload
+Rapid Shot
+Ride-by Attack
+Run
+Scorpion Style
+Scribe Scroll
+Selective Channeling
+Self-Sufficient
+Shatter Defenses
+Shield Focus
+Shield Master
+Shield Proficiency
+Shield Slam
+Shot on the Run
+Sickening Critical
+Sickening Critical
+Silent Spell
+Simple Weapon Proficiency
+Skill Focus
+Snatch
+Snatch Arrows
+Spell Focus
+Spell Mastery
+Spell Penetration
+Spellbreaker
+Spirited Charge
+Spring Attack
+Staggering Critical
+Staggering Critical
+Stand Still
+Stealthy
+Step Up
+Still Spell
+Strike Back
+Stunning Critical
+Stunning Critical
+Stunning Fist
+Throw Anything
+Tiring Critical
+Tiring Critical
+Toughness
+Tower Shield Proficiency
+Trample
+Turn Undead
+Two-Weapon Defense
+Two-Weapon Fighting
+Two-Weapon Rend
+Unseat
+Vital Strike
+Weapon Finesse
+Weapon Focus
+Weapon Specialization
+Whirlwind Attack
+Widen Spell
+Wind Stance
+Wingover
+Chainbreaker
+Devil's Foe
+Eagle Knight Candidate
+Talmandor's Lifting
+Brain Eater
+Civilized Ghoulishness
+Warren Digger
+Gift of Sight
+Impaling Charge
+Minotaur's Charge
+Night Stalker
+Quick at Hand
+Scent of Fear
+Sow Terror
+Corsair of Taldor
+Endure Pain (Zon-Kuthon's Kiss)
+Indomitable Mount
+Irrisen Icemage
+Master Delver
+Mounted Onslaught
+Wheeling Charge
+Aldori Dueling Mastery
+Andoren Falconry
+Arcane Vendetta
+Berserker's Cry
+Blade Binder
+Careful Speaker
+Cosmopolitan
+Crossbow Mastery
+Demon Hunter
+Desert Dweller
+Desperate Battler
+Enforcer
+Eye Of The Arclord
+Fey Foundling
+Flagbearer
+Focused Shot
+Fortune Teller
+Free Spirit
+Godless Healing
+Green Faith Acolyte
+Gunslinger
+Hamatulatsu
+Harmonic Spell
+Harrowed
+Hermean Blood
+Katheer Scholar
+Massed Charge
+Molthuni Discipline
+Necromantic Resistance
+Noble Scion
+One Finger
+Parting Shot
+Profits of Kalistrade
+Rugged
+Ruincaster
+Secret of Steel-Shattering Spirit
+Secret Signs
+Shade of the Uskwood
+Shrewd Liason
+Sniper Shot
+Spirit of the River
+Spirit Strike
+Stoic
+Storm-Lashed
+Survivor
+Taldorian Duelist
+Teleport Sense
+Twisted Flesh
+Veiled Vileness
+Vermin Companion
+Vermin Heart
+Wand Dancer
+Warped Mind
+Indigestible
+Ooze Companion
+Ooze Whisperer
+Shambling Monolith
+Silent as Stone
+Stone Clinger
+Stormstruck Shambler
+Suffocating Strangulation
+Jackal Blood
+Lucky Halfling
+Pesh Euphoria
+Pesh Healing
+Pesh Rejuvenation
+Sahir-Afiyun
+Draconic Defender
+Draconic Discipline
+Green Faith Acolyte
+Strength of the Diamond
+Touvette Defender
+Boon Companion
+Dilettante
+Friendly Switch
+Belier's Bite
+Cornugon Shield
+Cornugon Smash
+Cornugon Stun
+Cornugon Trip
+Fury's Fall
+Fury's Snare
+Hamatula Grasp
+Hamatula Strike
+Hellcat Pounce
+Hellcat Stealth
+Osyluth Guile
+Bounding Hammer
+Darting Viper
+Dorn-Dergar Master
+Sliding Axe Throw
+Stance of the Xorn
+All Gnolls Must Die
+Flame-Tested Survivor
+Gifted Mesmerist
+Graverisen
+Healer's Touch
+History of Scars
+Relentless Butcher
+Sandwalker
+Black Marketeer
+Conceal Scent
+Heightened Trap Sense
+Lost in the Crowd
+Osiriontologist
+Religious Pilgrim
+Serpent Lash
+Swarm Dodger
+Thanatopic Spell
+Threnodic Spell
+Dervish Dance
+Mounted Blade
+Cypher Magic
+Cypher Script
+Experienced Vagabond
+Galley Slave
+Master of the Ledger
+Sneaky Vagabond
+Taldan Conscript
+Taldan Knight
+Taldan Squire
+Urban Forager
+Frightful Suggestion
+Slow Exhalation
+Improved Channel Force
+Nimble Striker
+Underfoot
+Demoralizing Lash
+Inner Flame
+Scorching Weapons
+Sharpclaw
+Dented Helm
+Hard-Headed
+Goblin Cleaver
+Orc Hewer
+Surprise Follow-Through
+Cautious Fighter
+Desperate Swing
+Martial Versatility
+
+SET CHARACTERLEVEL
+  MATCHES character level VALUE[th|st|rd]
+  OUTPUT MIN=VALUE
+  TOKEN PRELEVEL
+  IGNORECASE
+
+
+SET STATS
+  MATCHES KEY VALUE
+  OUTPUT KEY=VALUE
+  TOKEN PRESTAT
+  COUNTPREMULT
+  JOIN
+  KEYLEN 3
+  UPPERCASE
+  IGNORECASE
+ 
+LIST STATS
+con		constitution		str		strength		dex		dexterity		wis		wisdom		int		intelligence		cha		charisma
+
+
+SET SAVINGTHROWBASE
+  MATCHES base KEY save VALUE
+  OUTPUT KEY=VALUE
+  TOKEN PRECHECKBASE
+  COUNTPREMULT
+  JOIN
+  KEYLEN 4
+  UCASEFIRST
+  IGNORECASE
+ 
+LIST SAVINGTHROWBASE
+fort		fortitude		will		willpower		ref		reflex
+
+
+
+
+SET ANIMALCOMPANION
+  MATCHES KEY
+  OUTPUT NOKEY Nature's Bond ~ Animal Companion,Companion ~ Hunter's Bond
+  TOKEN PREABILITY
+  COUNTPREMULT
+  JOIN
+  IGNORECASE
+
+LIST ANIMALCOMPANION
+animal companion
+
+SET FAMILIAR
+  MATCHES KEY
+  OUTPUT NOKEY Arcane Bond ~ Familiar
+  TOKEN PREABILITY
+  COUNTPREMULT
+  JOIN
+  IGNORECASE
+
+LIST FAMILIAR
+familiar
+
+SET SPECIALMOUNT  
+  MATCHES KEY
+  OUTPUT NOKEY Special Mount
+  TOKEN PREABILITY
+  COUNTPREMULT
+  JOIN
+  IGNORECASE
+
+LIST SPECIALMOUNT
+mount class feature
+divine bond (mount)
+
+
+SET NONLAWFUL
+  IGNORECASE
+  MATCHES KEY
+  OUTPUT NOKEY LG,LN,LE
+  TOKEN !PREALIGN
+
+LIST NONLAWFUL
+nonlawful
+
+SET SMALLSMALLER
+  MATCHES KEY
+  OUTPUT NOKEY S
+  TOKEN PRESIZELTEQ
+
+LIST SMALLSMALLER
+SMALL_SMALLER
+
+
+#  this must be the last item in the rules file
+#  tweaks are direct string replacements that swap out one for the other.
+# tweaks must be strings only - no regex - and FROM are always case
+# insensitive
+TWEAKS
+  FROM ", animal companion, familiar, or mount class feature, "
+  TO   "; animal companion, familiar, or mount class feature; "
+  FROM ", animal companion, familiar, or mount class feature"
+  TO   "; animal companion, familiar, or mount class feature"
+  FROM "mountaineer or stability racial trait"
+  TO   "mountaineer racial trait or stability racial trait"
+  FROM "proficient with all martial weapons"
+  TO   "martial weapon proficiency"
+  FROM "proficient with all exotic weapons"
+  TO   "martial weapon proficiency"
+  FROM "proficient with all simple weapons"
+  TO   "martial weapon proficiency"
+  FROM "proficient with martial weapons"
+  TO   "martial weapon proficiency"
+  FROM "proficient with exotic weapons"
+  TO   "martial weapon proficiency"
+  FROM "proficient with simple weapons"
+  TO   "martial weapon proficiency"
+  FROM "Surprise Follow Through"
+  TO   "Surprise Follow-Through"
+  FROM "Adaptive Luck"
+  TO   "Adaptable Luck"
+  FROM "or summon nature's ally spells,"
+  TO   ", or ability to cast summon nature's ally spells;"
+#  the small smaller keeps the parser from splitting the or into multiple entries
+  FROM "Small size or smaller"
+  TO   "SMALL_SMALLER"
+  FROM ", either the"
+  TO   ", "
+  FROM ", either"
+  TO   ", "
+  FROM "either the"
+  TO   ""
+  FROM "either"
+  TO   ""
+  FROM " racial trait"
+  TO   ""
+  FROM ", ifrit, oread, sylph, or undine"
+  TO "; ifrit, oread, sylph, or undine"
