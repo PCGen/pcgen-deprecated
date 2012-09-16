@@ -1,6 +1,5 @@
 #!/usr/bin/perl 
-# created by Brad Kester aka tripleduck 20120912
-#
+
 package featsSet;
 
 use featClass;
@@ -10,7 +9,7 @@ use warnings;
 sub new($);
 sub count($);
 sub add($@);
-sub has($$);
+sub has($$;$);
 sub all($);
 
 #############################################################################
@@ -58,17 +57,21 @@ sub add($@)
 }
 
 #############################################################################
-# bool has(feat name)
+# bool has(feat name [, ignore case])
 #
 # determines if any of the existing featClass object have the same name as
 # the given feat name, and return true/false
-sub has($$)
+sub has($$;$)
 {
   my($self)     = shift(@_);
-  my($featName) = lc(shift(@_));
+  my($featName) = shift(@_);
+  my($ic)       = shift(@_) || (1==1);
+
+  $ic and $featName = lc($featName);
 
   for(my $x = $self->count() - 1; $x >= 0; $x--) {
-    if(lc($self->{list}->[$x]->name()) eq $featName) { return (1==1); }
+    if($ic && lc($self->{list}->[$x]->name()) eq $featName) { return (1==1); }
+    if($self->{list}->[$x]->name() eq $featName) { return (1==1); }
   }
 
   return (1==0);

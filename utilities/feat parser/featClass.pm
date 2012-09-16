@@ -1,6 +1,5 @@
 #!/usr/bin/perl 
-# created by Brad Kester aka tripleduck 20120912
-#
+
 package featClass;
 
 use strict;
