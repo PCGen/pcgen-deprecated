@@ -1,0 +1,119 @@
+5.16.4 to 6.0 Conversion notes:
+
+
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/pcgen/pcgen_test_advanced/pcgen_broken_tests/pcgen_test_advanced_broken_abilities.lst
+SEVERE Parse of SPELLS:Innate|TIMES=1|TIMESUNIT=Behive|CASTERLEVEL=7|Fireball,80+CHA failed
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/pcgen/pcgen_test_advanced/pcgen_broken_tests/pcgen_test_advanced_broken_items.pcc
+SEVERE 
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paradigmconcepts/arcanis/players_guide_to_arcanis/playersguidetoarcanis_classes.lst
+LSTERROR Data used token: DESCRIPTOR.Light which is a Class token, but it was used in a class level for a SubClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paradigmconcepts/arcanis/players_guide_to_arcanis/playersguidetoarcanis_classes.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'DESCRIPTOR.Light' for pcgen.cdom.inst.PCClassLevel 50Test19 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paradigmconcepts/arcanis/players_guide_to_arcanis/playersguidetoarcanis_classes.lst
+LSTERROR Data used token: SPELL.Searing Light,Sunbeam,Sunburst which is a Class token, but it was used in a class level for a SubClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paradigmconcepts/arcanis/players_guide_to_arcanis/playersguidetoarcanis_classes.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'SPELL.Searing Light,Sunbeam,Sunburst' for pcgen.cdom.inst.PCClassLevel 50Test20 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paradigmconcepts/arcanis/players_guide_to_arcanis/playersguidetoarcanis_classes.lst
+LSTERROR Data used token: DESCRIPTOR.Darkness.Shadow which is a Class token, but it was used in a class level for a SubClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paradigmconcepts/arcanis/players_guide_to_arcanis/playersguidetoarcanis_classes.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'DESCRIPTOR.Darkness.Shadow' for pcgen.cdom.inst.PCClassLevel 55Test14 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paradigmconcepts/arcanis/players_guide_to_arcanis/playersguidetoarcanis_classes.lst
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Good|PREALIGN:LE,NE,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Good|PREALIGN:LE,NE,CE' for pcgen.cdom.inst.PCClassLevel 43Test1 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE' for pcgen.cdom.inst.PCClassLevel 43Test2 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Evil|PREALIGN:LG,NG,CG which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Evil|PREALIGN:LG,NG,CG' for pcgen.cdom.inst.PCClassLevel 44Test1 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Evil|PREDEITYALIGN:LG,NG,CG which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Evil|PREDEITYALIGN:LG,NG,CG' for pcgen.cdom.inst.PCClassLevel 44Test2 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Lawful|PREALIGN:CG,CN,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Lawful|PREALIGN:CG,CN,CE' for pcgen.cdom.inst.PCClassLevel 45Test1 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Lawful|PREDEITYALIGN:CG,CN,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Lawful|PREDEITYALIGN:CG,CN,CE' for pcgen.cdom.inst.PCClassLevel 45Test2 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Chaotic|PREALIGN:LG,LN,LE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Chaotic|PREALIGN:LG,LN,LE' for pcgen.cdom.inst.PCClassLevel 46Test1 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+LSTERROR Data used token: ALIGNMENT.Chaotic|PREDEITYALIGN:LG,LN,LE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Chaotic|PREDEITYALIGN:LG,LN,LE' for pcgen.cdom.inst.PCClassLevel 46Test2 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/paizo/pathfinder_campaign_setting/pathfinder_campaign_setting/pathfinder_campaign_setting_classes_35e.lst
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/fantasyflightgames/dawnforge/dawnforge/dawnforge_feats.lst
+SEVERE Didn't expect tokRestriction on !PC here: TYPE=Exotic
+LSTERROR Choice argument was not valid: !PC[TYPE=Exotic]
+LSTERROR Internal error.
+LSTERROR Failed in parsing subtoken: SHIELDPROFICIENCY of !PC[TYPE=Exotic]
+LSTERROR Illegal CHOOSE subtoken 'SHIELDPROFICIENCY' '!PC[TYPE=Exotic]' for 6Test17 CHOOSE:PROFICIENCY|SHIELD|UNIQUE|TYPE=Exotic
+LSTERROR Failed in parsing subtoken: PROFICIENCY of SHIELD|UNIQUE|TYPE=Exotic
+LSTERROR Illegal CHOOSE subtoken 'PROFICIENCY' 'SHIELD|UNIQUE|TYPE=Exotic' for 6Test17 CHOOSE:PROFICIENCY|SHIELD|UNIQUE|TYPE=Exotic
+LSTERROR CHOOSE:RACE not compatible (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/fantasyflightgames/dawnforge/dawnforge/dawnforge_feats.lst)
+LSTERROR Illegal Token 'CHOOSE' 'PROFICIENCY|SHIELD|UNIQUE|TYPE=Exotic' for pcgen.core.Ability 6Test17 CHOOSE:PROFICIENCY|SHIELD|UNIQUE|TYPE=Exotic in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/fantasyflightgames/dawnforge/dawnforge/dawnforge_feats.lst
+SEVERE nullUnable to unparse: CHOOSE:PROFICIENCY|SHIELD|UNIQUE|TYPE=Exotic
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/alderacentertainmentgroup/evil/evil_domains.lst
+WARNING Won't overwrite: G:\1. Files and Folders\pcgen\convert_final_6.0\d20ogl\alderacentertainmentgroup\evil\evil_domains.lst
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/alderacentertainmentgroup/dragons/dragonsfeats.lst
+WARNING Won't overwrite: G:\1. Files and Folders\pcgen\convert_final_6.0\d20ogl\alderacentertainmentgroup\dragons\dragonsfeats.lst
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/alderacentertainmentgroup/undead/undead_35e/../undead_abilities_class.lst
+WARNING Won't overwrite: G:\1. Files and Folders\pcgen\convert_final_6.0\d20ogl\alderacentertainmentgroup\dungeons\dungeonsfeats.lst
+WARNING Won't overwrite: G:\1. Files and Folders\pcgen\convert_final_6.0\d20ogl\alderacentertainmentgroup\evil\evil_feats.lst
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/alderacentertainmentgroup/war/war_35e/../war_abilities_class.lst
+LSTERROR Illegal Token ' DESC' '(%1 total)|AnimalTraining' for pcgen.core.Ability 2Test5  DESC:(%1 total)|AnimalTraining in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/alderacentertainmentgroup/war/war_35e/../war_abilities_class.lst
+SEVERE Unable to unparse:  DESC:(%1 total)|AnimalTraining
+SEVERE Invalid Token - does not contain a colon:  ~ Elf Treerunner
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/alpha/malhavocpress/bookofironmight/ironmight_abilities_race.lst
+LSTWARN The % without a number in the description ':Divine Vengeance (%CHOICE)' should be either escaped e.g. %% or made into a parameter reference e.g. %1 .
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+LSTERROR Data used token: ALIGNMENT.Good|PREALIGN:LE,NE,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Good|PREALIGN:LE,NE,CE' for pcgen.cdom.inst.PCClassLevel 15Test3 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+LSTERROR Data used token: ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE' for pcgen.cdom.inst.PCClassLevel 15Test4 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+LSTERROR Data used token: ALIGNMENT.Evil|PREALIGN:LG,NG,CG which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Evil|PREALIGN:LG,NG,CG' for pcgen.cdom.inst.PCClassLevel 16Test3 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+LSTERROR Data used token: ALIGNMENT.Evil|PREDEITYALIGN:LG,NG,CG which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Evil|PREDEITYALIGN:LG,NG,CG' for pcgen.cdom.inst.PCClassLevel 16Test4 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+LSTERROR Data used token: ALIGNMENT.Lawful|PREALIGN:CG,CN,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Lawful|PREALIGN:CG,CN,CE' for pcgen.cdom.inst.PCClassLevel 17Test3 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+LSTERROR Data used token: ALIGNMENT.Lawful|PREDEITYALIGN:CG,CN,CE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Lawful|PREDEITYALIGN:CG,CN,CE' for pcgen.cdom.inst.PCClassLevel 17Test4 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+LSTERROR Data used token: ALIGNMENT.Chaotic|PREALIGN:LG,LN,LE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Chaotic|PREALIGN:LG,LN,LE' for pcgen.cdom.inst.PCClassLevel 18Test3 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_prestige.lst
+LSTERROR Data used token: ALIGNMENT.Chaotic|PREDEITYALIGN:LG,LN,LE which is a Class token, but it was used in a class level for a SubstitutionClass (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst)
+LSTERROR Illegal Token 'PROHIBITSPELL' 'ALIGNMENT.Chaotic|PREDEITYALIGN:LG,LN,LE' for pcgen.cdom.inst.PCClassLevel 18Test4 in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/en_publishing/en_spellcraft/secrets_of_theurgy/sot_class_mod.lst
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/mongoosepublishing/collectorsseries/quintranger2/quintranger2_feats.lst
+SEVERE Parse of CHOOSE:ARMORPROF|1|TYPE=Medium failed
+SEVERE null
+SEVERE Parse of CHOOSE:ARMORPROF|1|TYPE=Heavy failed
+SEVERE null
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/paizo/pathfinder/rise_of_the_runelords/rise_of_the_runelords_players_guide/rrpg_languages.lst
+SEVERE ERROR:file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/paizo/pathfinder/rise_of_the_runelords/rise_of_the_runelords_players_guide/rrpg_languages.lst
+Exception type:java.io.FileNotFoundException
+Message:D:\pcgen\pcgen_dev\Trunk\pcgen\data\d20ogl\paizo\pathfinder\rise_of_the_runelords\rise_of_the_runelords_players_guide\rrpg_languages.lst (The system cannot find the path specified)
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/paizo/pathfinder_adventure_path/legacy_of_fire/legacy_of_fire_players_guide/lofpg_feats.lst
+SEVERE Didn't expect tokRestriction on SUBSCHOOL here: KNOWN=YES
+LSTERROR Choice argument was not valid: SUBSCHOOL=Charm[KNOWN=YES]
+LSTERROR Internal error.
+LSTERROR Failed in parsing subtoken: SPELLS of SUBSCHOOL=Charm[KNOWN=YES]|SUBSCHOOL=Compulsion[KNOWN=YES]
+LSTERROR Illegal CHOOSE subtoken 'SPELLS' 'SUBSCHOOL=Charm[KNOWN=YES]|SUBSCHOOL=Compulsion[KNOWN=YES]' for 10Test18 CHOOSE:SPELLS|SUBSCHOOL=Charm[KNOWN=YES]|SUBSCHOOL=Compulsion[KNOWN=YES]
+LSTERROR CHOOSE:RACE not compatible (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/paizo/pathfinder_adventure_path/legacy_of_fire/legacy_of_fire_players_guide/lofpg_feats.lst)
+LSTERROR Illegal Token 'CHOOSE' 'SPELLS|SUBSCHOOL=Charm[KNOWN=YES]|SUBSCHOOL=Compulsion[KNOWN=YES]' for pcgen.core.Ability 10Test18 CHOOSE:SPELLS|SUBSCHOOL=Charm[KNOWN=YES]|SUBSCHOOL=Compulsion[KNOWN=YES] in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/paizo/pathfinder_adventure_path/legacy_of_fire/legacy_of_fire_players_guide/lofpg_feats.lst
+SEVERE nullUnable to unparse: CHOOSE:SPELLS|SUBSCHOOL=Charm[KNOWN=YES]|SUBSCHOOL=Compulsion[KNOWN=YES]
+
+file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/parentsbasementgames/murchadslegacy/murchadslegacy_abilities_class.lst
+LSTERROR Error: Count not get Reference for CONDEXSTR in PCSTAT (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/parentsbasementgames/murchadslegacy/murchadslegacy_abilities_class.lst)
+LSTERROR Failed in parsing subtoken: PCSTAT of CONDEXSTR
+LSTERROR Illegal CHOOSE subtoken 'PCSTAT' 'CONDEXSTR' for 86Test14 CHOOSE:STAT|INT|WIS|CHA
+LSTERROR Failed in parsing subtoken: STAT of INT|WIS|CHA
+LSTERROR Illegal CHOOSE subtoken 'STAT' 'INT|WIS|CHA' for 86Test14 CHOOSE:STAT|INT|WIS|CHA
+LSTERROR CHOOSE:RACE not compatible (Source: file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/parentsbasementgames/murchadslegacy/murchadslegacy_abilities_class.lst)
+LSTERROR Illegal Token 'CHOOSE' 'STAT|INT|WIS|CHA' for pcgen.core.Ability 86Test14 CHOOSE:STAT|INT|WIS|CHA in file:/D:/pcgen/pcgen_dev/Trunk/pcgen/data/d20ogl/parentsbasementgames/murchadslegacy/murchadslegacy_abilities_class.lst
+SEVERE nullUnable to unparse: CHOOSE:STAT|INT|WIS|CHA
+LSTWARN The % without a number in the description '%1 square feet for % minutes 1/day' should be either escaped e.g. %% or made into a parameter reference e.g. %1 .
+
+Conversion complete, press next button to finish...
