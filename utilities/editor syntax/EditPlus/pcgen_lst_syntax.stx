@@ -480,6 +480,7 @@ None
 NotRanged
 NUMBER
 object
+OneHanded
 Pattern
 PC
 Perform
@@ -578,8 +579,9 @@ Legwear
 PsionicTattoo
 HEAD
 TORSO
-
-
+LEVELMAX
+LEVELMIN
+CLASSLIST
 INSTANT
 
 
