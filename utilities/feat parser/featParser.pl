@@ -3,6 +3,26 @@ use strict;
 use warnings;
 use Data::Dumper;
 
+#  written by brad kester / tripleduck
+#  
+#  If you make modifications to this script, please respect the format and style of this document
+#  by adhering to the following guidelines:
+#  1) do not remove or comment out 'use strict' or 'use warnings', nor the #MAIN {} code block
+#  2) all subs are given a specific param set, with param names in definition line comment
+#  3) predeclare/define all vars at the beginning of each code block
+#  4) no tabs - use two spaces for each indent
+#  5) include commented use information for each sub, use an existing one as a template
+#  6) comment your work
+#  7) use hash references and array references for variables, not the base hash/array type
+#  8) avoid using $_ if at all possible - named variables tell so much more about their use!
+#  9) Include parentheses, even if it seems excessive (i.e. on variable declaractions, shift(@_)s, etc)
+# 10) Use variables for open and opendir handles, do not use hard-coded handles
+# 
+#  This may seem silly to you, but code I generate is very clean and I intend to keep it that way.
+#  Perl allows a lot of freedom, which is great, but it also leads to very sloppy code. I generally
+#  hate debugging perl code from others, no offense, because it's just so disheveled.  I just ask
+#  that you respect my style and format. :) 
+
 sub Newline() {
   $^O eq "darwin" and return "\r";
   $^O eq "MSWin32" and return "\n\r";
@@ -25,7 +45,7 @@ sub validateMatch($$$$);     #  lineNo, rulesFile, line, matchRule
 sub parseFeat($$$$);         #  rules, featsSet class object, featClass object, featDebug
 sub inList($$;$);            #  list array ref, entry to locate [, ignore case]
 sub parsePrereq($$$;$);      #  rules, featsSet, featClass [, prereq line]
-sub findDefault($);          #  scans the given rules list and locates the default rule, returning it
+sub findDefault($);          #  hash of rules
 
 #MAIN
 {
@@ -543,17 +563,22 @@ sub validateMatch($$$$)
     parseDie([], $lineNo, "validateMatch", $rulesFile, $line, "MATCHES does not contain KEY or VALUE");
   }
 
+  #  replace all [ with (?: (ignore [[)
   while($match =~ s/([^\[])\[/$1(\?\:/g) {}
   while($match =~ s/^\[/(\?\:/g) {}
 
+  #  replace all ] with )
   while($match =~ s/\]([^\]])/)$1/g) {}
   while($match =~ s/\]$/)/g) {}
 
+  #  convert spaces to their regex version
   while($match =~ s/\s+/\\s\+/g) {}
 
+  #  put in regex code to catch keys and values
   while($match =~ s/KEY/\(.+\)/g) {}
   while($match =~ s/VALUE/\(\[\+\-\]?\\d+\)/g) {}
 
+  #  test the regex to make sure there are no obvious errors
   eval "'' =~ /$match/";
 
   if(defined($@) && $@ ne '') {
@@ -627,7 +652,7 @@ sub inList($$;$)
 {
   my($list) = shift(@_);
   my($find) = shift(@_);
-  my($ic)   = shift(@_) or true;
+  my($ic)   = shift(@_) || true;  #  ignore case
 
   $ic and $find = lc($find);
 
@@ -928,328 +953,6 @@ sub findDefault($)
 
   die "$0: findDefault: could not locate the DEFAULT ruleset! This is serious!" . Newline;
 }
-
-
-__END__
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-sub parsePrereq($$;$)
-{
-  my($leftover)    = [];
-  my($featList)    = [];
-  my($abilityList) = [];
-  my($statList)    = [];
-  my($raceList)    = [];
-  my($CLList)      = [];   #  character level
-  my($SCList)      = [];   #  spell caster
-  my($pvGEList)    = [];
-  my($babList)     = [];
-  my($skillList)   = [];
-  my($visionList)  = [];
-  my($classList)   = [];   #  specific classes
-  my($alignList)   = [];
-  my($saveList)    = [];
-  my($list)        = [];
-
-
-
-
-
-    #  some kind of class feature that is not mount
-    elsif($part !~ /^mount/ && $part =~ /^(.+)\s+class\s+feature$/) {
-      push @$abilityList, $1;
-    }
-    
-    elsif($part =~ /^Darkvision\s+(\d+)\s+ft/i) {
-      my($range) = $1;
-      push @$visionList, "Darkvision=$range";
-    }
-    #  low-light
-    elsif($part =~ /^Low-Light/i) {
-      push @$visionList, "Low-Light=ANY";
-    }
-    #  class levels
-    elsif($part =~ /^(\d+)(?:th|rd|st)[\s-]+level\s(.+)$/i || $part =~ /^(.+)\s+level\s(\d+)(?:th|st|rd)$/i) {
-      my($level) = $1;
-      my($class) = $2;
-
-      if($class =~ /^\d+$/) {
-        my($temp) = $class;
-        $class = $level;
-        $level = $temp;
-      }
-
-      if(inList($classes, $class)) {
-        push @$classList, "$class=$level";
-      }
-      else {
-        die "$0: parsePrereq: $part\nUnknown class/leveled item '$class'" . Newline;
-      }
-    }
-    #  non-lawful
-    elsif($part =~ /^nonlawful$/i) {
-      push @$alignList, "!PREALIGN:LG,LN,LE";
-    }
-    #  specific spell focuses
-    elsif($part =~ /^Spell\sFocus\s*\(\s*([^\)]+)\s*\)$/) { 
-      my($type) = $1;
-      $type =~ s/([\w']+)/\u\L$1/g;
-      push @$featList, "Spell Focus($type)";
-    }
-    #  mounts
-    elsif($part =~ /^(mount\sclass\sfeature|divine\sbond\s\(mount\))$/i) {
-      push @$abilityList, "Special Mount";
-    }
-    #  we don't know what it is
-    else {
-      print Dumper($feat);
-      die "$0: parsePrereq: $part\nUnknown prereq type" . Newline;
-    }
-  }
-
-  #  now that we've sorted it all out, let's see what needs to be done
-  #  PRETEXT
-  if(scalar(@$leftover) > 0) {
-    my($pre)  = ( scalar(@$leftover) > 1 ? '[' : '' );
-    my($post) = ( scalar(@$leftover) > 1 ? ']' : '' );
-    push @$list, $pre . "PRETEXT=" . join($post . ',' . $pre . 'PRETEXT=', @$leftover) . $post;
-  }
-
-  #  PREFEAT
-  if(scalar(@$featList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$featList) );
-    push @$list, "PREFEAT=$count," . join(',', @$featList);
-  }
-
-  #  PREABILITY
-  if(scalar(@$abilityList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$abilityList) );
-    push @$list, "PREABILITY=$count,CATEGORY=Special Ability," . join(',', @$abilityList);
-  }
-
-  #  PRESTAT
-  if(scalar(@$statList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$statList) );
-    push @$list, "PRESTAT=$count," . join(',', @$statList);
-  }
-
-  #  PRERACE
-  if(scalar(@$raceList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$raceList) );
-    push @$list, "PRERACE=$count," . join(',', @$raceList);
-  }
-
-  #  PRELEVEL
-  if(scalar(@$CLList) > 0) {
-    foreach my $prelevel(@$CLList) {
-      push @$list, "PRELEVEL:MIN=$prelevel";
-    }
-  }
-
-  #  PRECLASS
-  if(scalar(@$SCList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$SCList) );
-    push @$list, "PRECLASS=$count,SPELLCASTER=" . join(',SPELLCASTER=', @$SCList);
-  }
-
-  #  PREVARGTEQ
-  if(scalar(@$pvGEList) > 0) {
-    foreach my $prevargteq(@$pvGEList) {
-      push @$list, "PREVARGTEQ:$prevargteq";
-    }
-  }
-
-  #  PREATT
-  if(scalar(@$babList) > 0) {
-    foreach my $bab(@$babList) {
-      $bab =~ s/^\+//g;
-      push @$list, "PREATT:$bab";
-    }
-  } 
-
-  #  PRESKILL
-  if(scalar(@$skillList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$skillList) );
-    push @$list, "PRESKILL=$count," . join(',', @$skillList);
-  }
-
-  #  PREVISION
-  if(scalar(@$visionList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$visionList) );
-    push @$list, "PREVISION=$count," . join(',', @$visionList);
-  }
-
-  #  PRECLASS
-  if(scalar(@$classList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$classList) );
-    push @$list, "PRECLASS=$count," . join(',', @$classList);
-  }
-
-  #  ALIGNMENT
-  if(scalar(@$alignList) > 0) {
-    foreach my $item(@$alignList) {
-      push @$list, $item;
-    }
-  } 
-
-  #  PRECHECKBASE
-  if(scalar(@$saveList) > 0) {
-    my($count) = ( $premult ? 1 : scalar(@$saveList) );
-    push @$list, "PRECHECKBASE=$count," . join(',', @$saveList);
-  }
-
-
-  if(scalar(@$list) > 0) {
-    if($premult) {
-      $output .= ( $prEmpty ? '' : '[' ) .  "PREMULT:1,[" . join("],[", @$list) . "]" . ( $prEmpty ? '' : ']' );
-    }
-    else {
-      $output .= join(OutDelim, @$list);
-    }
-  }
-
-  return 
-      $output;
-}
-
-
-
-#############################################################################
-# bool inList(list array ref, entry to locate)
-#
-# attempts to locate the given entry in the given list, case insensitive
-# return true/false
-sub inList($$)
-{
-  my($list) = shift(@_);
-  my($find) = lc(shift(@_));
-
-  if(ref($list) eq 'featsSet') {
-    $list->has($find) and return true;
-  }
-  elsif(ref($list) eq 'ARRAY') {
-    for(my $x = scalar(@$list) - 1; $x >= 0; $x--) {
-     lc($list->[$x]) eq $find and return true;
-    }
-  }
-  else {
-    die "$0: inList: first param should be an array ref, received " . ref($list) . Newline;
-  }
-
-  return false;
-}
-
-
-#############################################################################
-# loadLists(hash reference)
-#
-# scans the current directory for 'list_xxx.txt' files, and parses their
-# contents as arrays, one item per line - hash keys are xxx
-sub loadLists($)
-{
-  my($hash) = shift(@_);
-  my($dh);
-
-  #  make sure we get a hash reference - its out only hope
-  ref($hash) eq 'HASH' or die "$0: loadLists: expected hash reference, received " . ref($hash) . Newline;
-
-  #  open the current local path and find any list_xxx.txt files
-  opendir($dh, '.') or die "$0: loadLists: opendir failed: $!" . Newline;
-  {
-    while(my $entry = readdir($dh)) {
-      #  skip hidden files
-      $entry =~ /^\./ and next;
-      $entry =~ /^list_([^.]+).txt$/ and $hash->{$1} = 1; # placeholder
-    }
-  }
-  closedir($dh);
-
-  #  now load the contents for each file
-  foreach my $listName(keys(%$hash)) {
-    $hash->{$listName} = loadFile("./list_$listName.txt");
-  }
-}
-
-#############################################################################
-# loadReplaces(hash reference)
-#
-# scans the current directory for 'replace_xxx.txt' files, and parses their
-# contents as a groups of arrays, from/to as [0] and [1] - hash keys are xxx
-sub loadReplaces($)
-{
-  my($hash) = shift(@_);
-  my($dh);
-  my($tempList);
-  my($parts);
-  my($count);
-
-  #  make sure we get a hash reference - its out only hope
-  ref($hash) eq 'HASH' or die "$0: loadReplaces: expected hash reference, received " . ref($hash) . Newline;
-
-  #  open the current local path and find any list_xxx.txt files
-  opendir($dh, '.') or die "$0: loadReplaces: opendir failed: $!" . Newline;
-  {
-    while(my $entry = readdir($dh)) {
-      #  skip hidden files
-      $entry =~ /^\./ and next;
-      $entry =~ /^replace_([^.]+).txt$/ and $hash->{$1} = [];
-    }
-  }
-  closedir($dh);
-
-  $count = 0;
-  #  now load the contents for each file
-  foreach my $replaceName(keys(%$hash)) {
-    $tempList = loadFile("./replace_$replaceName.txt", false, true);
-    #  each line is a tab-delimited set of FROM and TO entries
-    foreach my $tempItem(@$tempList) {
-      $parts = [ split(/\t+/, $tempItem) ];
-      scalar(@$parts) != 2 and 
-          parseDie($tempItem, $count, "loadReplaces", $replaceName, "Expected 2 parts", "Received " . scalar(@$parts));
-      push @{$hash->{$replaceName}}, $parts;
-    }
-    $count++;
-  }
-
-  print Dumper($hash);
-  exit;
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
