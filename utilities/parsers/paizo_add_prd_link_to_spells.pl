@@ -35,10 +35,19 @@ for my $spell (@spells) {
 }
 
 
-my @sourcefiles = qw{data/d20ogl/paizo/pathfinder_rpg/core_rulebook/pfcr_spells.lst};
+my %sourcefiles = ( "core" => "data/d20ogl/paizo/pathfinder_rpg/core_rulebook/pfcr_spells.lst",
+       		    "apg"  => "data/alpha/paizo/pathfinder_rpg/advanced_players_guide/pfapg_spells.lst" );
 
 
-for my $sourcefile (@sourcefiles) {
+for my $source (keys %sourcefiles) {
+
+	my $sourcefile = $sourcefiles{$source};
+
+	if (not -e $sourcefile) {
+		warn "Cannot find '$sourcefile'. Maybe you should chdir to your pcgen root dir.\n";
+		next;
+	}
+
 	open(my $fh, "<", $sourcefile) or die "Could not open '$sourcefile': $!\n";
 	my @data = <$fh>;
 
@@ -75,7 +84,7 @@ for my $sourcefile (@sourcefiles) {
 				exit;
 			}
 			else {
-				printf("%-30.30s    %s\n", $name, $cleanurl);
+				printf("%-30.30s   %6.6s      %s\n", $name, "($source)", $cleanurl);
 			}
 		}
 		else {
