@@ -3726,24 +3726,24 @@ my %token_CHOOSE_tag = map { $_ => 1 } (
 	'ARMORPROF',			# Deprecated 5.15 - Remove 6.0
 	'ARMORPROFICIENCY',
 	'ARMORTYPE',
-	'CCSKILLLIST',		# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
+#	'CCSKILLLIST',		# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
 	'CSKILLS',
-	'COUNT',			# Deprecated 5.13.9 - Remove 5.16 Use SELECT instead.
+#	'COUNT',			# Deprecated 5.13.9 - Remove 5.16 Use SELECT instead.
 	'DOMAIN',
 	'EQBUILDER.SPELL',
 	'EQUIPMENT',
 	'EQUIPTYPE',
 	'FEAT',
-	'FEATADD',				# Deprecated 5.15 - Remove 6.0
-	'FEATLIST',				# Deprecated 5.15 - Remove 6.0
-	'FEATSELECT',			# Deprecated 5.15 - Remove 6.0
-	'HP',
+	'FEATADD',				# Deprecated 5.15 - Remove 6.00
+	'FEATLIST',				# Deprecated 5.15 - Remove 6.00
+	'FEATSELECT',			# Deprecated 5.15 - Remove 6.00
+	'HP',					# Deprecated 6.00 - Remove 6.02
 	'NOCHOICE',
 	'NUMBER',
 	'NUMCHOICES',
 	'PROFICIENCY',
 	'RACE',
-	'SALIST',
+	'SALIST',			# Deprecated 6.00 - Remove 6.02
 	'SCHOOLS',
 	'SHIELDPROF',
 	'SKILL',
