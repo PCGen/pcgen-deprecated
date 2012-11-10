@@ -1,12 +1,11 @@
-# What's new for v6.00.0 RC1
+# What's new for v6.00.0
 
-PCGen v6.00.0 RC1 is the first release candidate for PCGen 6.0. It represents a product we believe is 
-ready for production use and which we would like your assistance in testing out. In particular the 
-PCGen team would appreciate your feedback on importing your characters and data from earlier versions 
-of PCGen. The highlights of the changes for PCGen 6.0 are listed below:
+Welcome to PCGen v6.00.0, the latest stable release of PCGen. In this release 
+we have introduced a new user interface and made substantial changes under the 
+hood including hundreds of new features. 
+The highlights of the changes for PCGen 6.0 are listed below: 
   
 ## Major Changes
-
 
 * New user interface
 	* A faster, more responsive GUI, particularly when using multiple characters.
@@ -27,7 +26,7 @@ of PCGen. The highlights of the changes for PCGen 6.0 are listed below:
 
 ## New Sources
 
-The following new source was added in 6.00.0
+The following new sources were added in 6.00.0
 
 * [Distant Horizons Games] Eclipse: The Codex Persona - The Ultimate D20 Point Buy
 * [DragonWing Games] BP - Arms and Armor 3e
@@ -59,17 +58,16 @@ The following new source was added in 6.00.0
 
 
 For full details of the new changes in this release, see the 
-[Release Notes](https://sourceforge.net/projects/pcgen/files/PCGen%20Unstable/6.00.0%20RC1/pcgen-release-notes-6000RC1.html/download) in the list above.
+[Release Notes](https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/6.00.0/pcgen-release-notes-6000.html/download) in the list above.
 
-*James Dempsey* for the PCGEN Team -- 30 October, 2012.
+*James Dempsey* for the PCGEN Team -- 10 November, 2012.
 
 
+SHA1 digest for pcgen-6.00.0-sources.jar:
+1a5d629a0b043811ef2cda618992ca215b4d8bcf 
 
-SHA1 digest for pcgen-6.00.0RC1-sources.jar:
-5f06b20ba761467b925f34f4a9e18a311191ca40 
+SHA1 digest for pcgen6000_full.zip:
+e28f9b5e51414a6de3f42b635f5f971dd10c406d 
 
-SHA1 digest for pcgen6000RC1_full.zip:
-451b70dd5382c4284f0aa6a22c3b681d3dec56cc 
-
-SHA1 digest for pcgen6000RC1_win_install.exe:
-cb564502f1ae702a93f69867d4c37f50459a932c 
+SHA1 digest for pcgen6000_win_install.exe:
+3da25a2430ca3bfada16b85b8c23d8b357c459fb 
