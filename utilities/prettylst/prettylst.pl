@@ -2802,7 +2802,7 @@ my %master_order = (
 		'TEMPLATE',
 		'WEAPONPROF',
 		'#EXTRAFILE',		# Fix #EXTRAFILE so it recognizes #EXTRAFILE references (so OGL is a known referenced file again.)
-		
+
 		#These tags are normal file global tags....
 		@double_PCC_tags,		#Global tags that are double - $tag does not end with ':'
 	],
@@ -3726,9 +3726,9 @@ my %token_CHOOSE_tag = map { $_ => 1 } (
 	'ARMORPROF',			# Deprecated 5.15 - Remove 6.0
 	'ARMORPROFICIENCY',
 	'ARMORTYPE',
-#	'CCSKILLLIST',		# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
+	'CCSKILLLIST',		# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
 	'CSKILLS',
-#	'COUNT',			# Deprecated 5.13.9 - Remove 5.16 Use SELECT instead.
+	'COUNT',			# Deprecated 5.13.9 - Remove 5.16 Use SELECT instead.
 	'DOMAIN',
 	'EQBUILDER.SPELL',
 	'EQUIPMENT',
@@ -5035,10 +5035,21 @@ FILE_TO_PARSE:
 for my $file (@files_to_parse_sorted) {
 	my $numberofcf = 0;	# Number of extra CF found in the file.
 
+	my $filetype = "tab-based";   # can be either 'tab-based' or 'multi-line'
+
 	if ( $file eq "STDIN" ) {
 
 		# We read from STDIN
-		@lines = <>;
+		# henkslaaf - Multiline parsing
+		#       1) read all to a buffer (files are not so huge that it is a memory hog)
+		#       2) send the buffer to a method that splits based on the type of file
+		#       3) let the method return split and normalized entries
+		#       4) let the method return a variable that says what kind of file it is (multi-line, tab-based)
+		local $/ = undef; # read all from buffer
+		my $buffer = <>;
+
+		(my $lines, $filetype) = normalize_file($buffer);
+		@lines = @$lines;
 	}
 	else {
 
@@ -5047,10 +5058,21 @@ for my $file (@files_to_parse_sorted) {
 
 		# We try to read the file and continue to the next one even if we
 		# encounter problems
+		#
+		# henkslaaf - Multiline parsing
+		#       1) read all to a buffer (files are not so huge that it is a memory hog)
+		#       2) send the buffer to a method that splits based on the type of file
+		#       3) let the method return split and normalized entries
+		#       4) let the method return a variable that says what kind of file it is (multi-line, tab-based)
+
 		eval {
-		open my $lst_fh, '<', $file;
-		@lines = <$lst_fh>;
-		close $lst_fh;
+			local $/ = undef; # read all from buffer
+			open my $lst_fh, '<', $file;
+			my $buffer = <$lst_fh>;
+			close $lst_fh;
+
+			(my $lines, $filetype) = normalize_file($buffer);
+			@lines = @$lines;
 		};
 
 		if ( $EVAL_ERROR ) {
@@ -5110,7 +5132,13 @@ for my $file (@files_to_parse_sorted) {
 		$line =~ s/\s+$//;
 		}
 
+		# henkslaaf - we need to handle this in multi-line object files
+		#       take the multi-line variable and use it to determine
+		#	if we should skip writing this file
+
 		# Some file types are never written
+		warn "SKIP rewrite for $file because it is a multi-line file" if $filetype eq 'multi-line';
+		next FILE_TO_PARSE if $filetype eq 'multi-line';		# we still need to implement rewriting for multi-line
 		next FILE_TO_PARSE if !$writefiletype{ $files_to_parse{$file} };
 
 		# We compare the result with the orginal file.
@@ -5536,6 +5564,55 @@ if ($cl_options{output_error}) {
 ####												####
 ###############################################################################
 ###############################################################################
+
+###
+# henkslaaf
+# Detect filetype and normalize lines
+#
+# Parameters: $buffer => raw file data in a single buffer
+#
+# Returns: $filetype => either 'tab-based' or 'multi-line'
+#          $lines => arrayref containing logical lines normalized to tab-based format
+###
+
+sub normalize_file($) {
+	# TODO: handle empty buffers, other corner-cases
+	my $buffer = shift || "";    # default to empty line when passed undef
+	my $filetype;
+	my @lines;
+
+	# first, we clean out empty lines that contain only white-space. Otherwise, we could have
+	# false positives on the filetype
+	$buffer =~ s/^\s*$//g;    # simply remove all whitespace that is alone on its line
+
+	# detect file-type multi-line
+
+	if ($buffer =~ /^\t+\S/m) {   # having a tab as a first character on a non-whitespace line is a sign of a multi-line file
+		# This is a multi-line file
+
+		$filetype = "multi-line";
+
+		# Normalize to tab-based
+		# 1) All lines that start with a tab belong to the previous line.
+		# 2) Copy the lines as-is to the end of the previous line
+		#
+		# We use a regexp that just removes the newlines, which is easier than copying
+
+		$buffer =~ s/\n\t/\t/mg;
+
+		@lines = split /\n/, $buffer;
+	}
+	else {
+		$filetype = "tab-based";
+	}
+
+	# The buffer iw not normalized. Split on newline
+	@lines = split /\n/, $buffer;
+
+	# return a arrayref so we are a little more efficient
+	return (\@lines, $filetype);
+}
+
 
 ###############################################################
 # FILETYPE_parse
@@ -7209,7 +7286,7 @@ BEGIN {
 			);
 		}
 		elsif (index( $tag_name, 'PROFICIENCY' ) == 0 ) {
-			
+
 		}
 		elsif ( index( $tag_name, 'BONUS' ) == 0 ) {
 
@@ -12144,7 +12221,7 @@ BEGIN {
 		$logging->ewarn( WARNING, qq{Removed deprecated HASSPELLFORMULA tags}, $file_for_error, $line_for_error );
 		delete $line_ref->{'HASSPELLFORMULA'};
 		}
-		 
+
 
 		##################################################################
 		# Every RACE that has a Climb or a Swim MOVE must have a
@@ -16392,4 +16469,3 @@ Add special case for the ADD:adlib tags
 =head2 v1.00 -- 2002.01.27
 
 First working version. Only the EQUIPMENT file are supported.
-
