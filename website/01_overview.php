@@ -16,7 +16,7 @@ require_once('include/header.php.inc');
 
         <h1>Mission Statement</h1>
 
-        <p>To be the worlds most flexible d20 character generation and maintenance software.</p>
+        <p>To be the world's most flexible d20 character generation and maintenance software.</p>
 
         <h1>Major Links</h1>
         <ul>
