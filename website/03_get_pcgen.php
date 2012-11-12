@@ -118,23 +118,23 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
 
         <h2>Option 1. Download Latest Stable Release of PCGen<a class="" title="stable" name="stable"></a></h2>
         <p>Click on the link suited to your computer below. You can also look at
-        the <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=129606" style="font-size: 80%;">Full Package</a>
-        for further files such as PDF documentation and alpha dataasets.
+        the <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/6.00.0/" style="font-size: 80%;">Full Package</a>
+        for further files such as release notes, sources and SHA values for file integrity checking.
         </p>
-        <p>This is the most recent stable or production PCGen Release. If you are
-        using PCGen data sets from Code Monkey Publishing, you should be using a
-        production release of PCGen.
-        <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=129606" style="font-size: 80%;">[View Older Production Releases]</a>
+        <p>This is the most recent stable or production PCGen Release. 
+        <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/" style="font-size: 80%;">[View Older Production Releases]</a>
         </p>
 
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5164_win_install.exe">Download PCGen 5.16.4 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5164_mac_build.dmg">Download PCGen 5.16.4 for Mac<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen5164_full.zip">Download PCGen 5.16.4 for Other Systems<small>&nbsp;</small></a></div><br/>
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6000_win_install.exe">Download PCGen 6.00.0 for Windows<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6000_mac_install.dmg">Download PCGen 6.00.0 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6000_full.zip">Download PCGen 6.00.0 for Other Systems<small>&nbsp;</small></a></div><br/>
 
         <h3>Download Stable Data Sets<a class="" title="data" name="data"></a></h3>
         <p>These are stable data sets that are developed in between stable releases of PCGen but can be installed and used with a stable version of PCGen.
         </p>
+        <!--
         <div class="downloadbar"><a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/5.16.4%20OOC%20Data%20Sets/5164_piazo_pathfinder_alpha_update_07.pcz/download">Download Pathfinder RPG APG dataset Update 7 for PCGen 5.16.4</a></div><br />
+        -->
         <p>
         <a href="http://sourceforge.net/projects/pcgen/files/PCGen%20Stable%20Datasets/" style="font-size: 80%;">[View Stable Data Sets]</a>
         </p>
@@ -148,7 +148,7 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
 writePcgenFileItems("http://sourceforge.net/api/file/index/project-id/25576/mtime/desc/rss?path=/PCGen%20Unstable", false, 5);
 ?>
 		<p>
-        <a href="http://sourceforge.net/project/showfiles.php?group_id=25576&package_id=21689" style="font-size: 80%;">[View Older Alpha and Beta Releases]</a>
+        <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Unstable/" style="font-size: 80%;">[View Older Alpha and Beta Releases]</a>
         </p>
 
         <h2>Option 3. Nightly Builds<a class="" title="autobuild" name="autobuild"></a></h2>
