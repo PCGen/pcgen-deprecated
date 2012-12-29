@@ -16,10 +16,10 @@ jep/djep-2.24.jar -- Used by Gmgen. Adds dice functionality to JEP. TODO Should 
 jep/jep-2.3.1.jar -- "Java Expression Parser" http://www.singularsys.com/jep/ (GPL project, but we have a license exception. See the jep/jep.LICENSE.EXCEPTIONS.txt file.)
 jep/RngPack-1.1a.jar -- RngPack http://www.honeylocust.com/RngPack/ used by JEP/PJEP
 
-lnf/skinlf.jar -- Skinnable look and feel 6.2, skinnable java look and feel. Pcgen has explicit code support for it. http://skinlf.l2fprod.com/
-lnf/themes/*themepack.zip -- Themepacks used by skinlf.jar
-lnf/kunststoff.jar -- Kunststoff Look and Feel 2.0.2, optional java look and feel. Pcgen has explicit code support for it.
-lnf/wraplf.jar -- Used to support anti-aliasing on jdk < 5.0, seems to not support mac? http://wraplf.l2fprod.com/
+skinlf.jar -- Skinnable look and feel 6.2, skinnable java look and feel. Pcgen has explicit code support for it. http://skinlf.l2fprod.com/
+../lnf/themes/*themepack.zip -- Themepacks used by skinlf.jar
+kunststoff.jar -- Kunststoff Look and Feel 2.0.2, optional java look and feel. Pcgen has explicit code support for it.
+wraplf.jar -- Used to support anti-aliasing on jdk < 5.0, seems to not support mac? http://wraplf.l2fprod.com/
 
 test/clover.jar -- Code coverage tool, not open source, we have a license. There is an ant task that runs it. http://www.cenqua.com/clover/
 test/junit-4.1.jar -- Java Unit test 4.1, used by test classes. http://junit.org/
