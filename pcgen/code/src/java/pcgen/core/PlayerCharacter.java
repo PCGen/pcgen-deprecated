@@ -377,9 +377,6 @@ public class PlayerCharacter extends Observable implements Cloneable, VariableCo
 
 	private boolean processLevelAbilities = true;
 
-	// store most recent value of bonus to skill points
-	private int modSkillPointsBuffer = (int) getStatBonusTo("MODSKILLPOINTS", "NUMBER");
-
 	/**
 	 * This map stores any user bonuses (entered through the GUI) to the
 	 * corresponding ability pool.
@@ -417,16 +414,18 @@ public class PlayerCharacter extends Observable implements Cloneable, VariableCo
 		{
 			ageSetKitSelections[i] = false;
 		}
+		//Do BilSet first, since required by Race
+		bioSetFacet.set(id, Globals.getBioSet());
+		//Set Race before Stat/Check due to Default object in Pathfinder/RSRD
+		setRace(Globals.s_EMPTYRACE);
 
 		statFacet.addAll(id, Globals.getContext().ref.getOrderSortedCDOMObjects(PCStat.class));
 		checkFacet.addAll(id, Globals.getContext().ref.getOrderSortedCDOMObjects(PCCheck.class));
-		bioSetFacet.set(id, Globals.getBioSet());
 		campaignFacet.addAll(id, loadedCampaigns);
 
 		setXPTable(SettingsHandler.getGame().getDefaultXPTableName());
 		setCharacterType(SettingsHandler.getGame().getDefaultCharacterType());
 
-		setRace(Globals.s_EMPTYRACE);
 		setName(Constants.EMPTY_STRING);
 		setFeats(0);
 		rollStats(SettingsHandler.getGame().getRollMethod());
@@ -11820,20 +11819,20 @@ public class PlayerCharacter extends Observable implements Cloneable, VariableCo
 
 	public void checkSkillModChange()
 	{
-		int modSkillPointsCurrent = (int) getStatBonusTo("MODSKILLPOINTS", "NUMBER");
-		if (modSkillPointsBuffer != modSkillPointsCurrent)
+		for (PCClass pcClass : getClassSet())
 		{
-			modSkillPointsBuffer = modSkillPointsCurrent;
-
-			for (PCClass pcClass : getClassSet())
+			for (PCLevelInfo pi : getLevelInfo())
 			{
-				for (PCLevelInfo pi : getLevelInfo())
+				PCClassLevel classLevel =
+						getActiveClassLevel(pcClass, pi.getClassLevel());
+				final int newSkillPointsGained =
+						pcClass.getSkillPointsForLevel(this, classLevel,
+							getTotalLevels());
+				if (pi.getClassKeyName().equals(pcClass.getKeyName()))
 				{
-					PCClassLevel classLevel = getActiveClassLevel(pcClass, pi.getClassLevel());
-					final int newSkillPointsGained = pcClass.getSkillPointsForLevel(this, classLevel, getTotalLevels());
-					if (pi.getClassKeyName().equals(pcClass.getKeyName()))
+					final int formerGained = pi.getSkillPointsGained(this);
+					if (newSkillPointsGained != formerGained)
 					{
-						final int formerGained = pi.getSkillPointsGained(this);
 						pi.setSkillPointsGained(this, newSkillPointsGained);
 						pi.setSkillPointsRemaining(pi.getSkillPointsRemaining() + newSkillPointsGained - formerGained);
 						setAssoc(pcClass, AssociationKey.SKILL_POOL, pcClass.getSkillPool(this) + newSkillPointsGained
