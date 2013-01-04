@@ -2390,7 +2390,9 @@ final class PCGVer2Creator implements IOConstants
 				}
 			}
 
-			buffer.append(']').append(LINE_SEP);
+			buffer.append(']');
+			appendAddTokenInfo(buffer, template);
+			buffer.append(LINE_SEP);
 		}
 	}
 
