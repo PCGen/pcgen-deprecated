@@ -179,10 +179,10 @@ public class MovementResultFacet extends AbstractStorageFacet implements
 		 */
 		public void adjustMoveRates()
 		{
-			movements = null;
-			movementTypes = null;
-			movementMult = null;
-			movementMultOp = null;
+			movementMult = Globals.EMPTY_DOUBLE_ARRAY;
+			movementMultOp = Globals.EMPTY_STRING_ARRAY;
+			movementTypes = Globals.EMPTY_STRING_ARRAY;
+			movements = Globals.EMPTY_DOUBLE_ARRAY;
 
 			Race race = raceFacet.get(id);
 			if (race == null)
