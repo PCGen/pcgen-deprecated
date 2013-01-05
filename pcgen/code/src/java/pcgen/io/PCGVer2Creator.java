@@ -1158,6 +1158,7 @@ final class PCGVer2Creator implements IOConstants
 			//			buffer.append('|');
 			//			buffer.append(TAG_DOMAINSPELLS).append(':');
 			//			buffer.append(aDomain.getSpellList());
+			appendAddTokenInfo(buffer, domain);
 			buffer.append(LINE_SEP);
 
 			/*

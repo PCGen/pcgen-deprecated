@@ -2445,6 +2445,14 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 						chooseDriverFacet
 							.addAssociation(id, aDomain, fullassoc);
 					}
+					else if (!tag.equals(TAG_ADDTOKEN))
+					{
+						final String msg =
+								LanguageBundle.getFormattedString(
+									"Warnings.PCGenParser.UnknownDomainInfo", //$NON-NLS-1$
+									tag + ":" + element.getText());
+						warnings.add(msg);
+					}
 				}
 				if (source == null)
 				{
@@ -2455,6 +2463,28 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 				{
 					thePC.addDomain(aDomain, source);
 					DomainApplication.applyDomain(thePC, aDomain);
+                    try
+                    {
+                            //Must process ADD after DOMAIN is added to the PC
+                            for (PCGElement e : new PCGTokenizer(line).getElements())
+                            {
+                                    tag = e.getName();
+                                    if (tag.equals(TAG_ADDTOKEN))
+                                    {
+                                            parseAddTokenInfo(e, aDomain);
+                                    }
+                            }
+                    }
+                    catch (PCGParseException pcgpex)
+                    {
+                            final String msg =
+                                            LanguageBundle.getFormattedString(
+                                                    "Warnings.PCGenParser.IllegalDomain", //$NON-NLS-1$
+                                                    line, pcgpex.getMessage());
+                            warnings.add(msg);
+
+                            return;
+                    }
 				}
 			}
 			else
