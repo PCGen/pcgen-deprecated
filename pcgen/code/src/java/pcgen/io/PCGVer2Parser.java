@@ -2445,6 +2445,10 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 						chooseDriverFacet
 							.addAssociation(id, aDomain, fullassoc);
 					}
+					else if (tag.equals(TAG_DOMAINGRANTS))
+					{
+						//Safely ignore
+					}
 					else if (!tag.equals(TAG_ADDTOKEN))
 					{
 						final String msg =
