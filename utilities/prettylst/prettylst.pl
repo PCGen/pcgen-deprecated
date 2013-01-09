@@ -1699,7 +1699,7 @@ my @PRE_Tags = (
 
 # Hash used by validate_pre_tag to verify if a PRExxx tag exists
 my %PRE_Tags = (
-	'PREAPPLY'		=> 1,	# Only valid when embeded
+	'PREAPPLY'		=> 1,	# Only valid when embeded - THIS IS DEPRECATED
 # Uncommenting until conversion for monster kits is done to prevent error messages.
 	'PREDEFAULTMONSTER' => 1,	# Only valid when embeded
 );
@@ -1955,6 +1955,7 @@ my %master_order = (
 		'SPELLLEVEL:CLASS:*',
 		'SPELLLEVEL:DOMAIN:*',
 		'UNENCUMBEREDMOVE',
+		'TEMPBONUS'
 	],
 
 	'ABILITYCATEGORY' => [
@@ -2097,6 +2098,7 @@ my %master_order = (
 		'SPELLLEVEL:CLASS',
 		'SPELLLEVEL:DOMAIN',
 		'UNENCUMBEREDMOVE',
+		'TEMPBONUS'
 	],
 
 	'CLASS Level' => [
@@ -2548,6 +2550,7 @@ my %master_order = (
 		'SPELLLEVEL:CLASS:*',
 		'SPELLLEVEL:DOMAIN:*',
 		'UNENCUMBEREDMOVE',
+		'TEMPBONUS',
 	],
 
 	'KIT ALIGN' => [
@@ -2955,6 +2958,7 @@ my %master_order = (
 		'SAB:*',
 		'DESC',
 		'TEMPDESC',
+		'TEMPBONUS',
 	],
 
 	'SOURCE' => [
@@ -2974,7 +2978,7 @@ my %master_order = (
 		'DOMAINS',
 		'STAT:*',
 		'PPCOST',
-#		'SPELLPOINTCOST';			# Delay implementing this until SPELLPOINTCOST is documented
+		'SPELLPOINTCOST',			# Delay implementing this until SPELLPOINTCOST is documented
 		'SCHOOL:.CLEAR',
 		'SCHOOL:*',
 		'SUBSCHOOL',
@@ -3034,6 +3038,7 @@ my %master_order = (
 		'SELECT',
 		@SOURCE_Tags,
 		'TEMPDESC',
+		'TEMPBONUS',
 	],
 
 	'SUBCLASS' => [
@@ -3405,6 +3410,7 @@ my %master_order = (
 		'DESC:.CLEAR',
 		'DESC:*',
 		'TEMPDESC',
+		'TEMPBONUS',
 	],
 
 	'WEAPONPROF' => [
@@ -3945,6 +3951,7 @@ my %tagheader = (
 		'BONUS:WEAPON'		=> 'Weapon prop. bonus',
 		'BONUS:WEAPONPROF'	=> 'Weapon prof. bonus',
 		'BONUS:WIELDCATEGORY'	=> 'Wield Category bonus',
+		'TEMPBONUS'				=> 'Temporary Bonus',
 		'CAST'			=> 'Cast',
 		'CASTAS'			=> 'Cast As',
 		'CASTTIME:.CLEAR'		=> 'Clear Casting Time',
