@@ -35,6 +35,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.core.prereq.AbstractPrerequisiteTest;
 import pcgen.core.prereq.Prerequisite;
 import pcgen.core.prereq.PrerequisiteException;
+import pcgen.core.prereq.PrerequisiteOperator;
 import pcgen.core.prereq.PrerequisiteTest;
 import pcgen.persistence.PersistenceManager;
 import pcgen.util.Logging;
@@ -178,6 +179,12 @@ public class PreCampaignTester extends AbstractPrerequisiteTest implements Prere
 	@Override
 	public String toHtmlString(final Prerequisite prereq)
 	{
+		// Simplify the output when requiring a single source
+		if (prereq.getOperator() == PrerequisiteOperator.GTEQ && ("1".equals(prereq.getOperand())))
+		{
+			return prereq.getKey();
+		}
+
 		final String foo = LanguageBundle.getFormattedString(
 				"PreCampaign.toHtml", //$NON-NLS-1$
 				new Object[] { prereq.getOperator().toDisplayString(),
