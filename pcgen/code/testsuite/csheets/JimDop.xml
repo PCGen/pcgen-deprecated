@@ -129,8 +129,8 @@ BIO
 		<type>Dragon</type>
 		<vision>
 			<vision>Darkvision (60 ft.)</vision>
-			<vision>Low-light</vision>
-			<all>Darkvision (60 ft.), Low-light</all>
+			<vision>Low-Light</vision>
+			<all>Darkvision (60 ft.), Low-Light</all>
 		</vision>
 		<wealth>0</wealth>
 		<weight>
@@ -535,7 +535,7 @@ BIO
 			</misc_mod>
 			<ability>CHA</ability>
 			<synergy>Disguise (Act in character)</synergy>
-			<untrained>NO</untrained>
+			<untrained>Y</untrained>
 			<exclusive>N</exclusive>
 			<trained_total>12</trained_total>
 			<exclusive_total>12</exclusive_total>
@@ -1491,7 +1491,7 @@ BIO
 	<!-- Visible Automatic "Special Ability" Ability Objects -->
 		<ability_object>
 			<name>Change Shape</name>
-			<description>You can assume the appearance of a specific creature or type of creature, but retain most of your own physical qualities.</description>
+			<description>A doppelganger can assume the shape of any Small or Medium humanoid. In humanoid form, the doppelganger loses its natural attacks. A doppelganger can remain in its humanoid form until it chooses to assume a new one. A change in form cannot be dispelled, but a doppelganger reverts to its natural form when killed. A true seeing spell or ability reveals its natural form.</description>
 			<type>SPECIALQUALITY.SUPERNATURAL</type>
 			<associated></associated>
 			<count>0</count>
@@ -1501,9 +1501,20 @@ BIO
 			<category>Special Ability</category>
 		</ability_object>
 		<ability_object>
+			<name>Darkvision</name>
+			<description>Range 60; Darkvision is the extraordinary ability to see with no light source at all, out to a range specified for the creature. Darkvision is black and white only (colors cannot be discerned). It does not allow characters to see anything that they could not see otherwise-invisible objects are still invisible, and illusions are still visible as what they seem to be. Likewise, darkvision subjects a creature to gaze attacks normally. The presence of light does not spoil darkvision.</description>
+			<type>SPECIALQUALITY.EXTRAORDINARY.VISION</type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Special Ability</category>
+		</ability_object>
+		<ability_object>
 			<name>Detect Thoughts</name>
-			<description></description>
-			<type>SPECIALQUALITY.SUPERNATURAL.SENSE</type>
+			<description>A doppelganger can continuously use detect thoughts as the spell (caster level 18th; Will DC 13 negates). It can suppress or resume this ability as a free action. The save DC is Charisma-based.</description>
+			<type>SPECIALQUALITY.SUPERNATURAL</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1578,8 +1589,19 @@ BIO
 			<category>Special Ability</category>
 		</ability_object>
 		<ability_object>
-			<name>Low-light Vision</name>
-			<description>You can see 2x as far as humans in low illumination.</description>
+			<name>Low-Light</name>
+			<description></description>
+			<type></type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Special Ability</category>
+		</ability_object>
+		<ability_object>
+			<name>Low-Light Vision</name>
+			<description>You can see 2x as far as humans in low illumination. Characters with low-light vision have eyes that are so sensitive to light that they can see twice as far as normal in dim light. Low-light vision is color vision. A spellcaster with low-light vision can read a scroll as long as even the tiniest candle flame is next to her as a source of light. Characters with low-light vision can see outdoors on a moonlit night as well as they can during the day.</description>
 			<type>SPECIALQUALITY.EXTRAORDINARY.VISION</type>
 			<associated></associated>
 			<count>0</count>
@@ -1610,11 +1632,33 @@ BIO
 			<virtual>F</virtual>
 			<category>Special Ability</category>
 		</ability_object>
+		<ability_object>
+			<name>Skills</name>
+			<description>A doppelganger has a +4 racial bonus on Bluff and Disguise checks. *When using its change shape ability, a doppelganger gets an additional +10 circumstance bonus on Disguise checks. If it can read an opponent&#39;s mind, it gets a further +4 circumstance bonus on Bluff and Disguise checks.</description>
+			<type>SPECIALQUALITY</type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Special Ability</category>
+		</ability_object>
+		<ability_object>
+			<name>Weapon and Armor Proficiency</name>
+			<description>A fighter is proficient with all simple and martial weapons and with all armor (heavy, medium, and light) and shields (including tower shields).</description>
+			<type>CLASSABILITY.SPECIALQUALITY</type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Special Ability</category>
+		</ability_object>
 	<!-- Hidden Automatic "Special Ability" Ability Objects -->
 		<ability_object>
 			<name>All Automatic Proficiencies</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1625,7 +1669,18 @@ BIO
 		<ability_object>
 			<name>All Martial Weapon Proficiencies</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>T</hidden>
+			<virtual>F</virtual>
+			<category>Special Ability</category>
+		</ability_object>
+		<ability_object>
+			<name>Fighter Bonus Feat</name>
+			<description></description>
+			<type>INTERNAL.CLASSABILITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1636,7 +1691,7 @@ BIO
 		<ability_object>
 			<name>Fighter Level Advanced Feat Tracker</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1647,7 +1702,7 @@ BIO
 		<ability_object>
 			<name>Greater Weapon Focus Qualify</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1658,7 +1713,18 @@ BIO
 		<ability_object>
 			<name>Greater Weapon Specialization Qualify</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>T</hidden>
+			<virtual>F</virtual>
+			<category>Special Ability</category>
+		</ability_object>
+		<ability_object>
+			<name>Low light Vision</name>
+			<description></description>
+			<type></type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1669,7 +1735,7 @@ BIO
 		<ability_object>
 			<name>Monstrous Humanoid Proficiencies</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1680,7 +1746,7 @@ BIO
 		<ability_object>
 			<name>Weapon Specialization Qualify</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1722,6 +1788,17 @@ BIO
 			<virtual>F</virtual>
 			<category>Internal</category>
 		</ability_object>
+		<ability_object>
+			<name>Select Racial Traits</name>
+			<description></description>
+			<type></type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Internal</category>
+		</ability_object>
 	<!-- Hidden Automatic "Internal" Ability Objects -->
 		<ability_object>
 			<name>Master Traits</name>
@@ -1742,7 +1819,7 @@ BIO
 	  ====================================
 	  ====================================-->
 	<!-- Domains -->
-	<weapon_proficiencies>Axe (Throwing), Battleaxe, Bite, Boulder, Claw, Club, Crossbow (Heavy), Crossbow (Light), Dagger, Dagger (Punching), Dart, Falchion, Flail, Flail (Heavy), Gauntlet, Gauntlet (Spiked), Glaive, Grapple, Greataxe, Greatclub, Greatsword, Guisarme, Halberd, Hammer (Light), Handaxe, Javelin, Kukri, Lance, Longbow, Longspear, Longsword, Mace (Heavy), Mace (Light), Morningstar, Pick (Heavy), Pick (Light), Quarterstaff, Ranseur, Rapier, Sap, Scimitar, Scythe, Shieldbash (Heavy), Shieldbash (Light), Shortbow, Shortspear, Sickle, Slam, Sling, Spear, Spells(Ray), Spiked Armor, Sword (Bastard), Sword (Short), Trident, Unarmed Strike, Waraxe (Dwarven), Warhammer</weapon_proficiencies>
+	<weapon_proficiencies>Axe (Throwing), Battleaxe, Bite, Boulder, Claw, Club, Crossbow (Heavy), Crossbow (Light), Dagger, Dagger (Punching), Dart, Falchion, Flail, Flail (Heavy), Gauntlet, Gauntlet (Spiked), Glaive, Grapple, Greataxe, Greatclub, Greatsword, Guisarme, Halberd, Hammer (Light), Handaxe, Javelin, Kukri, Lance, Longbow, Longspear, Longsword, Mace (Heavy), Mace (Light), Morningstar, Pick (Heavy), Pick (Light), Quarterstaff, Ranseur, Rapier, Sap, Scimitar, Scythe, Shieldbash (Heavy), Shieldbash (Light), Shortbow, Shortspear, Sickle, Slam, Sling, Spear, Spells (Ray), Spiked Armor, Sword (Bastard), Sword (Short), Trident, Unarmed Strike, Waraxe (Dwarven), Warhammer</weapon_proficiencies>
 	<languages>Common</languages>
 
 	<templates>

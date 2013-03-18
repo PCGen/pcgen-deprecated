@@ -473,17 +473,17 @@ BIO
 		</skill>
 		<skill>
 			<name>Disguise (Act in character)</name>
-			<ranks>1.0</ranks>
-			<mod>1<!-- Mods from abilities, equipment, etc -->
+			<ranks>0.0</ranks>
+			<mod>2<!-- Mods from abilities, equipment, etc -->
 			</mod>
 			<skill_mod>2</skill_mod>
 			<ability_mod>0<!-- Mod from the key ability -->
 			</ability_mod>
-			<misc_mod>1<!-- This is a calc value of TOTAL-RANK-ABMOD -->
+			<misc_mod>2<!-- This is a calc value of TOTAL-RANK-ABMOD -->
 			</misc_mod>
 			<ability>CHA</ability>
 			<synergy>Disguise (Act in character)</synergy>
-			<untrained>NO</untrained>
+			<untrained>Y</untrained>
 			<exclusive>N</exclusive>
 			<trained_total>2</trained_total>
 			<exclusive_total>2</exclusive_total>
@@ -1386,6 +1386,17 @@ BIO
 			<category>Special Ability</category>
 		</ability_object>
 		<ability_object>
+			<name>Darkvision</name>
+			<description>Range 60; Darkvision is the extraordinary ability to see with no light source at all, out to a range specified for the creature. Darkvision is black and white only (colors cannot be discerned). It does not allow characters to see anything that they could not see otherwise-invisible objects are still invisible, and illusions are still visible as what they seem to be. Likewise, darkvision subjects a creature to gaze attacks normally. The presence of light does not spoil darkvision.</description>
+			<type>SPECIALQUALITY.EXTRAORDINARY.VISION</type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Special Ability</category>
+		</ability_object>
+		<ability_object>
 			<name>Naturally Psionic</name>
 			<description>+2 BonusPP</description>
 			<type>SPECIALQUALITY</type>
@@ -1399,7 +1410,7 @@ BIO
 		<ability_object>
 			<name>Psionic</name>
 			<description>Total Power Points 37; Base Power Points 25; Bonus Power Points 12</description>
-			<type>SPECIALQUALITY</type>
+			<type>CLASSABILITY.SPECIALQUALITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1444,7 +1455,7 @@ BIO
 		<ability_object>
 			<name>All Automatic Proficiencies</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>INTERNAL.CLASSABILITY</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1455,7 +1466,7 @@ BIO
 		<ability_object>
 			<name>Psion Weapon Proficiencies</name>
 			<description></description>
-			<type>INTERNAL</type>
+			<type>CLASSABILITY.INTERNAL</type>
 			<associated></associated>
 			<count>0</count>
 			<auto>T</auto>
@@ -1497,6 +1508,17 @@ BIO
 			<virtual>F</virtual>
 			<category>Internal</category>
 		</ability_object>
+		<ability_object>
+			<name>Select Racial Traits</name>
+			<description></description>
+			<type></type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Internal</category>
+		</ability_object>
 	<!-- Hidden Automatic "Internal" Ability Objects -->
 		<ability_object>
 			<name>Master Traits</name>
@@ -1517,7 +1539,7 @@ BIO
 	  ====================================
 	  ====================================-->
 	<!-- Domains -->
-	<weapon_proficiencies>Club, Crossbow (Heavy), Crossbow (Light), Dagger, Gauntlet, Grapple, Quarterstaff, Shortspear, Spells(Ray), Unarmed Strike</weapon_proficiencies>
+	<weapon_proficiencies>Club, Crossbow (Heavy), Crossbow (Light), Dagger, Gauntlet, Grapple, Quarterstaff, Shortspear, Spells (Ray), Unarmed Strike</weapon_proficiencies>
 	<languages>Common, Draconic, Elven, Halfling, Orc</languages>
 
 	<templates>
