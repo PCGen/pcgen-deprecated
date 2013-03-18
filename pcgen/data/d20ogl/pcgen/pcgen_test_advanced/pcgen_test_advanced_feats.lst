@@ -5,23 +5,112 @@ MyTest ~ No Prexxx										TYPE:Code1730
 MyTest ~ Yes Prexxx										TYPE:Code1730						PREFEAT:1,MyTest ~ No Prexxx
 MyTest ~ Yes x2 Prexxx										TYPE:Code1730						PREFEAT:2,MyTest ~ No Prexxx,MyTest ~ Yes Prexxx
 
+Add Foo Spell		TYPE:Test.TomTest		SPELLLEVEL:CLASS|Wizard Test=3|Test Foo Spell
+
+
+
+Feat Main												TYPE:General																																					STACK:NO			MULT:YES	CHOOSE:SKILL|CLASS																											AUTO:FEAT|Feat Choice (%LIST)
+
+Feat Choice												TYPE:General																																					STACK:NO			MULT:YES	CHOOSE:SKILL|CLASS
+
+Feat Selector											TYPE:GENERAL																																					STACK:YES			MULT:YES	CHOOSE:SKILL|FEAT=Feat Choice																																																																																															BONUS:SKILL|%LIST|1
 
 
 
 
-Feat Main												TYPE:General																																					STACK:NO			MULT:YES	CHOOSE:SKILLSNAMED|CLASS																											AUTO:FEAT|Feat Choice (%LIST)
-
-Feat Choice												TYPE:General																																					STACK:NO			MULT:YES	CHOOSE:SKILLSNAMED|CLASS
-
-Feat Selector											TYPE:GENERAL																																					STACK:YES			MULT:YES	CHOOSE:FEAT=Feat Choice																																																																																															BONUS:SKILL|%LIST|1
-
-
-
+Test-72												TYPE:Test71.Test72		ABILITY:Special Ability|AUTOMATIC|Grant Template Chosen (Template-71)
+Test-74	ADD:EQUIP|Torch									TYPE:Test74
+Test-75	ADD:LANGUAGE|Draconic								TYPE:Test75	
+Test-76	ADD:SKILL|5|Athletics								TYPE:Test76	
+Test-77	ADD:SPELLCASTER|Sorcerer							TYPE:Test77		
+Test-78	ADD:TEMPLATE|Template-73							TYPE:Test78		
 
 
+###Block: TEST-57
+#1) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:NO
+#2) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:NO CHOOSE:NOCHOICE
+#3) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:NO and any CHOOSE except NOCHOICE or USERINPUT.
+#4) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES CHOOSE:NOCHOICE and the stackable items are only chosen once (STACK is effectively left unused)
+#5) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES and any CHOOSE except NOCHOICE or USERINPUT. and the stackable items are only chosen once (STACK is effectively left unused)
+#6) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES CHOOSE:NOCHOICE and the stackable items are chosen more than once (STACK is used)
+#7) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES and any CHOOSE except NOCHOICE or USERINPUT. and the stackable items are chosen more than once (STACK is used)
+#8) Ability granted by a ADD:VFEAT token where the target naturally has parens
+#9) Ability granted by a ADD:VFEAT where the feat naturally has parens
+#Example is:
+#ADD:VFEAT|SomeAbility(SuperDuperLaserAbility)
 
 
 
+Test-57 Apply A1	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-1,Dodge
+Test-57 Apply A2	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-2
+#Test-57 Apply A3	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-3
+Test-57 Apply A4	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-4
+#Test-57 Apply A5	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-5
+Test-57 Apply A6	TYPE:TEST-57	MULT:YES	CHOOSE:NOCHOICE	ADD:VFEAT|Test-57-Ability-6,Test-57-Ability-6,Test-57-Ability-6
+Test-57 Apply A7	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-7
+#Test-57 Apply A8	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-8 (Sword (Short))
+#Test-57 Apply A9	TYPE:TEST-57	ADD:VFEAT|Test-57-Ability-9 (Natural)
+
+
+#1) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:NO
+#2) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:NO CHOOSE:NOCHOICE
+#3) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:NO and any CHOOSE except NOCHOICE or USERINPUT.
+#4) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES CHOOSE:NOCHOICE and the stackable items are only chosen once (STACK is effectively left unused)
+#5) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES and any CHOOSE except NOCHOICE or USERINPUT. and the stackable items are only chosen once (STACK is effectively left unused)
+#6) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES CHOOSE:NOCHOICE and the stackable items are chosen more than once (STACK is used)
+#7) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES and any CHOOSE except NOCHOICE or USERINPUT. and the stackable items are chosen more than once (STACK is used)
+#8) Ability granted by a ADD:VFEAT token where the target naturally has parens
+#9) Ability granted by a ADD:VFEAT where the feat naturally has parens
+
+#With that, let me give you data for 3, 8, and 9. Hopefully you can derive 1-2 and 4-7 from 3...
+
+Test-57 Apply A3 LangGrant		VISIBLE:EXPORT	TYPE:TestFooB		MULT:YES	CHOOSE:LANG|ALL	AUTO:LANG|%LIST
+Test-57 Apply A3 FeatSelector		VISIBLE:EXPORT	MULT:YES		CHOOSE:FEATSELECTION|TYPE=TestFooB
+Test-57 Apply A3 MyAddingFeat		TYPE:TEST-57	ADD:VFEAT|Test-57 Apply A3 FeatSelector,Dodge
+
+#Think about how this works when MyAddingFeat is selected. It asks FeatSelector to expand the possible choices, which are "any TYPE=Foo" feat. So it says, "any permutation of LangGrant". Well, THAT is CHOOSE as well, so that gets expanded too... so the choice window looks something like:
+#FeatSelector (LangGrant(English))
+#FeatSelector (LangGrant(French))
+#Dodge
+#Obviously since LangGrant is choosing language it would be STACK:NO (hence this is good for #3 not #5 or #7), but different CHOOSEs there would be stackable (if it were providing a Skill rank bonus for example)
+#===
+
+
+Test-57 Apply A5 LangGrant		VISIBLE:EXPORT	TYPE:TestFooB		MULT:YES	CHOOSE:LANG|ALL	AUTO:LANG|%LIST
+Test-57 Apply A5 FeatSelector		VISIBLE:EXPORT	MULT:YES	STACK:YES	CHOOSE:FEATSELECTION|TYPE=TestFooB
+Test-57 Apply A5 MyAddingFeat		TYPE:TEST-57	ADD:VFEAT|Test-57 Apply A5 FeatSelector,Dodge
+
+
+
+#8)
+#Feat file:
+Test-57 Apply A8 MyFeat (is Really Cool)	VISIBLE:EXPORT	TYPE:Foo
+Test-57 Apply A8 MySelectableFeat		VISIBLE:EXPORT		MULT:YES	CHOOSE:FEATSELECTION|TYPE=Foo
+Test-57 Apply A8 ToBeAdded			TYPE:TEST-57		ADD:VFEAT|Test-57 Apply A8 MySelectableFeat,Dodge
+
+#Note the choices you will receive in the window are:
+#MySelectableFeat(My Feat (is Really Cool))
+#Dodge
+#Note the MyFeat (is Really Cool) "naturally" has parenthesis, and that is not a "specific" choice driven by a CHOOSE, whereas MySelectableFeat is written with parenthesis because it has a CHOOSE. Yet we still have 2 sets of parenthesis...
+#Note also in 1-8 when I say "target", I'm referring to the "subitem" like "MyFeat (is Really Cool)"
+#===
+#9)
+Test-57 Apply A9 MyOtherFeat (is Also Cool)	VISIBLE:EXPORT	TYPE:TEST-57
+Test-57 Apply A9 ToBeAdded						TYPE:TEST-57	ADD:VFEAT|Test-57 Apply A9 MyOtherFeat (is Also Cool),Dodge
+
+
+
+
+
+Test-57-Ability-1			VISIBLE:EXPORT	MULT:NO
+Test-57-Ability-2			VISIBLE:EXPORT	MULT:YES	STACK:NO	CHOOSE:NOCHOICE
+Test-57-Ability-3			VISIBLE:EXPORT	MULT:YES	STACK:NO	CHOOSE:ABILITY|Special Ability|Ability-57-2a|Ability-57-2b
+Test-57-Ability-4			VISIBLE:EXPORT	MULT:YES	STACK:YES	CHOOSE:NOCHOICE
+Test-57-Ability-5			VISIBLE:EXPORT	MULT:YES	STACK:YES	CHOOSE:ABILITY|Special Ability|Ability-57-3a|Ability-57-3b
+Test-57-Ability-6			VISIBLE:EXPORT	MULT:YES	STACK:YES	CHOOSE:NOCHOICE
+Test-57-Ability-7			VISIBLE:EXPORT	MULT:YES	STACK:YES	CHOOSE:ABILITY|Special Ability|Ability-57-4a|Ability-57-4b
+#Test-57-Ability-8			VISIBLE:EXPORT	MULT:YES	STACK:YES	CHOOSE:WEAPONPROFICIENCY|Sword (Short)
+Test-57-Ability-9 (Natural)	VISIBLE:EXPORT
 
 
 
@@ -32,8 +121,8 @@ CODE-1712B												TYPE:BugReport.Test.CODE																							DESC:Select
 
 A NEW CHOOSE SELECTION ISSUE									TYPE:Hi.Test.Chooser																																				STACK:NO			MULT:YES	CHOOSE:FEATSELECTION|Evasion|Extreme Effort|Increased Speed|Remain Conscious|Robust|Stamina|TITLE=Add a Feat													AUTO:FEAT|%LIST
 
-Evasion												TYPE:Hi																										DESC:Hi, test
-Extreme Effort											TYPE:Hi																										DESC:Hi, test
+Evasion												TYPE:Hi.MySelectableFeat																										DESC:Hi, test
+Extreme Effort											TYPE:Hi.MySelectableFeat																										DESC:Hi, test
 Increased Speed											TYPE:Hi																										DESC:Hi, test
 Remain Conscious											TYPE:Hi																										DESC:Hi, test
 Robust												TYPE:Hi																										DESC:Hi, test
@@ -159,7 +248,7 @@ Dodge													TYPE:TestMonkey
 Not Dodge												TYPE:TestMonkey
 Test Case Extreme											TYPE:TestMonkey.Fighter
 Toughness												TYPE:TestMonkey.Fighter																																				STACK:YES			MULT:YES	CHOOSE:NOCHOICE																																																																																							BONUS:HP|CURRENTMAX|3
-
+Toughness B											TYPE:TestMonkey.Fighter																																				STACK:YES			MULT:YES	CHOOSE:NOCHOICE																																																																																							BONUS:HP|CURRENTMAX|3	COST:2
 Choose No Choice											TYPE:TestMonkey.Chooser																																				STACK:YES	STACK:YES	MULT:YES	CHOOSE:NOCHOICE
 Choose String Stack Yes										TYPE:TestMonkey.Chooser																																				STACK:YES			MULT:YES	CHOOSE:STRING|Choice 1|Choice 2|Choice 3
 Choose String Stack No										TYPE:TestMonkey.Chooser																																				STACK:NO			MULT:YES	CHOOSE:STRING|Choice 1|Choice 2|Choice 3

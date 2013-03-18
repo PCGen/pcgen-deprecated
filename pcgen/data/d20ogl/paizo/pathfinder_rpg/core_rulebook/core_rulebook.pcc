@@ -17,6 +17,8 @@ SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy88y
 SOURCEDATE:2009-08
 ISOGL:YES
 
+# Errata: December 4, 2012 "Monkeying Around" Article - http://paizo.com/paizo/blog/v5748dyo5le61?Monkeying-Around (Andrew Maitland)
+
 COVER:core_rulebook.jpg
 LOGO:@/publisher_logos/Paizo_Publishing.png
 URL:WEBSITE|http://www.paizo.com/|Visit Paizo Publishing!
@@ -36,17 +38,22 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder RPG Core Rulebook" Copyright 
 #EXTRAFILE:OGL.txt
 
 # Data Files
+PCC:@/homebrew/conversion_support/conversion_support.pcc
+
 ABILITYCATEGORY:pfcr_abilitycategories.lst
 ABILITY:pfcr_abilities_afflictions.lst
 ABILITY:pfcr_abilities_class_common.lst
 ABILITY:pfcr_abilities_class.lst
 ABILITY:pfcr_abilities_class_prestige.lst
+ABILITY:pfcr_abilities_common.lst
 ABILITY:pfcr_abilities_companions.lst
 ABILITY:pfcr_abilities_equipment.lst
 ABILITY:pfcr_abilities_general.lst
 ABILITY:pfcr_abilities_racial_common.lst
 ABILITY:pfcr_abilities_racial.lst
 ABILITY:pfcr_abilities_racial_monster.lst
+ABILITY:pfcr_abilities_homebrew.lst
+
 ARMORPROF:pfcr_profs_armor.lst
 CLASS:pfcr_classes_base.lst
 CLASS:pfcr_classes_companions.lst
@@ -95,6 +102,8 @@ SKILL:pfcr_skills_conditional.lst
 SKILL:pfcr_skills.lst
 SPELL:pfcr_spells_domain.lst
 SPELL:pfcr_spells.lst
+SPELL:pfcr_spells_mods.lst
+
 TEMPLATE:pfcr_templates_conditional.lst
 TEMPLATE:pfcr_templates.lst
 WEAPONPROF:pfcr_weaponprofs.lst

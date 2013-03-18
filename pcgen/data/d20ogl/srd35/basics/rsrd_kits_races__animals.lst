@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Sat Oct 13 01:30:35 2012 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Mon Nov 12 23:42:51 2012 -- reformated by prettylst.pl v1.39 (build 15052)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35	SOURCEDATE:2000-01
 
 STARTPACK:Ape Default	TYPE:DefaultMonster.Animal	VISIBLE:QUALIFY	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Ape]
@@ -395,7 +395,7 @@ NAME:Rat
 ALIGN:TN
 SKILL:Move Silently	RANK:2
 SKILL:Climb			RANK:2
-SKILL:Move Silently	RANK:2	FREE:YES
+#SKILL:Move Silently	RANK:2	FREE:YES
 FEAT:Weapon Finesse
 STAT:DEX=11|STR=10|CON=10|INT=10|WIS=10|CHA=10
 
@@ -651,14 +651,14 @@ RACE:Cat	!PRERACE:1,%
 ALIGN:TN
 SKILL:Listen	RANK:2
 SKILL:Spot		RANK:2
-FEAT:Weapon Finesse
+FEAT:Stealthy
 STAT:STR=11|DEX=11|CHA=11|CON=10|INT=10|WIS=10
 
 STARTPACK:Hawk Familiar	TYPE:Companion	VISIBLE:NO
 RACE:Hawk	!PRERACE:1,%
 ALIGN:TN
 SKILL:Spot	RANK:4
-FEAT:Weapon Finesse
+FEAT:Alertness
 STAT:DEX=11|STR=10|CON=10|INT=10|WIS=10|CHA=10
 
 STARTPACK:Lizard Familiar	TYPE:Companion	VISIBLE:NO
@@ -666,7 +666,7 @@ RACE:Lizard	!PRERACE:1,%
 ALIGN:TN
 SKILL:Listen	RANK:2
 SKILL:Spot		RANK:2
-FEAT:Weapon Finesse
+FEAT:Stealthy
 STAT:STR=11|DEX=11|CON=10|INT=10|WIS=10|CHA=10
 
 STARTPACK:Owl Familiar	TYPE:Companion	VISIBLE:NO
@@ -674,7 +674,7 @@ RACE:Owl	!PRERACE:1,%
 ALIGN:TN
 SKILL:Listen	RANK:2
 SKILL:Spot		RANK:2
-FEAT:Weapon Finesse
+FEAT:Alertness
 STAT:DEX=11|STR=10|CON=10|INT=10|WIS=10|CHA=10
 
 STARTPACK:Rat Familiar	TYPE:Companion	VISIBLE:NO
@@ -683,7 +683,7 @@ ALIGN:TN
 SKILL:Move Silently	RANK:2
 SKILL:Climb			RANK:2
 SKILL:Move Silently	RANK:2	FREE:YES
-FEAT:Weapon Finesse
+FEAT:Stealthy
 STAT:DEX=11|STR=10|CON=10|INT=10|WIS=10|CHA=10
 
 STARTPACK:Raven Familiar	TYPE:Companion	VISIBLE:NO
@@ -691,7 +691,7 @@ RACE:Raven	!PRERACE:1,%
 ALIGN:TN
 SKILL:Listen	RANK:1
 SKILL:Spot		RANK:3
-FEAT:Weapon Finesse
+FEAT:Alertness
 TEMPLATE:Raven Familiar Language
 STAT:DEX=11|STR=10|CON=10|INT=10|WIS=10|CHA=10
 
@@ -700,7 +700,7 @@ RACE:Snake (Viper/Tiny)	!PRERACE:1,%
 ALIGN:TN
 SKILL:Listen	RANK:1
 SKILL:Spot		RANK:1
-FEAT:Weapon Finesse
+FEAT:Improved Initiative
 STAT:DEX=11|CON=11|STR=10|INT=10|WIS=10|CHA=10
 
 STARTPACK:Toad Familiar	TYPE:Companion	VISIBLE:NO
@@ -717,7 +717,7 @@ SKILL:Hide			RANK:1
 SKILL:Move Silently	RANK:2
 SKILL:Spot			RANK:1
 SKILL:Spot			RANK:1	FREE:YES
-FEAT:Weapon Finesse
+FEAT:Agile
 STAT:STR=11|DEX=11|CHA=11|CON=10|INT=10|WIS=10
 
 
@@ -830,7 +830,7 @@ FEAT:Endurance
 FEAT:Skill Focus(Hide)
 STAT:STR=11|CON=11|DEX=10|INT=10|WIS=10|CHA=10
 
-STARTPACK:Dog Companion	TYPE:Companion	VISIBLE:NO	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Dog]
+STARTPACK:Dog Companion	TYPE:Companion	VISIBLE:NO	EQUIPBUY:0
 RACE:Dog	!PRERACE:1,%
 ALIGN:TN
 SKILL:Listen	RANK:2
@@ -838,7 +838,7 @@ SKILL:Spot		RANK:2
 FEAT:Alertness
 STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
 
-STARTPACK:Dog (Riding) Companion	TYPE:Companion	VISIBLE:NO	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Dog (Riding)]
+STARTPACK:Dog (Riding) Companion	TYPE:Companion	VISIBLE:NO	EQUIPBUY:0
 RACE:Dog (Riding)	!PRERACE:1,%
 ALIGN:TN
 SKILL:Swim		RANK:1
@@ -1097,7 +1097,7 @@ FEAT:Run
 FEAT:Toughness
 STAT:STR=11|DEX=11|CON=11|INT=10|WIS=10|CHA=10
 
-STARTPACK:Wolf Companion	TYPE:Companion	VISIBLE:NO	EQUIPBUY:0	PREMULT:1,[!PRERACE:1,%],[PRERACE:1,Wolf]
+STARTPACK:Wolf Companion	TYPE:Companion	VISIBLE:NO	EQUIPBUY:0
 RACE:Wolf	!PRERACE:1,%
 ALIGN:TN
 SKILL:Move Silently	RANK:1
@@ -1128,6 +1128,7 @@ STAT:INT=roll("3d6")|CHA=roll("3d6")|WIS=roll("3d6")
 
 STARTPACK:Vermin Intelligence	VISIBLE:NO	APPLY:INSTANT
 STAT:INT=3
+
 
 #
 # End

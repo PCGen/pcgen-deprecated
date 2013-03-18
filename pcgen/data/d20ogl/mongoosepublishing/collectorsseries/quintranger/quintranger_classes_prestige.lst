@@ -6,7 +6,7 @@ SOURCELONG:Mongoose Publishing - Quintessential Ranger	SOURCESHORT:QR	SOURCEWEB:
 ###Block:Animal Champion -----------------------------------------------------------------------------------------------------
 
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Base class as subclass?	Ex Class				Source Page		Define			Save checks bonus												Combat bonus
-CLASS:Animal Champion	HD:8		TYPE:PC.Prestige	ABB:AC		MAXLEVEL:10	ALLOWBASECLASS:NO		EXCLASS:Ex Animal Champion	SOURCEPAGE:pg.23	DEFINE:CompLevel|0	BONUS:CHECKS|BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
+CLASS:Animal Champion	HD:8		TYPE:PC.Prestige	ABB:AC		MAXLEVEL:10	ALLOWBASECLASS:NO		EXCLASS:Ex Animal Champion	SOURCEPAGE:pg.23	DEFINE:AnimalCompanionLVL|0	BONUS:CHECKS|BASE.Reflex|CL/2+2	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/3	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
 # Class Name		Required AL		Req. Att.	Required Feat
 CLASS:Animal Champion	PREALIGN:TN,NG	PREATT:10	PREFEAT:1,Animal Affinity
 # Class Name		Skill Pts/Lvl	Class Skill
@@ -137,11 +137,11 @@ SUBCLASSLEVEL:3						ABILITY:Special Ability|AUTOMATIC|Wolverine's Steadfastness
 SUBCLASSLEVEL:6						ABILITY:Special Ability|AUTOMATIC|Wolverine's Tricks
 SUBCLASSLEVEL:9						ABILITY:Special Ability|AUTOMATIC|Wolverine's Fearlessness
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|All Automatic Proficiencies|All Martial Weapon Proficiencies|Martial Weapon Proficiency|Simple Weapon Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency	
 1	AUTO:FEAT|Armor Proficiency (Light)
 1	AUTO:FEAT|Shield Proficiency
 ###Block: Level Abilities
-1	BONUS:VAR|CompLevel|CL							ABILITY:Special Ability|AUTOMATIC|Animal Champion Companion|Animal Friendship|Chosen Species
+1	BONUS:VAR|AnimalCompanionLVL|CL							ABILITY:Special Ability|AUTOMATIC|Animal Champion Companion|Animal Friendship|Chosen Species
 2											ABILITY:Special Ability|AUTOMATIC|Charm Animal
 3	BONUS:VAR|PowerOfTheAnimalLVL|1					ABILITY:Special Ability|AUTOMATIC|Power of the Animal
 4											ABILITY:Special Ability|AUTOMATIC|Animal Form
@@ -159,7 +159,7 @@ CLASS:Ex Animal Champion	HD:8		TYPE:PC.Prestige	ABB:XAC		MAXLEVEL:10	SOURCEPAGE:
 # Class Name			Skill Pts/Lvl	Class Skill
 CLASS:Ex Animal Champion	STARTSKILLPTS:4	CSKILL:Balance|Climb|Handle Animal|Heal|Hide|Knowledge (Nature)|Jump|Listen|Move Silently|Ride|Search|Spot|Survival|Swim
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|All Automatic Proficiencies|All Martial Weapon Proficiencies|Martial Weapon Proficiency|Simple Weapon Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1	AUTO:FEAT|Armor Proficiency (Light)
 1	AUTO:FEAT|Shield Proficiency
 
@@ -174,7 +174,7 @@ CLASS:Briar Archer	PREALIGN:TN	PREATT:7	PREFEAT:4,Point Blank Shot,Precise Shot,
 CLASS:Briar Archer	STARTSKILLPTS:4	CSKILL:Craft (Bowyer)|Craft (Fletcher)|Hide|Knowledge (Geography)|Knowledge (Local)|Knowledge (Nature)|Listen|Move Silently|Spot|Survival
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|All Automatic Proficiencies|All Martial Weapon Proficiencies|Martial Weapon Proficiency|Simple Weapon Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1	AUTO:FEAT|Armor Proficiency (Light)
 1	AUTO:FEAT|Shield Proficiency
 ###Block: Level Abilities
@@ -192,7 +192,7 @@ CLASS:Green Knight	!PREALIGN:LE,NE,CE	PREATT:8	PREFEAT:1,Weapon Focus (Greataxe)
 CLASS:Green Knight	STARTSKILLPTS:4	CSKILL:Climb|TYPE=Craft|Diplomacy|Handle Animal|Intimidate|Hide|Jump|Knowledge (Geography)|Knowledge (Local)|Knowledge (Nature)|Listen|TYPE=Profession|Spot|Survival|Swim
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|All Automatic Proficiencies|All Martial Weapon Proficiencies|Martial Weapon Proficiency|Simple Weapon Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1	AUTO:FEAT|Armor Proficiency (Light)
 1	AUTO:FEAT|Shield Proficiency
 
@@ -242,7 +242,7 @@ CLASS:Master of the Staff	PREATT:5	PREFEAT:3,Stunning Staff,Combat Expertise,Imp
 CLASS:Master of the Staff	STARTSKILLPTS:2	CSKILL:Climb|Jump|Knowledge (Geography)|Knowledge (Local)|Listen|Move Silently|Spot|Survival
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|All Automatic Proficiencies|All Martial Weapon Proficiencies|Martial Weapon Proficiency|Simple Weapon Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1	AUTO:FEAT|Armor Proficiency (Light)
 
 ###Block: Level Abilities
@@ -266,7 +266,7 @@ CLASS:Outlaw	PREATT:5	PREFEAT:3,Point Blank Shot,Track,Weapon Focus (Longbow)
 CLASS:Outlaw	STARTSKILLPTS:4	CSKILL:TYPE=Craft|Climb|Disguise|Gather Information|Hide|Intimidate|Knowledge (Geography)|Knowledge (Local)|Listen|Move Silently|TYPE=Perform|Ride|Search|Spot|Survival
 
 ###Block:Weapon & Armor Proficiencies
-1	AUTO:FEAT|All Automatic Proficiencies|All Martial Weapon Proficiencies|Martial Weapon Proficiency|Simple Weapon Proficiency
+1	ABILITY:Special Ability|AUTOMATIC|All Automatic Proficiencies|All Martial Weapon Proficiencies	AUTO:FEAT|Simple Weapon Proficiency
 1	AUTO:FEAT|Armor Proficiency (Light)
 
 ###Block: Level Abilities
@@ -289,7 +289,7 @@ CLASS:Wild Hunter	PREATT:8	PREFEAT:6,Endurance,Track,Power Attack,Dodge,Simple W
 CLASS:Wild Hunter	STARTSKILLPTS:4	CSKILL:Climb|Handle Animal|Heal|Hide|Knowledge (Geography)|Knowledge (Local)|Knowledge (Nature)|Listen|Move Silently|Ride|Search|Spot|Survival|Use Rope
 
 ###Block: Level Abilities
-1														BONUS:VAR|RangerAnimalCompLVL|CL	ABILITY:Special Ability|AUTOMATIC|Animal Companion|Ranger Animal Companion
+1														BONUS:VAR|RangerAnimalCompanionLVL|CL	ABILITY:Special Ability|AUTOMATIC|Animal Companion
 1														BONUS:VAR|WildPackLvl|CL		ABILITY:Special Ability|AUTOMATIC|Hunter|Wild Pack
 2																				ABILITY:Special Ability|AUTOMATIC|Monster Slayer
 3	BONUS:ABILITYPOOL|Wild Hunter Exotic Weapon|1

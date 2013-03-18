@@ -6,12 +6,42 @@
 # Ability Name											Unique Key			SORTKEY			Category of Ability		Type									Visible	Required Skill			Define																																						Innate Spells																Description																																																																																													Stackable?			Multiple?	Choose												Template								Move			Clone Movement		Automatically Gained Armor Prof.	Automatically Added to Inventory	Automatically Gained Feat	Automatically Gained Language	Automatically Gained Shield Prof.	Automatically Gained Weapon Prof.		Ability																																					Add 					Bonus to Ability Pool				Combat bonus										Damage reduction								Bonus to HP													Add to base move																		Multiply base move			Add to magical move			Bonus to skill				Stat bonus								Modify VAR																																			Allow Follower			Allowed Companions									Class Skill			Cross-Class Skill	Vision					Damage Reduction					Cost		Source Page						Natural Attacks															Aspects																																																																																											Description of the Benefits									List of Known Class Spells by Level				List of Class Spells by Level
 Add a Feat see if it depletes the pool															CATEGORY:Special Ability	TYPE:CodeBugOfTheDayTester.Special Ability																																																																		DESC:ADD:FEAT Test																																																																																																																																																																																																							ADD:FEAT|TYPE=Code1730
 
+DISPLAY SPELL STAT	TYPE:FeatTest	CATEGORY:FEAT	ABILITY:Special Ability|AUTOMATIC|TYPE=SpellStatDisplayTestA
+Test Ability 1	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellStatDisplayTestA	DESC:What are the values of charbonusto("STAT","BASESPELLSTAT") (%1) and charbonusto("STAT","BASESPELLSTAT;CLASS.Wizard") (%2)?|charbonusto("STAT","BASESPELLSTAT")|charbonusto("STAT","BASESPELLSTAT;CLASS.Wizard")
+Test Ability 2	CATEGORY:Special Ability	TYPE:SpecialQuality.SpellStatDisplayTestA	DESC:What are the values of BASESPELLSTAT (%1), BASESPELLSTATSCORE (%2), SPELLBASESTAT (%3) and SPELLBASESTATSCORE (%4)?|BASESPELLSTAT|BASESPELLSTATSCORE|SPELLBASESTAT|SPELLBASESTATSCORE
 
 
+Order Works	CATEGORY:Special Ability	TYPE:SpecialQuality	DESC:Order Region displays only if PREREGION Works.
+
+###Block: TEST-57
+#1) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:NO
+#2) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:NO CHOOSE:NOCHOICE
+#3) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:NO and any CHOOSE except NOCHOICE or USERINPUT.
+#4) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES CHOOSE:NOCHOICE and the stackable items are only chosen once (STACK is effectively left unused)
+#5) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES and any CHOOSE except NOCHOICE or USERINPUT. and the stackable items are only chosen once (STACK is effectively left unused)
+#6) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES CHOOSE:NOCHOICE and the stackable items are chosen more than once (STACK is used)
+#7) Ability granted by a ADD:VFEAT token where the target (in parens) is MULT:YES STACK:YES and any CHOOSE except NOCHOICE or USERINPUT. and the stackable items are chosen more than once (STACK is used)
+#8) Ability granted by a ADD:VFEAT token where the target naturally has parens
+#9) Ability granted by a ADD:VFEAT where the feat naturally has parens
+#Example is:
+#ADD:VFEAT|SomeAbility(SuperDuperLaserAbility)
+
+
+
+Ability-57-2a	CATEGORY:Special Ability
+Ability-57-2b	CATEGORY:Special Ability
+Ability-57-3a	CATEGORY:Special Ability
+Ability-57-3b	CATEGORY:Special Ability
+Ability-57-4a	CATEGORY:Special Ability
+Ability-57-4b	CATEGORY:Special Ability
 
 CODE-1712C																				CATEGORY:Special Ability	TYPE:BugReport.Test.CODE.SpecialQuality																																																																			DESC:Select Skills Taken																																																																																										STACK:NO			MULT:YES	CHOOSE:SKILL|FEAT=CODE-1712A
 
 CODE-1712AA																				CATEGORY:Special Ability	TYPE:BugReport.Test.CODE.SpecialQuality																																																																			DESC:Select Skills Taken GRANTED TO FEAT																																																																																								STACK:NO			MULT:YES	CHOOSE:SKILL|ALL																																							AUTO:FEAT|CODE-1712A (%LIST)
+
+
+
+
 
 
 
@@ -58,6 +88,9 @@ Default																				CATEGORY:Internal			TYPE:Internal														DEFINE
 #ABILITY:FEAT|VIRTUAL|Greater Weapon Focus(Sun Blade)|PREFEAT:1,Greater Weapon Focus(Sword (Bastard)),Greater Weapon Focus(Sword (Short))	ABILITY:FEAT|VIRTUAL|Greater Weapon Specialization(Sun Blade)|PREFEAT:1,Greater Weapon Specialization(Sword (Bastard)),Greater Weapon Specialization(Sword (Short))	ABILITY:FEAT|VIRTUAL|Weapon Focus(Sun Blade)|PREFEAT:1,Weapon Focus(Sword (Bastard)),Weapon Focus(Sword (Short))	ABILITY:FEAT|VIRTUAL|Weapon Specialization(Sun Blade)|PREFEAT:1,Weapon Specialization(Sword (Bastard)),Weapon Specialization(Sword (Short))	ABILITY:FEAT|VIRTUAL|Greater Weapon Focus(Sling Staff (Halfling ~ Melee))|PREFEAT:1,Greater Weapon Focus(Sling Staff (Halfling))	ABILITY:FEAT|VIRTUAL|Greater Weapon Specialization(Sling Staff (Halfling ~ Melee))|PREFEAT:1,Greater Weapon Specialization(Sling Staff (Halfling))	ABILITY:FEAT|VIRTUAL|Weapon Focus(Sling Staff (Halfling ~ Melee))|PREFEAT:1,Weapon Focus(Sling Staff (Halfling))	ABILITY:FEAT|VIRTUAL|Weapon Specialization(Sling Staff (Halfling ~ Melee))|PREFEAT:1,Weapon Specialization(Sling Staff (Halfling))
 Animal Intelligence																		CATEGORY:Internal			TYPE:Internal							VISIBLE:NO																																																																																																																																																																																																																																																																																																																																																																																																																																																			SOURCEPAGE:p.201
 Tool Use																				CATEGORY:Internal			TYPE:Internal							VISIBLE:NO
+# Mystic Companion Choice
+Strength +1						KEY:Mystic_Comp_Strength				SORTKEY:Stat_1		CATEGORY:Special Ability	TYPE:MysticCompanionBonusStat																																																STACK:YES	MULT:YES	CHOOSE:NOCHOICE																																																																																																																																																																																																																																																																																																																																																	BONUS:STAT|STR|1
+Constitution +1					KEY:Mystic_Comp_Constitution				SORTKEY:Stat_3		CATEGORY:Special Ability	TYPE:MysticCompanionBonusStat																																																STACK:YES	MULT:YES	CHOOSE:NOCHOICE																																																																																																																																																																																																																																																																																																																																																	BONUS:STAT|CON|1
 
 #SystemHands is a variable indicating the number of hands the race has.  The Tool Use ability triggers a few other abilities that I won't get into right now.
 
@@ -431,7 +464,7 @@ Choose String Stack No																		CATEGORY:Special Ability	TYPE:TestMonkey
 ###Block: OS Tests
 
 # Ability Name					Category of Ability			Type																															Visible	Define																							Description															Multiple?	Choose									Selections	Move		Ability																																									Bonus to Ability Pool			Misc bonus				Bonus to skill										Modify VAR					Cost		Aspects																																																																																		More language
-Test OS Output Displays				CATEGORY:Special Ability		TYPE:SpecialAttack.SpecialQuality																																																				DESC:Grabs Multiple Abilities and loads them to display in the various OS blocks that we have.																	ABILITY:Special Ability|AUTOMATIC|Eclipse Master OS|FourE Master OS|MSRD Talent Support|SRD Master OS|SWSE Master OS|WoD Master OS	ABILITY:Natural Attack|AUTOMATIC|TYPE=NaturalAttack
+Test OS Output Displays				CATEGORY:Special Ability		TYPE:SpecialAttack.SpecialQuality																																																				DESC:Grabs Multiple Abilities and loads them to display in the various OS blocks that we have.																	ABILITY:Special Ability|AUTOMATIC|Eclipse Master OS|FourE Master OS|MSRD Talent Support|SRD Master OS|SWSE Master OS|WoD Master OS	ABILITY:Natural Attack|AUTOMATIC|TYPE=NaturalAttack	ABILITY:Words of Power|AUTOMATIC|TYPE=WordsOfPowerOutput
 
 Test OS Output Display - Natural Attacks	CATEGORY:Internal																																																																																													ABILITY:Natural Attack|AUTOMATIC|TYPE=NaturalAttack
 
@@ -483,6 +516,10 @@ WoD Test Master					CATEGORY:Special Ability		TYPE:DemonCant.MageGnosis.VampireD
 # Eclipse Support
 Eclipse Master OS					CATEGORY:Special Ability																																																																																											ABILITY:Special Ability|AUTOMATIC|Eclipse Test Master
 Eclipse Test Master				CATEGORY:Special Ability		TYPE:WitchcraftOutput.EclipseAbilityOutput.EclipseRacialOutput.SpellCasterOutput.CharCreation.Disadvantage.PathoftheDragon.MartialArtsOutput.MysticArtistOutput.Dominion.ChannelingOutput																											DESC:Testing
+
+# Words Of Power Support
+Words of Power					CATEGORY:Words of Power			TYPE:WordsOfPowerOutput.WordsOfPowerDisplay.TargetLevel0	DESC:Spell targets only the caster.																					SOURCEPAGE:p.166
+
 
 
 #################################
@@ -882,14 +919,19 @@ ADDVFEAT_Naturally Something (comment)																																				CATEGO
 # TEST 61
 
 Test-61 Ability																																								CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																											ABILITY:FEAT|NORMAL|Weapon Focus(Simple Weapon Three)
-Test-61 Add Feat																																								CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:FEAT|Weapon Focus(Simple Weapon One)
+Test-61 Add Feat																																								CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:FEAT|Weapon Focus (Simple Weapon One)
 Test-61 Add Featb																																								CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:FEAT|Weapon Focus
-Test-61 Add Ability																																							CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:ABILITY|FEAT|NORMAL|Weapon Focus(Simple Weapon Two)
+Test-61 Add Ability																																							CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:ABILITY|FEAT|NORMAL|Weapon Focus (Simple Weapon Three)
 Test-61 Add Abilityb																																							CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:ABILITY|FEAT|NORMAL|Weapon Focus
 
 Test-61 Ability Tough																																							CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																											ABILITY:FEAT|NORMAL|Toughness
 Test-61 Add Feat Tough																																							CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:FEAT|Toughness
 Test-61 Add Ability Tough																																						CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:ABILITY|FEAT|NORMAL|Toughness
+
+
+
+Test-61 Add Feat cost 2																																								CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:FEAT|Toughness B
+Test-61 Add Ability cost 2																																							CATEGORY:FEAT			TYPE:Test61																																																																																																																																																																																																																																																																															ADD:ABILITY|FEAT|NORMAL|Toughness B
 
 
 # Bug COde 453

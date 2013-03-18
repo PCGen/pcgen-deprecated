@@ -1,6 +1,8 @@
 # CVS $Revision$ $Author$ -- Fri Oct 19 20:16:09 2012 -- reformated by prettylst.pl v1.39 (build 15052)
 SOURCELONG:System Reference Document	SOURCESHORT:SRD	SOURCEWEB:http://groups.yahoo.com/group/pcgen/files/3.0%20SRD/	SOURCEDATE:2000-01
 
++2 racial bonus to Search, Spot, and Listen checks. Like an elf, a tallfellow who merely passes within 5 feet of a secret or concealed door is entitled to a Search check as though actively looking for it.	KEY:Halfling Notice Secret Doors	CATEGORY:Special Ability	TYPE:SpecialQuality	BONUS:SKILL|Search,Spot,Listen|2|TYPE=Racial
+
 # Ability Name			Output Name					Category of Ability		Type									Visible	Define													Description																	Multiple?	Choose											Aspects
 3 Wishes										CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural				VISIBLE:YES
 Acid											CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary				VISIBLE:YES
@@ -152,7 +154,7 @@ Improved Tracking									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordi
 Ink Cloud										CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyAC		VISIBLE:YES
 Invisible in Light								CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyAC		VISIBLE:YES
 Jet											CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary				VISIBLE:YES	DEFINE:JetRange|0												DESC:%1'|JetRange|PREVARGT:JetRange,0
-Keen Scent										CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense			VISIBLE:YES
+#Keen Scent										CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense			VISIBLE:YES
 Kiss											CATEGORY:Special Ability	TYPE:SpecialAttack.Supernatural				VISIBLE:YES
 Know Alignment									CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Sense			VISIBLE:YES
 Leap											CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary				VISIBLE:YES
@@ -218,7 +220,7 @@ Rust											CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary				VISI
 Scare											CATEGORY:Special Ability	TYPE:SpecialAttack.Extraordinary.Supernatural		VISIBLE:YES
 Scent											CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense			VISIBLE:YES
 See in Darkness									CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Sense			VISIBLE:YES
-See Invisibility									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense			VISIBLE:YES
+#See Invisibility									CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.Sense			VISIBLE:YES
 See Invisibility ~Su		OUTPUTNAME:See Invisibility		CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.Sense			VISIBLE:YES
 Shadow Blend									CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.ModifyAC			VISIBLE:YES
 Shadow Shift									CATEGORY:Special Ability	TYPE:SpecialQuality.Supernatural.ModifyAC			VISIBLE:YES
@@ -443,36 +445,6 @@ Malevolence			CATEGORY:Special Ability	TYPE:GhostAbility.SpecialAttack.Supernatu
 Telekinesis			CATEGORY:Special Ability	TYPE:GhostAbility.SpecialAttack.Supernatural	VISIBLE:YES	DESC:DC %1|GhostAbilityDC
 
 
-###Block: Racial Abilities - Core races and varients ---------------------------
-# Dwarf
-# Ability Name			Output Name																										Category of Ability		Type				Visible
-Stonecunning																														CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Dwarf Poison Resistance		OUTPUTNAME:+2 racial bonus on saving throws against poison																		CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Dwarf Spell Resistance		OUTPUTNAME:+2 racial bonus on saving throws against spells and spell-like effects														CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Dodge Giant				OUTPUTNAME:+4 dodge bonus against giants																					CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Dwarf Attacks			OUTPUTNAME:+1 racial bonus to attack rolls against orcs and goblinoids																CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Dwarf Skill				OUTPUTNAME:+2 racial bonus on Appraise and Craft checks that are related to stone or metal items											CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-
-# Elf
-Elf Immunity			OUTPUTNAME:Immunity to magic sleep spells and effects																			CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Elf Resistance			OUTPUTNAME:+2 racial saving throw bonus against Enchantment spells or effects															CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Notice Secret Doors		OUTPUTNAME:Merely passing within 5 feet of a secret or concealed door entitles you to a Search check to notice it as if you were actively looking for the door	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Drow Resistance			OUTPUTNAME:+2 racial bonus to Will saves against spells and spell-like abilities														CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-
-# Gnome
-Gnome Perception			OUTPUTNAME:+2 racial bonus on saving throws against illusions																	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Gnome Attacks			OUTPUTNAME:+1 racial bonus to attack rolls against kobolds and goblinoids															CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-Gnome Speak with Animals	OUTPUTNAME:Once per day a gnome can use Speak with Animals as a spell-like ability to speak with a burrowing mammal								CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-
-# Half-Elf
-Elven Blood																															CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-
-# Half-Orc
-Orc Blood																															CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-
-# Halfling
-Halfling Morale			OUTPUTNAME:+2 morale bonus on saving throws against fear																		CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
-
 ###Block: Racial Abilities - Other Specific Monsters
 # Ability Name				Output Name																			Category of Ability		Type								Visible	Innate Spells																				Multiple?	Choose
 Doppelganger Bluff and Disguise	OUTPUTNAME:+4 to Bluff and Disguise when using Detect Thoughts										CATEGORY:Special Ability	TYPE:SpecialQuality					VISIBLE:YES
@@ -493,6 +465,7 @@ Succubus Disguise				OUTPUTNAME:+10 to Disguise in Alternate Form													CA
 Unicorn Immunities																							CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary			VISIBLE:YES
 Unicorn Wilderness Lore Checks	OUTPUTNAME:+3 competence bonus on Wilderness Lore checks within forest									CATEGORY:Special Ability	TYPE:SpecialQuality					VISIBLE:YES
 Wyvern Spot					OUTPUTNAME:+3 Spot when flying durring daylight													CATEGORY:Special Ability	TYPE:SpecialQuality					VISIBLE:YES
+Drow Resistance			OUTPUTNAME:+2 racial bonus to Will saves against spells and spell-like abilities														CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES
 
 ###Block: Creature Type Traits
 # Ability Name		Category of Ability		Type				Visible	Description
@@ -517,37 +490,6 @@ Maneuverability(Good)		CATEGORY:Special Ability	TYPE:Maneuverability	VISIBLE:NO	
 Maneuverability(Average)	CATEGORY:Special Ability	TYPE:Maneuverability	VISIBLE:NO	ASPECT:Maneuverability|Average
 Maneuverability(Poor)		CATEGORY:Special Ability	TYPE:Maneuverability	VISIBLE:NO	ASPECT:Maneuverability|Poor
 Maneuverability(Clumsy)		CATEGORY:Special Ability	TYPE:Maneuverability	VISIBLE:NO	ASPECT:Maneuverability|Clumsy
-
-###Block: Animal Tricks & Training Section ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Ability Name			Category of Ability		Type				Define			Description			Bonus to Ability Pool
-Bonus Tricks			CATEGORY:Special Ability	TYPE:SpecialQuality	DEFINE:BonusTricks|0	DESC:%1|BonusTricks	BONUS:ABILITYPOOL|Animal Trick|BonusTricks
-Animal Tricks and Training	CATEGORY:Special Ability	TYPE:Internal										BONUS:ABILITYPOOL|Animal Trick|3	BONUS:ABILITYPOOL|Animal Trick|3|PRESTAT:1,INT=2
-
-###Block: Animal Tricks ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Ability Name	Unique Key				Category of Ability		Type			Visible		Required Ability								Description																																			Description of the Benefits
-Attack		KEY:Animal Trick ~ Attack	CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal attacks apparent enemies.	DESC:Animal will attack all creatures|PREABILITY:1,CATEGORY=Animal Trick,Animal Trick ~ Attack II													BENEFIT:The animal attacks apparent enemies. You may point to a particular creature that you wish the animal to attack, and it will comply if able. Normally, an animal will attack only humanoids, monstrous humanoids, giants, or other animals. Teaching an animal to attack all creatures (including such unnatural creatures as undead and aberrations) counts as two tricks.	BENEFIT:Animal will attack all creatures|PREABILITY:1,CATEGORY=Animal Trick,Animal Trick ~ Attack II
-Attack II		KEY:Animal Trick ~ Attack II	CATEGORY:Special Ability	TYPE:AnimalTrick	VISIBLE:DISPLAY	PREABILITY:1,CATEGORY=Special Ability,Animal Trick ~ Attack
-Come			KEY:Animal Trick ~ Come		CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal comes to you, even if it normally would not do so.
-Defend		KEY:Animal Trick ~ Defend	CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal defends you (or is ready to defend you if no threat is present), even without any command being given. Alternatively, you can command the animal to defend another specific character.
-Down			KEY:Animal Trick ~ Down		CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal breaks off from combat or otherwise backs down. An animal that doesn't know this trick continues to fight until it must f lee (due to injury, a fear effect, or the like) or its opponent is defeated.
-Fetch			KEY:Animal Trick ~ Fetch	CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal goes and gets something. If you do not point out a specific item, the animal fetches a random object.
-Guard			KEY:Animal Trick ~ Guard	CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal stays in place and prevents others from approaching.
-Heel			KEY:Animal Trick ~ Heel		CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal follows you closely, even to places where it normally wouldn't go.
-Perform		KEY:Animal Trick ~ Perform	CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal performs a variety of simple tricks, such as sitting up, rolling over, roaring or barking, and so on.
-Seek			KEY:Animal Trick ~ Seek		CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal moves into an area and looks around for anything that is obviously alive or animate.
-Stay			KEY:Animal Trick ~ Stay		CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal stays in place, waiting for you to return. It does not challenge other creatures that come by, though it still defends itself if it needs to.
-Track			KEY:Animal Trick ~ Track	CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal tracks the scent presented to it. (This requires the animal to have the scent ability.)
-Work			KEY:Animal Trick ~ Work		CATEGORY:Special Ability	TYPE:AnimalTrick														DESC:The animal pulls or pushes a medium or heavy load.
-
-###Block: Animal Training ----------------------------------------------------------------------------------------------------------------------------------------------------------
-# Ability Name			Unique Key					SORTKEY					Category of Ability		Type							Restricted Ability							Required Stat	Description																							Ability																										Cost		Description of the Benefits
-Trained for Combat Riding	KEY:Animal Training ~ Combat Riding	SORTKEY:1_Trained for Combat Riding	CATEGORY:Special Ability	TYPE:AnimalTrick.AnimalTraining.General	!PREABILITY:1,CATEGORY=Special Ability,TYPE.AnimalTraining	PRESTAT:1,INT=2	DESC:An animal trained to bear a rider into combat knows the tricks attack, come, defend, down, guard, and heel.						ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Attack|Animal Trick ~ Come|Animal Trick ~ Defend|Animal Trick ~ Down|Animal Trick ~ Guard|Animal Trick ~ Heel	COST:6	BENEFIT:An animal trained to bear a rider into combat knows the tricks attack, come, defend, down, guard, and heel. Training an animal for combat riding takes 6 weeks. You may also "upgrade" an animal trained for riding to one trained for combat by spending 3 weeks and making a successful DC 20 Handle Animal check. The new general purpose and tricks completely replace the animal's previous purpose and any tricks it once knew. Many horses and riding dogs are trained in this way.
-Trained for Fighting		KEY:Animal Training ~ Fighting	SORTKEY:1_Trained for Fighting	CATEGORY:Special Ability	TYPE:AnimalTrick.AnimalTraining.General	!PREABILITY:1,CATEGORY=Special Ability,TYPE.AnimalTraining				DESC:An animal trained to engage in combat knows the tricks attack, down, and stay. Training an animal for fighting takes 3 weeks.			ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Attack|Animal Trick ~ Down|Animal Trick ~ Stay												COST:3
-Trained for Guarding		KEY:Animal Training ~ Guarding	SORTKEY:1_Trained for Guarding	CATEGORY:Special Ability	TYPE:AnimalTrick.AnimalTraining.General	!PREABILITY:1,CATEGORY=Special Ability,TYPE.AnimalTraining	PRESTAT:1,INT=2	DESC:An animal trained to guard knows the tricks attack, defend, down, and guard. Training an animal for guarding takes 4 weeks.			ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Attack|Animal Trick ~ Defend|Animal Trick ~ Down|Animal Trick ~ Guard								COST:4
-Trained for Heavy Labor		KEY:Animal Training ~ Heavy Labor	SORTKEY:1_Trained for Heavy Labor	CATEGORY:Special Ability	TYPE:AnimalTrick.AnimalTraining.General	!PREABILITY:1,CATEGORY=Special Ability,TYPE.AnimalTraining				DESC:An animal trained for heavy labor knows the tricks come and work. Training an animal for heavy labor takes 2 weeks.				ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Come|Animal Trick ~ Work															COST:2
-Trained for Hunting		KEY:Animal Training ~ Hunting		SORTKEY:1_Trained for Hunting		CATEGORY:Special Ability	TYPE:AnimalTrick.AnimalTraining.General	!PREABILITY:1,CATEGORY=Special Ability,TYPE.AnimalTraining	PRESTAT:1,INT=2	DESC:An animal trained for hunting knows the tricks attack, down, fetch, heel, seek, and track. Training an animal for hunting takes 6 weeks.	ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Attack|Animal Trick ~ Down|Animal Trick ~ Fetch|Animal Trick ~ Heel|Animal Trick ~ Seek|Animal Trick ~ Track	COST:6
-Trained for Performance		KEY:Animal Training ~ Performance	SORTKEY:1_Trained for Performance	CATEGORY:Special Ability	TYPE:AnimalTrick.AnimalTraining.General	!PREABILITY:1,CATEGORY=Special Ability,TYPE.AnimalTraining	PRESTAT:1,INT=2	DESC:An animal trained for performance knows the tricks come, fetch, heel, perform, and stay. Training an animal for performance takes 5 weeks.	ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Come|Animal Trick ~ Fetch|Animal Trick ~ Heel|Animal Trick ~ Perform|Animal Trick ~ Stay					COST:5
-Trained for Riding		KEY:Animal Training ~ Riding		SORTKEY:1_Trained for Riding		CATEGORY:Special Ability	TYPE:AnimalTrick.AnimalTraining.General	!PREABILITY:1,CATEGORY=Special Ability,TYPE.AnimalTraining				DESC:An animal trained to bear a rider knows the tricks come, heel, and stay. Training an animal for riding takes 3 weeks.				ABILITY:Special Ability|AUTOMATIC|Animal Trick ~ Come|Animal Trick ~ Heel|Animal Trick ~ Stay												COST:3
 
 #
 # End

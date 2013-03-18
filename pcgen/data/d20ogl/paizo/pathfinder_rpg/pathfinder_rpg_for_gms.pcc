@@ -6,7 +6,7 @@ TYPE:Paizo Publishing.Pathfinder RPG
 RANK:1
 STATUS:RELEASE
 GENRE:Fantasy
-BOOKTYPE:Core Rules
+BOOKTYPE:Complete Core
 SHOWINMENU:YES
 !PRECAMPAIGN:1,BOOKTYPE=Core Rules,BOOKTYPE=Complete Core,[Pathfinder RPG for Game Masters (includes Monsters)]
 PUBNAMELONG:Paizo Publishing
@@ -37,5 +37,6 @@ DESC:The Pathfinder Roleplaying Game puts you in the role of a brave adventurer 
 #EXTRAFILE:OGL.txt
 
 PCC:@/d20ogl/paizo/pathfinder_rpg/core_rulebook/core_rulebook.pcc
-PCC:@/alpha/paizo/pathfinder_rpg/bestiary/bestiary.pcc
-PCC:@/alpha/paizo/pathfinder_rpg/bonus_bestiary/bonus_bestiary.pcc
+PCC:@/d20ogl/paizo/pathfinder_rpg/bestiary/bestiary.pcc
+PCC:@/d20ogl/paizo/pathfinder_rpg/bonus_bestiary/bonus_bestiary.pcc
+PCC:@/d20ogl/paizo/pathfinder_rpg/advanced_players_guide/advanced_players_guide.pcc
