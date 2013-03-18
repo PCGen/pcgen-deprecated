@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Oct 19 20:16:09 2012 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Mon Mar 18 04:02:20 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 SOURCELONG:Legends of Excalibur - Arthurian Adventures	SOURCESHORT:Excalibur	SOURCEWEB:http://www.rpgobjects.com/index.php?page=ex	SOURCEDATE:2003-01
 
 # Bard and Druid block.  Due to .MOD issues, redoing classes here
@@ -40,7 +40,7 @@ CLASS:Druid ~ LoE	HD:8		TYPE:Base.PC	ABB:Drd		MAXLEVEL:20	SOURCEPAGE:ClassesI.rt
 CLASS:Druid ~ LoE	STARTSKILLPTS:4	CSKILL:Concentration|TYPE=Craft|Diplomacy|Handle Animal|Heal|Knowledge (Nature)|Listen|TYPE=Profession|Ride|Spellcraft|Spot|Survival|Swim
 # Class Name	Spell Stat		Spell Type		Automatically Known Spell Levels											Caster level
 CLASS:Druid ~ LoE	SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=0|LEVEL=1|LEVEL=2|LEVEL=3|LEVEL=4|LEVEL=5|LEVEL=6|LEVEL=7|LEVEL=8|LEVEL=9	BONUS:CASTERLEVEL|CLASS=Druid ~ LoE|CL
-1	CAST:1,2,12												BONUS:VAR|AnimalCompanionLVL|CL	BONUS:VAR|BASEPOWERPOINTS|1									ABILITY:Special Ability|AUTOMATIC|Nature Sense|Wild Empathy	ABILITY:Special Ability|AUTOMATIC|Animal Companion					VFEAT:Power Source(Druid/Minstrel)	AUTO:ARMORPROF|ARMORTYPE=Light|ARMORTYPE=Medium	AUTO:SHIELDPROF|SHIELDTYPE=Buckler|SHIELDTYPE=Heavy|SHIELDTYPE=Light	AUTO:WEAPONPROF|Club|Dagger|Dart|Quarterstaff|Scimitar|Sickle|Shortspear|Sling|Shortspear|Longspear
+1	CAST:1,2,12												BONUS:VAR|AnimalCompanionLVL|CL	BONUS:VAR|BASEPOWERPOINTS|1							ABILITY:Special Ability|AUTOMATIC|Nature Sense|Wild Empathy	ABILITY:Special Ability|AUTOMATIC|Animal Companion					VFEAT:Power Source(Druid/Minstrel)	AUTO:ARMORPROF|ARMORTYPE=Light|ARMORTYPE=Medium	AUTO:SHIELDPROF|SHIELDTYPE=Buckler|SHIELDTYPE=Heavy|SHIELDTYPE=Light	AUTO:WEAPONPROF|Club|Dagger|Dart|Quarterstaff|Scimitar|Sickle|Shortspear|Sling|Shortspear|Longspear
 # VFEAT:Armor Proficiency (Light)|Armor Proficiency (Medium)|Shield Proficiency
 2	CAST:1,1,8												BONUS:VAR|BASEPOWERPOINTS|1													ABILITY:Special Ability|AUTOMATIC|Woodland Stride
 3	CAST:1,1,4,15											BONUS:VAR|BASEPOWERPOINTS|2													ABILITY:Special Ability|AUTOMATIC|Trackless Step
