@@ -1218,9 +1218,9 @@ BIO
 	<languages>Common</languages>
 
 	<templates>
-		<list>A Template added with Add Choice, A Template with TEMPLATE CHOOSE, Charlie ~ Template, TEMPLATE ~ TEST~24, TEST32</list>
+		<list>Charlie ~ Template, A Template with TEMPLATE CHOOSE, A Template added with Add Choice, TEST32, TEMPLATE ~ TEST~24</list>
 		<template>
-			<name>A Template added with Add Choice</name>
+			<name>Charlie ~ Template</name>
 			<strmod>0</strmod>
 			<dexmod>0</dexmod>
 			<conmod>0</conmod>
@@ -1250,22 +1250,7 @@ BIO
 			<bonuslist></bonuslist>
 		</template>
 		<template>
-			<name>Charlie ~ Template</name>
-			<strmod>0</strmod>
-			<dexmod>0</dexmod>
-			<conmod>0</conmod>
-			<intmod>0</intmod>
-			<wismod>0</wismod>
-			<chamod>0</chamod>
-			<cr>0</cr>
-			<dr></dr>
-			<feat></feat>
-			<sa></sa>
-			<sr>0</sr>
-			<bonuslist></bonuslist>
-		</template>
-		<template>
-			<name>TEMPLATE ~ TEST~24</name>
+			<name>A Template added with Add Choice</name>
 			<strmod>0</strmod>
 			<dexmod>0</dexmod>
 			<conmod>0</conmod>
@@ -1281,6 +1266,21 @@ BIO
 		</template>
 		<template>
 			<name>TEST32</name>
+			<strmod>0</strmod>
+			<dexmod>0</dexmod>
+			<conmod>0</conmod>
+			<intmod>0</intmod>
+			<wismod>0</wismod>
+			<chamod>0</chamod>
+			<cr>0</cr>
+			<dr></dr>
+			<feat></feat>
+			<sa></sa>
+			<sr>0</sr>
+			<bonuslist></bonuslist>
+		</template>
+		<template>
+			<name>TEMPLATE ~ TEST~24</name>
 			<strmod>0</strmod>
 			<dexmod>0</dexmod>
 			<conmod>0</conmod>

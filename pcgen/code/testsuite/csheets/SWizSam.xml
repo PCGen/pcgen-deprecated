@@ -1066,7 +1066,7 @@ BIO
 		</ability_object>
 		<ability_object>
 			<name>Halfling Racial Traits</name>
-			<description><para>+2 racial bonus on Climb, Jump, and Move Silently checks. </para><para> +1 racial bonus on all saving throws. </para><para> +2 morale bonus on saving throws against fear </para><para> +1 racial bonus on attack rolls with thrown weapons and slings. </para><para> +2 racial bonus on Listen checks.</para></description>
+			<description><para>+2 racial bonus on Climb, Jump, and Move Silently checks., </para><para> +1 racial bonus on all saving throws., </para><para> +2 morale bonus on saving throws against fear, </para><para> +1 racial bonus on attack rolls with thrown weapons and slings., </para><para> +2 racial bonus on Listen checks.</para></description>
 			<type>SPECIALQUALITY.HALFLINGRACIALTRAIT</type>
 			<associated></associated>
 			<count>0</count>

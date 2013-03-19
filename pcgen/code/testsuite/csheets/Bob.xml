@@ -2041,22 +2041,7 @@ BIO
 	<languages>Choose Lang Persistence Race, Common, Evilhaasness, Terestial Alpha</languages>
 
 	<templates>
-		<list>BOB ~ Template ~ Test 34 Favored Class Highest, Template A, Template Choice for Bob ~ 1, Template Test ~ TEST~3 WEAPONBONUS may Be Persistent in Template, Template Type TEST, Template ~ 1 Bob Tests ~ ALL, Template-71</list>
-		<template>
-			<name>BOB ~ Template ~ Test 34 Favored Class Highest</name>
-			<strmod>0</strmod>
-			<dexmod>0</dexmod>
-			<conmod>0</conmod>
-			<intmod>0</intmod>
-			<wismod>0</wismod>
-			<chamod>0</chamod>
-			<cr>0</cr>
-			<dr></dr>
-			<feat></feat>
-			<sa></sa>
-			<sr>0</sr>
-			<bonuslist></bonuslist>
-		</template>
+		<list>Template A, Template ~ 1 Bob Tests ~ ALL, Template Type TEST, Template Test ~ TEST~3 WEAPONBONUS may Be Persistent in Template, BOB ~ Template ~ Test 34 Favored Class Highest, Template Choice for Bob ~ 1, Template-71</list>
 		<template>
 			<name>Template A</name>
 			<strmod>0</strmod>
@@ -2073,22 +2058,7 @@ BIO
 			<bonuslist></bonuslist>
 		</template>
 		<template>
-			<name>Template Choice for Bob ~ 1</name>
-			<strmod>0</strmod>
-			<dexmod>0</dexmod>
-			<conmod>0</conmod>
-			<intmod>0</intmod>
-			<wismod>0</wismod>
-			<chamod>0</chamod>
-			<cr>0</cr>
-			<dr></dr>
-			<feat></feat>
-			<sa></sa>
-			<sr>0</sr>
-			<bonuslist></bonuslist>
-		</template>
-		<template>
-			<name>Template Test ~ TEST~3 WEAPONBONUS may Be Persistent in Template</name>
+			<name>Template ~ 1 Bob Tests ~ ALL</name>
 			<strmod>0</strmod>
 			<dexmod>0</dexmod>
 			<conmod>0</conmod>
@@ -2118,7 +2088,37 @@ BIO
 			<bonuslist></bonuslist>
 		</template>
 		<template>
-			<name>Template ~ 1 Bob Tests ~ ALL</name>
+			<name>Template Test ~ TEST~3 WEAPONBONUS may Be Persistent in Template</name>
+			<strmod>0</strmod>
+			<dexmod>0</dexmod>
+			<conmod>0</conmod>
+			<intmod>0</intmod>
+			<wismod>0</wismod>
+			<chamod>0</chamod>
+			<cr>0</cr>
+			<dr></dr>
+			<feat></feat>
+			<sa></sa>
+			<sr>0</sr>
+			<bonuslist></bonuslist>
+		</template>
+		<template>
+			<name>BOB ~ Template ~ Test 34 Favored Class Highest</name>
+			<strmod>0</strmod>
+			<dexmod>0</dexmod>
+			<conmod>0</conmod>
+			<intmod>0</intmod>
+			<wismod>0</wismod>
+			<chamod>0</chamod>
+			<cr>0</cr>
+			<dr></dr>
+			<feat></feat>
+			<sa></sa>
+			<sr>0</sr>
+			<bonuslist></bonuslist>
+		</template>
+		<template>
+			<name>Template Choice for Bob ~ 1</name>
 			<strmod>0</strmod>
 			<dexmod>0</dexmod>
 			<conmod>0</conmod>
@@ -2182,37 +2182,7 @@ BIO
 
 		<class number="0" spelllistclass="MonKee" spellcastertype="Arcane">
 			<level number="0" known="0" cast="0"/>
-			<level number="1" known="0" cast="8">
-				<spell>
-						<name>Fireball</name>
-						<outputname>Fireball</outputname>
-						<times_memorized>1</times_memorized>
-						<range></range>
-						<components></components>
-						<castingtime></castingtime>
-						<casterlevel>12</casterlevel>
-						<dc>11</dc>
-						<duration>As long as you want up to 120 days [Should be CL x 10]</duration>
-						<effect>What ever you want here, 12 [casterlevel], 120 [casterlevel x 10], 10 [min casterlevel ,10]</effect>
-						<target>Anywhere but here</target>
-						<saveinfo>Fort Saves</saveinfo>
-						<school>
-							<school>Evocation</school>
-							<subschool>BlowThingsUp</subschool>
-							<descriptor>DangerousFubarStuff, I wouldn&#39;t touch it if I were you</descriptor>
-							<fullschool>Evocation (BlowThingsUp) [DangerousFubarStuff, I wouldn&#39;t touch it if I were you]</fullschool>
-						</school>
-						<source>
-							<sourcelevel>Bar Ball1, Brd1, Mon1, Sor1</sourcelevel>
-							<source>PCGen Team - PCGen Testing Set, test</source>
-							<sourcepage>test</sourcepage>
-							<sourceshort>PTS</sourceshort>
-						</source>
-						<spell_resistance></spell_resistance>
-						<description>What ever you want here, (CASTERLEVEL) [casterlevel], (CASTERLEVEL*10) [casterlevel x 10], (min(CASTERLEVEL,10)) [min casterlevel ,10]</description>
-						<bonusspell>*</bonusspell>
-					</spell>
-			</level>
+			<level number="1" known="0" cast="0"/>
 			<level number="2" known="0" cast="0"/>
 			<level number="3" known="0" cast="0"/>
 			<level number="4" known="0" cast="0"/>

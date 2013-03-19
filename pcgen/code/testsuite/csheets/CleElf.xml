@@ -1491,7 +1491,7 @@ BIO
 		</ability_object>
 		<ability_object>
 			<name>Elf Racial Traits</name>
-			<description><para></para><para> Immunity to magic sleep effects </para><para> +2 racial saving throw bonus against enchantment spells or effects. </para><para> Proficient with either longsword or rapier; proficient with shortbow, longbow, composite longbow, and composite shortbow. </para><para> +2 racial bonus on Listen, Search, and Spot checks. An elf who merely passes within 5 feet of a secret or concealed door is entitled to a Search check to notice it as if she were actively looking for the door.</para></description>
+			<description><para></para><para> Immunity to magic sleep effects, </para><para> +2 racial saving throw bonus against enchantment spells or effects., </para><para> Proficient with either longsword or rapier; proficient with shortbow, longbow, composite longbow, and composite shortbow., </para><para> +2 racial bonus on Listen, Search, and Spot checks. An elf who merely passes within 5 feet of a secret or concealed door is entitled to a Search check to notice it as if she were actively looking for the door.</para></description>
 			<type>ELFRACIALTRAIT.SPECIALQUALITY</type>
 			<associated></associated>
 			<count>0</count>
