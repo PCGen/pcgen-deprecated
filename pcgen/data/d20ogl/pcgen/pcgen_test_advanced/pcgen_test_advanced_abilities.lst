@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Mar 18 04:02:20 2013 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Wed Mar 20 16:02:44 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 # Ability
 # Bob Tests - PCG Bob needs only the simple addition of the 'Template ~ Bob Tests' Template and it will take care of testing Bob.
 # The Template has an Ability granted but only if Bob meets the requirements; the Test Includes the Requirements, so ALL tests should = True.

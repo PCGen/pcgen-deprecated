@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Fri Oct 19 20:16:09 2012 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Wed Mar 20 16:02:44 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 SOURCELONG:Darwin's World 2nd Edition - Survivor's Guide (v2.5)	SOURCESHORT:DW2_SG	SOURCEWEB:http://www.rpgobjects.com/index.php?page=dw	SOURCEDATE:2006-01
 
 # Class Name	Hit Dice	Type				Abbreviation	Max Level	Source Page		Define						Save checks bonus																Combat bonus		Modify VAR
@@ -121,7 +121,7 @@ CLASS:Scav		PREATT:2	PREFEAT:1,Radiation Sense	PRESKILL:2,Survival=6,Search=6
 CLASS:Scav		STARTSKILLPTS:5	CSKILL:Bluff|Decipher Script|Disable Device|Drive|Escape Artist|Gather Information|Hide|Knowledge (Current Events)|Knowledge (Mutant Lore)|Knowledge (Technology)|Move Silently|Navigate|Repair|Search|Spot|Survival
 1					BONUS:ABILITYPOOL|Scav Feat|(CL/3)
 1	SAB:Scav Scan
-2											BONUS:VAR|SneakAttack|(cl("Scav")+1)/3	AUTO:FEAT|Sneak Attack
+2											BONUS:VAR|SneakAttackDice|(cl("Scav")+1)/3	AUTO:FEAT|Sneak Attack
 4	SAB:Scav Survival
 5
 7	SAB:Feign Death
@@ -148,8 +148,8 @@ CLASS:Skulk		PREATT:2	PRESKILL:3,Hide=6,Move Silently=6,Sleight of Hand=6
 CLASS:Skulk		STARTSKILLPTS:5	CSKILL:Balance|Bluff|Climb|Disguise|Disable Device|Escape Artist|Gather Information|Hide|Jump|Knowledge (Current Events)|Knowledge (Business)|Knowledge (Streetwise)|Listen|Move Silently|Read/Write Language|Search|Sleight of Hand|Speak Language|Spot|Tumble
 1					BONUS:ABILITYPOOL|Skulk Feat|(CL/3)
 1	SAB:Sweep
-2											BONUS:VAR|SneakAttack|(cl("Skulk")+1)/3					AUTO:FEAT|Sneak Attack
-4																		ADD:FEAT|Skill Mastery
+2											BONUS:VAR|SneakAttackDice|(cl("Skulk")+1)/3					AUTO:FEAT|Sneak Attack
+4																			ADD:FEAT|Skill Mastery
 7	SAB:Improved Sweep
 10	SAB:Without a Trace
 

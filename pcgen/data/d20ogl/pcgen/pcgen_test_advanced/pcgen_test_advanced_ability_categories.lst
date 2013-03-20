@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Mar 18 04:02:20 2013 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Wed Mar 20 16:02:44 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 
 # Ability Category						Visible		Editable or Static?	Change Pool?	Fractional values?	Base Pool number		Category of Object			Type of Object																																				Specific choices list				Plural description for UI			Display Location
 ABILITYCATEGORY:Martial Art Techniques			VISIBLE:QUALIFY	EDITABLE:YES		EDITPOOL:YES	FRACTIONALPOOL:YES					CATEGORY:Special Ability		TYPE:MartialArtsSkill																																										PLURAL:Martial Art Techniques			DISPLAYLOCATION:Character Creation Pool

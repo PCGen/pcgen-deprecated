@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Mar 18 04:02:20 2013 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Wed Mar 20 16:02:44 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 #Equip
 # Equipment Name			Required Weapon Proficiency			Required Armor Proficiency	Required Shield Proficiency	Type										Cost		Weight	Slot Needed	!PREEQUIP							Critical Hit Multiplier	Critical Hit Range	Damage	Modifier		Wield Category	Range		Size		Source Page		Add 				Ability													Combat bonus				Bonus to nb of slots					Special Property
 Test Equipment																				TYPE:CODE433																																																	ABILITY:Any Feat Choice|VIRTUAL|AFC 1	ABILITY:Any Feat Choice|AUTOMATIC|AFC 2

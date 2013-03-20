@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Mar 18 04:02:20 2013 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Wed Mar 20 16:02:44 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 
 # Ability Name			Define
 CATEGORY=Internal|Default.MOD	DEFINE:HasLowLightVision|0	DEFINE:DarkvisionRange|0	DEFINE:LowLightVision|0	DEFINE:TremorsenseRange|0	DEFINE:BlindsenseRange|0	DEFINE:BlindsightRange|0	DEFINE:LinguisticsLanguageChoice|1

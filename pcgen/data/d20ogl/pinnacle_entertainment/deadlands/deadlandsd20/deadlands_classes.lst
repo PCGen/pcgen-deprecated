@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Mon Mar 18 04:02:20 2013 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Wed Mar 20 16:02:44 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 SOURCELONG:Deadlands Core Rulebook	SOURCESHORT:Deadlands	SOURCEWEB:http://www.peginc.com/index.htm	SOURCEDATE:2003-01
 
 # Class Name		Hit Dice	Type			Abbreviation	Max Level	Source Page		Save checks bonus																			Combat bonus
@@ -215,17 +215,17 @@ CLASS:Scout		STARTSKILLPTS:4	CSKILL:Climb|TYPE=Craft|Gather Information|Handle A
 ###Block: Proficiencies
 1	AUTO:FEAT|Simple Weapon Proficiency	AUTO:WEAPONPROF|TYPE=Simple|TYPE=Pistol|TYPE=Rifle|TYPE=Shotgun
 ###Block: Normal Progression
-1	BONUS:SKILL|Language |4												AUTO:FEAT|Track
-2	BONUS:SKILL|Listen,Spot|(CL-2)/3										AUTO:FEAT|Alertness
-4							BONUS:VAR|SneakAttack|CL/4					AUTO:FEAT|Sneak Attack
+1	BONUS:SKILL|Language |4													AUTO:FEAT|Track
+2	BONUS:SKILL|Listen,Spot|(CL-2)/3											AUTO:FEAT|Alertness
+4							BONUS:VAR|SneakAttackDice|CL/4					AUTO:FEAT|Sneak Attack
 5	BONUS:SKILL|Language |2
-6												ADD:FEAT|Skill Focus
+6													ADD:FEAT|Skill Focus
 7	BONUS:SKILL|Language |2
-9												ADD:FEAT|Skill Focus
+9													ADD:FEAT|Skill Focus
 10	BONUS:SKILL|Language |2
-13												ADD:FEAT|Skill Focus
+13													ADD:FEAT|Skill Focus
 15	BONUS:SKILL|Language |2
-18												ADD:FEAT|Skill Focus
+18													ADD:FEAT|Skill Focus
 20	BONUS:SKILL|Language |2
 
 # Class Name	Hit Dice	Type		Abbreviation	Max Level	Source Page		Save checks bonus														Combat bonus
