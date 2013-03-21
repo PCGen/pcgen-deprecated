@@ -4,7 +4,6 @@
 Default								CATEGORY:Internal
 
 CATEGORY=Internal|Default.MOD									DEFINE:GauntletOS|0	DEFINE:UnarmedLethal|0										AUTO:EQUIP|Gauntlet|PREARMORTYPE:1,TYPE.Heavy																BONUS:VAR|GauntletOS|1|PREARMORTYPE:1,TYPE.Heavy	BONUS:VAR|UnarmedLethal|GauntletOS
-CATEGORY=Internal|Default.MOD									DEFINE:SneakAttack|0																									BONUS:VAR|SneakAttackDice|SneakAttack|TYPE=NoStack
 
 
 
