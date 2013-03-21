@@ -418,13 +418,13 @@ public class PlayerCharacter extends Observable implements Cloneable, VariableCo
 		bioSetFacet.set(id, Globals.getBioSet());
 		//Set Race before Stat/Check due to Default object in Pathfinder/RSRD
 		setRace(Globals.s_EMPTYRACE);
+		setCharacterType(SettingsHandler.getGame().getDefaultCharacterType());
 
 		statFacet.addAll(id, Globals.getContext().ref.getOrderSortedCDOMObjects(PCStat.class));
 		checkFacet.addAll(id, Globals.getContext().ref.getOrderSortedCDOMObjects(PCCheck.class));
 		campaignFacet.addAll(id, loadedCampaigns);
 
 		setXPTable(SettingsHandler.getGame().getDefaultXPTableName());
-		setCharacterType(SettingsHandler.getGame().getDefaultCharacterType());
 
 		setName(Constants.EMPTY_STRING);
 		setFeats(0);
