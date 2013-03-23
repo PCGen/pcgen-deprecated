@@ -537,7 +537,6 @@ public class SourceSelectionDialog extends JDialog
 			mainPane.setTopComponent(new JScrollPane(sourceList));
 			infoPane.setPreferredSize(new Dimension(800, 150));
 			mainPane.setBottomComponent(infoPane);
-			setLayout(new BorderLayout());
 			add(mainPane, BorderLayout.CENTER);
 		}
 
