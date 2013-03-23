@@ -221,6 +221,12 @@
 		<intelligent_items.lightline><subattrib light=""/></intelligent_items.lightline>
 		<intelligent_items.darkline><subattrib medium=""/></intelligent_items.darkline>
 
+		<words_of_powers.title><subattrib centre="" inverse=""/></words_of_powers.title>
+		<words_of_powers.border padding="0.5pt"><subattrib border="" inverse=""/></words_of_powers.border>
+		<words_of_powers.lightline><subattrib light=""/></words_of_powers.lightline>
+		<words_of_powers.darkline><subattrib medium=""/></words_of_powers.darkline>
+
+
 		<casterleveloutputs.title><subattrib centre="" inverse=""/></casterleveloutputs.title>
 		<casterleveloutputs.border padding="0.5pt"><subattrib border="" inverse=""/></casterleveloutputs.border>
 		<casterleveloutputs.lightline><subattrib light=""/></casterleveloutputs.lightline>
@@ -335,6 +341,13 @@
 		<salient_divine_abilities.border padding="0.5pt"><subattrib border="" inverse=""/></salient_divine_abilities.border>
 		<salient_divine_abilities.lightline><subattrib light=""/></salient_divine_abilities.lightline>
 		<salient_divine_abilities.darkline><subattrib medium=""/></salient_divine_abilities.darkline>
+
+		<deity.title><subattrib centre="" inverse=""/></deity.title>
+		<deity.border padding="0.5pt"><subattrib border="" inverse=""/></deity.border>
+		<deity.lightline><subattrib light=""/></deity.lightline>
+		<deity.darkline><subattrib medium=""/></deity.darkline>
+
+
 
 		<feats.title><subattrib centre="" inverse=""/></feats.title>
 		<feats.border padding="0.5pt"><subattrib border="" inverse=""/></feats.border>
