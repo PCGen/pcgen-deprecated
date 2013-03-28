@@ -1,9 +1,9 @@
-# CVS $Revision$ $Author$ -- Tue Oct 30 01:48:28 2012 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Thu Mar 28 14:23:25 2013 -- reformated by prettylst.pl v1.39 (build 15052)
 SOURCELONG:Advanced Player's Guide	SOURCESHORT:PFAPG	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy8fo1	SOURCEDATE:2010-08
 # Original Entry by: Eric C. Smith (Maredudd)
 
 ###Block: Magic Weapon Special Abilities
-# Modifier Name	Unique Key		Type					Plus		Cost		Visible		Source Page										Weapon prop. bonus
+# Modifier Name	Unique Key		Type					Plus		Cost		Visible		Source Page		Weapon prop. bonus					Special Property
 Allying		KEY:ALLYING		TYPE:Weapon.Ammunition		PLUS:1			VISIBLE:QUALIFY	SOURCEPAGE:p.286									SPROP:Allows transfer of some or all of its enhancement bonus to an ally's weapon.
 Conductive		KEY:CONDUCTVE	TYPE:Weapon.Ammunition		PLUS:1			VISIBLE:QUALIFY	SOURCEPAGE:p.286									SPROP:Conducts touch attacks from spell-like and supernatural abilities.
 Corrosive		KEY:CRRSVE		TYPE:Weapon.Ammunition		PLUS:1			VISIBLE:QUALIFY	SOURCEPAGE:p.287									SPROP:+1d6 acid damage
