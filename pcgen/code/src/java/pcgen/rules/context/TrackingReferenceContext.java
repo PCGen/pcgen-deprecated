@@ -139,7 +139,13 @@ public class TrackingReferenceContext extends RuntimeReferenceContext implements
 		{
 			List<String> tokens = track.getListFor(ref, uri);
 			Set<String> tokenNames = new TreeSet<String>();
-			tokenNames.addAll(tokens);
+			for (String tok : tokens)
+			{
+				if (tok != null)
+				{
+					tokenNames.add(tok);
+				}
+			}
 			Logging.errorPrint("  Was used in " + uri + " in tokens: "
 					+ tokenNames);
 		}
@@ -163,6 +169,11 @@ public class TrackingReferenceContext extends RuntimeReferenceContext implements
 
 	<T> void track(CDOMReference<T> ref)
 	{
+		String src = getSource();
+		if (src==null)
+		{
+			src = "";
+		}
 		track.addToListFor(ref, getSourceURI(), getSource());
 	}
 
