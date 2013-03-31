@@ -201,6 +201,7 @@
 	</bean>
 	<bean id="grantedAbilityFacet" class="pcgen.cdom.facet.GrantedAbilityFacet"/>
 	<!-- H -->
+	<bean id="handedFacet" class="pcgen.cdom.facet.HandedFacet"/>
 	<bean id="handsFacet" class="pcgen.cdom.facet.HandsFacet">
 		<property name="templateFacet" ref="templateFacet"/>
 		<property name="raceFacet" ref="raceFacet"/>

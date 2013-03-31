@@ -2751,7 +2751,6 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 	@Override
 	public void setHanded(HandedFacade handedness)
 	{
-		Logging.log(Logging.ERROR, "CharacterFacadeImpl @ setHanded to "+((Handed) handedness).name()); //$NON-NLS-1$
 		this.handedness.setReference(handedness);
 		theCharacter.setHanded((Handed) handedness);
 	}
