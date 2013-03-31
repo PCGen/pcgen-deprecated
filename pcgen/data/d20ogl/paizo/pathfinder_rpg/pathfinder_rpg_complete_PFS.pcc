@@ -1,7 +1,8 @@
 # CVS $Revision$ $Author$
 CAMPAIGN:Pathfinder RPG for PFS
 # Note: Game mode must be a match for the game mode folder name to ensure the right gamemode gets loaded when using the basic source loading screen
-GAMEMODE:Pathfinder_RPG
+#GAMEMODE:Pathfinder_RPG
+# COMMENT: Disabled till all these errors can be rectified.
 TYPE:Paizo Publishing.Pathfinder RPG
 RANK:1
 STATUS:RELEASE
