@@ -26,8 +26,8 @@
 		<h2><a name="WhatsNew">What's new for v6.00.1 RC1</a></h2>
 
 
-<p>PCGen v6.00.1 RC1 is the first release candidate for the patch to PCGen 6.00. We've fixed a number of 
-bugs that have been reported since the 6.0 production release. See the <a href="#ChangeLog">Change Log for 6.00.1 RC1</a> 
+<p>PCGen v6.00.1 RC1 is the first release candidate for the patch to PCGen 6.00. This release includes 150 bug fixes 
+and improvements that we've made since the 6.0 production release. See the <a href="#ChangeLog">Change Log for 6.00.1 RC1</a> 
 for full details.
 The highlights of the changes for PCGen 6.00.1 are listed below:
 </p>
@@ -62,7 +62,7 @@ random NPC generation or LST editor functionality.
 For full details of the new changes in this release, see the <a href="#ChangeLog">Change Log</a> .
 
 </p>
-<p><i>James Dempsey</i> for the PCGEN Team -- 25 March, 2013.</p>
+<p><i>James Dempsey</i> for the PCGEN Team -- 1 April, 2013.</p>
 
 		<h2><a name="Installation">Installation</a></h2>
 
@@ -175,6 +175,8 @@ For full details of the new changes in this release, see the <a href="#ChangeLog
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/CODE-2110'>CODE-2110</a>] -         Add info about advanced tab to the basic sources tab
 </li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-2124'>CODE-2124</a>] -         Refresh trait count after change of character type
+</li>
 </ul>
                         
 <h3>        New Data Features
@@ -204,7 +206,19 @@ For full details of the new changes in this release, see the <a href="#ChangeLog
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/DATA-944'>DATA-944</a>] -         Ability to create potions of non-core spells
 </li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-958'>DATA-958</a>] -         PF APG&#39;s &quot;Scroll Case&quot; needs CONTAINS tag
+</li>
 <li>[<a href='http://jira.pcgen.org/browse/DATA-963'>DATA-963</a>] -         Desecrate temporary bonus
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-978'>DATA-978</a>] -         [PFCR] Arcane Strike difficult to extend
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-988'>DATA-988</a>] -         [Pathfinder] APG Cages aren&#39;t containers
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-990'>DATA-990</a>] -         [Pathfinder] APG Weapon Mods - Add the Special properties descriptions
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-992'>DATA-992</a>] -         [Pathfinder] APG - Strong Jaw Spell - Temporary Modifier
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-999'>DATA-999</a>] -         [Pathfinder] Ultimate Combat - Expanded Fighter Weapon Groups - Firearms Weapon Training
 </li>
 </ul>
                         
@@ -259,7 +273,11 @@ For full details of the new changes in this release, see the <a href="#ChangeLog
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/CODE-1856'>CODE-1856</a>] -         Null Pointer Exception on Human Psion
 </li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-1877'>CODE-1877</a>] -         Summary tab Statistic block not updating handed
+</li>
 <li>[<a href='http://jira.pcgen.org/browse/CODE-1882'>CODE-1882</a>] -         Problems with randomization function for equipment (scrolls, etc) kits
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/CODE-1886'>CODE-1886</a>] -         Load Sources menu gets out of sync with sources
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/CODE-1887'>CODE-1887</a>] -         TEMPLATE:%LIST will not grant the template if the Ability is not taken directly
 </li>
@@ -286,8 +304,6 @@ For full details of the new changes in this release, see the <a href="#ChangeLog
 <li>[<a href='http://jira.pcgen.org/browse/CODE-1980'>CODE-1980</a>] -         Load of Template line silently consumes errors
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/CODE-1985'>CODE-1985</a>] -         Domains do not save ADD information
-</li>
-<li>[<a href='http://jira.pcgen.org/browse/CODE-1987'>CODE-1987</a>] -         Choice targets are not symmetric on removal
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/CODE-1997'>CODE-1997</a>] -         CleElf Unit Test loaded in UI has error regarding &#39;DOMAINGRANTS&#39;
 </li>
@@ -378,6 +394,28 @@ For full details of the new changes in this release, see the <a href="#ChangeLog
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/DATA-974'>DATA-974</a>] -         [PFCR / PFAPG] Ranger &amp; Inquisitor Track abilities stack exponentially
 </li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-982'>DATA-982</a>] -         Minor duplications in ability file repeating in OS
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-983'>DATA-983</a>] -         Loading just RSRD core I &amp; II errors with &#39;Animal (Will)&#39;
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-984'>DATA-984</a>] -         Darkvision ability is not defined in a standard way
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-985'>DATA-985</a>] -         Epic armor/shield enhancements don&#39;t stack with the armor/shield itself
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-987'>DATA-987</a>] -         Zen Archer Weapon Focus/Specialization  Incompatible with Weapon-Specific Prerequisites (fix)
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-993'>DATA-993</a>] -         [Pathfinder] Core - Knowledge Domain - Remote Viewing Ability - Incorrect Class Level Requirement
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-997'>DATA-997</a>] -         [Pathfinder] Ultimate Combat - Brawler Fighter Archetype - Missing Bonuses, Types
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-1000'>DATA-1000</a>] -         [Pathfinder] Ultimate Combat - Gunslinger - Nimble - Missing bonus, faulty description
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-1004'>DATA-1004</a>] -         [Pathfinder] - Ultimate Combat - Firearms - Range and ammo corrections
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-1014'>DATA-1014</a>] -         [Pathfinder] Ultimate Magic - Qinggong Monk Ki Powers - Missing SpellLike Type on SLAs
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/DATA-1015'>DATA-1015</a>] -         [Pathfinder] Ultimate Magic - Shaping Focus - DruidWildShape Bonus Miscalculation
+</li>
 </ul>
 
 <h3>       Documentation  Bug Fixes
@@ -429,7 +467,7 @@ For full details of the new changes in this release, see the <a href="#ChangeLog
 <ul>
 <li>[<a href='http://jira.pcgen.org/browse/OS-90'>OS-90</a>] -         Stat blocks not showing Spell books correctly
 </li>
-<li>[<a href='http://jira.pcgen.org/browse/OS-199'>OS-199</a>] -         PDF sheet equipment total weight/cost needs seperator
+<li>[<a href='http://jira.pcgen.org/browse/OS-199'>OS-199</a>] -         PDF sheet equipment total weight/cost needs separator
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/OS-202'>OS-202</a>] -         Page break in spell description
 </li>
@@ -438,6 +476,8 @@ For full details of the new changes in this release, see the <a href="#ChangeLog
 <li>[<a href='http://jira.pcgen.org/browse/OS-225'>OS-225</a>] -         MSRD - cannot output Talents
 </li>
 <li>[<a href='http://jira.pcgen.org/browse/OS-226'>OS-226</a>] -         MSRD variant output sheets gives errors
+</li>
+<li>[<a href='http://jira.pcgen.org/browse/OS-230'>OS-230</a>] -         Exported Fantasy Ground Character Sheets generate an error when opened in Fantasy Grounds
 </li>
 </ul>
 
