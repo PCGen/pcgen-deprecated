@@ -203,3 +203,85 @@ Bombard (Heavy)		TYPE:Exotic.Ranged.SiegeEngine.Siege.SiegeWeapon.SiegeFirearm.B
 Catapult (Heavy)		TYPE:Exotic.Ranged.SiegeEngine.Siege.SiegeWeapon.Bludgeoning
 Trebuchet (Heavy)		TYPE:Exotic.Ranged.SiegeEngine.Siege.SiegeWeapon.Bludgeoning
 
+###Bock: Weapon Groups:
+Hooked Axe.MOD	TYPE:Axe.Polearm
+Knuckle Axe.MOD	TYPE:Axe
+Mattock.MOD	TYPE:Axe
+Pata.MOD	TYPE:Axe.Bladelight
+#
+Double Chicken Saber.MOD	TYPE:Bladeheavy.Monk
+Katana (Double Walking Stick).MOD	TYPE:Bladeheavy
+Terbutje (Great).MOD	TYPE:Bladeheavy
+Katana.MOD	TYPE:Bladeheavy
+Broadsword (Nine-Ring).MOD	TYPE:Bladeheavy
+Nodachi.MOD	TYPE:Bladeheavy.Polearm
+Sword (Seven-Branched).MOD	TYPE:Bladeheavy.Monk
+Shotel.MOD	TYPE:Bladeheavy
+Terbutje.MOD	TYPE:Bladeheavy
+#
+Butterfly Sword.MOD	TYPE:Bladelight.Monk
+Gladius.MOD	TYPE:Bladelight
+Kerambit.MOD	TYPE:Bladelight
+Quadrens.MOD	TYPE:Bladelight
+Sica.MOD	TYPE:Bladelight
+Wakizashi.MOD	TYPE:Bladelight
+#
+Dan Bong.MOD	TYPE:Close.Monk
+Emei Piercer.MOD	TYPE:Close.Monk
+Fighting Fan.MOD	TYPE:Close.Monk
+Iron Brush.MOD	TYPE:Close
+Madu.MOD	TYPE:Close
+Mere Club.MOD	TYPE:Close
+Scizore.MOD	TYPE:Close
+Tekko-Kagi (Iron Claw).MOD	TYPE:Close
+Tonfa.MOD	TYPE:Close.Monk
+Wushu Dart.MOD	TYPE:Close.Monk.Thrown
+#
+Tube Arrow Shooter.MOD	TYPE:Crossbow
+#
+#Firearms: All One-Handed, Two-Handed, And Siege Firearms
+#
+Chain Spear.MOD	TYPE:Flail
+Kama (Double Chained).MOD	TYPE:Flail.Monk
+Flying Blade.MOD	TYPE:Flail
+Kusarigama (Sickle and Chain).MOD	TYPE:Flail.Monk
+Kyoketsu Shoge.MOD	TYPE:Flail.Monk
+Meteor Hammer.MOD	TYPE:Flail
+Nine-Section Whip.MOD	TYPE:Flail.Monk
+Sansetsukon.MOD	TYPE:Flail.Monk
+Scorpion Whip.MOD	TYPE:Flail
+Urumi.MOD	TYPE:Flail.Monk
+#
+Aklys (Gladiator).MOD	TYPE:Hammer.Thrown
+Mere Club.MOD	TYPE:Hammer
+Taiaha.MOD	TYPE:Hammer
+Tetsubo.MOD	TYPE:Hammer
+Wahaika.MOD	TYPE:Hammer
+#
+Bo Staff.MOD	TYPE:Monk
+Jutte.MOD	TYPE:Monk
+Monk's Spade.MOD	TYPE:Monk.Polearm
+Broadsword (Nine-Ring).MOD	TYPE:Monk
+Rope Dart.MOD	TYPE:Monk.Thrown
+Shang Gou.MOD	TYPE:Monk
+Tiger Fork.MOD	TYPE:Monk.Polearm
+Sword (Tri-Point Double-Edged).MOD	TYPE:Monk
+
+Naginata.MOD	TYPE:Polearm
+
+Amentum.MOD	TYPE:Spear.Thrown
+Boar Spear.MOD	TYPE:Spear
+Pilum.MOD	TYPE:Spear
+Sibat.MOD	TYPE:Spear
+Tiger Fork.MOD	TYPE:Spear
+
+Atlatl.MOD	TYPE:Thrown
+Harpoon.MOD	TYPE:Thrown
+Kestros.MOD	TYPE:Thrown
+Poisoned Sand Tube.MOD	TYPE:Thrown
+Throwing Shield.MOD	TYPE:Thrown
+
+#Siege Engines: All Siege Engines
+
+
+
