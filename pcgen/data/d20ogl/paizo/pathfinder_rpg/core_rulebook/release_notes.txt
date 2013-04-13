@@ -28,3 +28,270 @@ Release History
 ===============
 
 Release 1 - Initial release.
+
+
+
+
+
+#
+#Axes: bardiche, battleaxe, dwarven waraxe, greataxe, handaxe, heavy pick, hooked axe, knuckle axe, light pick, mattock, orc double axe, pata, and throwing axe
+#Blades, Heavy: bastard sword, chakram, double chicken saber, double walking stick katana, elven curve blade, falcata, falchion, greatsword, great terbutje, katana, khopesh, longsword, nine-ring broadsword, nodachi, scimitar, scythe, seven-branched sword, shotel, temple sword, terbutje, and two-bladed sword
+#Blades, Light: bayonet, butterfly sword, dagger, gladius, kama, kerambit, kukri, pata, quadrens, rapier, short sword, sica, sickle, starknife, swordbreaker dagger, sword cane, and wakizashi
+#Bows: composite longbow, composite shortbow, longbow, and shortbow
+#Close: bayonet, brass knuckles, dan bong, emei piercer, fighting fan, gauntlet, heavy shield, iron brush, light shield, madu, mere club, punching dagger, sap, scizore, spiked armor, spiked gauntlet, spiked shield, tekko-kagi, tonfa, unarmed strike, wooden stake, and wushu dart
+#Crossbows: double crossbow, hand crossbow, heavy crossbow, heavy repeating crossbow, light crossbow, light repeating crossbow, and tube arrow shooter
+#Double: dire flail, dwarven urgrosh, gnome hooked hammer, orc double axe, quarterstaff, and two-bladed sword
+#Firearms: all one-handed, two-handed, and siege firearms
+#Flails: chain spear, dire flail, double chained kama, flail, flying blade, heavy flail, kusarigama, kyoketsu shoge, meteor hammer, morningstar, nine-section whip, nunchaku, sansetsukon, scorpion whip, spiked chain, urumi, and whip
+#Hammers: aklys, battle aspergillum, club, greatclub, heavy mace, light hammer, light mace, mere club, taiaha, tetsubo, wahaika, and warhammer
+#Monk: bo staff, brass knuckles, butterfly sword, cestus, dan bong, double chained kama, double chicken saber, emei piercer, fighting fan, jutte, kama, kusarigama, kyoketsu shoge, lungshuan tamo, monk's spade, nine-ring broadsword, nine-section whip, nunchaku, quarterstaff, rope dart, sai, sansetsukon, seven-branched sword, shang gou, shuriken, siangham, tiger fork, tonfa, tri-point double-edged sword, unarmed strike, urumi, wushu dart
+#Natural: unarmed strike and all natural weapons, such as bite, claw, gore, tail, and wing
+#Polearms: bardiche, bec de corbin, bill, glaive, glaive-guisarme, guisarme, halberd, hooked lance, lucerne hammer, mancatcher, monk's spade, naginata, nodachi, ranseur, and tiger fork
+#Spears:amentum, boar spear, javelin, harpoon, lance, longspear, pilum, shortspear, sibat, spear, tiger fork, and trident
+#Thrown:aklys, amentum, atlatl, blowgun, bolas, boomerang, chakram, club, dagger, dart, halfling sling staff, harpoon, javelin, lasso, kestros, light hammer, net, poisoned sand tube, rope dart, shortspear, shuriken, sling, spear, starknife, throwing axe, throwing shield, trident, and wushu dart
+#Siege Engines: all siege engines
+
+
+
+#Axes:
+Bardiche.MOD	TYPE:Axe
+Battleaxe.MOD	TYPE:Axe
+Dwarven Waraxe.MOD	TYPE:Axe
+Greataxe.MOD	TYPE:Axe
+Handaxe.MOD	TYPE:Axe
+Heavy Pick.MOD	TYPE:Axe
+Hooked Axe.MOD	TYPE:Axe
+Knuckle Axe.MOD	TYPE:Axe
+Light Pick.MOD	TYPE:Axe
+Mattock.MOD	TYPE:Axe
+Orc Double Axe.MOD	TYPE:Axe
+Pata.MOD	TYPE:Axe
+Throwing Axe.MOD	TYPE:Axe
+
+#Blades, Heavy:
+Bastard Sword.MOD	TYPE:Bladeheavy
+Chakram.MOD	TYPE:Bladeheavy
+Double Chicken Saber.MOD	TYPE:Bladeheavy
+Double Walking Stick Katana.MOD	TYPE:Bladeheavy
+Elven Curve Blade.MOD	TYPE:Bladeheavy
+Falcata.MOD	TYPE:Bladeheavy
+Falchion.MOD	TYPE:Bladeheavy
+Greatsword.MOD	TYPE:Bladeheavy
+Great Terbutje.MOD	TYPE:Bladeheavy
+Katana.MOD	TYPE:Bladeheavy
+Khopesh.MOD	TYPE:Bladeheavy
+Longsword.MOD	TYPE:Bladeheavy
+Nine-Ring Broadsword.MOD	TYPE:Bladeheavy
+Nodachi.MOD	TYPE:Bladeheavy
+Scimitar.MOD	TYPE:Bladeheavy
+Scythe.MOD	TYPE:Bladeheavy
+Seven-Branched Sword.MOD	TYPE:Bladeheavy
+Shotel.MOD	TYPE:Bladeheavy
+Temple Sword.MOD	TYPE:Bladeheavy
+Terbutje.MOD	TYPE:Bladeheavy
+Two-Bladed Sword.MOD	TYPE:Bladeheavy
+
+#Blades, Light:
+Bayonet.MOD	TYPE:Bladelight
+Butterfly Sword.MOD	TYPE:Bladelight
+Dagger.MOD	TYPE:Bladelight
+Gladius.MOD	TYPE:Bladelight
+Kama.MOD	TYPE:Bladelight
+Kerambit.MOD	TYPE:Bladelight
+Kukri.MOD	TYPE:Bladelight
+Pata.MOD	TYPE:Bladelight
+Quadrens.MOD	TYPE:Bladelight
+Rapier.MOD	TYPE:Bladelight
+Short Sword.MOD	TYPE:Bladelight
+Sica.MOD	TYPE:Bladelight
+Sickle.MOD	TYPE:Bladelight
+Starknife.MOD	TYPE:Bladelight
+Swordbreaker Dagger.MOD	TYPE:Bladelight
+Sword Cane.MOD	TYPE:Bladelight
+Wakizashi.MOD	TYPE:Bladelight
+
+#Bows:
+Composite Longbow.MOD	TYPE:Bow
+Composite Shortbow.MOD	TYPE:Bow
+Longbow.MOD	TYPE:Bow
+Shortbow.MOD	TYPE:Bow
+
+#Close:
+Bayonet.MOD	TYPE:Close
+Brass Knuckles.MOD	TYPE:Close
+Dan Bong.MOD	TYPE:Close
+Emei Piercer.MOD	TYPE:Close
+Fighting Fan.MOD	TYPE:Close
+Gauntlet.MOD	TYPE:Close
+Heavy Shield.MOD	TYPE:Close
+Iron Brush.MOD	TYPE:Close
+Light Shield.MOD	TYPE:Close
+Madu.MOD	TYPE:Close
+Mere Club.MOD	TYPE:Close
+Punching Dagger.MOD	TYPE:Close
+Sap.MOD	TYPE:Close
+Scizore.MOD	TYPE:Close
+Spiked Armor.MOD	TYPE:Close
+Spiked Gauntlet.MOD	TYPE:Close
+Spiked Shield.MOD	TYPE:Close
+Tekko-Kagi.MOD	TYPE:Close
+Tonfa.MOD	TYPE:Close
+Unarmed Strike.MOD	TYPE:Close
+Wooden Stake.MOD	TYPE:Close
+Wushu Dart.MOD	TYPE:Close
+
+#Crossbows:
+Double Crossbow.MOD	TYPE:Crossbow
+Hand Crossbow.MOD	TYPE:Crossbow
+Heavy Crossbow.MOD	TYPE:Crossbow
+Heavy Repeating Crossbow.MOD	TYPE:Crossbow
+Light Crossbow.MOD	TYPE:Crossbow
+Light Repeating Crossbow.MOD	TYPE:Crossbow
+Tube Arrow Shooter.MOD	TYPE:Crossbow
+
+#Double: 
+Dire Flail.MOD	TYPE:Double
+Dwarven Urgrosh.MOD	TYPE:Double
+Gnome Hooked Hammer.MOD	TYPE:Double
+Orc Double Axe.MOD	TYPE:Double
+Quarterstaff.MOD	TYPE:Double
+Two-Bladed Sword.MOD	TYPE:Double
+
+
+#Flails:
+Chain Spear.MOD	TYPE:Flail
+Dire Flail.MOD	TYPE:Flail
+Double Chained Kama.MOD	TYPE:Flail
+Flail.MOD	TYPE:Flail
+Flying Blade.MOD	TYPE:Flail
+Heavy Flail.MOD	TYPE:Flail
+Kusarigama.MOD	TYPE:Flail
+Kyoketsu Shoge.MOD	TYPE:Flail
+Meteor Hammer.MOD	TYPE:Flail
+Morningstar.MOD	TYPE:Flail
+Nine-Section Whip.MOD	TYPE:Flail
+Nunchaku.MOD	TYPE:Flail
+Sansetsukon.MOD	TYPE:Flail
+Scorpion Whip.MOD	TYPE:Flail
+Spiked Chain.MOD	TYPE:Flail
+Urumi.MOD	TYPE:Flail
+Whip.MOD	TYPE:Flail
+
+#Hammers: 
+Aklys.MOD	TYPE:Hammer
+Battle Aspergillum.MOD	TYPE:Hammer
+Club.MOD	TYPE:Hammer
+Greatclub.MOD	TYPE:Hammer
+Heavy Mace.MOD	TYPE:Hammer
+Light Hammer.MOD	TYPE:Hammer
+Light Mace.MOD	TYPE:Hammer
+Mere Club.MOD	TYPE:Hammer
+Taiaha.MOD	TYPE:Hammer
+Tetsubo.MOD	TYPE:Hammer
+Wahaika.MOD	TYPE:Hammer
+Warhammer.MOD	TYPE:Hammer
+
+#Monk: 
+Bo Staff.MOD	TYPE:Monk
+Brass Knuckles.MOD	TYPE:Monk
+Butterfly Sword.MOD	TYPE:Monk
+Cestus.MOD	TYPE:Monk
+Dan Bong.MOD	TYPE:Monk
+Double Chained Kama.MOD	TYPE:Monk
+Double Chicken Saber.MOD	TYPE:Monk
+Emei Piercer.MOD	TYPE:Monk
+Fighting Fan.MOD	TYPE:Monk
+Jutte.MOD	TYPE:Monk
+Kama.MOD	TYPE:Monk
+Kusarigama.MOD	TYPE:Monk
+Kyoketsu Shoge.MOD	TYPE:Monk
+Lungshuan Tamo.MOD	TYPE:Monk
+Monk's Spade.MOD	TYPE:Monk
+Nine-Ring Broadsword.MOD	TYPE:Monk
+Nine-Section Whip.MOD	TYPE:Monk
+Nunchaku.MOD	TYPE:Monk
+Quarterstaff.MOD	TYPE:Monk
+Rope Dart.MOD	TYPE:Monk
+Sai.MOD	TYPE:Monk
+Sansetsukon.MOD	TYPE:Monk
+Seven-Branched Sword.MOD	TYPE:Monk
+Shang Gou.MOD	TYPE:Monk
+Shuriken.MOD	TYPE:Monk
+Siangham.MOD	TYPE:Monk
+Tiger Fork.MOD	TYPE:Monk
+Tonfa.MOD	TYPE:Monk
+Tri-Point Double-Edged Sword.MOD	TYPE:Monk
+Unarmed Strike.MOD	TYPE:Monk
+Urumi.MOD	TYPE:Monk
+Wushu Dart.MOD	TYPE:Monk
+
+#Natural:
+Unarmed Strike.MOD	TYPE:Natural
+Bite.MOD	TYPE:Natural
+Claw.MOD	TYPE:Natural
+Gore.MOD	TYPE:Natural
+Tail.MOD	TYPE:Natural
+Wing.MOD	TYPE:Natural
+
+#Polearms:
+Bardiche.MOD	TYPE:Polearm
+Bec De Corbin.MOD	TYPE:Polearm
+Bill.MOD	TYPE:Polearm
+Glaive.MOD	TYPE:Polearm
+Glaive-Guisarme.MOD	TYPE:Polearm
+Guisarme.MOD	TYPE:Polearm
+Halberd.MOD	TYPE:Polearm
+Hooked Lance.MOD	TYPE:Polearm
+Lucerne Hammer.MOD	TYPE:Polearm
+Mancatcher.MOD	TYPE:Polearm
+Monk's Spade.MOD	TYPE:Polearm
+Naginata.MOD	TYPE:Polearm
+Nodachi.MOD	TYPE:Polearm
+Ranseur.MOD	TYPE:Polearm
+Tiger Fork.MOD	TYPE:Polearm
+
+#Spears:
+Amentum.MOD	TYPE:Spear
+Boar Spear.MOD	TYPE:Spear
+Javelin.MOD	TYPE:Spear
+Harpoon.MOD	TYPE:Spear
+Lance.MOD	TYPE:Spear
+Longspear.MOD	TYPE:Spear
+Pilum.MOD	TYPE:Spear
+Shortspear.MOD	TYPE:Spear
+Sibat.MOD	TYPE:Spear
+Spear.MOD	TYPE:Spear
+Tiger Fork.MOD	TYPE:Spear
+Trident.MOD	TYPE:Spear
+
+#Thrown:
+Aklys.MOD	TYPE:Thrown
+Amentum.MOD	TYPE:Thrown
+Atlatl.MOD	TYPE:Thrown
+Blowgun.MOD	TYPE:Thrown
+Bolas.MOD	TYPE:Thrown
+Boomerang.MOD	TYPE:Thrown
+Chakram.MOD	TYPE:Thrown
+Club.MOD	TYPE:Thrown
+Dagger.MOD	TYPE:Thrown
+Dart.MOD	TYPE:Thrown
+Halfling Sling Staff.MOD	TYPE:Thrown
+Harpoon.MOD	TYPE:Thrown
+Javelin.MOD	TYPE:Thrown
+Lasso.MOD	TYPE:Thrown
+Kestros.MOD	TYPE:Thrown
+Light Hammer.MOD	TYPE:Thrown
+Net.MOD	TYPE:Thrown
+Poisoned Sand Tube.MOD	TYPE:Thrown
+Rope Dart.MOD	TYPE:Thrown
+Shortspear.MOD	TYPE:Thrown
+Shuriken.MOD	TYPE:Thrown
+Sling.MOD	TYPE:Thrown
+Spear.MOD	TYPE:Thrown
+Starknife.MOD	TYPE:Thrown
+Throwing Axe.MOD	TYPE:Thrown
+Throwing Shield.MOD	TYPE:Thrown
+Trident.MOD	TYPE:Thrown
+Wushu Dart.MOD	TYPE:Thrown
+
+#Siege Engines: All Siege Engines

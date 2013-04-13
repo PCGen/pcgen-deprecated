@@ -32,3 +32,6 @@ CATEGORY=Talent|Remain Conscious.MOD	TYPE:CombatHeroTalent
 CATEGORY=Talent|Stamina.MOD			TYPE:CombatHeroTalent
 
 
+###Block: Needed to prevent overlap
+# Ability Name						Restricted Ability
+CATEGORY=Special Ability|Improved Critical.MOD	!PREABILITY:1,CATEGORY=Talent,Improved Critical - Combat Hero
