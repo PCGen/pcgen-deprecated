@@ -1807,6 +1807,7 @@ my @Global_BONUS_Tags = (
 	'BONUS:SLOTS:*',			# Global
 	'BONUS:SPELLCAST:*',		# Global
 	'BONUS:SPELLCASTMULT:*',	# Global
+	'BONUS:SPELLPOINTCOST:*',	# Global
 	'BONUS:SPELLKNOWN:*',		# Global
 	'BONUS:STAT:*',			# Global
 	'BONUS:UDAM:*',			# Global
