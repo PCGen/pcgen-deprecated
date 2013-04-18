@@ -2782,6 +2782,7 @@ my %master_order = (
 		'COMPANIONLIST',		# [ 1672551 ] PCC tag COMPANIONLIST
 		'REQSKILL',
 		'STATUS',
+		'FORWARDREF',
 
 		# These tags load files
 		'ABILITY',
