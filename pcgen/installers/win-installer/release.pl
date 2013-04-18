@@ -223,7 +223,8 @@ close(NSISC);
 print "Copy Windows local files...\n";
 
 rcopy( "$SRC_NSIS/Local", "$DEST_BASE_FOLDER/nsis_dir/Local" );
-rmtree( "$DEST_BASE_FOLDER/nsis_dir/Local/.svn" );
+# No longer required under SVN 1.7
+#rmtree( "$DEST_BASE_FOLDER/nsis_dir/Local/.svn" );
 
 # Copy the release notes over
 
