@@ -68,8 +68,6 @@ FEAT:eclipse_feats.lst
 
 KIT:eclipse_kits.lst
 
-#LANGUAGE:eclipse_languages.lst
-
 RACE:eclipse_races_companions.lst
 RACE:eclipse_races_samples.lst
 

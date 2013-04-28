@@ -1,8 +1,0 @@
-# CVS $Revision$ $Author$ -- Wed Mar 20 16:02:44 2013 -- reformated by prettylst.pl v1.39 (build 15052)
-
-
-# Weapon Name	Type
-Halberda		TYPE:Weapon.Martial.Melee.Ranged.PoleArm.TwoHanded.Piercing
-Halberdb		TYPE:Weapon.Martial.Melee.Ranged.PoleArm.TwoHanded.Piercing
-
-
