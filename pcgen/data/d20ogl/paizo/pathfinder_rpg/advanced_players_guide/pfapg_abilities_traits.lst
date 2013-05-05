@@ -158,6 +158,15 @@ Wisdom in the Flesh (Irori) - Dexterity	KEY:Wisdom in the Flesh ~ Trait ~ Dex	CA
 # Ability Name	Unique Key			Category of Ability		Type																				Visible		Multiple Requirements																	Description							Cost
 No Traits		KEY:No Traits ~ Trait	CATEGORY:Special Ability	TYPE:Trait.BasicTrait.CombatTrait.FaithTrait.MagicTrait.SocialTrait.CampaignTrait.RaceTrait.RegionalTrait.ReligionTrait	VISIBLE:DISPLAY	PREMULT:1,[PREABILITY:1,CATEGORY=Special Ability,No Traits ~ Trait],[!PREABILITY:1,CATEGORY=Special Ability,TYPE.Trait]	DESC:You do not have any character traits.	COST:2
 
+###Block: Fix for Half-Casters - DATA-1062
+CATEGORY=Special Ability|Magical Knack ~ Trait.MOD	ABILITY:Internal|AUTOMATIC|Caster Level ~ Ranger|PREABILITY:1,CATEGORY=Special Ability,Magical Knack ~ Trait(Ranger)	ABILITY:Internal|AUTOMATIC|Caster Level ~ Paladin|PREABILITY:1,CATEGORY=Special Ability,Magical Knack ~ Trait(Paladin)	ABILITY:Internal|AUTOMATIC|Caster Level ~ Antipaladin|PREABILITY:1,CATEGORY=Special Ability,Magical Knack ~ Trait(Antipaladin)
+
+###Block: Half Casters
+Caster Level ~ Antipaladin	CATEGORY:Internal	BONUS:CASTERLEVEL|Antipaladin|2
+Caster Level ~ Paladin		CATEGORY:Internal	BONUS:CASTERLEVEL|Paladin|2
+Caster Level ~ Ranger		CATEGORY:Internal	BONUS:CASTERLEVEL|Ranger|2
+
+
 #
 # End
 #
