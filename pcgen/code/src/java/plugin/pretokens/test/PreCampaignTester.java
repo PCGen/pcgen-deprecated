@@ -23,6 +23,7 @@
 package plugin.pretokens.test;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -75,11 +76,22 @@ public class PreCampaignTester extends AbstractPrerequisiteTest implements Prere
 		if (prereq.getKey().startsWith("BOOKTYPE="))
 		{
 			runningTotal +=
-					countCampaignByBookType(prereq.getKey().substring(9));
+					countCampaignByBookType(prereq.getKey().substring(9), false);
+		}
+		else if (prereq.getKey().startsWith("INCLUDESBOOKTYPE="))
+		{
+			runningTotal +=
+					countCampaignByBookType(prereq.getKey().substring(17), true);
+		}
+		else if (prereq.getKey().startsWith("INCLUDES="))
+		{
+			runningTotal +=
+					countCampaignByName(prereq.getKey().substring(9), source,
+						true);
 		}
 		else
 		{
-			runningTotal += countCampaignByName(prereq.getKey(), source);
+			runningTotal += countCampaignByName(prereq.getKey(), source, false);
 		}
 
 		runningTotal = prereq.getOperator().compare(runningTotal, number);
@@ -91,10 +103,12 @@ public class PreCampaignTester extends AbstractPrerequisiteTest implements Prere
 	 * are of the book type.
 	 * 
 	 * @param bookType the book type
+	 * @param includeSubCampaigns Should we count included sub campaigns that match
 	 * 
 	 * @return the number of matching campaigns
 	 */
-	private int countCampaignByBookType(String bookType)
+	private int countCampaignByBookType(String bookType,
+		boolean includeSubCampaigns)
 	{
 		Set<Campaign> matchingCampaigns = new HashSet<Campaign>();
 		List<Campaign> campList = Globals.getCampaignList();
@@ -113,10 +127,25 @@ public class PreCampaignTester extends AbstractPrerequisiteTest implements Prere
 		for (URI element : selCampaigns)
 		{
 			final Campaign aCampaign = Globals.getCampaignByURI(element, false);
-
-			if (aCampaign != null && bookType.equalsIgnoreCase(aCampaign.getSafe(StringKey.BOOK_TYPE)))
+			List<Campaign> fullCampList;
+			if (includeSubCampaigns)
 			{
-				matchingCampaigns.add(aCampaign);
+				fullCampList = getFullCampaignList(aCampaign);
+			}
+			else
+			{
+				fullCampList = new ArrayList<Campaign>();
+				fullCampList.add(aCampaign);
+			}
+			
+			for (Campaign camp : fullCampList)
+			{
+				if (camp != null
+					&& bookType.equalsIgnoreCase(camp
+						.getSafe(StringKey.BOOK_TYPE)))
+				{
+					matchingCampaigns.add(camp);
+				}
 			}
 		}
 		return matchingCampaigns.size();
@@ -127,16 +156,17 @@ public class PreCampaignTester extends AbstractPrerequisiteTest implements Prere
 	 * supplied key name.
 	 * 
 	 * @param key The key to be checked for
+	 * @param includeSubCampaigns Should we count included sub campaigns that match
 	 * @return The number of matching campaigns
 	 */
-	private int countCampaignByName(final String key, CDOMObject source)
+	private int countCampaignByName(final String key, CDOMObject source, boolean includeSubCampaigns)
 	{
 		int total = 0;
-		Campaign campaign = Globals.getCampaignKeyedSilently(key);
-		if (campaign != null)
+		Campaign campaignToFind = Globals.getCampaignKeyedSilently(key);
+		if (campaignToFind != null)
 		{
 			PersistenceManager pMan = PersistenceManager.getInstance();
-			if (campaign.getKeyName().equals(key) && pMan.isLoaded(campaign))
+			if (campaignToFind.getKeyName().equals(key) && pMan.isLoaded(campaignToFind))
 			{
 				++total;
 			}
@@ -147,10 +177,23 @@ public class PreCampaignTester extends AbstractPrerequisiteTest implements Prere
 				{
 					final Campaign aCampaign =
 							Globals.getCampaignByURI(element);
-
-					if (campaign.equals(aCampaign))
+					if (includeSubCampaigns)
 					{
-						++total;
+						List<Campaign> campList = getFullCampaignList(aCampaign);
+						for (Campaign camp : campList)
+						{
+							if (camp.equals(campaignToFind))
+							{
+								++total;
+							}
+						}
+					}
+					else
+					{
+						if (aCampaign.equals(campaignToFind))
+						{
+							++total;
+						}
 					}
 				}
 			}
@@ -165,9 +208,38 @@ public class PreCampaignTester extends AbstractPrerequisiteTest implements Prere
 	}
 
 	/**
+	 * Retrieve a list of the listed campaign and all campaigns it includes.
+	 * @param aCampaign The master campaign.
+	 * @return The list of included campaigns.
+	 */
+	private List<Campaign> getFullCampaignList(Campaign aCampaign)
+	{
+		List<Campaign> campList = new ArrayList<Campaign>();
+		addChildrenRecursively(campList, aCampaign);
+		return campList;
+	}
+
+	/**
+	 * Add the campaign and its children to the supplied list. This will recurse 
+	 * through the children to include all descendants. 
+	 * @param campList The list being built up.
+	 * @param aCampaign The campaign to be added.
+	 */
+	private void addChildrenRecursively(List<Campaign> campList,
+		Campaign aCampaign)
+	{
+		campList.add(aCampaign);
+		for (Campaign subCampaign : aCampaign.getSubCampaigns())
+		{
+			addChildrenRecursively(campList, subCampaign);
+		}
+	}
+
+	/**
 	 * Get the type of prerequisite handled by this token.
 	 * @return the type of prerequisite handled by this token.
 	 */
+    @Override
 	public String kindHandled()
 	{
 		return "CAMPAIGN"; //$NON-NLS-1$
