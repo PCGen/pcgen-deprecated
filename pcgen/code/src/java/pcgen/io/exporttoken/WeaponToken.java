@@ -730,17 +730,8 @@ public class WeaponToken extends Token
 	 */
 	public static String getMultToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
-		StringBuffer sb = new StringBuffer();
+		String profName = getProfName(eq);
+		StringBuilder sb = new StringBuilder();
 		boolean isDouble =
 				(eq.isDouble() && (eq.getLocation() == EquipmentLocation.EQUIPPED_TWO_HANDS));
 		int mult =
@@ -766,6 +757,28 @@ public class WeaponToken extends Token
 			sb.append("/").append(altCrit + mult);
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * Retrieve the proficiency name for the provided item of equipment. That is
+	 * the name of the weapon proficiency that is required to correctly use the 
+	 * item. 
+	 * @param eq The equipment item.
+	 * @return The name of the proficiency, or empty string if no proficiency is defined.
+	 */
+	private static String getProfName(Equipment eq)
+	{
+		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
+		String profName;
+		if (ref == null)
+		{
+			profName = "";
+		}
+		else
+		{
+			profName = ref.resolvesTo().getKeyName();
+		}
+		return profName;
 	}
 
 	/**
@@ -908,16 +921,7 @@ public class WeaponToken extends Token
 	 */
 	public static int getMagicDamageToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int magicdamage =
 				eq.getBonusToDamage(pc, true)
 					+ (int) BonusCalc.bonusTo(eq, "WEAPONPROF=" + profName, "DAMAGE", pc, pc)
@@ -933,16 +937,7 @@ public class WeaponToken extends Token
 	 */
 	public static int getMagicHitToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int magichit =
 				eq.getBonusToHit(pc, true)
 					+ (int) BonusCalc.bonusTo(eq, "WEAPONPROF=" + profName, "TOHIT", pc, pc)
@@ -958,16 +953,7 @@ public class WeaponToken extends Token
 	 */
 	public static int getMiscToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int miscBonus =
 				((int) pc.getTotalBonusTo("WEAPONPROF=" + profName,
 					"TOHIT") + getWeaponProfTypeBonuses(pc, eq, "TOHIT",
@@ -985,16 +971,7 @@ public class WeaponToken extends Token
 	 */
 	public static int getFeatDamageToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int featBonus =
 				(int) pc.getFeatBonusTo("WEAPON", "DAMAGE")
 					- (int) pc.getFeatBonusTo("WEAPON", "DAMAGE-SHORTRANGE")
@@ -1013,16 +990,7 @@ public class WeaponToken extends Token
 	 */
 	public static int getFeatHitToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int featBonus =
 				(int) pc.getFeatBonusTo("WEAPON", "TOHIT")
 					+ (int) pc.getFeatBonusTo("WEAPONPROF=" + profName,
@@ -1040,16 +1008,7 @@ public class WeaponToken extends Token
 	 */
 	public static int getTemplateDamageToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int templateBonus =
 				(int) pc.getTemplateBonusTo("WEAPON", "DAMAGE")
 					+ (int) pc.getTemplateBonusTo("WEAPONPROF="
@@ -1067,16 +1026,7 @@ public class WeaponToken extends Token
 	 */
 	public static int getTemplateHitToken(PlayerCharacter pc, Equipment eq)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int templateBonus =
 				(int) pc.getTemplateBonusTo("WEAPON", "TOHIT")
 					+ (int) pc.getTemplateBonusTo("WEAPONPROF="
@@ -1190,8 +1140,13 @@ public class WeaponToken extends Token
 		int dist = eq.getVariableValue(
 			SettingsHandler.getGame().getWeaponReachFormula(), "", pc)
 			.intValue();
-		return Globals.getGameModeUnitSet().displayDistanceInUnitSet(dist);
-		
+		String profName = getProfName(eq);
+		int iAdd =
+				(int) pc.getTotalBonusTo("WEAPONPROF=" + profName,
+					"REACH")
+					+ getWeaponProfTypeBonuses(pc, eq, "REACH",
+						WPTYPEBONUS_PC);
+		return Globals.getGameModeUnitSet().displayDistanceInUnitSet(dist+iAdd);
 	}
 
 	/**
@@ -1271,16 +1226,7 @@ public class WeaponToken extends Token
 			return "none";
 		}
 
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 		int dbl =
 				(int) pc.getTotalBonusTo("WEAPONPROF=" + profName,
 					"CRITRANGEDOUBLE")
@@ -2433,16 +2379,7 @@ public class WeaponToken extends Token
 			hands = 1;
 		}
 
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profName;
-		if (ref == null)
-		{
-			profName = "";
-		}
-		else
-		{
-			profName = ref.resolvesTo().getKeyName();
-		}
+		String profName = getProfName(eq);
 
 		String damString = getEqDamage(pc, eq);
 		int meleeDamageStatBonus =
@@ -2646,16 +2583,7 @@ public class WeaponToken extends Token
 	private static int getWeaponProfBonus(PlayerCharacter pc, Equipment eq,
 		int range)
 	{
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profKey;
-		if (ref == null)
-		{
-			profKey = "";
-		}
-		else
-		{
-			profKey = ref.resolvesTo().getKeyName();
-		}
+		String profKey = getProfName(eq);
 		int weaponProfBonus =
 				(int) pc.getTotalBonusTo("WEAPONPROF=" + profKey, "DAMAGE")
 					+ getWeaponProfTypeBonuses(pc, eq, "DAMAGE", WPTYPEBONUS_PC);
@@ -2791,16 +2719,7 @@ public class WeaponToken extends Token
 			return retString;
 		}
 
-		CDOMSingleRef<WeaponProf> ref = eq.get(ObjectKey.WEAPON_PROF);
-		String profKey;
-		if (ref == null)
-		{
-			profKey = "";
-		}
-		else
-		{
-			profKey = ref.resolvesTo().getKeyName();
-		}
+		String profKey = getProfName(eq);
 		if (eq.isNatural())
 		{
 			//			int eqSize = Globals.sizeInt(pc.getRace().getSize());
