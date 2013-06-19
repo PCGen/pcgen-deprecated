@@ -2522,6 +2522,15 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 		{
 			todoManager.removeTodo("in_sumTodoSkillLanguage");
 		}
+		if (skillLangRemain < 0)
+		{
+			todoManager.addTodo(new TodoFacadeImpl(CharacterTab.SummaryTab,
+				"Languages", "in_sumTodoSkillLanguageTooMany", 112));
+		}
+		else
+		{
+			todoManager.removeTodo("in_sumTodoSkillLanguageTooMany");
+		}
 
 		long endTime = new Date().getTime();
 		Logging.log(Logging.DEBUG, "refreshLanguageList took " + (endTime - startTime) + " ms.");
