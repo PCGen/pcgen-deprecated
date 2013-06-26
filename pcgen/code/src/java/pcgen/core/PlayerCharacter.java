@@ -11834,7 +11834,7 @@ public class PlayerCharacter extends Observable implements Cloneable, VariableCo
 			{
 				PCClassLevel classLevel =
 						getActiveClassLevel(pcClass, pi.getClassLevel());
-				final int newSkillPointsGained =
+				int newSkillPointsGained =
 						pcClass.getSkillPointsForLevel(this, classLevel,
 							getTotalLevels());
 				if (pi.getClassKeyName().equals(pcClass.getKeyName()))
@@ -11843,6 +11843,7 @@ public class PlayerCharacter extends Observable implements Cloneable, VariableCo
 					if (newSkillPointsGained != formerGained)
 					{
 						pi.setSkillPointsGained(this, newSkillPointsGained);
+						newSkillPointsGained = pi.getSkillPointsGained(this);
 						pi.setSkillPointsRemaining(pi.getSkillPointsRemaining() + newSkillPointsGained - formerGained);
 						setAssoc(pcClass, AssociationKey.SKILL_POOL, pcClass.getSkillPool(this) + newSkillPointsGained
 								- formerGained);
