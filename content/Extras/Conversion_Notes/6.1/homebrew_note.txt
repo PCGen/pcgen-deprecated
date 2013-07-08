@@ -1,0 +1,38 @@
+Homebrew Note:
+
+With our ever growing data folder and a growing need to organize the sets for better
+maintainability, the following changes WILL impact our homebrew community:
+
+d20ogl folder has been removed, in it's place is now a folder for each gamemode we support. Each
+folder should contain sets only for that gamemode, there are a few exceptions.
+
+The format for the data structure is very simple	/gamemode/publisher/book or subcategory
+
+Example of folders in place of d20ogl:
+3e
+35e
+darwins_world_2
+pathfinder
+etc.
+
+If you have data pointing to any of the core sets, you'll need to correct your full path link
+associations. Links are any that have a file path starting at the base data folder -
+PCC:@/d20ogl/srd35/xxx.pcc  You won't need to change relative links.
+
+For the main sets the following changes need to be made:
+srd				/3e/wizards_of_the_coast/srd/
+srd35				/35e/wizards_of_the_coast/srd35/
+PF Main Books		/pathfinder/paizo/pathfinder/CORE_BOOK_NAME
+PF Adventure Paths	/pathfinder/paizo/adventure_path
+PF Campaign Setting	/pathfinder/paizo/campaign_setting
+PF Player Companion	/pathfinder/paizo/player_companion
+
+We apologize for the inconvenience this will cause, but think this change will better help for set
+maintainability and future improvements as we incorporate new systems.
+
+Any questions or support items, please contact our Support Desk Monkey Andrew Maitland at
+help@pcgen.org.
+
+Sincerely,
+
+Andrew Maitland
