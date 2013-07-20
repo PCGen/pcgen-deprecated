@@ -11676,11 +11676,15 @@ public class PlayerCharacter extends Observable implements Cloneable, VariableCo
 	public void addLocalCost(PCClass pcc, Skill skill, SkillCost sc, CDOMObject owner)
 	{
 		localAddedSkillCostFacet.add(id, pcc, skill, sc, owner);
+		// Make sure any cached skill cost is cleared.
+		cache = new ObjectCache();
 	}
 
 	public void removeLocalCost(PCClass pcc, Skill skill, SkillCost sc, CDOMObject owner)
 	{
 		localAddedSkillCostFacet.remove(id, pcc, skill, sc, owner);
+		// Make sure any cached skill cost is cleared.
+		cache = new ObjectCache();
 	}
 
 	public boolean hasLocalCost(PCClass cl, Skill skill, SkillCost sc)
