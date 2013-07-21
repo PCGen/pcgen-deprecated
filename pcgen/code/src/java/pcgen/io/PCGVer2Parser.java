@@ -5411,6 +5411,7 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 							if (head != null)
 							{
 								head.removeListFor(ListKey.EQMOD);
+								head.removeListFor(ListKey.EQMOD_INFO);
 							}
 							aEquip.setBase(thePC);
 							aEquip.load(customProperties, "$", "=", thePC); //$NON-NLS-1$ //$NON-NLS-2$
