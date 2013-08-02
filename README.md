@@ -15,7 +15,7 @@ How to compile PCGen?
 
     ```bash
     # subversion
-    svn checkout https://pcgen.svn.sourceforge.net/svnroot/pcgen/Trunk/pcgen
+    svn checkout svn://svn.code.sf.net/p/pcgen/code/Trunk
     ```
 
     ```bash
