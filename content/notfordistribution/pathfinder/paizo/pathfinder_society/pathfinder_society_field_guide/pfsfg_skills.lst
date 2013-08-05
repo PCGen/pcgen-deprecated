@@ -1,0 +1,18 @@
+SOURCELONG:Pathfinder Society Field Guide	SOURCESHORT:PFSFG	SOURCEWEB:http://paizo.com/pathfinderSociety/scenarios/v5748btpy84k4	SOURCEDATE:2011-08
+# Original Entry by: Mark Means
+
+###Block: Skill Specialization implementation
+# Skill Name					Bonus to skill
+Appraise.MOD				BONUS:SKILL|Appraise|1|TYPE=SkillSpecialization|PREFEAT:3,Skill Specialization (Appraise)							BONUS:SKILL|Appraise|-2|TYPE=SkillSpecialization|PREFEAT:1,Skill Specialization (Appraise)|PRECSKILL:1,Appraise
+Diplomacy.MOD				BONUS:SKILL|Diplomacy|1|TYPE=SkillSpecialization|PREFEAT:3,Skill Specialization (Diplomacy)							BONUS:SKILL|Diplomacy|-2|TYPE=SkillSpecialization|PREFEAT:1,Skill Specialization (Diplomacy)|PRECSKILL:1,Diplomacy
+Disguise.MOD				BONUS:SKILL|Disguise|1|TYPE=SkillSpecialization|PREFEAT:3,Skill Specialization (Disguise)							BONUS:SKILL|Disguise|-2|TYPE=SkillSpecialization|PREFEAT:1,Skill Specialization (Disguise)|PRECSKILL:1,Disguise
+Intimidate.MOD				BONUS:SKILL|Intimidate|1|TYPE=SkillSpecialization|PREFEAT:3,Skill Specialization (Intimidate)						BONUS:SKILL|Intimidate|-2|TYPE=SkillSpecialization|PREFEAT:1,Skill Specialization (Intimidate)|PRECSKILL:1,Intimidate
+Knowledge (Local).MOD		BONUS:SKILL|Knowledge (Local)|1|TYPE=SkillSpecialization|PREFEAT:3,Skill Specialization (Knowledge (Local))			BONUS:SKILL|Knowledge (Local)|-2|TYPE=SkillSpecialization|PREFEAT:1,Skill Specialization (Knowledge (Local))|PRECSKILL:1,Knowledge (Local)
+Knowledge (Nobility).MOD	BONUS:SKILL|Knowledge (Nobility)|1|TYPE=SkillSpecialization|PREFEAT:3,Skill Specialization (Knowledge (Nobility))	BONUS:SKILL|Knowledge (Nobility)|-2|TYPE=SkillSpecialization|PREFEAT:1,Skill Specialization (Knowledge (Nobility))|PRECSKILL:1,Knowledge (Nobility)
+Perform (Oratory).MOD		BONUS:SKILL|Perform (Oratory)|1|TYPE=SkillSpecialization|PREFEAT:3,Skill Specialization (Perform (Oratory))			BONUS:SKILL|Perform (Oratory)|-2|TYPE=SkillSpecialization|PREFEAT:1,Skill Specialization (Perform (Oratory))|PRECSKILL:1,Perform (Oratory)
+
+# NOTE: Kill Specialization is not implemented correctly. Bonus of +1 should only be give if the skill is a class skill, otherwise the skill should be made a class skill. But this causes an infinite loop in PCGen.
+
+#
+###END
+#
