@@ -67,7 +67,7 @@ GEAR:Tindertwig					LOCATION:Not Carried			QTY:4		SIZE:PC
 
 #COST:15	WT:25	
 
-STARTPACK:Dungeoneering Kit, deluxe	EQUIPBUY:100		APPLY:INSTANT
+STARTPACK:Dungeoneering Kit (deluxe)	EQUIPBUY:100		APPLY:INSTANT
 GEAR:Candle					LOCATION:Not Carried			QTY:2		SIZE:PC
 GEAR:Chalk (1 Piece)				LOCATION:Not Carried			QTY:1		SIZE:PC
 GEAR:Hammer					LOCATION:Not Carried			QTY:1		SIZE:PC
@@ -124,7 +124,7 @@ GEAR:Feed (Per Day)				LOCATION:Not Carried			QTY:2		SIZE:PC
 
 #COST:16	WT:54
 
-STARTPACK:Riding Kit, exotic mount	EQUIPBUY:100		APPLY:INSTANT
+STARTPACK:Riding Kit (exotic mount)	EQUIPBUY:100		APPLY:INSTANT
 GEAR:Bit and Bridle				LOCATION:Not Carried			QTY:1		SIZE:PC
 GEAR:Saddle (Exotic/Riding)		LOCATION:Not Carried			QTY:1		SIZE:PC
 GEAR:Saddlebags					LOCATION:Not Carried			QTY:1		SIZE:PC
