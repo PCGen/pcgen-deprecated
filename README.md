@@ -1,5 +1,7 @@
-PCGen
-=====
+![PCGen](http://pcgen.org/wordpress/wp-content/uploads/2012/11/copy-PCGen_header.gif)
+
+Open Source character generator for role-playing games
+-----
 
 PCGen - Open Source character generator for role-playing games
 
