@@ -3694,6 +3694,7 @@ my %token_BONUS_MONSKILLPTS_types = map { $_ => 1 } (
 );
 
 # List of types that are valid in BONUS:SLOTS
+# 
 my %token_BONUS_SLOTS_types = map { $_ => 1 } (
 	'AMULET',
 	'ARMOR',
@@ -11386,8 +11387,15 @@ sub validate_line {
 			);
 		}
 		elsif ( $hasCHOOSE && !$hasMULT && $line_ref->{'CHOOSE'}[0] !~ /CHOOSE:SPELLLEVEL/i ) {
-
-			# The CHOOSE:SPELLLEVEL is exampted from this particular rule.
+			# The CHOOSE:SPELLLEVEL is exempted from this particular rule.
+			$logging->ewarn(INFO,
+				qq(The MULT:YES tag is mandatory when CHOOSE is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
+				$file_for_error,
+				$line_for_error
+			);
+		}
+		elsif ( $hasCHOOSE && !$hasMULT && $line_ref->{'CHOOSE'}[0] !~ /CHOOSE:NUMBER/i ) {
+			# The CHOOSE:NUMBER is exempted from this particular rule.
 			$logging->ewarn(INFO,
 				qq(The MULT:YES tag is mandatory when CHOOSE is present in ABILITY "$line_ref->{'000AbilityName'}[0]"),
 				$file_for_error,
@@ -11491,6 +11499,15 @@ sub validate_line {
 		elsif ( $hasCHOOSE && !$hasMULT && $line_ref->{'CHOOSE'}[0] !~ /CHOOSE:SPELLLEVEL/i ) {
 
 			# The CHOOSE:SPELLLEVEL is exampted from this particular rule.
+			$logging->ewarn(INFO,
+				qq(The MULT:YES tag is mandatory when CHOOSE is present in FEAT "$line_ref->{'000FeatName'}[0]"),
+				$file_for_error,
+				$line_for_error
+			);
+		}
+		elsif ( $hasCHOOSE && !$hasMULT && $line_ref->{'CHOOSE'}[0] !~ /CHOOSE:NUMBER/i ) {
+
+			# The CHOOSE:NUMBER is exampted from this particular rule.
 			$logging->ewarn(INFO,
 				qq(The MULT:YES tag is mandatory when CHOOSE is present in FEAT "$line_ref->{'000FeatName'}[0]"),
 				$file_for_error,
