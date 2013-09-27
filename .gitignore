@@ -1,1 +1,13 @@
+# Editor files
+.idea
+pcgen/.idea
 *.editable.lst
+*.swp
+
+# Java files
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
