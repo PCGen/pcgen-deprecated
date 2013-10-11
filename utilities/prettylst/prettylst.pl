@@ -1739,6 +1739,7 @@ my %double_PCC_tags = (
 	'BONUS:SKILLPOOL',	=> 1,
 	'BONUS:SKILLRANK',	=> 1,
 	'BONUS:SLOTS',		=> 1,
+	'BONUS:SPECIALTYSPELLKNOWN',		=> 1,
 	'BONUS:SPELLCAST',	=> 1,
 	'BONUS:SPELLCASTMULT',	=> 1,
 	'BONUS:SPELLKNOWN',	=> 1,
@@ -1805,6 +1806,7 @@ my @Global_BONUS_Tags = (
 	'BONUS:SKILLPOOL:*',		# Global
 	'BONUS:SKILLRANK:*',		# Global
 	'BONUS:SLOTS:*',			# Global
+	'BONUS:SPECIALTYSPELLKNOWN:*',			# Global
 	'BONUS:SPELLCAST:*',		# Global
 	'BONUS:SPELLCASTMULT:*',	# Global
 	'BONUS:SPELLPOINTCOST:*',	# Global
@@ -1859,6 +1861,7 @@ my @double_PCC_tags = (
 	'BONUS:SKILLPOOL:*',		
 	'BONUS:SKILLRANK:*',		
 	'BONUS:SLOTS:*',			
+	'BONUS:SPECIALTYSPELLKNOWN:*',
 	'BONUS:SPELLCAST:*',		
 	'BONUS:SPELLCASTMULT:*',	
 	'BONUS:SPELLKNOWN:*',		
@@ -3655,6 +3658,7 @@ my %token_BONUS_tag = map { $_ => 1 } (
 	'SKILLRANK',
 	'SLOTS',
 	'SPELL',
+	'SPECIALTYSPELLKNOWN',
 	'SPELLCAST',
 	'SPELLCASTMULT',
 	'SPELLKNOWN',
@@ -3950,6 +3954,7 @@ my %tagheader = (
 		'BONUS:SKILLRANK'		=> 'Bonus to skill rank',
 		'BONUS:SLOTS'		=> 'Bonus to nb of slots',
 		'BONUS:SPELL'		=> 'Bonus to spell attribute',
+		'BONUS:SPECIALTYSPELLKNOWN'	=> 'Bonus to specialty spells class gets',
 		'BONUS:SPELLCAST'		=> 'Bonus to spell cast/day',
 		'BONUS:SPELLCASTMULT'	=> 'Multiply spell cast/day',
 		'BONUS:SPELLKNOWN'	=> 'Bonus to spell known/L',
@@ -13411,6 +13416,7 @@ BEGIN {
 				'BONUS:DC',				=> 1,  #[ 1037456 ] Move BONUS:DC on class line to the spellcasting portion
 				'BONUS:SCHOOL'			=> 1,
 				'BONUS:SPELL'			=> 1,
+				'BONUS:SPECIALTYSPELLKNOWN'	=> 1,
 				'BONUS:SPELLCAST'			=> 1,
 				'BONUS:SPELLCASTMULT'		=> 1,
 				'BONUS:SPELLKNOWN'		=> 1,
