@@ -1,0 +1,17 @@
+# CVS $Revision$ $Author$ -- Sun Apr  2 07:42:21 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Oathbound - Domains of the Forge	SOURCESHORT:Oathbound	SOURCEWEB:http://www.bastionpress.com
+# Input by Ruemere, email: ruemere@poczta.onet.pl
+
+# Weapon Name			Type
+Bladeharp				TYPE:Exotic
+Cukri					TYPE:Exotic
+Dagger (Triple-Bladed)		TYPE:Exotic
+Harpoon				TYPE:Exotic
+Mace (Ox Head)			TYPE:Exotic
+Maul (Bladed)			TYPE:Martia
+Pick (Rafter's-Unextended)	TYPE:Martia
+Pick (Rafter's-Extended)	TYPE:Martia
+Rang Blade				TYPE:Exotic
+Schiavona				TYPE:Martial
+# Shortstaff undefined, using Quarterstaff, size Medium
+Shortstaff				TYPE:Simple

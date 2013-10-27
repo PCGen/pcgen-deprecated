@@ -1,0 +1,12 @@
+# CVS $Revision$ $Author$ -- Sun Mar 19 07:31:26 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Avalanche Press - Black Flags - Piracy in the Caribbean	SOURCESHORT:BlackFlags	SOURCEWEB:http://www.avalanchepress.com
+
+# Skill Name			Product Identity?	Key Stat	Untrained?		Type					Source Page
+Bribe					NAMEISPI:NO		KEYSTAT:CHA				TYPE:Charisma			SOURCEPAGE:p.50
+Navigation				NAMEISPI:NO		KEYSTAT:WIS	USEUNTRAINED:NO	TYPE:Wisdom				SOURCEPAGE:p.51
+Piloting				NAMEISPI:NO		KEYSTAT:DEX	USEUNTRAINED:NO	TYPE:Dexterity			SOURCEPAGE:p.51
+
+# Added these skills for classskill lists
+Profession (Cartographer)	NAMEISPI:NO		KEYSTAT:WIS	USEUNTRAINED:NO	TYPE:Wisdom.Profession		SOURCEPAGE:p.
+Profession (Physician)		NAMEISPI:NO		KEYSTAT:WIS	USEUNTRAINED:NO	TYPE:Wisdom.Profession		SOURCEPAGE:p.
+Knowledge (Medicine)		NAMEISPI:NO		KEYSTAT:INT	USEUNTRAINED:NO	TYPE:Intelligence.Knowledge	SOURCEPAGE:p.

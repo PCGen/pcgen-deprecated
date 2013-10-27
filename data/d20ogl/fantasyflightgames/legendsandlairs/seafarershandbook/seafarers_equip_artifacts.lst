@@ -1,0 +1,6 @@
+# CVS $Revision$ $Author$ -- Sun Mar 19 07:31:26 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Fantasy Flight Games - Seafarer's Handbook	SOURCESHORT:SFHB	SOURCEWEB:http://www.fantasyflightgames.com/llsh.html
+# Original Entry by: Eddy Anthony
+
+# Equipment Name	Type											Contains		Cost		Source Page
+Ship of the Gods	TYPE:Goods.Transportation.Ships.Container.Magic.Artifact.Minor	CONTAINS:448000	COST:-	SOURCEPAGE:p.43

@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <project>
   <pomVersion>3</pomVersion>
   <id>pcgen</id>
   <groupId>pcgen</groupId>
   <name>PCGen</name>
-  <currentVersion>5.12RC1</currentVersion>
+  <currentVersion>5.13.7</currentVersion>
   <organization>
     <name>SourceForge</name>
     <url>http://sourceforge.net/</url>
@@ -15,12 +15,12 @@
   <package>pcgen</package>
   <logo>http://pcgen.sourceforge.net/banners/PCGen_FullBanner_486x60.png</logo>
   <url>http://pcgen.sourceforge.net/</url>
-  <issueTrackingUrl>http://jira.pcgen.org</issueTrackingUrl>
+  <issueTrackingUrl>http://pcgen.sourceforge.net/06_trackers.php</issueTrackingUrl>
   <description>PCGen RPG character generator.</description>
   <shortDescription>PCGen RPG character generator.</shortDescription>
   <repository>
-    <connection>scm:svn:https://svn.sourceforge.net/svnroot/pcgen/Trunk</connection>
-    <url>https://svn.sourceforge.net/svnroot/pcgen/Trunk</url>
+    <connection>scm:svn:https://pcgen.svn.sourceforge.net/svnroot/pcgen/Trunk/pcgen</connection>
+    <url>http://pcgen.svn.sourceforge.net/viewvc/pcgen/</url>
   </repository>
   <developers>
     <developer>
@@ -72,7 +72,7 @@
       <email>radermacher@netcologne.de</email>
       <organization>PCGen</organization>
       <roles>
-        <role>Code Tamarin</role>
+        <role>Code Gibbon</role>
       </roles>
       <timezone>+1</timezone>
     </developer>
@@ -85,7 +85,7 @@
         <role>Code Silverback</role>
       </roles>
       <url>http://ratik.rpga-apac.com</url>
-      <timezone>+10</timezone>
+      <timezone>+11</timezone>
     </developer>
     <developer>
       <name>Devon Jones</name>
@@ -98,6 +98,9 @@
     <developer>
       <name>Aaron Divinsky</name>
       <id>boomer70</id>
+      <roles>
+        <role>Code Chimp</role>
+      </roles>
     </developer>
     <developer>
       <name>Frank Kliewe</name>
@@ -118,6 +121,9 @@
     <developer>
       <name>Andrew Wilson</name>
       <id>nuance</id>
+      <roles>
+        <role>Code Tamarin</role>
+      </roles>
     </developer>
     <developer>
       <name>Tir Gwaith</name>
@@ -131,9 +137,78 @@
       <name>Terry FitzSimons</name>
       <id>fitzs</id>
     </developer>
+    <developer>
+      <name>Tom Parker</name>
+      <id>thpr</id>
+      <roles>
+        <role>Code Tamarin</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Andriy Sen</name>
+      <id>apsen</id>
+    </developer>
+    <developer>
+      <name>Eduard Martinescu</name>
+      <id>arvoreen</id>
+    </developer>
+    <developer>
+      <name>Per Christian Henden</name>
+      <id>perchrh</id>
+    </developer>
+    <developer>
+      <name>Eric C. Smith</name>
+      <id>maredudd800</id>
+    </developer>
+    <developer>
+      <name>Koen Van Daele</name>
+      <id>vandaelek</id>
+    </developer>
+    <developer>
+      <name>Tobias Wichtrey</name>
+      <id>tobias-w</id>
+    </developer>
+    <developer>
+      <name>Edwin C Holley</name>
+      <id>glasswalker</id>
+    </developer>
+    <developer>
+      <name>Dave Cheever</name>
+      <id>takeyabue</id>
+    </developer>
+    <developer>
+      <name>Andrew Maitland</name>
+      <id>amaitland</id>
+    </developer>
+    <developer>
+      <name>Kevin Fernandes</name>
+      <id>darkstorm999</id>
+    </developer>
+    <developer>
+      <name>tistur</name>
+      <id>tistur</id>
+    </developer>
+    <developer>
+      <name>Peter Barker</name>
+      <id>pjdb</id>
+    </developer>
+    <developer>
+      <name>Joe Frazier</name>
+      <id>jfrazierjr</id>
+    </developer>
   </developers>
   <dependencies>
-    <!-- Compiling -->
+    <!-- Compiling --> 
+    <dependency>
+      <groupId>cobra</groupId>
+      <artifactId>cobra</artifactId>
+      <version>0.97.2</version>
+    </dependency>
+    <dependency>
+      <groupId>rhino</groupId>
+      <artifactId>js</artifactId>
+      <version>1.6R5</version>
+    </dependency>
     <dependency>
       <groupId>mrj</groupId>
       <artifactId>MRJ141Stubs</artifactId>
@@ -193,7 +268,7 @@
       <version>2.6.2</version>
       <url>http://xml.apache.org/xerces-j/</url>
     </dependency>
-    <!-- Testing -->
+    <!-- Testing --> 
     <dependency>
       <groupId>easymock</groupId>
       <artifactId>easymock</artifactId>
@@ -209,7 +284,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.1</version>
       <url>http://www.junit.org/</url>
     </dependency>
     <dependency>
@@ -225,6 +300,19 @@
       <type>plugin</type>
       <url>http://emma.sourceforge.net/maven-emma-plugin/</url>
     </dependency>
+    <!-- Maven --> 
+    <dependency>
+      <groupId>commons-jelly</groupId>
+      <artifactId>commons-jelly-tags-interaction</artifactId>
+      <version>1.1</version>
+      <url>http://jakarta.apache.org/commons/jelly/libs/interaction/index.html</url>
+    </dependency>
+    <dependency>
+      <groupId>jline</groupId>
+      <artifactId>jline</artifactId>
+      <version>0.9.9</version>
+      <url>http://jline.sourceforge.net/</url>
+    </dependency>
     <!--
         <dependency>
             <groupId>maven-plugins</groupId>
@@ -233,23 +321,24 @@
             <type>plugin</type>
             <url>http://maven-plugins.sourceforge.net/findbugs/</url>
         </dependency>
--->
+--> 
   </dependencies>
   <reports>
     <report>maven-changelog-plugin</report>
     <report>maven-changes-plugin</report>
-    <!-- Runs slower'n molassas -->
-    <!-- <report>maven-checkstyle-plugin</report> -->
+    <!-- Runs slower'n molassas --> 
+    <!-- <report>maven-checkstyle-plugin</report> --> 
     <report>maven-developer-activity-plugin</report>
     <report>maven-emma-plugin</report>
     <report>maven-file-activity-plugin</report>
     <report>maven-javadoc-plugin</report>
     <report>maven-jdepend-plugin</report>
     <report>maven-junit-report-plugin</report>
-    <report>maven-jxr-plugin</report>
+    <!--  Overly large report --> 
+    <!--  <report>maven-jxr-plugin</report>  --> 
     <report>maven-license-plugin</report>
-    <!-- Another slow'un -->
-    <!-- <report>maven-linkcheck-plugin</report> -->
+    <!-- Another slow'un --> 
+    <!-- <report>maven-linkcheck-plugin</report> --> 
     <report>maven-pmd-plugin</report>
     <report>maven-simian-plugin</report>
     <report>maven-tasklist-plugin</report>
@@ -266,14 +355,14 @@
     </unitTest>
     <resources>
       <resource>
-        <!-- The resources are in the same place as the sources. -->
+        <!-- The resources are in the same place as the sources. --> 
         <directory>code/src/java</directory>
         <includes>
           <include>**/*.properties</include>
         </includes>
       </resource>
       <resource>
-        <!-- The resources are in the same place as the sources. -->
+        <!-- The resources are in the same place as the sources. --> 
         <directory>code/src/java</directory>
         <includes>
           <include>pcgen/gui/resource/*</include>
@@ -288,9 +377,124 @@
       <tag>release-5.11.0</tag>
     </version>
     <version>
+      <id>5.11.1</id>
+      <name>5.11.1</name>
+      <tag>release-5.11.1</tag>
+    </version>
+    <version>
+      <id>5.11.2</id>
+      <name>5.11.2</name>
+      <tag>release-5.11.2</tag>
+    </version>
+    <version>
+      <id>5.11.3</id>
+      <name>5.11.3</name>
+      <tag>release-5.11.3</tag>
+    </version>
+    <version>
+      <id>5.11.4</id>
+      <name>5.11.4</name>
+      <tag>release-5.11.4</tag>
+    </version>
+    <version>
+      <id>5.11.5</id>
+      <name>5.11.5</name>
+      <tag>release-5.11.5</tag>
+    </version>
+    <version>
+      <id>5.11.6</id>
+      <name>5.11.6</name>
+      <tag>release-5.11.6</tag>
+    </version>
+    <version>
+      <id>5.11.7</id>
+      <name>5.11.7</name>
+      <tag>release-5.11.7</tag>
+    </version>
+    <version>
+      <id>5.11.8</id>
+      <name>5.11.8</name>
+      <tag>release-5.11.8</tag>
+    </version>
+    <version>
+      <id>5.11.9</id>
+      <name>5.11.9</name>
+      <tag>release-5.11.9</tag>
+    </version>
+    <version>
+      <id>5.11.10</id>
+      <name>5.11.10</name>
+      <tag>release-5.11.10</tag>
+    </version>
+    <version>
+      <id>5.11.11</id>
+      <name>5.11.11</name>
+      <tag>release-5.11.11</tag>
+    </version>
+    <version>
+      <id>5.11.12</id>
+      <name>5.11.12</name>
+      <tag>release-5.11.12</tag>
+    </version>
+    <version>
+      <id>5.11.13</id>
+      <name>5.11.13</name>
+      <tag>release-5.11.13</tag>
+    </version>
+    <version>
+      <id>5.11.14</id>
+      <name>5.11.14</name>
+      <tag>release-5.11.14</tag>
+    </version>
+    <version>
       <id>5.12RC1</id>
       <name>5.12RC1</name>
       <tag>release-5.12RC1</tag>
+    </version>
+    <version>
+      <id>5.12.0RC2</id>
+      <name>5.12.0RC2</name>
+      <tag>release-5.12.0RC2</tag>
+    </version>
+    <version>
+      <id>5.13.0</id>
+      <name>5.13.0</name>
+      <tag>release-5.13.0</tag>
+    </version>
+    <version>
+      <id>5.13.1</id>
+      <name>5.13.1</name>
+      <tag>release-5.13.1</tag>
+    </version>
+    <version>
+      <id>5.13.2</id>
+      <name>5.13.2</name>
+      <tag>release-5.13.2</tag>
+    </version>
+    <version>
+      <id>5.13.3</id>
+      <name>5.13.3</name>
+      <tag>release-5.13.3</tag>
+    </version>
+    <version>
+      <id>5.13.4</id>
+      <name>5.13.4</name>
+      <tag>release-5.13.4</tag>
+    </version>
+    <version>
+      <id>5.13.5</id>
+      <name>5.13.5</name>
+      <tag>release-5.13.5</tag>
+    </version>
+    <version>
+      <id>5.13.6</id>
+      <name>5.13.6</name>
+      <tag>release-5.13.6</tag>
+    </version>
+    <version>
+      <id>5.13.7</id>
+      <name>5.13.7</name>
+      <tag>release-5.13.7</tag>
     </version>
   </versions>
 </project>

@@ -1,0 +1,6 @@
+# CVS $Revision: 1.1 $ $Author: eddyanthony $ -- Thu Apr  6 15:59:04 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Legends of the Ancients - Macedon	SOURCESHORT:Macedon	SOURCEWEB:http://www.rpgobjects.com/index.php?page=pro&product_id=137
+
+
+# Skill Name		Key Stat	Untrained?		Type					Source Page
+Knowledge (Tactics)	KEYSTAT:INT	USEUNTRAINED:NO	TYPE:Intelligence.Knowledge	SOURCEPAGE:p.4

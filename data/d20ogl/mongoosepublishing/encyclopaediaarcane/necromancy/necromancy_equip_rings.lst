@@ -1,0 +1,6 @@
+# CVS $Revision$ $Author$ -- Sun Mar 19 07:31:26 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Mongoose Publishing - Encyclopaedia Arcane - Necromancy	SOURCESHORT:Necromancy	SOURCEWEB:http://www.mongoosepublishing.com
+
+# Equipment Name		Type			Cost		Weight	Source Page
+Ring (Bone)			TYPE:Magic.Ring	COST:7000	WT:-		SOURCEPAGE:p.47
+Ring (Petty Vengeance)	TYPE:Magic.Ring	COST:-	WT:-		SOURCEPAGE:p.47

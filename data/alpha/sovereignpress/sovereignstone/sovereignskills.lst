@@ -1,0 +1,6 @@
+# CVS $Revision$ $Author$ -- Sun Mar 19 07:31:26 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Sovereign Press - Sovereign Stone Core Rules	SOURCESHORT:SovereignS	SOURCEWEB:http://www.sovstone.com
+
+# Skill Name	Untrained?		Type				Source Page
+Literacy		USEUNTRAINED:NO	TYPE:None.Language	SOURCEPAGE:p.
+Sign Language	USEUNTRAINED:NO	TYPE:None.Language	SOURCEPAGE:p.

@@ -1,0 +1,38 @@
+# CVS $Revision$ $Author$ -- Sun Mar 19 07:31:26 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Midnight Campaign Source Book	SOURCESHORT:MDNT	SOURCEWEB:http://www.fantasyflightgames.com/midnight.html
+#Original Entry By: Beaver
+
+# Language			Type
+High Elven			TYPE:Spoken
+Snow Elf Patrol Sign	TYPE:Silent
+Danisil			TYPE:Spoken
+Jungle Mouth		TYPE:Spoken
+Halfling			TYPE:Spoken
+Old Dwarven			TYPE:Spoken
+Thedron			TYPE:Spoken.ClanDialect
+Fodrin			TYPE:Spoken.ClanDialect
+Durgis			TYPE:Spoken.ClanDialect
+Gorand			TYPE:Spoken.ClanDialect
+Black Blood			TYPE:Spoken.ClanDialect
+Trader's Tongue		TYPE:Spoken
+Norther			TYPE:Spoken
+Courtier			TYPE:Spoken
+Colonial			TYPE:Spoken
+Erenlander			TYPE:Spoken
+Orcish			TYPE:Spoken
+Black Tongue		TYPE:Spoken
+High Elven Pidgin		TYPE:Spoken.Pidgin
+Danisil Pidgin		TYPE:Spoken.Pidgin
+Halfling Pidgin		TYPE:Spoken.Pidgin
+Old Dwarven Pidgin	TYPE:Spoken.Pidgin
+Thedron Pidgin		TYPE:Spoken.Pidgin
+Fodrin Pidgin		TYPE:Spoken.Pidgin
+Durgis Pidgin		TYPE:Spoken.Pidgin
+Gorand Pidgin		TYPE:Spoken.Pidgin
+Black Blood Pidgin	TYPE:Spoken.Pidgin
+Erenlander Pidgin		TYPE:Spoken.Pidgin
+Trader's Tongue Pidgin	TYPE:Spoken.Pidgin
+Norther Pidgin		TYPE:Spoken.Pidgin
+Colonial Pidgin		TYPE:Spoken.Pidgin
+Orcish Pidgin		TYPE:Spoken.Pidgin
+Literacy			TYPE:Special

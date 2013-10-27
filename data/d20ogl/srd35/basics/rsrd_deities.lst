@@ -1,0 +1,13 @@
+# CVS $Revision$ $Author$ -- Sun Dec 16 12:00:20 2007 -- reformated by prettylst.pl v1.38 (build 4314)
+SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35
+# Original Entry by: dlm1065
+
+# Deity Name	Domains							Desciption of Deity/Title	Holy Item	Deity Weapon	Source Page
+None			DOMAINS:ALL|PREALIGN:LG,LN,LE,NG,TN,NE,CG,CN,CE	DESC:None				SYMBOL:None	DEITYWEAP:ANY	SOURCEPAGE:Non file in RSRD why none
+
+
+
+#For Deities of Nuetral alignment that set weather the cleric turns/commands unded
+# add use the following line as appropriate removing the #
+#Turn (Undead)	DEFINE:PresetUndeadChoiceByDeity|0	BONUS:VAR|PresetUndeadChoiceByDeity|10
+#Rebuke (Undead)	DEFINE:PresetUndeadChoiceByDeity|0	BONUS:VAR|PresetUndeadChoiceByDeity|20

@@ -1,0 +1,61 @@
+#/*****************************************************/
+#/* gnome.nam                                         */
+#/* Namefile for Gnomish names                        */
+#/* by Johan Danforth                                 */
+#/*****************************************************/
+[RULES]
+100	[SYL1]	[SYL2]	[SYL3]
+[FULL]
+[SYL1]
+#/* first part ends with a consonant like b,k,t etc... */
+Aeth
+Addr
+Bl
+C
+Car
+D
+G
+Gl
+Gw
+L
+M
+Ow
+R
+Rh
+S
+T
+V
+Yr
+[SYL2]
+#/* middle ends with a vovel like a,o,u,i,e,y etc... */
+a
+ae
+e
+eo
+i
+o
+u
+y
+[SYL3]
+#/* final part ends with a consonant like b,k,t etc... */
+bryn
+c
+cyn
+dd
+ddry
+ddyn
+doc
+dry
+gwyn
+llyn
+myr
+n
+nnyn
+nry
+nvan
+nyc
+r
+rcyn
+rraent
+ran
+ryn

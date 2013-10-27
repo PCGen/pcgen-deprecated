@@ -1,0 +1,10 @@
+# CVS $Revision$ $Author$ -- Sun Mar 19 07:31:26 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Quests	SOURCESHORT:Quests	SOURCEWEB:http://www.rpgnow.com/product_info.php?products_id=5380&src=AleaPublsihingGroup
+
+###Block: Honor Guard abilities
+# Feat Name		Type			Visible	Special Ability				Define
+Combat Sense	TYPE:ClassAbility	VISIBLE:NO	SA:Combat Sense +%|CombatSense	DEFINE:CombatSense|0
+
+###Block: Questing Knight abilties
+# Feat Name		Type			Visible	Define			Bonus to skill
+Knowledge Local	TYPE:ClassAbility	VISIBLE:NO	DEFINE:KnowledgeLocal|0	BONUS:SKILL|Knolwedge (Local)|KnowledgeLocal

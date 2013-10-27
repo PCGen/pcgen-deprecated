@@ -1,0 +1,51 @@
+#/*****************************************************/
+#/* MALL.NAM                                          */
+#/* Namefile for dwarven names                        */
+#/* by Johan Danforth                                 */
+#/*****************************************************/
+#/* examples balin durin bofur bifur bombur belin */
+[RULES]
+100	[SYL1]	[SYL2]	[SYL3]
+[FULL]
+[SYL1]
+#/* The fist part ends with a consonant like b,k,t etc... */
+B
+D
+F
+G
+Gl
+H
+K
+L
+M
+N
+R
+S
+T
+V
+[SYL2]
+#/* The middle part begins and ends with a vovel like a,o,u,i,e,y etc... */
+a
+e
+i
+o
+oi
+u
+[SYL3]
+#/* The final part begins with a consonant like b,k,t etc... */
+bur
+fur
+gan
+gnus
+gnar
+li
+lin
+lir
+mli
+nar
+nus
+rin
+ran
+sin
+sil
+sur

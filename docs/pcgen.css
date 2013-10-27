@@ -1,0 +1,176 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+code {
+	font-family: "Courier New", Courier, mono;
+	font-size: 10pt;
+}
+h1 {
+	font-size: 18pt;
+	text-decoration: underline;
+	font-weight: bold;
+	text-align: left;
+}
+h2 {
+	font-size: 14pt;
+	text-decoration: underline;
+	font-weight: bold;
+	text-align: left;
+}
+h3 {
+	font-size: 12pt;
+	text-decoration: underline;
+	font-weight: bold;
+	text-align: left;
+}
+p {
+	font-size: 10pt;
+	text-align: justify;
+}
+p18 {
+	font-size: 18pt;
+	text-align: justify;
+}
+table {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	border-collapse: separate;
+	border-spacing: 0px;
+	padding: 10px;
+}
+td {
+	cell-spacing: 5px;
+	padding: 1px 10px;
+}
+a img {
+	border-style: none;
+}
+.alpha {
+	color: #FF0000;
+}
+.bolditalicunderline {
+	font-style: italic;
+	font-weight: bold;
+	text-decoration: underline;
+}
+.center {
+	text-align: center;
+}
+.cvsfooter {
+	font-size: x-small;
+	font-style: italic;
+	text-align: right;
+}
+.indent0 {
+	margin: 10px 0px 0px;
+}
+.indent1 {
+	margin-top: 10px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 20px;
+}
+.indent2 {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 50px;
+}
+.indent3 {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 70px;
+}
+.indent4 {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 100px;
+}
+.tindent4 {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	text-indent: 100px;
+}
+.new {
+	color: #FF0000;
+	font-weight: bold;
+	margin-bottom: -10px;
+}
+.underline {
+	text-decoration: underline;
+}
+.upnew {
+	color: #FF0000;
+	font-size: larger;
+	font-weight: bold;
+}
+.sidebar {
+	background: #CCCCCC;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.w20 {
+	width: 20%;
+}
+.w25 {
+	width: 25%;
+}
+.w33 { 
+	width: 33%;
+}
+.w50 {
+	width: 50%;
+}
+.w67 {
+	width: 67%;
+}
+.w75 {
+	width: 75%;
+}
+.w80 {
+	width: 80%;
+}
+.w35 {
+	width: 35%;
+}
+.w10 {
+	width: 10%;
+}
+.f06 {
+	font-size: 6pt;
+}
+.cb9 {
+	blackground-color: #000000;
+	color: #ffffff;
+	text-align: center;
+}
+.cw8 {
+	font-size: 8pt;
+	blackground-color: #ffffff;
+	color: #000000;
+	text-align: center;
+}
+.cb8 {
+	font-size: 8pt;
+	blackground-color: #000000;
+	color: #ffffff;
+	text-align: center;
+}
+.cw6 {
+	font-size: 6pt;
+	blackground-color: #ffffff;
+	color: #000000;
+	text-align: center;
+}
+.cb6 {
+	font-size: 6pt;
+	blackground-color: #000000;
+	color: #ffffff;
+	text-align: center;
+}

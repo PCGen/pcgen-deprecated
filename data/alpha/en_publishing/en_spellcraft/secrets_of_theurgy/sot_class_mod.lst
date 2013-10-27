@@ -1,0 +1,6 @@
+# CVS $Revision$ $Author$ -- Thu Apr  6 15:59:04 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:E.N. Publishing	SOURCESHORT:ENPub	SOURCEWEB:http://www.enworld.org/index.php?page=enpublishing
+
+# Class Name			!PRESA
+CLASS:Mystic Theurge.MOD	!PRESA:1,Theurgy
+1	SA:Theurgy

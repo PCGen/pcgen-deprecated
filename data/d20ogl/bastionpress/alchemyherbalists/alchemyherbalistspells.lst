@@ -1,0 +1,15 @@
+# CVS $Revision$ $Author$ -- Sun Mar 19 07:31:26 2006 -- reformated by prettylst.pl v1.35 (build 561)
+SOURCELONG:Bastion Press - Alchemy and Herbalists	SOURCESHORT:AlchemyHrb	SOURCEWEB:www.bastionpress.com
+
+###Block: SPELL.MOD generated from the old CLASSSPELL files
+# Spell Name			Classes of caster
+Calm Animals.MOD			CLASSES:Taraston Apothecary=1
+Create Water.MOD			CLASSES:Taraston Apothecary=0
+Cure Light Wounds.MOD		CLASSES:Taraston Apothecary=1
+Cure Minor Wounds.MOD		CLASSES:Taraston Apothecary=0
+Delay Poison.MOD			CLASSES:Taraston Apothecary=2
+Detect Poison.MOD			CLASSES:Taraston Apothecary=0
+Goodberry.MOD			CLASSES:Taraston Apothecary=1
+Lesser Restoration.MOD		CLASSES:Taraston Apothecary=2
+Purify Food and Drink.MOD	CLASSES:Taraston Apothecary=0
+Virtue.MOD				CLASSES:Taraston Apothecary=0

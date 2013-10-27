@@ -1,0 +1,87 @@
+# CVS $Revision$ $Author$
+CAMPAIGN:PE - Deadlands Core Rulebook - Horrors o' the Weird West
+GAMEMODE:Deadlands
+RANK:3
+GENRE:Western
+BOOKTYPE:Supplement
+SETTING:Deadlands
+# The active Type tag is temporary and will be removed when this source graduates from Alpha
+TYPE:Alpha Datasets
+#TYPE:Pinnacle Entertainment.Deadlands.Supplement
+PUBNAMELONG:Pinnacle Entertainment
+PUBNAMESHORT:Pinnacle
+PUBNAMEWEB:http://www.peginc.com/
+SOURCELONG:Pinnacle Entertainment - Deadlands D20 - Horrors o' the Weird West
+SOURCESHORT:HotWW
+SOURCEWEB:http://www.peginc.com/index.htm
+ISOGL:YES
+COPYRIGHT:Open Game License v 1.0 Copyright 2000, Wizards of the Coast, Inc.
+COPYRIGHT:PCGen dataset conversion for Horrors of the Weird West Copyright 2003-2005, PCGen Data Team (including, but not limited to: Andrew (Tir Gwaith) McDougal, Paul W. King, wizoffice2001, Eddy Anthony (MoSaT))
+
+# Do not remove the EXTRAFILE comment.
+#EXTRAFILE:OGL.txt
+
+BIOSET:hotwwbiosettings.lst
+
+# conflicts with core rulebook file
+#CLASS:hotwwclasses.lst
+
+EQUIPMENT:hotwwequiparmorshields.lst
+EQUIPMENT:hotwwequipweapmelee.lst
+RACE:hotwwracesa.lst
+RACE:hotwwracesb.lst
+RACE:hotwwracesc.lst
+RACE:hotwwracesd.lst
+RACE:hotwwracese.lst
+RACE:hotwwracesf.lst
+RACE:hotwwracesg.lst
+RACE:hotwwracesh.lst
+RACE:hotwwracesj.lst
+RACE:hotwwracesk.lst
+RACE:hotwwracesl.lst
+RACE:hotwwracesm.lst
+RACE:hotwwracesn.lst
+RACE:hotwwraceso.lst
+RACE:hotwwracesp.lst
+RACE:hotwwracesr.lst
+RACE:hotwwracess.lst
+RACE:hotwwracest.lst
+RACE:hotwwracesu.lst
+RACE:hotwwracesv.lst
+RACE:hotwwracesw.lst
+RACE:hotwwracesz.lst
+RACE:hotwwzombieanimals.lst
+SKILL:hotwwskills.lst
+TEMPLATE:hotwwtemplates.lst
+WEAPONPROF:hotwwweapprofs.lst
+
+# Imported from the SRD
+
+FEAT:@/d20ogl/srd/basics/srd_feats.lst|(INCLUDE:Flyby Attack|Hover|Improved Control Shape|Multidexterity|Multiweapon Fighting|Multiattack|Quicken Spell-Like Ability|Snatch|Spell-Like Ability Focus|Unearthly Beauty|Wingover)|(INCLUDE:Flyby Attack|Multidexterity|Multiweapon Fighting|Multiattack)
+TEMPLATE:@/d20ogl/srd/basics/srd_templates_types.lst|(INCLUDE:Construct|Elemental|Incorporeal|Ooze|Plant|Undead)
+TEMPLATE:@/d20ogl/srd/monsters/srd_templates.lst|(INCLUDE:Celestial|Half-Celestial|Celestial Wings|w/o Celestial Wings|Fiendish|Ghost|Half-Dragon|Half-Dragon (Black)|Half-Dragon (Blue)|Half-Dragon (Green)|Half-Dragon (Red)|Half-Dragon (White)|Half-Dragon (Brass)|Half-Dragon (Bronze)|Half-Dragon (Copper)|Half-Dragon (Gold)|Half-Dragon (Silver)|Half-Fiend|Fiendish Wings|w/o Fiendish Wings|Lich|Shapechanger|Vampire)
+
+# Default Monster Kits
+
+KIT:hotwwkits_races_a.lst
+KIT:hotwwkits_races_b.lst
+KIT:hotwwkits_races_c.lst
+KIT:hotwwkits_races_d.lst
+KIT:hotwwkits_races_e.lst
+KIT:hotwwkits_races_f.lst
+KIT:hotwwkits_races_g.lst
+KIT:hotwwkits_races_h.lst
+KIT:hotwwkits_races_j.lst
+KIT:hotwwkits_races_k.lst
+KIT:hotwwkits_races_l.lst
+KIT:hotwwkits_races_m.lst
+KIT:hotwwkits_races_n.lst
+KIT:hotwwkits_races_o.lst
+KIT:hotwwkits_races_p.lst
+KIT:hotwwkits_races_r.lst
+KIT:hotwwkits_races_s.lst
+KIT:hotwwkits_races_t.lst
+KIT:hotwwkits_races_u.lst
+KIT:hotwwkits_races_v.lst
+KIT:hotwwkits_races_w.lst
+KIT:hotwwkits_races_z.lst

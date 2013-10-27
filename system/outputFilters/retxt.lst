@@ -1,0 +1,10 @@
+\[BR\]	\n
+\{table\}	
+\{/table\}	
+\{table-column([^{}]*)\}	
+\{table-body\}	
+\{/table-body\}	
+\{tr\}	\n
+\{/tr\}	
+\{td\}	
+\{/td\}	

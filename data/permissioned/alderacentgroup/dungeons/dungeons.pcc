@@ -1,0 +1,31 @@
+# CVS $Revision$ $Author$
+CAMPAIGN:AEG - Dungeons Source Book
+GAMEMODE:3e
+RANK:6
+GENRE:Fantasy
+BOOKTYPE:Supplement
+SETTING:Generic
+TYPE:Alderac Entertainment Group.Sourcebook
+PUBNAMELONG:Alderac Entertainment Group
+PUBNAMESHORT:AEG
+PUBNAMEWEB:http://alderac.com/
+SOURCELONG:Alderac Entertainment Group - Dungeons
+SOURCESHORT:Dungeons
+SOURCEWEB:http://alderac.com/d20
+ISOGL:YES
+COPYRIGHT:Open Game License v 1.0 Copyright 2000, Wizards of the Coast, Inc.
+COPYRIGHT:PCGen dataset conversion for Dungeons Copyright 2003-2005, PCGen Data Team (including, but not limited to: Andrew (Tir Gwaith) McDougall, Paul W. King)
+
+# Do not remove the EXTRAFILE comment.
+#EXTRAFILE:OGL.txt
+
+CLASS:dungeonsclasses.lst
+EQUIPMENT:dungeonsequip.lst
+EQUIPMENT:dungeonsequipwondrousitems.lst
+FEAT:dungeonsfeats.lst
+FEAT:dungeonsclassfeats.lst
+SKILL:dungeonsskills.lst
+SPELL:dungeonsspells.lst
+
+# For the Evasion and Improved Evasion pseudo-feats
+FEAT:@/d20ogl/srd/basics/srd_feats_hidden.lst|(INCLUDE:Evasion|Improved Evasion|Wizard Weapon Proficiencies|Rogue Weapon Proficiencies)
