@@ -114,6 +114,7 @@ my %validfiletype = (
 	'SOURCESHORT'	=> 0,
 	'SOURCEWEB'		=> 0,
 	'SOURCEDATE'	=> 0,				#[ 1584007 ] New Tag: SOURCEDATE in PCC
+	'SOURCELINK'	=> 0,
 	'SPELL'		=> \&FILETYPE_parse,
 	'TEMPLATE'		=> \&FILETYPE_parse,
 	'WEAPONPROF'	=> \&FILETYPE_parse,
@@ -1760,6 +1761,7 @@ my @SOURCE_Tags = (
 	'SOURCEWEB',
 	'SOURCEPAGE:.CLEAR',
 	'SOURCEPAGE',
+	'SOURCELINK',
 );
 
 my @QUALIFY_Tags = (
@@ -4246,6 +4248,7 @@ my %tagheader = (
 		'SOURCESHORT'		=> 'Source, Short Desc.',
 		'SOURCEWEB'			=> 'Source URI',
 		'SOURCEDATE'		=> 'Source Pub. Date',
+		'SOURCELINK'		=> 'Source Pub Link',
 		'SPELLBOOK'			=> 'Spellbook',
 		'SPELLFAILURE'		=> '% of Spell Failure',
 		'SPELLLIST'			=> 'Use Spell List',
