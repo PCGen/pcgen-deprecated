@@ -554,6 +554,10 @@ my @valid_system_game_modes  = qw(
 	SovereignStoneD20
 	Spycraft
 	Xcrawl
+	Gaslight
+	Darwins_World_2
+	Killshot
+	OSRIC
 
 	CMP_D20_Fantasy_v30e
 	CMP_D20_Fantasy_v35e
@@ -2767,6 +2771,7 @@ my %master_order = (
 	],
 
 	'PCC' => [
+		'ALLOWDUPES',
 		'CAMPAIGN',
 		'GAMEMODE',
 		'GENRE',
@@ -2802,6 +2807,7 @@ my %master_order = (
 		'REQSKILL',
 		'STATUS',
 		'FORWARDREF',
+		'OPTION',
 
 		# These tags load files
 		'ABILITY',
