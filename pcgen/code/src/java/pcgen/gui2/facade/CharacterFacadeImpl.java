@@ -4154,6 +4154,7 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 		if (charDisplay.hasTemplate(template) && template.isRemovable())
 		{
 			theCharacter.removeTemplate(template);
+			theCharacter.calcActiveBonuses();
 			templates.removeElement(template);
 		} else
 		{
@@ -4163,7 +4164,7 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 
 	private void refreshTemplates()
 	{
-		Collection<PCTemplate> pcTemplates = charDisplay.getOutputVisibleTemplateList();
+		Collection<PCTemplate> pcTemplates = charDisplay.getDisplayVisibleTemplateList();
 		for (PCTemplate template : pcTemplates)
 		{
 			if (!templates.containsElement(template))
