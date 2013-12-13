@@ -6,9 +6,9 @@ PCGen currently supports the d20 RPG system and includes data sets based upon ga
 The project's current focus is on gaming material released under Wizards of the Coast's Open Gaming License (OGL) and sources supporting the Pathfinder RPG by Paizo, but the PCGen team also works with publishers to get permission to include limited Closed Content as well.
 PCGen runs on Windows, Mac OS X and Unix/Linux using Java
 
-# What's new for v6.2.0 RC1
+# What's new for v6.2.0 RC2
 
-PCGen v6.02.0 RC1 is the first release candidate for PCGen 6.2. It represents a product 
+PCGen v6.02.0 RC2 is the second release candidate for PCGen 6.2. It represents a product 
 we believe is ready for production use and which we would like your assistance in testing 
 out. In particular the PCGen team would appreciate your feedback on importing your 
 characters and data from earlier versions of PCGen.
@@ -70,15 +70,15 @@ The following new sources were added in 6.2.0
 
 
 For full details of the new changes in this release, see the 
-[Release Notes](https://sourceforge.net/projects/pcgen/files/PCGen%20Unstable/6.02.0%20RC1/pcgen-release-notes-60200RC1.html/download) in the list above.
+[Release Notes](https://sourceforge.net/projects/pcgen/files/PCGen%20Unstable/6.02.0%20RC2/pcgen-release-notes-60200RC2.html/download) in the list above.
 
-*James Dempsey* for the PCGEN Team -- 5 December, 2013.
+*James Dempsey* for the PCGEN Team -- 13 December, 2013.
 
-SHA1 digest for pcgen-6.02.00RC1-sources.jar:
-18156daaf6a2e5ae1e123b10274e80a57016a76c 
+SHA1 digest for pcgen-6.02.00RC2-sources.jar:
+71049ee50e45137abfa2a362aa78242a9ebc5def 
 
-SHA1 digest for pcgen60200RC1_full.zip:
-b3f47aaf7776599b0a26cf45ccd0c72a5c8d44fe 
+SHA1 digest for pcgen60200RC2_full.zip:
+6a8170d700d4a55fb618191b2fe45f77f4e8c464 
 
-SHA1 digest for pcgen60200RC1_win_install.exe:
-a6efeed8e673e752d6f5c26d1693d0ee156a685c 
+SHA1 digest for pcgen60200RC2_win_install.exe:
+3545a76916ad971fc5a57983e65695363a302d30 
