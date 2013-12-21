@@ -122,12 +122,15 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
         for further files such as release notes, sources and SHA values for file integrity checking.
         </p>
         <p>This is the most recent stable or production PCGen Release. 
-        <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/" style="font-size: 80%;">[View Older Production Releases]</a>
         </p>
 
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6001_win_install.exe">Download PCGen 6.00.1 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6001_mac_install.dmg">Download PCGen 6.00.1 for Mac<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6001_full.zip">Download PCGen 6.00.1 for Other Systems<small>&nbsp;</small></a></div><br/>
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6020_win_install.exe">Download PCGen 6.02.0 for Windows<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6020_mac_install.dmg">Download PCGen 6.02.0 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6020_full.zip">Download PCGen 6.02.0 for Other Systems<small>&nbsp;</small></a></div><br/>
+
+		<p>
+        <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/" style="font-size: 80%;">[View Older Production Releases]</a>
+        </p>
 
         <h3>Download Stable Data Sets<a class="" title="data" name="data"></a></h3>
         <p>These are stable data sets that are developed in between stable releases of PCGen but can be installed and used with a stable version of PCGen.
