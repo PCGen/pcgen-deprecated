@@ -2,7 +2,10 @@
 SOURCELONG:Core Rulebook	SOURCESHORT:CR	SOURCEWEB:http://paizo.com/store/downloads/pathfinder/pathfinderRPG/v5748btpy88yj	SOURCEDATE:2009-08
 # Pathfinder RPG Entry by: Chris 'Barak' Chandler
 
-### Curses
+###Block: Exotic Proficiencies
+CATEGORY=Internal|Default.MOD	DEFINE:BastardSwordExoticUse|0	DEFINE:DwarvenWaraxeExoticUse|0	BONUS:VAR|BastardSwordExoticUse|1|PREFEAT:1,Exotic Weapon Proficiency (Sword (Bastard))	BONUS:VAR|DwarvenWaraxeExoticUse|1|PREFEAT:1,Exotic Weapon Proficiency (Waraxe (Dwarven))
+
+###Block: Curses
 # Ability Name		Category of Ability	Type				Description																																										Cost		Source Page
 Baleful Polymorph Spell	CATEGORY:Afflictions	TYPE:Curse.Affliction	DESC:Curse, spell; Fort DC 17 negates, Will DC 17 partial;Effect transforms target into a lizard																											COST:0	SOURCEPAGE:p.556
 Bestow Curse Trap		CATEGORY:Afflictions	TYPE:Curse.Affliction	DESC:Curse, trap; Will DC 14;Effect -6 penalty to Strength																																		COST:0	SOURCEPAGE:p.556
