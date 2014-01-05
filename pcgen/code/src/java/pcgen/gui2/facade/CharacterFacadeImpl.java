@@ -2924,6 +2924,25 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 		return autoLanguagesCache.contains(language);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isRemovable(LanguageFacade language)
+	{
+		if (isAutomatic(language))
+		{
+			return false;
+		}
+		if (currBonusLangs.contains(language))
+		{
+			boolean allowBonusLangAfterFirst = Globals.checkRule(RuleConstants.INTBONUSLANG);
+			boolean atFirstLvl = theCharacter.getTotalLevels() <= 1;
+			return allowBonusLangAfterFirst || atFirstLvl;
+		}
+		
+		return true;
+	}
+	
 	/* (non-Javadoc)
 	 * @see pcgen.core.facade.CharacterFacade#getCharacterLevelsFacade()
 	 */
