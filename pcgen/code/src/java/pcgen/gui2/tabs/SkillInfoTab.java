@@ -313,18 +313,22 @@ public class SkillInfoTab extends FlippingSplitPane implements CharacterInfoTab,
 		@Override
 		public void run()
 		{
-			for (int i = 0; i < levels.getSize(); i++)
+			for (int startIndex : new int[] {model.getMinSelectionIndex(), 0})
 			{
-				CharacterLevelFacade level = levels.getElementAt(i);
-				if (levels.getSpentSkillPoints(level) < levels.getGainedSkillPoints(level))
+				for (int i = startIndex; i < levels.getSize(); i++)
 				{
-					if (i != model.getMinSelectionIndex())
+					CharacterLevelFacade level = levels.getElementAt(i);
+					if (levels.getSpentSkillPoints(level) < levels.getGainedSkillPoints(level))
 					{
-						model.setSelectionInterval(i, i);
-						skillpointTable.scrollRectToVisible(skillpointTable
-							.getCellRect(i, 0, true));
+						if (i != model.getMinSelectionIndex())
+						{
+							//Logging.errorPrint("updateSelectedIndex got " + level);
+							model.setSelectionInterval(i, i);
+							skillpointTable.scrollRectToVisible(skillpointTable
+								.getCellRect(i, 0, true));
+						}
+						return;
 					}
-					return;
 				}
 			}
 			// Fall back for a non empty list of levels is to select the highest one.
