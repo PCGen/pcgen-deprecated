@@ -2780,7 +2780,7 @@ BIO
 				</item>
 		<item>
 					<name>Gauntlet, Spiked</name>
-				<carried>1.0</carried>
+					<carried>1.0</carried>
 					<charges></charges>
 					<charges_used></charges_used>
 					<contents></contents>
