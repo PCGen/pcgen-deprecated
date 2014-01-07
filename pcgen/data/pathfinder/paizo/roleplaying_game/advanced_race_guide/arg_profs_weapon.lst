@@ -11,8 +11,8 @@ Horsechopper			TYPE:Goblin
 # COMMENT: Dwarven weaponprofs
 Helmet (Dwarven Boulder)	TYPE:Melee.Dwarven.Bludgeoning.Exotic
 Waraxe (Dwarven Double)		TYPE:Melee.Dwarven.Slashing.Exotic
-Longaxe (Dwarven)			TYPE:Melee.Dwarven.Slashing.Exotic
-Longhammer (Dwarven)		TYPE:Melee.Dwarven.Bludgeoning.Exotic.Reach
+Longaxe (Dwarven)			TYPE:Melee.Dwarven.Slashing.Exotic.Weapon Group Axes TwoHanded
+Longhammer (Dwarven)		TYPE:Melee.Dwarven.Bludgeoning.Exotic.Reach.Weapon Group Hammers TwoHanded
 
 # COMMENT: Catfolk Claw Blades
 Claw Blades (Catfolk)		TYPE:Melee.Light.ClawBlades.Slashing.Piercing.Finesseable
