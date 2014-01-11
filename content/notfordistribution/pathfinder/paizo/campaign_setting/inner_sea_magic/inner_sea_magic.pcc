@@ -7,8 +7,8 @@ STATUS:ALPHA
 GENRE:Fantasy
 BOOKTYPE:Campaign Setting
 SETTING:Pathfinder Campaign Setting
-PRECAMPAIGN:1,BOOKTYPE=Core Rules
-PRECAMPAIGN:1,Inner Sea World Guide
+PRECAMPAIGN:1,INCLUDESBOOKTYPE=Core Rules
+PRECAMPAIGN:1,INCLUDES=Inner Sea World Guide
 PUBNAMELONG:Paizo Publishing
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://paizo.com
@@ -40,6 +40,8 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Campaign Setting: Inner Sea M
 ABILITY:ism_abilities_archetypes.lst
 ABILITY:ism_abilities_class.lst
 ABILITYCATEGORY:ism_abilitycategories.lst
+EQUIPMENT:ism_equip.lst
+EQUIPMOD:ism_equipmods.lst
 SPELL:ism_spells.lst
 
 # Forward References

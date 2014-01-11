@@ -125,6 +125,7 @@ import pcgen.core.character.SpellInfo;
 import pcgen.core.chooser.CDOMChoiceManager;
 import pcgen.core.chooser.ChoiceManagerList;
 import pcgen.core.chooser.ChooserUtilities;
+import pcgen.core.display.BonusDisplay;
 import pcgen.core.facade.CampaignFacade;
 import pcgen.core.facade.SourceSelectionFacade;
 import pcgen.core.pclevelinfo.PCLevelInfo;
@@ -3095,7 +3096,24 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 					.getSafe(ObjectKey.STACKS))
 					|| !thePC.containsAssociated(aFeat, appliedToKey))
 				{
-					thePC.addAssociation(aFeat, appliedToKey);
+					ChoiceManagerList<Object> controller =
+							ChooserUtilities.getConfiguredController(aFeat,
+								thePC, AbilityCategory.FEAT, new ArrayList<String>());
+					if (controller != null)
+					{
+						String[] assoc =
+								appliedToKey.split(Constants.COMMA, -1);
+						for (String string : assoc)
+						{
+							controller.restoreChoice(thePC, aFeat, string);
+						}
+					}
+					else
+					{
+						warnings
+							.add("Failed to find choose controller for Feat "
+								+ aFeat);
+					}
 				}
 			}
 			else if (TAG_SAVE.equals(tag))
@@ -4939,8 +4957,7 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 								CategorizedAbilitySelection as =
 										CategorizedAbilitySelection
 											.getAbilitySelectionFromPersistentFormat(feat);
-								thePC.addAssoc(subt,
-									AssociationListKey.TEMPLATE_FEAT, as);
+								thePC.addTemplateFeat(subt, as);
 							}
 						}
 					}
@@ -5961,7 +5978,7 @@ final class PCGVer2Parser implements PCGParser, IOConstants
 			
 			if (!active)
 			{
-				String bonusName = new BonusManager(thePC).getBonusDisplayName(newB, tempBonusInfo);
+				String bonusName = BonusDisplay.getBonusDisplayName(newB, tempBonusInfo);
 				thePC.setTempBonusFilter(bonusName);
 			}
 		}

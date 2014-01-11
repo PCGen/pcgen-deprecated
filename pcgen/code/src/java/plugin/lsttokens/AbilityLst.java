@@ -37,7 +37,7 @@ import pcgen.cdom.base.CDOMList;
 import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Category;
-import pcgen.cdom.base.ChooseResultActor;
+import pcgen.cdom.base.ChooseSelectionActor;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.enumeration.AssociationKey;
@@ -171,14 +171,15 @@ public class AbilityLst extends AbstractTokenWithSeparator<CDOMObject>
 
 		String token = tok.nextToken();
 
-		if (token.startsWith("PRE") || token.startsWith("!PRE"))
+		if (looksLikeAPrerequisite(token))
 		{
 			return new ParseResult.Fail("Cannot have only PRExxx subtoken in "
 				+ getTokenName() + ": " + value, context);
 		}
 
 		String lkString = "GA_CA_" + cat + "_" + natureKey;
-		ListKey<ChooseResultActor> lk = ListKey.getKeyFor(ChooseResultActor.class, lkString);
+		ListKey glk = ListKey.getKeyFor(ChooseSelectionActor.class, lkString);
+		ListKey<ChooseSelectionActor<?>> lk = glk;
 
 		ArrayList<PrereqObject> edgeList = new ArrayList<PrereqObject>();
 
@@ -269,7 +270,7 @@ public class AbilityLst extends AbstractTokenWithSeparator<CDOMObject>
 			}
 			first = false;
 			token = tok.nextToken();
-			if (token.startsWith("PRE") || token.startsWith("!PRE"))
+			if (looksLikeAPrerequisite(token))
 			{
 				break;
 			}
@@ -309,7 +310,7 @@ public class AbilityLst extends AbstractTokenWithSeparator<CDOMObject>
 		Collection<CDOMReference<? extends CDOMList<? extends PrereqObject>>> changedLists =
 				context.getListContext()
 					.getChangedLists(obj, AbilityList.class);
-		Changes<ListKey<ChooseResultActor>> actors = context.getObjectContext()
+		Changes<ListKey<ChooseSelectionActor<?>>> actors = context.getObjectContext()
 				.getListChanges(obj, ListKey.GA_CAKEYS);
 		Set<String> returnSet = new TreeSet<String>();
 		TripleKeyMapToList<Nature, Category<Ability>, List<Prerequisite>, CDOMReference<Ability>> m = new TripleKeyMapToList<Nature, Category<Ability>, List<Prerequisite>, CDOMReference<Ability>>();
@@ -418,14 +419,14 @@ public class AbilityLst extends AbstractTokenWithSeparator<CDOMObject>
 				}
 			}
 		}
-		Collection<ListKey<ChooseResultActor>> addedActors = actors.getAdded();
+		Collection<ListKey<ChooseSelectionActor<?>>> addedActors = actors.getAdded();
 		if (addedActors != null)
 		{
-			for (ListKey<ChooseResultActor> lk : addedActors)
+			for (ListKey<ChooseSelectionActor<?>> lk : addedActors)
 			{
-				Changes<ChooseResultActor> cras =
+				Changes<ChooseSelectionActor<?>> cras =
 						context.getObjectContext().getListChanges(obj, lk);
-				for (ChooseResultActor cra : cras.getAdded())
+				for (ChooseSelectionActor<?> cra : cras.getAdded())
 				{
 					if (getTokenName().equals(cra.getSource()))
 					{
@@ -480,13 +481,13 @@ public class AbilityLst extends AbstractTokenWithSeparator<CDOMObject>
 	@Override
 	public boolean process(LoadContext context, CDOMObject cdo)
 	{
-		List<ListKey<ChooseResultActor>> lkList =
+		List<ListKey<ChooseSelectionActor<?>>> lkList =
 				cdo.getListFor(ListKey.GA_CAKEYS);
 		if (lkList != null)
 		{
-			for (ListKey<ChooseResultActor> lk : lkList)
+			for (ListKey<ChooseSelectionActor<?>> lk : lkList)
 			{
-				cdo.addAllToListFor(ListKey.CHOOSE_ACTOR, cdo.getListFor(lk));
+				cdo.addAllToListFor(ListKey.NEW_CHOOSE_ACTOR, cdo.getListFor(lk));
 			}
 		}
 		return true;

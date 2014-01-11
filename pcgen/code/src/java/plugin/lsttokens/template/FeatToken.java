@@ -32,7 +32,6 @@ import pcgen.cdom.base.FormulaFactory;
 import pcgen.cdom.base.PersistentChoiceActor;
 import pcgen.cdom.base.PersistentTransitionChoice;
 import pcgen.cdom.choiceset.AbilityRefChoiceSet;
-import pcgen.cdom.enumeration.AssociationListKey;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Nature;
 import pcgen.cdom.enumeration.ObjectKey;
@@ -165,55 +164,25 @@ public class FeatToken extends AbstractTokenWithSeparator<PCTemplate> implements
 		}
 		AbilityUtilities.modAbility(pc, choice.getAbility(), choice
 		.getSelection(), AbilityCategory.FEAT);
-		pc.addAssoc(owner, AssociationListKey.TEMPLATE_FEAT, choice);
+		pc.addTemplateFeat(owner, choice);
 	}
 
 	@Override
 	public boolean allow(CategorizedAbilitySelection choice, PlayerCharacter pc,
 			boolean allowStack)
 	{
-		// Remove any already selected
-		for (Ability a : pc.getAllAbilities())
-		{
-			if (AbilityCategory.FEAT.equals(a.getCDOMCategory()
-					.getParentCategory()))
-			{
-				if (a.getKeyName().equals(choice.getAbilityKey()))
-				{
-					if (!pc.canSelectAbility(a, false)
-							|| !a.getSafe(ObjectKey.VISIBILITY).equals(
-									Visibility.DEFAULT)
-							|| !allowStack(a, allowStack)
-							&& hasAssoc(pc.getAssociationList(a), choice))
-					{
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
-
-	private boolean hasAssoc(List<String> associationList,
-		CategorizedAbilitySelection choice)
-	{
-		if (associationList == null)
+		Ability ability = choice.getAbility();
+		if (!ability.getSafe(ObjectKey.VISIBILITY).equals(Visibility.DEFAULT))
 		{
 			return false;
 		}
-		for (String a : associationList)
+		if (!pc.canSelectAbility(ability, false))
 		{
-			if (choice.containsAssociation(a))
-			{
-				return true;
-			}
+			return false;
 		}
-		return false;
-	}
-
-	private boolean allowStack(Ability a, boolean allowStack)
-	{
-		return a.getSafe(ObjectKey.STACKS) && allowStack;
+		String selection = choice.getSelection();
+		// Avoid any already selected
+		return !AbilityUtilities.alreadySelected(pc, ability, selection, allowStack);
 	}
 
 	@Override

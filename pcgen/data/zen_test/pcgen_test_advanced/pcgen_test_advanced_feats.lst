@@ -1,5 +1,14 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
 
+#Tom Test
+Test91			TYPE:Test.Test91	MULT:YES	STACK:NO	CHOOSE:SKILL|Balance|Hide|Move Silently|Swim
+Test92			TYPE:Test.Test92	MULT:YES	STACK:NO	CHOOSE:SKILL|Balance|Hide|Move Silently|Swim	DESC:Look at all the Things (%1)|%LIST
+Test93			TYPE:Test.Test93	MULT:YES	STACK:NO	CHOOSE:SKILL|Balance|Hide|Move Silently|Swim	ASPECT:DisplaySomething|Look at all the Things (%1)|%LIST
+Test94			TYPE:Test.Test94	MULT:YES	STACK:NO	CHOOSE:SKILL|Balance|Hide|Move Silently|Swim	BONUS:SKILLRANK|%LIST|1
+
+
+
+
 # Feat Name			Type				Required Feat							Stackable?	Multiple?	Choose				Automatically Gained Feat	Ability											Add 					Bonus to skill		List of Class Spells by Level
 MyTest ~ No Prexxx	TYPE:Code1730
 MyTest ~ Yes Prexxx	TYPE:Code1730		PREFEAT:1,MyTest ~ No Prexxx

@@ -33,6 +33,8 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 import pcgen.base.lang.StringUtil;
+import pcgen.cdom.base.Constants;
+import pcgen.cdom.base.Category;
 import pcgen.cdom.enumeration.AspectName;
 import pcgen.cdom.enumeration.MapKey;
 import pcgen.cdom.enumeration.Nature;
@@ -47,6 +49,7 @@ import pcgen.core.PlayerCharacter;
 import pcgen.core.SettingsHandler;
 import pcgen.core.analysis.QualifiedName;
 import pcgen.io.ExportHandler;
+import pcgen.util.Logging;
 import pcgen.util.enumeration.Visibility;
 
 /**
@@ -243,17 +246,35 @@ public class AbilityToken extends Token
 		{
 			final String typeStr = aTok.nextToken();
 			int typeInd = typeStr.indexOf("TYPE=");
+			int extypeInd = typeStr.indexOf("EXCLUDETYPE=");
+
 			// If it's TYPE and it actually has a value attached then process it 
-			if (typeInd != -1 && typeStr.length() > 5)
+			if (typeInd != -1 && extypeInd == -1 && typeStr.length() > 5)
 			{
 				// It's a type to be excluded from the filter list 
 				if (typeStr.startsWith("!"))
 				{
+					Logging.deprecationPrint("The use of !TYPE with ABILITY output tokens is deprecated. Please use EXCLUDETYPE.");
 					negate.add(typeStr.substring(typeInd + 5));
 				}
 				else
 				{
-					types.add(typeStr.substring(typeInd + 5));
+					StringTokenizer incTok = new StringTokenizer(typeStr.substring(typeInd + 5), Constants.SEMICOLON);
+					while (incTok.hasMoreTokens())
+					{
+						types.add(incTok.nextToken());
+					}
+				}
+			}
+
+			// If it's EXCLUDETYPE and it actually has a value attached then process it 
+			if (extypeInd != -1 && typeStr.length() > 12)
+			{
+				// exclude TYPEs from comma-separated list
+				StringTokenizer exTok = new StringTokenizer(typeStr.substring(extypeInd + 12), Constants.SEMICOLON);
+				while (exTok.hasMoreTokens())
+				{
+					negate.add(exTok.nextToken());	
 				}
 			}
 			
@@ -519,6 +540,13 @@ public class AbilityToken extends Token
 				retString =
 						StringUtil.join(pc.getAssociationList(aAbility), ",");
 			}
+			else if (tokenSource.indexOf(".ASSOCIATED.") > -1)
+			{
+				final String key =
+						tokenSource
+							.substring(tokenSource.indexOf(".ASSOCIATED.") + 12);
+				retString = getAssociationString(pc, aAbility, key);
+			}
 			else if (tokenSource.endsWith(".ASSOCIATEDCOUNT"))
 			{
 				retString =
@@ -555,6 +583,35 @@ public class AbilityToken extends Token
 							.indexOf(".HASASPECT.") + 11);
 				retString = getHasAspectString(aAbility, key);
 			}
+			else if (tokenSource.indexOf(".CATEGORY") > -1)
+			{
+				Nature[] searchOrder;
+				if (getTargetNature() != null)
+				{
+					searchOrder = new Nature[] {getTargetNature()};
+				}
+				else
+				{
+					searchOrder = new Nature[] {Nature.NORMAL, Nature.VIRTUAL, Nature.AUTOMATIC};
+				}
+				for (Nature nature : searchOrder)
+				{
+					Category<Ability> category = pc.getAbilityCategory(nature, aAbility);
+					if (category != null)
+					{
+						retString = String.valueOf(category);
+						break;
+					}
+				}
+			}
+			else if (tokenSource.indexOf(".NAME") > -1)
+			{
+				retString = aAbility.getDisplayName();
+			}
+			else if (tokenSource.indexOf(".KEY") > -1)
+			{
+				retString = aAbility.getKeyName();
+			}
 			else
 			{
 				retString = QualifiedName.qualifiedName(pc, aAbility);
@@ -568,6 +625,32 @@ public class AbilityToken extends Token
 		}
 
 		return retString;
+	}
+
+	/**
+	 * @return The nature of the abilities being listed.
+	 */
+	protected Nature getTargetNature()
+	{
+		return Nature.NORMAL;
+	}
+
+	/**
+	 * @param pc
+	 * @param aAbility
+	 * @param key
+	 * @return
+	 */
+	private String getAssociationString(PlayerCharacter pc, Ability aAbility,
+		String key)
+	{
+		List<String> associationList = pc.getAssociationList(aAbility);
+		int index = Integer.parseInt(key);
+		if (index >=0 && index < associationList.size())
+		{
+			return associationList.get(index);
+		}
+		return "";
 	}
 
 	/**

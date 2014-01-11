@@ -57,7 +57,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -75,6 +74,7 @@ import pcgen.gui2.PCGenFrame;
 import pcgen.gui2.UIPropertyContext;
 import pcgen.gui2.tools.Utility;
 import pcgen.gui2.util.FacadeComboBoxModel;
+import pcgen.io.ExportUtilities;
 import pcgen.system.BatchExporter;
 import pcgen.system.CharacterManager;
 import pcgen.system.ConfigurationSettings;
@@ -307,7 +307,7 @@ public class ExportDialog extends JDialog implements ActionListener, ListSelecti
 		fcExport.setCurrentDirectory(baseDir);
 
 		URI uri = (URI) fileList.getSelectedValue();
-		String extension = FilenameUtils.getExtension(uri.toString());
+		String extension = ExportUtilities.getOutputExtension(uri.toString(), pdf);
 		if (pdf)
 		{
 			fcExport.addChoosableFileFilter(new FileNameExtensionFilter("PDF Documents (*.pdf)", "pdf"));

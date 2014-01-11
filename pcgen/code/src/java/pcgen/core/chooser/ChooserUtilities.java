@@ -147,7 +147,7 @@ public class ChooserUtilities
 				cat = category;
 			}
 			aMan.setController(new AbilityChooseController(a, cat, aPC, aMan));
-			for (Ability ab : aPC.getAllAbilities())
+			for (Ability ab : aPC.getAllAbilities(cat.getParentCategory()))
 			{
 				if (ab.getKeyName().equals(a.getKeyName()))
 				{

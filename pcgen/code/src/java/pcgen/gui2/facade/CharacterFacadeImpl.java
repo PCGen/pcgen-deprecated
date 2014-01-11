@@ -112,6 +112,7 @@ import pcgen.core.character.EquipSet;
 import pcgen.core.character.Follower;
 import pcgen.core.chooser.ChoiceManagerList;
 import pcgen.core.chooser.ChooserUtilities;
+import pcgen.core.display.BonusDisplay;
 import pcgen.core.display.CharacterDisplay;
 import pcgen.core.facade.AbilityCategoryFacade;
 import pcgen.core.facade.AbilityFacade;
@@ -1066,11 +1067,18 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 		}
 
 		//
-		// next do all Feats to get TEMPBONUS:ANYPC or TEMPBONUS:EQUIP
-		for (Ability aFeat : Globals.getContext().ref.getManufacturer(Ability.class, AbilityCategory.FEAT)
-				.getAllObjects())
+		// next do all abilities to get TEMPBONUS:ANYPC only
+		GameMode game = (GameMode) dataSet.getGameMode();
+		for (AbilityCategory cat : game.getAllAbilityCategories())
 		{
-			scanForNonPcTempBonuses(tempBonuses, aFeat);
+			if (cat.getParentCategory() == cat)
+			{
+				for (Ability aFeat : Globals.getContext().ref.getManufacturer(
+					Ability.class, cat).getAllObjects())
+				{
+					scanForAnyPcTempBonuses(tempBonuses, aFeat);
+				}
+			}
 		}
 
 		//
@@ -1158,6 +1166,18 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 		}
 	}
 
+	private void scanForAnyPcTempBonuses(List<TempBonusFacadeImpl> tempBonuses, PObject obj)
+	{
+		if (obj == null)
+		{
+			return;
+		}
+		if (TempBonusHelper.hasAnyPCTempBonus(obj, theCharacter))
+		{
+			tempBonuses.add(new TempBonusFacadeImpl(obj));
+		}
+	}
+
 	private void scanForTempBonuses(List<TempBonusFacadeImpl> tempBonuses, CDOMObject obj)
 	{
 		if (obj == null)
@@ -1185,7 +1205,6 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 	private void buildAppliedTempBonusList()
 	{
 		Set<String> found = new HashSet<String>();
-		BonusManager bonusMgr = new BonusManager(theCharacter);
 		for (Map.Entry<BonusObj, BonusManager.TempBonusInfo> me : theCharacter
 				.getTempBonusMap().entrySet())
 		{
@@ -1193,7 +1212,7 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 			TempBonusInfo tbi = me.getValue();
 			Object aC = tbi.source;
 			Object aT = tbi.target;
-			String name = bonusMgr.getBonusDisplayName(aBonus, tbi);
+			String name = BonusDisplay.getBonusDisplayName(aBonus, tbi);
 
 			if (!found.contains(name))
 			{
@@ -4069,7 +4088,7 @@ public class CharacterFacadeImpl implements CharacterFacade, EquipmentListListen
 		ClassFacade classFacade)
 	{
 		if (!(spellFacade instanceof SpellFacadeImplem)
-			|| !(classFacade instanceof PCClass))
+			|| !(classFacade == null || classFacade instanceof PCClass))
 		{
 			return false;
 		}

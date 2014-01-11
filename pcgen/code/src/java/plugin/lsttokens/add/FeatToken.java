@@ -44,6 +44,8 @@ import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.AbilityUtilities;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.chooser.ChoiceManagerList;
+import pcgen.core.chooser.ChooserUtilities;
 import pcgen.core.utils.ParsingSeparator;
 import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
@@ -296,48 +298,18 @@ public class FeatToken extends AbstractNonEmptyToken<CDOMObject> implements
 	public boolean allow(CategorizedAbilitySelection choice, PlayerCharacter pc,
 			boolean allowStack)
 	{
-		// Remove any already selected
-		for (Ability a : pc.getAllAbilities())
-		{
-			if (AbilityCategory.FEAT.equals(a.getCDOMCategory()
-					.getParentCategory()))
-			{
-				if (a.getKeyName().equals(choice.getAbilityKey()))
-				{
-					if (!pc.canSelectAbility(a, false)
-							|| !a.getSafe(ObjectKey.VISIBILITY).equals(
-									Visibility.DEFAULT)
-							|| (!allowStack(a, allowStack)
-							&& hasAssoc(pc.getAssociationList(a), choice)))
-					{
-						return false;
-					}
-				}
-			}
-		}
-		return pc.canSelectAbility(choice.getAbility(), false);
-	}
-
-	private boolean hasAssoc(List<String> associationList,
-		CategorizedAbilitySelection choice)
-	{
-		if (associationList == null)
+		Ability ability = choice.getAbility();
+		if (!ability.getSafe(ObjectKey.VISIBILITY).equals(Visibility.DEFAULT))
 		{
 			return false;
 		}
-		for (String a : associationList)
+		if (!pc.canSelectAbility(ability, false))
 		{
-			if (choice.containsAssociation(a))
-			{
-				return true;
-			}
+			return false;
 		}
-		return false;
-	}
-
-	private boolean allowStack(Ability a, boolean allowStack)
-	{
-		return a.getSafe(ObjectKey.STACKS) && allowStack;
+		String selection = choice.getSelection();
+		// Avoid any already selected
+		return !AbilityUtilities.alreadySelected(pc, ability, selection, allowStack);
 	}
 
 	@Override
@@ -377,11 +349,23 @@ public class FeatToken extends AbstractNonEmptyToken<CDOMObject> implements
 		
 		if (anAbility != null)
 		{
+			if (anAbility.getSafe(ObjectKey.MULTIPLE_ALLOWED))
+			{
+				ChoiceManagerList cm = ChooserUtilities.getChoiceManager(anAbility, pc);
+				remove(cm, pc, anAbility, choice.getSelection());
+			}
 			pc.removeRealAbility(AbilityCategory.FEAT, anAbility);
 			CDOMObjectUtilities.removeAdds(anAbility, pc);
 			CDOMObjectUtilities.restoreRemovals(anAbility, pc);
 			pc.adjustMoveRates();
 		}
+	}
+
+	private static <T> void remove(ChoiceManagerList<T> aMan, PlayerCharacter pc,
+		CDOMObject obj, String choice)
+	{
+		T sel = aMan.decodeChoice(choice);
+		aMan.removeChoice(pc, obj, sel);
 	}
 
 	@Override

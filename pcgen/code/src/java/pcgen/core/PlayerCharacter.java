@@ -1,5 +1,4 @@
 /*
- * Copyright 2001 (C) Bryan McRoberts <merton_monk@yahoo.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,11 +55,11 @@ import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMObjectUtilities;
 import pcgen.cdom.base.CDOMReference;
 import pcgen.cdom.base.Category;
-import pcgen.cdom.base.ChooseResultActor;
 import pcgen.cdom.base.Constants;
 import pcgen.cdom.base.PersistentTransitionChoice;
 import pcgen.cdom.base.PrereqObject;
 import pcgen.cdom.base.TransitionChoice;
+import pcgen.cdom.content.AbilitySelection;
 import pcgen.cdom.content.HitDie;
 import pcgen.cdom.content.LevelCommandFactory;
 import pcgen.cdom.content.Modifier;
@@ -99,6 +98,7 @@ import pcgen.cdom.facet.ConditionallyGrantedAbilityFacet;
 import pcgen.cdom.facet.ConditionallyGrantedAvailableSpellFacet;
 import pcgen.cdom.facet.ConditionallyGrantedKnownSpellFacet;
 import pcgen.cdom.facet.DirectAbilityFacet;
+import pcgen.cdom.facet.DirectAbilityInputFacet;
 import pcgen.cdom.facet.DomainSpellCountFacet;
 import pcgen.cdom.facet.EquipSetFacet;
 import pcgen.cdom.facet.EquipmentFacet;
@@ -131,6 +131,7 @@ import pcgen.cdom.facet.StatCalcFacet;
 import pcgen.cdom.facet.StatValueFacet;
 import pcgen.cdom.facet.SubClassFacet;
 import pcgen.cdom.facet.SubstitutionClassFacet;
+import pcgen.cdom.facet.TemplateFeatFacet;
 import pcgen.cdom.facet.UserEquipmentFacet;
 import pcgen.cdom.facet.XPTableFacet;
 import pcgen.cdom.facet.analysis.AgeSetFacet;
@@ -223,8 +224,6 @@ import pcgen.cdom.list.DomainSpellList;
 import pcgen.cdom.reference.CDOMGroupRef;
 import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.BonusManager.TempBonusInfo;
-import pcgen.core.analysis.AddObjectActions;
-import pcgen.core.analysis.BonusActivation;
 import pcgen.core.analysis.BonusCalc;
 import pcgen.core.analysis.ChooseActivation;
 import pcgen.core.analysis.DomainApplication;
@@ -334,6 +333,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 	private UnlockedStatFacet unlockedStatFacet = FacetLibrary.getFacet(UnlockedStatFacet.class);
 	private NonStatStatFacet nonStatStatFacet = FacetLibrary.getFacet(NonStatStatFacet.class);
 	private NonStatToStatFacet nonStatToStatFacet = FacetLibrary.getFacet(NonStatToStatFacet.class);
+	private TemplateFeatFacet templateFeatFacet = FacetLibrary.getFacet(TemplateFeatFacet.class);
 
 	/*
 	 * Note "minimal" here means getDirty is allowed on a set, it may be used in
@@ -379,6 +379,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 	private ConditionalAbilityFacet conditionalFacet = FacetLibrary.getFacet(ConditionalAbilityFacet.class);
 	private GrantedAbilityFacet grantedAbilityFacet = FacetLibrary.getFacet(GrantedAbilityFacet.class);
 	private DirectAbilityFacet directAbilityFacet = FacetLibrary.getFacet(DirectAbilityFacet.class);
+	private DirectAbilityInputFacet directAbilityInputFacet = FacetLibrary.getFacet(DirectAbilityInputFacet.class);
 	private KitFacet kitFacet = FacetLibrary.getFacet(KitFacet.class);
 	private ArmorProfProviderFacet armorProfFacet = FacetLibrary.getFacet(ArmorProfProviderFacet.class);
 	private ShieldProfProviderFacet shieldProfFacet = FacetLibrary.getFacet(ShieldProfProviderFacet.class);
@@ -593,38 +594,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 	}
 
 	/**
-	 * Returns the Spell Stat bonus for a class.
-	 * 
-	 * @param aClass the class to calculate the bonus for
-	 * @return base spell stat bonus
-	 */
-	public int getBaseSpellStatBonus(final PCClass aClass)
-	{
-		if (aClass == null)
-		{
-			return 0;
-		}
-
-		int baseSpellStat = 0;
-		PCStat ss = aClass.get(ObjectKey.SPELL_STAT);
-		if (ss != null)
-		{
-			baseSpellStat = this.getTotalStatFor(ss);
-			// final List<TypedBonus> bonuses = getBonusesTo("STAT",
-			// "BASESPELLSTAT");
-			// bonuses.addAll( getBonusesTo("STAT",
-			// "BASESPELLSTAT;CLASS."+aClass.getKeyName()) );
-			// bonuses.addAll( getBonusesTo("STAT", "CAST." + statString) );
-			// baseSpellStat += TypedBonus.totalBonuses(bonuses);
-			baseSpellStat += (int) getTotalBonusTo("STAT", "BASESPELLSTAT");
-			baseSpellStat += (int) getTotalBonusTo("STAT", "BASESPELLSTAT;CLASS=" + aClass.getKeyName());
-			baseSpellStat += (int) getTotalBonusTo("STAT", "CAST." + ss.getAbb());
-			baseSpellStat = this.getModForNumber(baseSpellStat, ss);
-		}
-		return baseSpellStat;
-	}
-
-	/**
 	 * Set the character's BIO.
 	 * 
 	 * @param bio the biography
@@ -664,6 +633,11 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		if (calcEquipSetId != eqSetId)
 		{
 			calcEquipSetId = eqSetId;
+			EquipSet equipSet = getEquipSetByIdPath(eqSetId);
+			if (equipSet != null)
+			{
+				setCurrentEquipSetName(equipSet.getName());
+			}
 			setDirty(true);
 		}
 	}
@@ -869,7 +843,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 					// Found race and type of follower
 					// so add bonus to the master
 					companionModFacet.add(id, cm);
-					BonusActivation.activateBonuses(cm, aPC);
 				}
 			}
 		}
@@ -3377,21 +3350,11 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		setDirty(true);
 	}
 
-	public boolean setDeity(final Deity aDeity)
+	public void setDeity(final Deity aDeity)
 	{
-		if (!canSelectDeity(aDeity))
-		{
-			return false;
-		}
-
-		if (deityFacet.set(id, aDeity))
+		if (canSelectDeity(aDeity) && deityFacet.set(id, aDeity))
 		{
 			setDirty(true);
-			return true;
-		}
-		else
-		{
-			return false;
 		}
 	}
 
@@ -3664,6 +3627,21 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		return null;
 	}
 
+	public boolean hasFeatNamed(final String featName)
+	{
+		Ability ability = AbilityUtilities.retrieveAbilityKeyed(AbilityCategory.FEAT, featName);
+		Collection<AbilityCategory> cats = SettingsHandler.getGame().getAllAbilityCatsForKey(Constants.FEAT_CATEGORY);
+		for (AbilityCategory abilityCategory : cats)
+		{
+			Ability contained = getMatchingAbility(abilityCategory, ability);
+			if (contained != null)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public Ability getMatchingAbility(Category<Ability> abilityCategory, Ability ability, Nature nature)
 	{
 		Ability contained = abFacet.getContained(id, abilityCategory, nature, ability);
@@ -3915,18 +3893,13 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 			return shieldProfFacet.isProficientWithShield(id, eq);
 		} else if (eq.isArmor())
 		{
-			return isProficientWithArmor(eq);
+			return armorProfFacet.isProficientWithArmor(id, eq);
 		} else if (eq.isWeapon())
 		{
 			return weaponProfFacet.isProficientWithWeapon(id, eq);
 		}
 
 		return false;
-	}
-
-	public boolean isProficientWithArmor(final Equipment eq)
-	{
-		return armorProfFacet.isProficientWithArmor(id, eq);
 	}
 
 	/**
@@ -4753,23 +4726,14 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 
 	public void addSkill(final Skill addSkill)
 	{
-		// First, check to see if skill is already in list
-		if (hasSkill(addSkill))
+		boolean added = skillFacet.add(id, addSkill);
+		if (added)
 		{
-			return;
-		}
-
-		//
-		// Skill not found, add to list
-		//
-		skillFacet.add(id, addSkill);
-		setDirty(true);
-
-		if (!isImporting())
-		{
-			AddObjectActions.doBaseChecks(addSkill, this);
-			BonusActivation.activateBonuses(addSkill, this);
-			calcActiveBonuses();
+			setDirty(true);
+			if (!isImporting())
+			{
+				calcActiveBonuses();
+			}
 		}
 	}
 
@@ -6128,11 +6092,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 				setHP(topcl, hpArray[i]);
 			}
 
-			for (int i = 0; i < fromLevel; i++)
-			{
-				toClass.doPlusLevelMods(toLevel + i + 1, this);
-			}
-
 			//
 			// change all the levelling info to the ex-class as well
 			//
@@ -6676,11 +6635,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 			setHP(topcl, hpArray[i]);
 		}
 
-		for (int i = 0; i < iCount; i++)
-		{
-			toClass.doPlusLevelMods(toLevel + i + 1, this);
-		}
-
 		// first, change the toClass current PCLevelInfo level
 		for (PCLevelInfo pcl : getLevelInfo())
 		{
@@ -7029,8 +6983,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 			list.add(align);
 		}
 
-		// armorProfList is still just a list of Strings
-		// results.addAll(getArmorProfList());
 		// BioSet
 		list.add(bioSetFacet.get(id));
 
@@ -7650,18 +7602,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 
 				// Add the class to the character classes as level 0
 				classFacet.addClass(id, pcClassClone);
-
-				// do the following only if adding a level of a class for the
-				// first time
-				//				if (numberOfLevels > 0)
-				//				{
-				//					for (CDOMReference<Language> ref : pcClassClone
-				//						.getSafeListFor(ListKey.AUTO_LANGUAGES))
-				//					{
-				//						langAutoFacet.addAll(id, ref.getContainedObjects(),
-				//								pcClassClone);
-				//					}
-				//				}
 			} else
 			{
 				// mod is < 0 and character does not have class. Return.
@@ -7839,8 +7779,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 			this.setPoolAmount(0);
 			this.costPool = 0;
 		}
-		//TODO Why does rolling stats delete the language list?!?
-		languageFacet.removeAll(id);
 		if (method != Constants.CHARACTER_STAT_METHOD_PURCHASE)
 		{
 			setPoolAmount(0);
@@ -8752,6 +8690,29 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		return list;
 	}
 
+	/*
+	 * Returns all abilities in the given Category and the subcategories of that Category.
+	 */
+	public List<Ability> getAllAbilities(Category<Ability> cat)
+	{
+		Set<Category<Ability>> abCats = new HashSet<Category<Ability>>();
+		abCats.addAll(abFacet.getCategories(id));
+		abCats.addAll(grantedAbilityFacet.getCategories(id));
+
+		List<Ability> list = new ArrayList<Ability>();
+
+		for (Category<Ability> ac : abCats)
+		{
+			if (ac.getParentCategory().equals(cat))
+			{
+				list.addAll(getAbilityList(ac, Nature.AUTOMATIC));
+				list.addAll(getAbilityList(ac, Nature.NORMAL));
+				list.addAll(getAbilityList(ac, Nature.VIRTUAL));
+			}
+		}
+		return list;
+	}
+
 	/**
 	 * Get a list of real abilities of a particular AbilityCategory
 	 * no matter which AbilityCategory list they reside in.
@@ -9143,6 +9104,20 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		return null;
 	}
 
+	public boolean hasAbilityKeyed(final AbilityCategory aCategory, final String aKey)
+	{
+		final List<Ability> abilities = getAggregateAbilityList(aCategory);
+		for (final Ability ability : abilities)
+		{
+			if (ability.getKeyName().equals(aKey))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/**
 	 * Get an ability of any category that matches the key.
 	 * @param aKey The key to search for
@@ -9323,6 +9298,35 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		return ret;
 	}
 
+	public boolean hasVisibleAbility(final AbilityCategory aCategory)
+	{
+		for (final Ability ability : getRealAbilitiesListAnyCat(aCategory))
+		{
+			if (ability.getSafe(ObjectKey.VISIBILITY) == Visibility.DEFAULT
+					|| ability.getSafe(ObjectKey.VISIBILITY) == Visibility.OUTPUT_ONLY)
+			{
+				return true;
+			}
+		}
+		for (final Ability ability : getAbilityList(aCategory, Nature.AUTOMATIC))
+		{
+			if (ability.getSafe(ObjectKey.VISIBILITY) == Visibility.DEFAULT
+					|| ability.getSafe(ObjectKey.VISIBILITY) == Visibility.OUTPUT_ONLY)
+			{
+				return true;
+			}
+		}
+		for (final Ability ability : getAbilityList(aCategory, Nature.VIRTUAL))
+		{
+			if (ability.getSafe(ObjectKey.VISIBILITY) == Visibility.DEFAULT
+					|| ability.getSafe(ObjectKey.VISIBILITY) == Visibility.OUTPUT_ONLY)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private Set<Ability> getAbilitySetByNature(Nature n)
 	{
 		GameMode gm = SettingsHandler.getGame();
@@ -9449,7 +9453,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 						{
 							for (final String choice : choices)
 							{
-								if (AbilityUtilities.canAddAssociation(this, ab, choice))
+								if (!AbilityUtilities.alreadySelected(this, ab, choice, true))
 								{
 									CategorizedAbilitySelection cas = new CategorizedAbilitySelection(cdo, cat, ab,
 											nature, choice);
@@ -9470,7 +9474,8 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		cabFacet.update(id);
 	}
 
-	private void applyAbility(CategorizedAbilitySelection cas)
+	//WARNING: This is public only for testing, do NOT use without understanding what you are shortcutting!!
+	public void applyAbility(CategorizedAbilitySelection cas)
 	{
 		if (cas.hasPrerequisites())
 		{
@@ -9577,8 +9582,8 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		{
 			for (PCTemplate lt : rlt.getSafeListFor(ListKey.LEVEL_TEMPLATES))
 			{
-				Collection<? extends CategorizedAbilitySelection> featList = getAssocList(lt,
-						AssociationListKey.TEMPLATE_FEAT);
+				Collection<? extends CategorizedAbilitySelection> featList = 
+						getTemplateFeatList(lt);
 				if (featList == null && addNew && lt.get(IntegerKey.LEVEL) <= level)
 				{
 					featList = getLevelFeat(lt);
@@ -9591,8 +9596,8 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		}
 		for (PCTemplate lt : pct.getSafeListFor(ListKey.LEVEL_TEMPLATES))
 		{
-			Collection<? extends CategorizedAbilitySelection> featList = getAssocList(lt,
-					AssociationListKey.TEMPLATE_FEAT);
+			Collection<? extends CategorizedAbilitySelection> featList =
+					getTemplateFeatList(lt);
 			if (featList == null && addNew && lt.get(IntegerKey.LEVEL) <= level)
 			{
 				featList = getLevelFeat(lt);
@@ -9605,8 +9610,8 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 
 		for (PCTemplate lt : pct.getSafeListFor(ListKey.HD_TEMPLATES))
 		{
-			Collection<? extends CategorizedAbilitySelection> featList = getAssocList(lt,
-					AssociationListKey.TEMPLATE_FEAT);
+			Collection<? extends CategorizedAbilitySelection> featList =
+					getTemplateFeatList(lt);
 			if (featList == null && addNew && lt.get(IntegerKey.HD_MAX) <= hitdice
 					&& lt.get(IntegerKey.HD_MIN) >= hitdice)
 			{
@@ -9618,7 +9623,8 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 			}
 		}
 
-		Collection<? extends CategorizedAbilitySelection> featList = getAssocList(pct, AssociationListKey.TEMPLATE_FEAT);
+		Collection<? extends CategorizedAbilitySelection> featList =
+				getTemplateFeatList(pct);
 		if (featList == null && addNew)
 		{
 			featList = getLevelFeat(pct);
@@ -9710,14 +9716,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 	public void addAssociation(CDOMObject obj, String o)
 	{
 		assocSupt.addAssoc(obj, AssociationListKey.CHOICES, new FixedStringList(o));
-		List<ChooseResultActor> actors = obj.getListFor(ListKey.CHOOSE_ACTOR);
-		if (actors != null)
-		{
-			for (ChooseResultActor cra : actors)
-			{
-				cra.apply(this, obj, o);
-			}
-		}
 	}
 
     @Override
@@ -9777,31 +9775,12 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 	{
 		List<String> list = getAssociationList(obj);
 		assocSupt.removeAllAssocs(obj, AssociationListKey.CHOICES);
-		List<ChooseResultActor> actors = obj.getListFor(ListKey.CHOOSE_ACTOR);
-		if (actors != null)
-		{
-			for (ChooseResultActor cra : actors)
-			{
-				for (String o : list)
-				{
-					cra.remove(this, obj, o);
-				}
-			}
-		}
 		return list;
 	}
 
     @Override
 	public void removeAssociation(CDOMObject obj, String o)
 	{
-		List<ChooseResultActor> actors = obj.getListFor(ListKey.CHOOSE_ACTOR);
-		if (actors != null)
-		{
-			for (ChooseResultActor cra : actors)
-			{
-				cra.remove(this, obj, o);
-			}
-		}
 		assocSupt.removeAssoc(obj, AssociationListKey.CHOICES, new FixedStringList(o));
 	}
 
@@ -10566,11 +10545,17 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		return newSet;
 	}
 
-	public Nature getAbilityNature(Category<Ability> cat, Ability ability)
+	/**
+	 * Retrieve the first category in which the ability has been taken. 
+	 * @param nature The ability nature in which the ability is present. 
+	 * @param ability The ability to be found.
+	 * @return The category of the ability, or null if no matching ability can be found.
+	 */
+	public Category<Ability> getAbilityCategory(Nature nature, Ability ability)
 	{
-		Nature n = abFacet.getNature(id, cat, ability);
-		Nature n2 = grantedAbilityFacet.getNature(id, cat, ability);
-		return Nature.getBestNature(n, n2);
+		Category<Ability> cat = abFacet.getCategory(id, nature, ability);
+		Category<Ability> cat2 = grantedAbilityFacet.getCategory(id, nature, ability);
+		return cat == null? cat2  : cat;
 	}
 
 	public Nature getAbilityNature(Ability ability)
@@ -10935,6 +10920,11 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 	public void addUserVirtualAbility(AbilityCategory cat, Ability newAbility)
 	{
 		abFacet.add(id, cat, Nature.VIRTUAL, newAbility);
+	}
+
+	public void removeUserVirtualAbility(Category<Ability> cat, Ability newAbility)
+	{
+		abFacet.remove(id, cat, Nature.VIRTUAL, newAbility);
 	}
 
 	public void checkSkillModChange()
@@ -11562,5 +11552,27 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 		{
 			removeCharacterSpell(pcc, characterSpell);
 		}
+	}
+
+	public void addTemplateFeat(CDOMObject template, CategorizedAbilitySelection as)
+	{
+		templateFeatFacet.add(id, as, template);
+	}
+
+	public List<? extends CategorizedAbilitySelection> getTemplateFeatList(CDOMObject template)
+	{
+		return templateFeatFacet.getSet(id, template);
+	}
+
+	public void addAppliedAbility(CDOMObject owner, Category<Ability> category,
+		Nature nature, AbilitySelection cas)
+	{
+		directAbilityInputFacet.add(id, owner, category, nature, cas);
+	}
+
+	public void removeAppliedAbility(CDOMObject owner,
+		Category<Ability> category, Nature nature, AbilitySelection cas)
+	{
+		directAbilityInputFacet.remove(id, owner, category, nature, cas);
 	}
 }

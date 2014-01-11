@@ -55,6 +55,8 @@ import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.AbilityUtilities;
 import pcgen.core.PlayerCharacter;
+import pcgen.core.chooser.ChoiceManagerList;
+import pcgen.core.chooser.ChooserUtilities;
 import pcgen.core.utils.ParsingSeparator;
 import pcgen.rules.context.Changes;
 import pcgen.rules.context.LoadContext;
@@ -407,45 +409,19 @@ public class AbilityToken extends AbstractNonEmptyToken<CDOMObject> implements
 	public boolean allow(CategorizedAbilitySelection choice,
 		PlayerCharacter pc, boolean allowStack)
 	{
-		boolean isVirtual = Nature.VIRTUAL.equals(choice.getNature());
-		// Remove any already selected
-		for (Ability a : pc.getAllAbilities())
-		{
-			if (a.getKeyName().equals(choice.getAbilityKey()))
-			{
-				if (!pc.canSelectAbility(a, isVirtual)
-						|| !a.getSafe(ObjectKey.VISIBILITY).equals(
-								Visibility.DEFAULT)
-						|| !allowStack(a, allowStack)
-						&& hasAssoc(pc.getAssociationList(a), choice))
-				{
-					return false;
-				}
-			}
-		}
-		return pc.canSelectAbility(choice.getAbility(), isVirtual);
-	}
-
-	private boolean hasAssoc(List<String> associationList,
-		CategorizedAbilitySelection choice)
-	{
-		if (associationList == null)
+		Ability ability = choice.getAbility();
+		if (!ability.getSafe(ObjectKey.VISIBILITY).equals(Visibility.DEFAULT))
 		{
 			return false;
 		}
-		for (String a : associationList)
+		boolean isVirtual = Nature.VIRTUAL.equals(choice.getNature());
+		if (!pc.canSelectAbility(ability, isVirtual))
 		{
-			if (choice.containsAssociation(a))
-			{
-				return true;
-			}
+			return false;
 		}
-		return false;
-	}
-
-	private boolean allowStack(Ability a, boolean allowStack)
-	{
-		return a.getSafe(ObjectKey.STACKS) && allowStack;
+		String selection = choice.getSelection();
+		// Avoid any already selected
+		return !AbilityUtilities.alreadySelected(pc, ability, selection, allowStack);
 	}
 
 	@Override
@@ -480,7 +456,7 @@ public class AbilityToken extends AbstractNonEmptyToken<CDOMObject> implements
 		}
 
 		Ability pcAbility = pc.getMatchingAbility(choice.getAbilityCategory(),
-				choice.getAbility(), Nature.NORMAL);
+				choice.getAbility(), choice.getNature());
 
 		if (pcAbility != null)
 		{
@@ -501,13 +477,28 @@ public class AbilityToken extends AbstractNonEmptyToken<CDOMObject> implements
 			
 			if (!result)
 			{
-				removed = pc.removeRealAbility(choice.getAbilityCategory(),
+				if (pcAbility.getSafe(ObjectKey.MULTIPLE_ALLOWED))
+				{
+					ChoiceManagerList cm = ChooserUtilities.getChoiceManager(pcAbility, pc);
+					remove(cm, pc, pcAbility, choice.getSelection());
+				}
+				if (choice.getNature().equals(Nature.NORMAL))
+				{
+					removed = pc.removeRealAbility(choice.getAbilityCategory(),
 						pcAbility);
+				}
+				else
+				{
+					pc.removeUserVirtualAbility(choice.getAbilityCategory(),
+						pcAbility);
+					removed = true;
+				}
 				CDOMObjectUtilities.removeAdds(pcAbility, pc);
 				CDOMObjectUtilities.restoreRemovals(pcAbility, pc);
 			}
 			
-			if (choice.getAbilityCategory() == AbilityCategory.FEAT)
+			if ((choice.getNature() == Nature.NORMAL)
+				&& (choice.getAbilityCategory() == AbilityCategory.FEAT))
 			{
 				AbilityUtilities.adjustPool(pcAbility, pc, false, abilityCount,
 						removed);
@@ -515,6 +506,13 @@ public class AbilityToken extends AbstractNonEmptyToken<CDOMObject> implements
 			
 			pc.adjustMoveRates();
 		}
+	}
+
+	private static <T> void remove(ChoiceManagerList<T> aMan, PlayerCharacter pc,
+		CDOMObject obj, String choice)
+	{
+		T sel = aMan.decodeChoice(choice);
+		aMan.removeChoice(pc, obj, sel);
 	}
 
 	@Override

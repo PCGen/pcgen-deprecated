@@ -28,13 +28,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import pcgen.cdom.base.CDOMObject;
 import pcgen.cdom.base.CDOMObjectUtilities;
+import pcgen.cdom.base.ChooseInformation;
 import pcgen.cdom.base.TransitionChoice;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.Nature;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.helper.CategorizedAbilitySelection;
 import pcgen.core.analysis.AddObjectActions;
+import pcgen.core.chooser.ChoiceManagerList;
 import pcgen.core.chooser.ChooserUtilities;
 import pcgen.core.utils.CoreUtility;
 import pcgen.core.utils.LastGroupSeparator;
@@ -77,7 +80,7 @@ public class AbilityUtilities
 
 			if (choice != null)
 			{
-				if (canAddAssociation(pc, newAbility, choice))
+				if (!alreadySelected(pc, newAbility, choice, true))
 				{
 					pc.addAssociation(newAbility, choice);
 				}
@@ -144,10 +147,8 @@ public class AbilityUtilities
 		}
 		else
 		{
-			if (canAddAssociation(aPC, ability, choice))
-			{
-				aPC.addAssociation(ability, choice);
-			}
+			ChoiceManagerList cm = ChooserUtilities.getChoiceManager(ability, aPC);
+			add(cm, aPC, ability, choice);
 		}
 
 		/* 
@@ -195,6 +196,13 @@ public class AbilityUtilities
 			aPC.calcActiveBonuses();
 			aPC.refreshSkillList();
 		}
+	}
+
+	private static <T> void add(ChoiceManagerList<T> aMan, PlayerCharacter pc,
+		CDOMObject obj, String choice)
+	{
+		T sel = aMan.decodeChoice(choice);
+		aMan.applyChoice(pc, obj, sel);
 	}
 
 	public static void adjustPool(final Ability ability,
@@ -260,15 +268,13 @@ public class AbilityUtilities
 	static void modFeatsFromList(final PlayerCharacter aPC,
 			final CategorizedAbilitySelection as)
 	{
-		Ability anAbility = aPC.getFeatNamed(as.getAbilityKey());
-
-		if (anAbility != null)
+		if (aPC.hasFeatNamed(as.getAbilityKey()))
 		{
 			return;
 		}
 
 		// Get ability from global storage by Name
-		anAbility = as.getAbility().clone();
+		Ability anAbility = as.getAbility().clone();
 		aPC.addFeat(anAbility);
 
 		String choice = as.getSelection();
@@ -377,18 +383,36 @@ public class AbilityUtilities
 	}
 
 	/**
-	 * Whether we can add newAssociation to the associated list of this
-	 * Ability
-	 * @param pc TODO
-	 * @param newAssociation The thing to be associated with this Ability
+	 * Whether an association has already been selected for this PC.
+	 * to the associated list of this
 	 *
-	 * @return true if we can add the association
+	 * @return true if the association has already been selected
 	 */
-	public static boolean canAddAssociation(PlayerCharacter pc, Ability a, final String newAssociation)
+	public static boolean alreadySelected(PlayerCharacter pc, Ability ability,
+		String selection, boolean allowStack)
 	{
-		return a.getSafe(ObjectKey.STACKS)
-				|| (a.getSafe(ObjectKey.MULTIPLE_ALLOWED) && !pc
-						.containsAssociated(a, newAssociation));
+		for (Ability a : pc.getAllAbilities(ability.getCDOMCategory().getParentCategory()))
+		{
+			if (a.getKeyName().equals(ability.getKeyName()))
+			{
+				if (a.getSafe(ObjectKey.MULTIPLE_ALLOWED)
+					&& !(allowStack && a.getSafe(ObjectKey.STACKS)))
+				{
+					ChooseInformation<?> info = a.get(ObjectKey.CHOOSE_INFO);
+					List<?> oldSelections =
+							info.getChoiceActor().getCurrentlySelected(a, pc);
+					Object decoded =
+							info.decodeChoice(Globals.getContext(),
+								selection);
+					if (oldSelections != null
+						&& oldSelections.contains(decoded))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	/**

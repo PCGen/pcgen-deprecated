@@ -12,10 +12,10 @@ Horsechopper			TYPE:Goblin
 Helmet (Dwarven Boulder)	TYPE:Melee.Dwarven.Bludgeoning.Exotic
 Waraxe (Dwarven Double)		TYPE:Melee.Dwarven.Slashing.Exotic
 Longaxe (Dwarven)			TYPE:Melee.Dwarven.Slashing.Exotic
-Longhammer (Dwarven)		TYPE:Melee.Dwarven.Bludgeoning.Exotic
+Longhammer (Dwarven)		TYPE:Melee.Dwarven.Bludgeoning.Exotic.Reach
 
 # COMMENT: Catfolk Claw Blades
-Claw Blades (Catfolk)		TYPE:Melee.Light.ClawBlades.Slashing.Piercing.Finessable
+Claw Blades (Catfolk)		TYPE:Melee.Light.ClawBlades.Slashing.Piercing.Finesseable
 
 # COMMENT: Kobold tail attachment weaponprofs
 Kobold Tail Attachment		TYPE:Melee.Light.Natural.KoboldTailAttachment

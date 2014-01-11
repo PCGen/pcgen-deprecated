@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Test;
 
-import pcgen.cdom.base.ChooseResultActor;
+import pcgen.cdom.base.ChooseSelectionActor;
 import pcgen.cdom.enumeration.ListKey;
 import pcgen.cdom.enumeration.ObjectKey;
 import pcgen.cdom.helper.WeaponProfProvider;
@@ -37,8 +37,7 @@ import plugin.lsttokens.testsupport.AbstractAutoTokenTestCase;
 import plugin.lsttokens.testsupport.TokenRegistration;
 import plugin.pretokens.parser.PreWeaponProfParser;
 
-public class WeaponProfTokenTest extends
-		AbstractAutoTokenTestCase<WeaponProf>
+public class WeaponProfTokenTest extends AbstractAutoTokenTestCase<WeaponProf>
 {
 
 	static WeaponProfToken subtoken = new WeaponProfToken();
@@ -216,7 +215,7 @@ public class WeaponProfTokenTest extends
 	}
 
 	@Override
-	protected ChooseResultActor getActor()
+	protected ChooseSelectionActor<WeaponProf> getActor()
 	{
 		return subtoken;
 	}
