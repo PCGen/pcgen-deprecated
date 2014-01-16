@@ -39,7 +39,7 @@ my @SVN_array = split ' ', $SVN_id;
 my $SVN_build = $SVN_array[2];
 my $SVN_date = $SVN_array[3];
 $SVN_date =~ tr{-}{.};
-my $VERSION		= "1.50 (build $SVN_build)";
+my $VERSION		= "1.51 (build $SVN_build)";
 my $VERSION_DATE	= $SVN_date;
 my ($SCRIPTNAME)	= ( $PROGRAM_NAME =~ m{ ( [^/\\]* ) \z }xms );
 my $VERSION_LONG	= "$SCRIPTNAME version: $VERSION -- $VERSION_DATE";
