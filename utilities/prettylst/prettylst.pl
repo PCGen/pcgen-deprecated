@@ -5,6 +5,7 @@
 # Copyright 2002 to 2006 by Eric Beaudoin <beaudoer@videotron.ca>.
 # Copyright 2006 to 2007 by Andrew McDougall <tir.gwaith@gmail.com>
 # Copyright 2008 by Phillip Ryan <philryan49@hotmail.com>
+# Copyright 2009 to 2014 by Andrew Maitland <drew0500@yahoo.com>
 
 # All rights reserved.  You can redistribute and/or modify
 # this program under the same terms as Perl itself.
@@ -15,6 +16,9 @@
 # given by Eddy, Tir and other list monkeys.
 
 # See perldoc prettylst.pl for more details
+
+# COMMENTS: Begin revamping prettyLST to reduce it's massive bulk. Will split out the older conversion stuff to it's own version.
+#			All Conversion forward from 5.16 is handled by the PCGen Converter
 
 use 5.008_001;				# Perl 5.8.1 or better is now mandantory
 use strict;
@@ -3035,9 +3039,6 @@ my %master_order = (
 		'COST',
 		'XPCOST',
 		@PRE_Tags,
-		'DESCISPI',
-		'DESC:.CLEAR',
-		'DESC:*',
 		'DEFINE',
 		'DEFINESTAT:*',
 #		@Global_BONUS_Tags,	# [ 1956340 ] Centralize global BONUS tags
@@ -3070,6 +3071,9 @@ my %master_order = (
 		'CHOOSE',
 		'SELECT',
 		@SOURCE_Tags,
+		'DESCISPI',
+		'DESC:.CLEAR',
+		'DESC:*',
 		'TEMPDESC',
 		'TEMPBONUS',
 	],
