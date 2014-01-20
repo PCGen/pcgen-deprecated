@@ -1,0 +1,1 @@
+perl prettylst.pl -i=c:\pl\test -o=c:\pl\checked -x -convert=pcgen5120 -nw -nojep -e=error.txt

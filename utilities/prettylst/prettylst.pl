@@ -2780,6 +2780,7 @@ my %master_order = (
 		'GAMEMODE',
 		'GENRE',
 		'BOOKTYPE',
+		'KEY',				# KEY is allowed
 		'PUBNAMELONG',
 		'PUBNAMESHORT',
 		'PUBNAMEWEB',
