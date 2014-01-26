@@ -75,8 +75,8 @@ Scythe				TYPE:Martial.TwoHanded.Melee.Slashing.MeleeSlashing.Piercing.MeleePier
 Sword (Bastard)			TYPE:Martial.TwoHanded.Exotic.Melee.Slashing.MeleeSlashing.Sword
 Waraxe (Dwarven)			TYPE:Martial.TwoHanded.Exotic.Melee.Slashing.MeleeSlashing.Axe.Dwarven
 # --ranged
-Longbow				TYPE:Martial.Ranged.Piercing.RangedPiercing.Bow.Archery										HANDS:2
-Shortbow				TYPE:Martial.Ranged.Piercing.RangedPiercing.Bow.Archery										HANDS:2
+Longbow				TYPE:Martial.Ranged.Piercing.RangedPiercing.Archery										HANDS:2
+Shortbow				TYPE:Martial.Ranged.Piercing.RangedPiercing.Archery										HANDS:2
 # EXOTIC
 # -- light
 Kama					TYPE:Exotic.Light.Melee.Slashing.MeleeSlashing
