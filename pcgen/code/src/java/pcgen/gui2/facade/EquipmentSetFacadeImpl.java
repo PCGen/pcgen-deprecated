@@ -1718,6 +1718,11 @@ public class EquipmentSetFacadeImpl implements EquipmentSetFacade,
 				return 1;
 
 			case PHANTOM_SLOT:
+				final String slotName = node.getSlot().toString();
+				if (Constants.EQUIP_LOCATION_BOTH.equals(slotName))
+				{
+					return 2;
+				}
 				return node.singleOnly ? 1 : node.getSlot().getSlotCount()
 					+ (int) theCharacter.getTotalBonusTo("SLOTS", node
 						.getSlot().getSlotName());
