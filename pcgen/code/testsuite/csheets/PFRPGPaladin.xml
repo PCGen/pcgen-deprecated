@@ -44,7 +44,7 @@ BIO
 <!-->			<followeralignment></followeralignment>  This is no longer valid and keeps throwing out errors-->
 			<holyitem></holyitem>
 			<pantheonlist>Pathfinder Chronicles</pantheonlist>
-			<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.91</source>
+			<source>Paizo Inc. - Advanced Player&#39;s Guide, p.91</source>
 			<special_abilities></special_abilities>
 			<appearance></appearance>
 			<title></title>
@@ -3400,7 +3400,7 @@ BIO
 	  ====================================
 	  ====================================-->
 	<!-- Domains -->
-	<weapon_proficiencies>Amentum (Javelin), Atlatl, Axe (Throwing), Bardiche, Battleaxe, Bayonet, Bec de Corbin, Bill, Blowgun, Broadsword (Nine Ring), Butterfly Sword, Cestus, Chakram, Club, Crossbow (Heavy), Crossbow (Light), Dagger, Dagger (Punching), Dart, Double Chicken Saber, Falchion, Flail, Flail (Heavy), Gauntlet, Gauntlet (Spiked), Glaive, Glaive-Guisarme, Grapple, Greataxe, Greatclub, Greatsword, Guisarme, Halberd, Hammer (Light), Handaxe, Hooked Lance, Iron Brush, Javelin, Jutte, Katana, Kerambit, Kukri, Lance, Longbow, Longspear, Longsword, Lucern Hammer, Lungchuan Tamo, Mace (Heavy), Mace (Light), Mattock, Mere Club, Monk&#39;s Spade, Morningstar, Naginata, Nodachi, Pick (Heavy), Pick (Light), Pilum, Poisoned Sand Tube, Quarterstaff, Ranseur, Rapier, Rhomphaia, Rock, Sansetsukon, Sap, Scimitar, Scizore, Scythe, Shang Gou, Shieldbash, Shortbow, Shortspear, Sibat, Sickle, Sling, Spear, Spear (Boar), Spells (Ray), Spells (Touch), Spiked Armor, Stake, Starknife, Sword (Bastard), Sword (Short), Sword (Tri-Point Double-Edged), Sword Cane, Tepoztopilli, Terbutje, Tiger Fork, Tonfa, Trident, Tube Arrow Shooter, Unarmed Strike, Waraxe (Dwarven), Warhammer, Wushu Dart</weapon_proficiencies>
+	<weapon_proficiencies>Amentum (Javelin), Atlatl, Axe (Throwing), Bardiche, Battleaxe, Bayonet, Bec de Corbin, Bill, Blowgun, Broadsword (Nine Ring), Butterfly Sword, Cestus, Chakram, Club, Crossbow (Heavy), Crossbow (Light), Dagger, Dagger (Punching), Dart, Double Chicken Saber, Falchion, Flail, Flail (Heavy), Gauntlet, Gauntlet (Spiked), Glaive, Glaive-Guisarme, Grapple, Greataxe, Greatclub, Greatsword, Guisarme, Halberd, Hammer (Light), Handaxe, Hooked Lance, Iron Brush, Javelin, Jutte, Katana, Kerambit, Kukri, Lance, Longbow, Longspear, Longsword, Lucern Hammer, Lungchuan Tamo, Mace (Heavy), Mace (Light), Mattock, Mere Club, Monk&#39;s Spade, Morningstar, Naginata, Nodachi, Pick (Heavy), Pick (Light), Pilum, Poisoned Sand Tube, Quarterstaff, Ranseur, Rapier, Rhomphaia, Rock, Sansetsukon, Sap, Scimitar, Scizore, Scythe, Shang Gou, Shieldbash, Shortbow, Shortspear, Sibat, Sickle, Sling, Spear, Spear (Boar), Spells (Ray), Spells (Touch), Spiked Armor, Splash Weapon, Stake, Starknife, Sword (Bastard), Sword (Short), Sword (Tri-Point Double-Edged), Sword Cane, Tepoztopilli, Terbutje, Tiger Fork, Tonfa, Trident, Tube Arrow Shooter, Unarmed Strike, Waraxe (Dwarven), Warhammer, Wushu Dart</weapon_proficiencies>
 	<languages>Common, Varisian</languages>
 
 	<templates>
@@ -3459,7 +3459,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Inq1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.266</source>
+							<source>Paizo Inc. - Core Rulebook, p.266</source>
 							<sourcepage>p.266</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3500,7 +3500,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Community1, Family Subdomain1, Inq1, Leadership Subdomain1, Pld1, Resolve Subdomain1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.249</source>
+							<source>Paizo Inc. - Core Rulebook, p.249</source>
 							<sourcepage>p.249</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3529,7 +3529,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Divine Subdomain2, Inq1, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.249</source>
+							<source>Paizo Inc. - Core Rulebook, p.249</source>
 							<sourcepage>p.249</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3558,7 +3558,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Glory2, Heroism Subdomain2, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.250</source>
+							<source>Paizo Inc. - Core Rulebook, p.250</source>
 							<sourcepage>p.250</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3587,7 +3587,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Inq1, Pld1, Rgr1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Combat, p.224</source>
+							<source>Paizo Inc. - Ultimate Combat, p.224</source>
 							<sourcepage>p.224</sourcepage>
 							<sourceshort>UC</sourceshort>
 						</source>
@@ -3616,7 +3616,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.210</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.210</source>
 							<sourcepage>p.210</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -3645,7 +3645,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Brd1, Clr1, Inq1, Pld1, Rgr1, Sum1, Wit1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Combat</source>
+							<source>Paizo Inc. - Ultimate Combat</source>
 							<sourcepage>null</sourcepage>
 							<sourceshort>UC</sourceshort>
 						</source>
@@ -3674,7 +3674,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Adp1, Clr0, Drd0, Inq0, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.262</source>
+							<source>Paizo Inc. - Core Rulebook, p.262</source>
 							<sourcepage>p.262</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3703,7 +3703,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Alc1, Brd1, Clr1, Drd1, Healing1, Inq1, Pld1, Restoration Subdomain1, Resurrection Subdomain1, Rgr2, Wit1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.263</source>
+							<source>Paizo Inc. - Core Rulebook, p.263</source>
 							<sourcepage>p.263</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3732,7 +3732,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Apl1, Clr0, Drd0, Inq0, Pld1, Rgr1, Sor0, Wit0, Wiz0</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.268</source>
+							<source>Paizo Inc. - Core Rulebook, p.268</source>
 							<sourcepage>p.268</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3761,7 +3761,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Alc1, Clr1, Inq1, Pld1, Sor1, Wiz1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.269</source>
+							<source>Paizo Inc. - Core Rulebook, p.269</source>
 							<sourcepage>p.269</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3790,7 +3790,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Drd1, Pld1, Rgr1, Wit1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Magic, p.216</source>
+							<source>Paizo Inc. - Ultimate Magic, p.216</source>
 							<sourcepage>p.216</sourcepage>
 							<sourceshort>UM</sourceshort>
 						</source>
@@ -3819,7 +3819,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Archon Subdomain (Good)1, Archon Subdomain (Law)1, Clr1, Inq1, Martyr Subdomain1, Nobility1, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.273</source>
+							<source>Paizo Inc. - Core Rulebook, p.273</source>
 							<sourcepage>p.273</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3848,7 +3848,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Alc1, Clr1, Day Subdomain1, Drd1, Pld1, Rgr1, Sor1, Sum1, Sun1, Wiz1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.277</source>
+							<source>Paizo Inc. - Core Rulebook, p.277</source>
 							<sourcepage>p.277</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -3877,7 +3877,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Brd2, Clr2, Inq2, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.225</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.225</source>
 							<sourcepage>p.225</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -3906,7 +3906,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr2, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.226</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.226</source>
 							<sourcepage>p.226</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -3935,7 +3935,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.226</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.226</source>
 							<sourcepage>p.226</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -3964,7 +3964,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Brd2, Inq2, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.228</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.228</source>
 							<sourcepage>p.228</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -3993,7 +3993,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Brd1, Inq1, Pld1, Rgr1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Magic, p.223</source>
+							<source>Paizo Inc. - Ultimate Magic, p.223</source>
 							<sourcepage>p.223</sourcepage>
 							<sourceshort>UM</sourceshort>
 						</source>
@@ -4022,7 +4022,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.230</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.230</source>
 							<sourcepage>p.230</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -4051,7 +4051,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Inq1, Pld1, Rgr1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Magic, p.226</source>
+							<source>Paizo Inc. - Ultimate Magic, p.226</source>
 							<sourcepage>p.226</sourcepage>
 							<sourceshort>UM</sourceshort>
 						</source>
@@ -4080,7 +4080,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Brd1, Clr1, Drd1, Pld1, Rgr1, Sor1, Wiz1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Combat, p.233</source>
+							<source>Paizo Inc. - Ultimate Combat, p.233</source>
 							<sourcepage>p.233</sourcepage>
 							<sourceshort>UC</sourceshort>
 						</source>
@@ -4109,7 +4109,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Apl1, Inq1, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Combat, p.235</source>
+							<source>Paizo Inc. - Ultimate Combat, p.235</source>
 							<sourcepage>p.235</sourcepage>
 							<sourceshort>UC</sourceshort>
 						</source>
@@ -4138,7 +4138,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Alc1, Apl1, Inq1, Mag1, Pld1, Rgr1, Sor1, Wiz1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Combat, p.236</source>
+							<source>Paizo Inc. - Ultimate Combat, p.236</source>
 							<sourcepage>p.236</sourcepage>
 							<sourceshort>UC</sourceshort>
 						</source>
@@ -4167,7 +4167,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Apl1, Blood Subdomain1, Clr1, Inq1, Mag1, Pld1, Sor1, Tactics Subdomain1, War1, Wiz1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.310</source>
+							<source>Paizo Inc. - Core Rulebook, p.310</source>
 							<sourcepage>p.310</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4196,7 +4196,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Inevitable Subdomain1, Inq1, Law1, Pld1, Purity Subdomain1, Sor1, Sum1, Wiz1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.327</source>
+							<source>Paizo Inc. - Core Rulebook, p.327</source>
 							<sourcepage>p.327</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4225,7 +4225,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Azata Subdomain (Good)1, Clr1, Good1, Inq1, Pld1, Purity Subdomain1, Sor1, Sum1, Wiz1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.327</source>
+							<source>Paizo Inc. - Core Rulebook, p.327</source>
 							<sourcepage>p.327</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4254,7 +4254,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.237</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.237</source>
 							<sourcepage>p.237</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -4283,7 +4283,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Apl1, Brd0, Clr0, Drd0, Inq0, Mag0, Pld1, Rgr1, Sor0, Sum0, Wit0, Wiz0</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.330</source>
+							<source>Paizo Inc. - Core Rulebook, p.330</source>
 							<sourcepage>p.330</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4312,7 +4312,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Brd0, Clr0, Drd0, Inq0, Pld1, Sor0, Sum0, Wit0, Wiz0</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.334</source>
+							<source>Paizo Inc. - Core Rulebook, p.334</source>
 							<sourcepage>p.334</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4341,7 +4341,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Alc2, Clr2, Drd2, Inq2, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.334</source>
+							<source>Paizo Inc. - Core Rulebook, p.334</source>
 							<sourcepage>p.334</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4370,7 +4370,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Inq1, Pld1, Wit1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Magic, p.236</source>
+							<source>Paizo Inc. - Ultimate Magic, p.236</source>
 							<sourcepage>p.236</sourcepage>
 							<sourceshort>UM</sourceshort>
 						</source>
@@ -4399,7 +4399,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Pld1, Rgr1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Combat, p.245</source>
+							<source>Paizo Inc. - Ultimate Combat, p.245</source>
 							<sourcepage>p.245</sourcepage>
 							<sourceshort>UC</sourceshort>
 						</source>
@@ -4428,7 +4428,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Brd2, Inq2, Mag2, Pld1, Sor2, Wiz2</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Combat, p.246</source>
+							<source>Paizo Inc. - Ultimate Combat, p.246</source>
 							<sourcepage>p.246</sourcepage>
 							<sourceshort>UC</sourceshort>
 						</source>
@@ -4457,7 +4457,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.254</source>
+							<source>Paizo Inc. - Advanced Player&#39;s Guide, p.254</source>
 							<sourcepage>p.254</sourcepage>
 							<sourceshort>APG</sourceshort>
 						</source>
@@ -4486,7 +4486,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr0, Drd0, Inq0, Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.365</source>
+							<source>Paizo Inc. - Core Rulebook, p.365</source>
 							<sourcepage>p.365</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4515,7 +4515,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Apl1, Brd2, Drd2, Inq1, Pld1, Rgr1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Magic, p.248</source>
+							<source>Paizo Inc. - Ultimate Magic, p.248</source>
 							<sourcepage>p.248</sourcepage>
 							<sourceshort>UM</sourceshort>
 						</source>
@@ -4544,7 +4544,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Pld1</sourcelevel>
-							<source>Paizo Publishing, LLC - Ultimate Magic, p.249</source>
+							<source>Paizo Inc. - Ultimate Magic, p.249</source>
 							<sourcepage>p.249</sourcepage>
 							<sourceshort>UM</sourceshort>
 						</source>
@@ -4596,7 +4596,7 @@ BIO
 						</school>
 						<source>
 							<sourcelevel>Clr1, Inq1</sourcelevel>
-							<source>Paizo Publishing, LLC - Core Rulebook, p.266</source>
+							<source>Paizo Inc. - Core Rulebook, p.266</source>
 							<sourcepage>p.266</sourcepage>
 							<sourceshort>CR</sourceshort>
 						</source>
@@ -4661,7 +4661,7 @@ BIO
 							</school>
 							<source>
 								<sourcelevel>Brd1, Clr1, Inq1, Pld1, Rgr1, Sum1, Wit1</sourcelevel>
-								<source>Paizo Publishing, LLC - Ultimate Combat</source>
+								<source>Paizo Inc. - Ultimate Combat</source>
 								<sourcepage>null</sourcepage>
 								<sourceshort>UC</sourceshort>
 							</source>
@@ -4690,7 +4690,7 @@ BIO
 							</school>
 							<source>
 								<sourcelevel>Alc2, Clr2, Drd2, Inq2, Pld1</sourcelevel>
-								<source>Paizo Publishing, LLC - Core Rulebook, p.334</source>
+								<source>Paizo Inc. - Core Rulebook, p.334</source>
 								<sourcepage>p.334</sourcepage>
 								<sourceshort>CR</sourceshort>
 							</source>

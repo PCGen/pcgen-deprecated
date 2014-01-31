@@ -44,7 +44,7 @@ BIO
 <!-->			<followeralignment></followeralignment>  This is no longer valid and keeps throwing out errors-->
 			<holyitem></holyitem>
 			<pantheonlist>Pathfinder Chronicles</pantheonlist>
-			<source>Paizo Publishing, LLC - Advanced Player&#39;s Guide, p.91</source>
+			<source>Paizo Inc. - Advanced Player&#39;s Guide, p.91</source>
 			<special_abilities></special_abilities>
 			<appearance></appearance>
 			<title></title>
@@ -3981,7 +3981,7 @@ BIO
 		</ability_object>
 		<ability_object>
 			<name>Improved Evasion</name>
-			<description>This works like Evasion, except that while you still take no damage on a successfulk Reflex saving throw against attacks, you henceforth take only half damage on a failed save. If you are helpless, you do not gain the benefit of Improved Evasion.</description>
+			<description>This works like Evasion, except that while you still take no damage on a successful Reflex saving throw against attacks, you henceforth take only half damage on a failed save. If you are helpless, you do not gain the benefit of Improved Evasion.</description>
 			<type>ROGUECLASSABILITY.SPECIALQUALITY.EXTRAORDINARY.ROGUETALENT.ROGUEADVANCEDTALENT</type>
 			<associated></associated>
 			<count>0</count>
@@ -4199,7 +4199,7 @@ BIO
 	  ====================================
 	  ====================================-->
 	<!-- Domains -->
-	<weapon_proficiencies>Bayonet, Blowgun, Cestus, Club, Crossbow (Hand), Crossbow (Heavy), Crossbow (Light), Dagger, Dagger (Punching), Dart, Gauntlet, Gauntlet (Spiked), Grapple, Javelin, Longspear, Mace (Heavy), Mace (Light), Mere Club, Morningstar, Quarterstaff, Rapier, Rock, Sap, Shortbow, Shortspear, Sickle, Sling, Spear, Spear (Boar), Spells (Ray), Spells (Touch), Stake, Sword (Short), Unarmed Strike</weapon_proficiencies>
+	<weapon_proficiencies>Bayonet, Blowgun, Cestus, Club, Crossbow (Hand), Crossbow (Heavy), Crossbow (Light), Dagger, Dagger (Punching), Dart, Gauntlet, Gauntlet (Spiked), Grapple, Javelin, Longspear, Mace (Heavy), Mace (Light), Mere Club, Morningstar, Quarterstaff, Rapier, Rock, Sap, Shortbow, Shortspear, Sickle, Sling, Spear, Spear (Boar), Spells (Ray), Spells (Touch), Splash Weapon, Stake, Sword (Short), Unarmed Strike</weapon_proficiencies>
 	<languages>Aklo, Common, Elven, Giant, Halfling, Hallit, Skald, Sylvan, Varisian</languages>
 
 	<templates>
