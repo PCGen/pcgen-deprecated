@@ -10501,7 +10501,9 @@ public class PlayerCharacter  implements Cloneable, VariableContainer, Associati
 	{
 		try
 		{
-			classFacet.setClassLevel(id, pcc, originalClassLevel.clone());
+			PCClassLevel clvl = originalClassLevel.clone();
+			clvl.put(StringKey.QUALIFIED_KEY, pcc.getQualifiedKey());
+			classFacet.setClassLevel(id, pcc, clvl);
 		} catch (CloneNotSupportedException e)
 		{
 			// TODO Auto-generated catch block
