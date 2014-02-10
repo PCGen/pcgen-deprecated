@@ -2,11 +2,11 @@ CAMPAIGN:Blood of Angels
 GAMEMODE:Pathfinder
 TYPE:Paizo Publishing.Pathfinder Player Companion
 RANK:3
-STATUS:ALPHA
+STATUS:BETA
 GENRE:Fantasy
 BOOKTYPE:Supplement
 SETTING:Pathfinder|Golarion
-PRECAMPAIGN:1,BOOKTYPE=Core Rules,BOOKTYPE=Complete Core
+PRECAMPAIGN:4,INCLUDESBOOKTYPE=Core Rules,INCLUDES=Bestiary,INCLUDES=Advanced Player's Guide,INCLUDES=Ultimate Magic
 PUBNAMELONG:Paizo Inc.
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://www.paizo.com
@@ -27,7 +27,11 @@ INFOTEXT:This dataset uses trademarks and/or copyrights owned by Paizo Inc., whi
 COPYRIGHT:Open Game License v 1.0a Copyright 2000, Wizards of the Coast, Inc.
 COPYRIGHT:System Reference Document. Copyright 2000. Wizards of the Coast, Inc.; Authors Jonathan Tweet, Monte Cook, Skip Williams, based on material by E. Gary Gygax and Dave Arneson.
 COPYRIGHT:Pathfinder Player Companion: Blood of Angels Copyright 2012, Paizo Publishing, LLC; Author: Amber E. Scott.
+<<<<<<< HEAD:content/notfordistribution/pathfinder/paizo/player_companion/blood_of_angels/blood_of_angels.pcc
 COPYRIGHT:PCGen dataset conversion for "Player Companion: Blood of Angels" Copyright 2014, PCgen Data team (Including, but not limited to Andrew Wilson (nuance))
+=======
+COPYRIGHT:PCGen dataset conversion for "Player Companion: Blood of Angels" Copyright 2014, PCgen Data team (Including, but not limited to Andrew Wilson (nuance), Paul Grosse, Andrew Maitland)
+>>>>>>> upstream/master:pcgen/data/pathfinder/paizo/player_companion/blood_of_angels/blood_of_angels.pcc
 
 ABILITY:boa_abilities.lst
 ABILITY:boa_abilities_variant.lst
