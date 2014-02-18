@@ -250,7 +250,7 @@ CLASS:Investigator	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BON
 2	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Resistance ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance
 2	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Use ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonUse
 3	ABILITY:Rogue Class Ability|AUTOMATIC|Trap Sense ~ Rogue|!PREABILITY:1,CATEGORY=Archetype,TYPE.RogueTrapSense
-3	ABILITY:Investigator Class Ability|AUTOMATIC|Investigator Talents|!PREABILITY:1,CATEGORY=Archetype,TYPE.RogueTalents
+3	ABILITY:Investigator Class Ability|AUTOMATIC|Investigator Talents ~ Investigator|!PREABILITY:1,CATEGORY=Archetype,TYPE.RogueTalents
 4	ABILITY:Alchemist Class Ability|AUTOMATIC|Swift Alchemy ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorSwiftAlchemy
 4	ABILITY:Rogue Class Ability|AUTOMATIC|Sneak Attack|Sneak Attack ~ Rogue|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorSneakAttack
 5	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Resistance 4 ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance4
@@ -289,8 +289,10 @@ CLASS:Skald		STARTSKILLPTS:4		ABILITY:Internal|AUTOMATIC|Class Skills ~ Skald|!P
 CLASS:Skald		SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BONUS:CASTERLEVEL|Skald|CL	SPELLLIST:1|Bard
 ###Block: Proficiencies
 1	ABILITY:Skald Class Ability|AUTOMATIC|Weapon and Armor Proficiency ~ Skald|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldArmorProficiencies|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldWeaponProficiencies
+#1	ABILITY:Internal|AUTOMATIC|Shield Prof|TYPE=ArmorProfMedium|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldArmorProficiencies
+#1	ABILITY:Internal|AUTOMATIC|Weapon Proficiency ~ Skald|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldWeaponProficiencies
+1	ABILITY:Internal|AUTOMATIC|Weapon Prof ~ Martial|Weapon Prof ~ Simple|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldWeaponProficiencies
 1	ABILITY:Internal|AUTOMATIC|Shield Prof|TYPE=ArmorProfMedium|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldArmorProficiencies
-1	ABILITY:Internal|AUTOMATIC|Weapon Proficiencies ~ Skald|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldWeaponProficiencies
 ###Block: Vars
 1	BONUS:VAR|RagingSongLVL|CL
 3	BONUS:VAR|RageLVL|CL

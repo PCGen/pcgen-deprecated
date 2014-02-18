@@ -39,6 +39,14 @@ CLASS:acgp_classes.lst
 FEAT:acgp_feats.lst
 SPELL:acgp_spells.lst
 
+ABILITY:warpriest_abilities_class.lst
+ABILITYCATEGORY:warpriest_abilitycategories.lst
+CLASS:warpriest_classes.lst
+KIT:warpriest_kits.lst
+#FEAT:warpriest_feats.lst
+#SPELL:warpriest_spells.lst
+TEMPLATE:warpriest_templates.lst
+
 #Hide internal feat types
 HIDETYPE:FEAT|AberrantBloodRagerBloodline|AbyssalBloodRagerBloodline|ArcaneBloodRagerBloodline|CelestialBloodRagerBloodline|DestinedBloodRagerBloodline|DraconicBloodRagerBloodline|ElementalBloodRagerBloodline|FeyBloodRagerBloodline|InfernalBloodRagerBloodline|UndeadBloodRagerBloodline
 
