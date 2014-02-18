@@ -819,14 +819,8 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 
 	/**
 	 * Apply the bonus from a follower to the master pc.
-	 *
-	 * TODO Although it's not obvious from this code, the aPC parameter passed here IS
-	 * this pc, everywhere that this method is called. Refactor this to remove the aPC
-	 * parameter. 
-	 *
-	 * @param aPC the pc to apply the bonus to
 	 */
-	public void setCalcFollowerBonus(final PlayerCharacter aPC)
+	public void setCalcFollowerBonus()
 	{
 		setDirty(true);
 
@@ -3274,11 +3268,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 		return bonusManager.getBonusDueToType(mainType, subType, bonusType);
 	}
 
-	public void setCurrentHP(final int currentHP)
-	{
-		setDirty(true);
-	}
-
 	public void setDeity(final Deity aDeity)
 	{
 		if (canSelectDeity(aDeity) && deityFacet.set(id, aDeity))
@@ -3384,7 +3373,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 	public List<Equipment> getEquipmentOfTypeInOutputOrder(final String typeName, final String subtypeName,
 			final int status, final int merge)
 	{
-		return sortEquipmentList(getEquipmentOfType(typeName, subtypeName, status), Constants.MERGE_ALL);
+		return sortEquipmentList(getEquipmentOfType(typeName, subtypeName, status), merge);
 	}
 
 	/**
@@ -6064,7 +6053,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 	 * 
 	 * @return PC's AC bonus from equipment
 	 */
-	private int modToACFromEquipment()
+	public int modToACFromEquipment()
 	{
 		int bonus = 0;
 		for (Equipment eq : getEquippedEquipmentSet())
@@ -6082,7 +6071,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 	 * 
 	 * @return PC's ACCHECK bonus from equipment
 	 */
-	private int modToACCHECKFromEquipment()
+	public int modToACCHECKFromEquipment()
 	{
 		Load load = getHouseRuledLoadType();
 		int bonus = 0;
@@ -6108,7 +6097,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 	 * 
 	 * @return PC's SpellFailure bonus from equipment
 	 */
-	private int modToSpellFailureFromEquipment()
+	public int modToSpellFailureFromEquipment()
 	{
 		int bonus = 0;
 		for (Equipment eq : getEquippedEquipmentSet())
@@ -6125,7 +6114,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 	 * 
 	 * @return MAXDEX bonus
 	 */
-	private int modToMaxDexFromEquipment()
+	public int modToMaxDexFromEquipment()
 	{
 		final int statBonus = (int) getStatBonusTo("MISC", "MAXDEX");
 		final Load load = getHouseRuledLoadType();
@@ -6884,8 +6873,10 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 		}
 
 		// Feats and abilities (virtual feats, auto feats)
-		List<Ability> abilities = getFullAbilityList();
-		list.addAll(abilities);
+		for (AbilityCategory cat : SettingsHandler.getGame().getAllAbilityCategories())
+		{
+			list.addAll(getAggregateAbilityListNoDuplicates(cat));
+		}
 
 		// Race
 		Race race = raceFacet.get(id);
@@ -7493,7 +7484,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 			for (int i = 0; i < -numberOfLevels; ++i)
 			{
 				int currentLevel = getLevel(pcClassClone);
-				pcClassClone.subLevel(bSilent, this);
+				pcClassClone.subLevel(this);
 				PCLevelInfo removedLI = removeLevelInfo(pcClassClone.getKeyName());
 				int pointsToRemove =
 						removedLI.getSkillPointsGained(this)
@@ -8903,36 +8894,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 			|| grantedAbilityFacet.hasAbilityKeyed(id, cat, aKey);
 	}
 
-	/**
-	 * Get an ability of any category that matches the key.
-	 * @param aKey The key to search for
-	 * @return An ability with the key, or null if none.
-	 */
-	private Ability getAbilityKeyed(final String aKey)
-	{
-		final List<Ability> abilities = getFullAbilityList();
-		for (final Ability ability : abilities)
-		{
-			if (ability.getKeyName().equals(aKey))
-			{
-				return ability;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Identify if the character has an ability, of any category, that
-	 * matches the key.
-	 * @param aKey The key to search for
-	 * @return True if an ability is found, false otherwise.
-	 */
-	public boolean hasAbilityKeyed(final String aKey)
-	{
-		return getAbilityKeyed(aKey) != null;
-	}
-
 	public List<Ability> aggregateFeatList()
 	{
 		return rebuildFeatAggreagateList();
@@ -9037,26 +8998,6 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 			{
 				aHashMap.put(vFeat.getKeyName(), vFeat);
 			}
-			//			else if (vFeat.getSafe(ObjectKey.MULTIPLE_ALLOWED))
-			//			{
-			//				Ability aggregateFeatOrig = aHashMap.get(vFeat.getKeyName());
-			//				Ability aggregateFeat = aggregateFeatOrig.clone();
-			//				for (String aString : getAssociationList(aggregateFeatOrig))
-			//				{
-			//					addAssociation(aggregateFeat, aString);
-			//				}
-			//
-			//				for (String aString : getAssociationList(vFeat))
-			//				{
-			//					if (aggregateFeat.getSafe(ObjectKey.STACKS)
-			//						|| !containsAssociated(aggregateFeat, aString))
-			//					{
-			//						addAssociation(aggregateFeat, aString);
-			//					}
-			//				}
-			//
-			//				aHashMap.put(vFeat.getKeyName(), aggregateFeat);
-			//			}
 		}
 	}
 
@@ -9096,38 +9037,12 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 	 */
 	public Set<Ability> getFullAbilitySet()
 	{
-		GameMode gm = SettingsHandler.getGame();
-		Set<AbilityCategory> catSet = new HashSet<AbilityCategory>();
-		catSet.addAll(gm.getAllAbilityCategories());
 		Set<Ability> abilitySet = new HashSet<Ability>();
-
-		for (AbilityCategory cat : catSet)
+		for (AbilityCategory cat : SettingsHandler.getGame().getAllAbilityCategories())
 		{
 			abilitySet.addAll(this.getAggregateAbilityList(cat));
 		}
-
 		return abilitySet;
-	}
-
-	/**
-	 * Return a list of all abilities no matter what category or 
-	 * nature that the PC has. Note: This method allows duplicates,
-	 * such as when the same ability has been added by different 
-	 * categories.
-	 * @return List of all abilities.
-	 */
-	public List<Ability> getFullAbilityList()
-	{
-		GameMode gm = SettingsHandler.getGame();
-		Set<AbilityCategory> catSet = new HashSet<AbilityCategory>();
-		catSet.addAll(gm.getAllAbilityCategories());
-		List<Ability> abilityList = new ArrayList<Ability>();
-		for (AbilityCategory cat : catSet)
-		{
-			abilityList.addAll(this.getAggregateAbilityListNoDuplicates(cat));
-		}
-
-		return abilityList;
 	}
 
 	private <A extends PrereqObject> void processAbilityListsOnAdd(CDOMObject cdo,
