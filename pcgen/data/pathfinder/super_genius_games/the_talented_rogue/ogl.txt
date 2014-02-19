@@ -90,4 +90,8 @@ Pathfinder Player Companion: Pirates of the Inner Sea C2012, Paizo Publishing, L
 
 The Genius Guide To: The Talented Rogue. C2013, Super Genius Games. Author: Owen K.C. Stephens
 
+<<<<<<< HEAD:content/notfordistribution/pathfinder/super_genius_games/the_talented_rogue/ogl.txt
+PCGen dataset conversion for "The Genius Guide To: The Talented Rogue" Copyright 2014, PCgen Data team (Including, but not limited to Nico Lindner)
+=======
 PCGen dataset conversion for "The Genius Guide To: The Talented Rogue" Copyright 2014, PCgen Data team (Including, but not limited to Nico Lindner, Paul Grosse, Andrew Maitland)
+>>>>>>> upstream/master:pcgen/data/pathfinder/super_genius_games/the_talented_rogue/ogl.txt
