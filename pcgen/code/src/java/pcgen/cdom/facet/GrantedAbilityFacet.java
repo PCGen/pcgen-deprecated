@@ -43,6 +43,7 @@ import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
 import pcgen.core.Globals;
 import pcgen.core.PlayerCharacter;
+import pcgen.util.enumeration.View;
 
 /**
  * A GrantedAbilityFacet is a DataFacet that contains information about Ability
@@ -50,8 +51,8 @@ import pcgen.core.PlayerCharacter;
  * 
  * @author Thomas Parker (thpr [at] yahoo.com)
  */
-public class GrantedAbilityFacet extends AbstractDataFacet<Ability> implements
-		DataFacetChangeListener<CategorizedAbilitySelection>
+public class GrantedAbilityFacet extends AbstractDataFacet<CharID, Ability> implements
+		DataFacetChangeListener<CharID, CategorizedAbilitySelection>
 {
 	private final PlayerCharacterTrackingFacet pcFacet = FacetLibrary
 			.getFacet(PlayerCharacterTrackingFacet.class);
@@ -805,7 +806,7 @@ public class GrantedAbilityFacet extends AbstractDataFacet<Ability> implements
 	 * @see pcgen.cdom.facet.event.DataFacetChangeListener#dataAdded(pcgen.cdom.facet.event.DataFacetChangeEvent)
 	 */
 	@Override
-	public void dataAdded(DataFacetChangeEvent<CategorizedAbilitySelection> dfce)
+	public void dataAdded(DataFacetChangeEvent<CharID, CategorizedAbilitySelection> dfce)
 	{
 		CharID id = dfce.getCharID();
 		CategorizedAbilitySelection cas = dfce.getCDOMObject();
@@ -847,7 +848,7 @@ public class GrantedAbilityFacet extends AbstractDataFacet<Ability> implements
 	 */
 	@Override
 	public void dataRemoved(
-			DataFacetChangeEvent<CategorizedAbilitySelection> dfce)
+			DataFacetChangeEvent<CharID, CategorizedAbilitySelection> dfce)
 	{
 		CharID id = dfce.getCharID();
 		CategorizedAbilitySelection cas = dfce.getCDOMObject();
@@ -1040,6 +1041,82 @@ public class GrantedAbilityFacet extends AbstractDataFacet<Ability> implements
 			}
 		}
 		return false;
+	}
+
+	public boolean hasAbilityVisibleTo(CharID id, AbilityCategory cat, View view)
+	{
+		Map<Category<Ability>, Map<Nature, Map<Ability, List<Object>>>> catMap = getCachedMap(id);
+		if (catMap != null)
+		{
+			for (Entry<Category<Ability>, Map<Nature, Map<Ability, List<Object>>>> catME : catMap.entrySet())
+			{
+				Category<Ability> c = catME.getKey();
+				if (c.equals(cat))
+				{
+					for (Map<Ability, List<Object>> map : catME.getValue().values())
+					{
+						for (Ability a : map.keySet())
+						{
+							if (a.getSafe(ObjectKey.VISIBILITY).isVisibleTo(view))
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public Collection<? extends CNAbility> getPoolAbilities(CharID id,
+		Category<Ability> cat)
+	{
+		Map<Category<Ability>, Map<Nature, Map<Ability, List<Object>>>> catMap = getCachedMap(id);
+		Set<CNAbility> set = new HashSet<CNAbility>();
+		if (catMap != null)
+		{
+			Map<Nature, Map<Ability, List<Object>>> nmap = catMap.get(cat);
+			if (nmap != null)
+			{
+				for (Entry<Nature, Map<Ability, List<Object>>> natME : nmap
+					.entrySet())
+				{
+					Nature nat = natME.getKey();
+					for (Ability a : natME.getValue().keySet())
+					{
+						set.add(new CNAbility(cat, a, nat));
+					}
+				}
+			}
+		}
+		return set;
+	}
+
+	public Collection<? extends CNAbility> getPoolAbilities(CharID id,
+		Category<Ability> cat, Nature n)
+	{
+		Map<Category<Ability>, Map<Nature, Map<Ability, List<Object>>>> catMap = getCachedMap(id);
+		Set<CNAbility> set = new HashSet<CNAbility>();
+		if (catMap != null)
+		{
+			Map<Nature, Map<Ability, List<Object>>> nmap = catMap.get(cat);
+			if (nmap != null)
+			{
+				Map<Ability, List<Object>> aMap = nmap.get(n);
+				if (aMap != null)
+				{
+					for (Ability a : aMap.keySet())
+					{
+						if (!a.isInternal())
+						{
+							set.add(new CNAbility(cat, a, n));
+						}
+					}
+				}
+			}
+		}
+		return set;
 	}
 
 }

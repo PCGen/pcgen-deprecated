@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import pcgen.cdom.enumeration.CharID;
+import pcgen.cdom.enumeration.DataSetID;
 import pcgen.cdom.enumeration.Nature;
 import pcgen.cdom.facet.event.DataFacetChangeEvent;
 import pcgen.cdom.facet.event.DataFacetChangeListener;
@@ -35,14 +36,14 @@ import pcgen.core.AbilityCategory;
 
 public class GrantedAbilityFacetTest extends TestCase
 {
-	private CharID id = CharID.getID();
-	private CharID altid = CharID.getID();
+	private CharID id;
+	private CharID altid;
 	private GrantedAbilityFacet facet = new GrantedAbilityFacet();
 
 	private Listener listener = new Listener();
 	Object oneSource = new Object();
 
-	private static class Listener implements DataFacetChangeListener<Ability>
+	private static class Listener implements DataFacetChangeListener<CharID, Ability>
 	{
 
 		public int addEventCount;
@@ -66,6 +67,9 @@ public class GrantedAbilityFacetTest extends TestCase
 	public void setUp() throws Exception
 	{
 		super.setUp();
+		DataSetID cid = DataSetID.getID();
+		id = CharID.getID(cid);
+		altid = CharID.getID(cid);
 		facet.addDataFacetChangeListener(listener);
 	}
 

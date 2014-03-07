@@ -25,10 +25,11 @@ package pcgen.core.kit;
 import java.util.ArrayList;
 import java.util.List;
 
+import pcgen.cdom.content.CNAbility;
+import pcgen.cdom.helper.CategorizedAbilitySelection;
 import pcgen.cdom.reference.CDOMSingleRef;
 import pcgen.core.Ability;
 import pcgen.core.AbilityCategory;
-import pcgen.core.Globals;
 import pcgen.core.Kit;
 import pcgen.core.Language;
 import pcgen.core.PlayerCharacter;
@@ -61,14 +62,11 @@ public class KitLangBonus extends BaseKit
 	@Override
 	public void apply(PlayerCharacter aPC)
 	{
-		Ability a = Globals.getContext().ref.silentlyGetConstructedCDOMObject(
-				Ability.class, AbilityCategory.LANGBONUS, "*LANGBONUS");
-		ChoiceManagerList<Language> controller = ChooserUtilities
-				.getConfiguredController(a, aPC, AbilityCategory.LANGBONUS,
-						new ArrayList<String>());
+		CNAbility cna = aPC.getBonusLanguageAbility();
 		for (Language l : theLanguages)
 		{
-			controller.conditionallyApply(aPC, l);
+			aPC.addAppliedAbility(new CategorizedAbilitySelection(cna, l
+				.getKeyName()));
 		}
 	}
 
@@ -87,11 +85,15 @@ public class KitLangBonus extends BaseKit
 	{
 		theLanguages = new ArrayList<Language>();
 
-		Ability a = Globals.getContext().ref.silentlyGetConstructedCDOMObject(
-				Ability.class, AbilityCategory.LANGBONUS, "*LANGBONUS");
+		Ability a = aPC.getBonusLanguageAbility().getAbility();
 
 		List<String> reservedList = new ArrayList<String>();
 
+		/*
+		 * While this direct use of the controller seems strange, the use of
+		 * conditionallyApply in the controller is reasonable (there is no need
+		 * to actually try to apply the langbonus ability in this case)
+		 */
 		ChoiceManagerList<Language> controller = ChooserUtilities
 				.getConfiguredController(a, aPC, AbilityCategory.LANGBONUS,
 						reservedList);
