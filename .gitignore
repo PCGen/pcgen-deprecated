@@ -11,3 +11,6 @@ pcgen/.idea
 *.jar
 *.war
 *.ear
+
+# Generate files #
+pcgen/doc/api
