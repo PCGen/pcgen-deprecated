@@ -47,11 +47,10 @@ import pcgen.cdom.base.Loadable;
  * result in objects being constructed (with appropriate consequences to methods
  * like containsObject(T) ) after buildDeferredObjects() is called.
  * 
- * @param <T>
- *            The Class of object this ReferenceManufacturer can manufacture
- * @param <RT>
- *            The Class of Single Reference that this ReferenceManufacturer will
- *            produce
+ * <ul>
+ * <li> &lt;T&gt;
+ *            The Class of object this ReferenceManufacturer can manufacture.
+ * </ul>
  */
 public interface ReferenceManufacturer<T extends Loadable> extends SelectionCreator<T>
 {

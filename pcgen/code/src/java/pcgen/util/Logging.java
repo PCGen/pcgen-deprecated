@@ -206,7 +206,7 @@ public class Logging
 	 * Print localised information message if PCGen is debugging.
 	 *
 	 * @param message String information message (usually variable)
-	 * @param param Object information message (usually value) lis
+	 * @param params Object information message (usually value) list
 	 */
 	public static void debugPrintLocalised(final String message, Object... params)
 	{

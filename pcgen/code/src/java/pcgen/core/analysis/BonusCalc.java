@@ -138,12 +138,11 @@ public class BonusCalc
 	private static boolean dontRecurse = false;
 
 	/**
-	 * Apply the bonus to a PC, pass through object's default bonuslist
+	 * Apply the bonus to a PC, pass through object's default bonuslist.
 	 *
 	 * @param po
 	 * @param aType
 	 * @param aName
-	 * @param obj
 	 * @param aPC
 	 * @return the bonus
 	 */

@@ -148,8 +148,8 @@ public class FaceToken extends AbstractExportToken
 	}
 
 	/**
-	 * Get squares sub token
-	 * @param pc
+	 * Get squares sub token.
+	 * @param display
 	 * @return squares sub token
 	 */
 	public static String getSquaresToken(CharacterDisplay display)

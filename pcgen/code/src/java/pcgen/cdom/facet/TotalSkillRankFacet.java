@@ -53,11 +53,11 @@ public class TotalSkillRankFacet extends AbstractStorageFacet<CharID> implements
 	 * 
 	 * @param id
 	 *            The CharID representing the Player Character for which the
-	 *            given association should be made
-	 * @param obj
-	 *            The object for which the association will be set
-	 * @param association
-	 *            The association for the given object
+	 *            given association should be made.
+	 * @param sk
+	 *            The object for which the association will be set.
+	 * @param rank
+	 *            The association for the given object.
 	 */
 	public void set(CharID id, Skill sk, Double rank)
 	{
@@ -89,9 +89,9 @@ public class TotalSkillRankFacet extends AbstractStorageFacet<CharID> implements
 	 * 
 	 * @param id
 	 *            The CharID representing the Player Character from which the
-	 *            given item association should be removed
-	 * @param obj
-	 *            The object for which the association should be removed
+	 *            given item association should be removed.
+	 * @param sk
+	 *            The skill object for which the association should be removed.
 	 */
 	public void remove(CharID id, Skill sk)
 	{

@@ -531,9 +531,9 @@ public interface CharacterFacade extends CompanionFacade
 	public void setPreviewSheet(String previewSheet);
 
 	/**
-	 * Set the character's display filter for skills
+	 * Set the character's display filter for skills.
 	 * *
-	 * @param previewSheet The skill filter to be set
+	 * @param filter The skill filter to be set.
 	 */
 	public void setSkillFilter(SkillFilter filter);
 
