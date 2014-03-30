@@ -515,10 +515,9 @@ public class TokenLibrary implements PluginLoader
 	}
 
 	/**
-	 * Add a CLASS via a BONUS
+	 * Add a CLASS via a BONUS.
 	 * 
 	 * @param bonusClass
-	 * @param bonusName
 	 * @return true if successful
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException

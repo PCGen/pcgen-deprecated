@@ -484,9 +484,9 @@ public class AbilityToken extends Token
 	 * @param aAbility The ability
 	 * @return true if it meets the visibility requirements
 	 */
-	static boolean abilityVisibleTo(View v, Ability aAbility)
+	static boolean abilityVisibleTo(View visibility, Ability aAbility)
 	{
-		return aAbility.getSafe(ObjectKey.VISIBILITY).isVisibleTo(v);
+		return aAbility.getSafe(ObjectKey.VISIBILITY).isVisibleTo(visibility);
 	}
 
 	/**
@@ -806,12 +806,11 @@ public class AbilityToken extends Token
 	}
 
 	/**
-	 * @param visibility
-	 *            the visibility to set
+	 * @param visibility the visibility to set
 	 */
-	protected void setView(View v)
+	protected void setView(View visibility)
 	{
-		this.view = v;
+		this.view = visibility;
 	}
 
 }

@@ -98,7 +98,8 @@ public class WeaponoToken extends WeaponToken
 	/**
 	 * Creates equipment based on the first Secondary Weapon.
 	 * 
-	 * @param pc The character used to generate the size.
+	 * @param display The character used to generate the size.
+     * @param anIndex The slot of the desired seconary weapon.
 	 * @return The equipment.
 	 */
 	public static Equipment getWeaponEquipment(CharacterDisplay display, final int anIndex)

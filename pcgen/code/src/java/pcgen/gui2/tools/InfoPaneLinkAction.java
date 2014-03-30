@@ -48,7 +48,7 @@ public class InfoPaneLinkAction
 
 	/**
 	 * Create a new instance.
-	 * @param advancedSourceSelectionPanel TODO
+	 * @param infoPane TODO
 	 */
 	public InfoPaneLinkAction(InfoPane infoPane)
 	{

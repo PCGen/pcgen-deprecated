@@ -57,8 +57,8 @@ public class InitiativeModToken extends AbstractExportToken
 	}
 
 	/**
-	 * Get the token
-	 * @param pc
+	 * Get the initiative modifer token.
+	 * @param display
 	 * @return the token
 	 */
 	public static int getInitiativeModToken(CharacterDisplay display)

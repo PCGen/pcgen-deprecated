@@ -63,12 +63,11 @@ public class FontManipulation {
 	/**
 	 * For extra extra large font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font xxlarge(Font f)
+	public static Font xxlarge(Font font)
 	{
-		return f.deriveFont(f.getSize() * 1.5f);
+		return font.deriveFont(f.getSize() * 1.5f);
 	}
 
 	/**
@@ -86,12 +85,11 @@ public class FontManipulation {
 	/**
 	 * For extra large font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font xlarge(Font f)
+	public static Font xlarge(Font font)
 	{
-		return f.deriveFont(f.getSize() * 1.333f);
+		return font.deriveFont(f.getSize() * 1.333f);
 	}
 
 	/**
@@ -109,12 +107,11 @@ public class FontManipulation {
 	/**
 	 * For large font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font large(Font f)
+	public static Font large(Font font)
 	{
-		return f.deriveFont(f.getSize() * 1.167f);
+		return font.deriveFont(f.getSize() * 1.167f);
 	}
 
 	/**
@@ -132,12 +129,11 @@ public class FontManipulation {
 	/**
 	 * For a bit smaller font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font small(Font f)
+	public static Font small(Font font)
 	{
-		return f.deriveFont(f.getSize() * 0.917f);
+		return font.deriveFont(f.getSize() * 0.917f);
 	}
 
 
@@ -156,19 +152,17 @@ public class FontManipulation {
 	/**
 	 * For extra smaller font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font xsmall(Font f)
+	public static Font xsmall(Font font)
 	{
-		return f.deriveFont(f.getSize() * 0.833f);
+		return font.deriveFont(f.getSize() * 0.833f);
 	}
 
 	/**
 	 * For extra smaller font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param container element to change the font of
 	 */
 	public static void xsmall(Container container)
 	{
@@ -179,44 +173,40 @@ public class FontManipulation {
 	/**
 	 * For less important text, like grayed out italic.
 	 * 
-	 * @param container
-	 *            element to change the font of
+	 * @param font base font
 	 */
-	public static Font less(Font f)
+	public static Font less(Font font)
 	{
-		return f.deriveFont(Font.ITALIC);
+		return font.deriveFont(Font.ITALIC);
 	}
 	
 	/**
 	 * For bold font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font bold(Font f)
+	public static Font bold(Font font)
 	{
-		return f.deriveFont(Font.BOLD);
+		return font.deriveFont(Font.BOLD);
 	}
 	
 	/**
 	 * For italic font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font italic(Font f)
+	public static Font italic(Font font)
 	{
-		return f.deriveFont(Font.ITALIC);
+		return font.deriveFont(Font.ITALIC);
 	}
 	
 	/**
 	 * For bold italic font.
 	 * 
-	 * @param font
-	 *            base font
+	 * @param font base font
 	 */
-	public static Font bold_italic(Font f)
+	public static Font bold_italic(Font font)
 	{
-		return f.deriveFont(Font.BOLD | Font.ITALIC);
+		return font.deriveFont(Font.BOLD | Font.ITALIC);
 	}
 }

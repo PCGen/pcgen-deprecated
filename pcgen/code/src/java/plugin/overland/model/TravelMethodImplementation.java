@@ -877,7 +877,8 @@ class TravelMethodImplementation implements TravelMethod
 
 		/**
 		 * Method called when the selected method changes.
-		 * @param methodModel
+		 * @param source
+		 * @param previousMethod
 		 */
 		protected void fireMethodChanged(MethodModel source, Method previousMethod)
 		{
