@@ -606,10 +606,12 @@ class ClassDataHandler extends DefaultHandler
 
 	/**
 	 * Returns a List of Spell with following criteria:
+	 * <ul>
+	 *  <li>
+	 * </ul>
 	 *
-	 * @param level      (optional, ignored if < 0),
+	 * @param level      (optional, ignored if &lt; 0).
 	 * @param spellLists the lists of spells
-	 * @param pc TODO
 	 * @return a List of Spell
 	 */
 	public static List<Spell> getSpellsIn(final int level, List<? extends CDOMList<Spell>> spellLists)

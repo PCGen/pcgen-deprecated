@@ -389,7 +389,7 @@ public class EquipInfoTab extends FlippingSplitPane implements CharacterInfoTab,
 	}
 
 	/**
-	 * @param load (i.e. Encumbrance) value
+	 * @param text (i.e., Encumbrance) value
 	 */
 	public void setLoadLabel(String text) {
 		// bold / highlight text based on encumbrance value

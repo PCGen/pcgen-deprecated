@@ -55,8 +55,8 @@ public class WeaponProfsToken extends AbstractExportToken
 	/**
 	 * Get the value of the supplied output token. Simply calls getWeaponProfsToken.
 	 *
-	 * @param tokenSource The full source of the token
-	 * @param pc The character to retrieve the value for.
+	 * @param tokenSource The full source of the token.
+	 * @param display The character to retrieve the value for.
 	 * @param eh The ExportHandler that is managing the export
 	 * @return The value of the token.
 	 * @see pcgen.io.exporttoken.Token#getToken(java.lang.String, pcgen.core.PlayerCharacter, pcgen.io.ExportHandler)

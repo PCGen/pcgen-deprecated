@@ -145,9 +145,9 @@ public final class PCGenStatusBar extends JPanel
 	}
 
 	/**
-	 * Shows the progress bar, in indeterminate mode
+	 * Shows the progress bar, in indeterminate mode.
 	 * 
-	 * @param Context message to show on status bar
+	 * @param msg message to show on status bar.
 	 * @param indeterminate
 	 */
 	public void startShowingProgress(final String msg, boolean indeterminate)

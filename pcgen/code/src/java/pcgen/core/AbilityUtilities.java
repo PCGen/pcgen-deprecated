@@ -285,9 +285,7 @@ public class AbilityUtilities
 	 * weapon proficiencies, either a single choice if addAll is false, or all
 	 * possible choices if addAll is true.
 	 * @param   aPC                       the PC to add or remove the Feat from
-	 * @param   argAbility                The ability to process
-	 * @param   choice                    For an isMultiples() Ability
-	 * @param   category The AbilityCategory to add or remove the ability from.
+	 * @param   cnas                      The ability to process
 	 */
 	public static void modAbility(PlayerCharacter aPC, CNAbilitySelection cnas)
 	{

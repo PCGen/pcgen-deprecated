@@ -4067,10 +4067,7 @@ public final class Equipment extends PObject implements Serializable,
 	}
 
 	/**
-	 * Sets the base attribute of the Equipment object
-	 * 
-	 * @param pc The PC carrying the item 
-	 * Todo remove the pc parameter, it is unused.
+	 * Sets the base attribute of the Equipment object.
 	 */
 	public void setBase()
 	{

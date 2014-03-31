@@ -49,18 +49,20 @@ import pcgen.util.Logging;
  * The Class is designed to share significant common code between
  * implementations of the ReferenceManufacturer interface.
  * 
- * @param <T>
+ * <ul>
+ * <li> &lt;T&gt;
  *            The Class of object this AbstractReferenceManufacturer can
  *            manufacture
- * @param <RT>
+ * <li> &lt;RT&gt;
  *            The Class of Single Reference that this
  *            AbstractReferenceManufacturer will produce
- * @param <TRT>
+ * <li> &lt;TRT&gt;
  *            The Class of Type Reference that this
  *            AbstractReferenceManufacturer will produce
- * @param <ART>
+ * <li> &lt;ART&gt;
  *            The Class of All Reference that this AbstractReferenceManufacturer
  *            will produce
+ * </ul>
  */
 public abstract class AbstractReferenceManufacturer<T extends Loadable>
 		implements ReferenceManufacturer<T>
@@ -165,7 +167,7 @@ public abstract class AbstractReferenceManufacturer<T extends Loadable>
 	/**
 	 * Constructs a new AbstractReferenceManufacturer for the given Class.
 	 * 
-	 * @param objClass
+	 * @param fac
 	 *            The Class of object this AbstractReferenceManufacturer will
 	 *            construct and reference.
 	 * @throws IllegalArgumentException
@@ -634,7 +636,7 @@ public abstract class AbstractReferenceManufacturer<T extends Loadable>
 	 * AbstractReferenceManufacturer. The reference will be a reference to the
 	 * object identified by the given key.
 	 * 
-	 * @param key
+	 * @param val
 	 *            The key used to identify the object to which the returned
 	 *            CDOMReference will refer.
 	 * @return A CDOMReference that refers to the object identified by the given

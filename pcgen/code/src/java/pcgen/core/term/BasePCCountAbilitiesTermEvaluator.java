@@ -74,12 +74,12 @@ public abstract class BasePCCountAbilitiesTermEvaluator extends BasePCTermEvalua
 	/**
 	 * Count the number of times the character has the ability. This can be
 	 * limited to either hidden or visible Abilities, and can be limited to only
-	 * counting once per ability rather than once per time taken (e.g. 
+	 * counting once per ability rather than once per time taken (e.g.,
 	 * Weapon Specialisation in two weapons would count as 2 unless the onceOnly
 	 * flag was true).
 	 *
-	 * @param pc the Character with the abilities
-	 * @param ability The feat to be counted.
+	 * @param pc the Character with the abilities.
+	 * @param cna The feat to be counted.
 	 * @param visible Should it be counted if it is visible?
 	 * @param hidden  Should it be counted if it is hidden?
 	 * @param onceOnly Should it be counted as one if was taken multiple times?

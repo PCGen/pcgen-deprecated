@@ -1476,9 +1476,7 @@ public class PlayerCharacter  implements Cloneable, VariableContainer
 	/**
 	 * Sets the character's handedness.
 	 * 
-	 * 
-	 * @param g
-	 *            A handedness to try and set.
+	 * @param h A handedness to try and set.
 	 */
 	public void setHanded(final Handed h)
 	{

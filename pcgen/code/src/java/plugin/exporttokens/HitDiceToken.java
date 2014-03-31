@@ -203,8 +203,8 @@ public class HitDiceToken extends Token
 	}
 
 	/**
-	 * Get the short version of the HITDICE token
-	 * @param pc
+	 * Get the short version of the HITDICE token.
+	 * @param display
 	 * @return the short version of the HITDICE token
 	 */
 	public static String getShortToken(CharacterDisplay display)

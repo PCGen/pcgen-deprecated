@@ -238,7 +238,7 @@ public class Aspect extends ConcretePrereqObject
 	 * Gets the name string after having substituting all variables.
 	 * 
 	 * @param aPC The PlayerCharacter used to evaluate formulas.
-	 * @param theOwner the owning Ability object
+	 * @param abilities the owning Ability object
 	 * 
 	 * @return The fully substituted description string.
 	 */

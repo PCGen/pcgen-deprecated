@@ -121,8 +121,8 @@ public class BaseMovementToken extends AbstractExportToken
 	}
 
 	/**
-	 * Get the base movement token
-	 * @param pc
+	 * Get the base movement token.
+	 * @param display
 	 * @param moveType
 	 * @param load
 	 * @param displayFlag
