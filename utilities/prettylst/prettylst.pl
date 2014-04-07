@@ -2977,6 +2977,7 @@ my %master_order = (
 		'MULT',
 		'CHOOSE',
 		'SELECT',
+		'SITUATION',
 		'DEFINE',
 		'DEFINESTAT:*',
 		'VFEAT:*',
@@ -3911,6 +3912,7 @@ my %tagheader = (
 		'KEYSTAT'			=> 'Key Stat',
 		'EXCLUSIVE'			=> 'Exclusive?',
 		'USEUNTRAINED'		=> 'Untrained?',
+		'SITUATION'			=> 'Situational Skill Use',
 
 #		'000TemplateName'		=> '# Template Name',
 
