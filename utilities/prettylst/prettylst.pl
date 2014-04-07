@@ -1620,6 +1620,8 @@ my @PRE_Tags = (
 	'!PRERULE',
 	'PRESA',
 	'!PRESA',
+	'PRESITUATION',
+	'!PRESITUATION',
 	'PRESHIELDPROF',
 	'!PRESHIELDPROF',
 	'PRESIZEEQ',
@@ -1744,6 +1746,7 @@ my %double_PCC_tags = (
 	'BONUS:POSTRANGEADD',	=> 1,
 	'BONUS:RANGEADD',		=> 1,
 	'BONUS:RANGEMULT',	=> 1,
+	'BONUS:SITUATION',		=> 1,
 	'BONUS:SIZEMOD',		=> 1,
 	'BONUS:SKILL',		=> 1,
 	'BONUS:SKILLPOINTS',	=> 1,
@@ -1812,6 +1815,7 @@ my @Global_BONUS_Tags = (
 	'BONUS:POSTRANGEADD:*',		# Global
 	'BONUS:RANGEADD:*',		# Global
 	'BONUS:RANGEMULT:*',		# Global
+	'BONUS:SITUATION:*',		# Global
 	'BONUS:SIZEMOD:*',		# Global
 	'BONUS:SKILL:*',			# Global
 	'BONUS:SKILLPOINTS:*',		# Global
