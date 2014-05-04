@@ -244,18 +244,18 @@ CLASS:Investigator	SPELLSTAT:INT	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BON
 3	BONUS:VAR|RogueTrapSenseLVL|CL
 4	BONUS:VAR|RogueSneakAttackLVL|CL-3
 ###Block: Class Abilities
-1	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemy ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorAlchemy
+1	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemist ~ Alchemy|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorAlchemy
 1	ABILITY:Investigator Class Ability|AUTOMATIC|Inspiration ~ Investigator|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorInspiration
 1	ABILITY:Rogue Class Ability|AUTOMATIC|Trapfinding|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorTrapfinding
-2	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Resistance ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance
-2	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Use ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonUse
+2	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemist ~ Poison Resistance|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance
+2	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemist ~ Poison Use|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonUse
 3	ABILITY:Rogue Class Ability|AUTOMATIC|Trap Sense ~ Rogue|!PREABILITY:1,CATEGORY=Archetype,TYPE.RogueTrapSense
 3	ABILITY:Investigator Class Ability|AUTOMATIC|Investigator Talents|!PREABILITY:1,CATEGORY=Archetype,TYPE.RogueTalents
-4	ABILITY:Alchemist Class Ability|AUTOMATIC|Swift Alchemy ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorSwiftAlchemy
+4	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemist ~ Swift Alchemy|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorSwiftAlchemy
 4	ABILITY:Rogue Class Ability|AUTOMATIC|Sneak Attack|Sneak Attack ~ Rogue|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorSneakAttack
-5	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Resistance 4 ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance4
-8	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Resistance 6 ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance6
-10	ABILITY:Alchemist Class Ability|AUTOMATIC|Poison Immunity ~ Alchemist|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonImmunity
+5	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemist ~ Poison Resistance 4|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance4
+8	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemist ~ Poison Resistance 6|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonResistance6
+10	ABILITY:Alchemist Class Ability|AUTOMATIC|Alchemist ~ Poison Immunity|!PREABILITY:1,CATEGORY=Archetype,TYPE.InvestigatorPoisonImmunity
 ###Block: Spellcasting
 1	CAST:0,1
 2	CAST:0,2
