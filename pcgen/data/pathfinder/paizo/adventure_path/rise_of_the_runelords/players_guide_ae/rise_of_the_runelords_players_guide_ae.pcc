@@ -1,5 +1,5 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
-CAMPAIGN:Rise of the Runelords Player's Guide Anniversary Edition
+CAMPAIGN:Rise of the Runelords Player's Guide (Anniversary Edition)
 GAMEMODE:Pathfinder
 TYPE:Paizo Publishing.Pathfinder Adventure Path.Rise of the Runelords
 RANK:3
@@ -7,7 +7,6 @@ STATUS:RELEASE
 GENRE:Fantasy
 BOOKTYPE:Supplement
 SETTING:Pathfinder|Golarion
-PRECAMPAIGN:1,Rise of the Runelords Player's Guide (Conversion)
 PUBNAMELONG:Paizo Inc.
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://paizo.com
@@ -38,5 +37,4 @@ ABILITY:rotrpgae_abilities.lst
 ABILITYCATEGORY:rotrpgae_abilitycategories.lst
 KIT:rotrpgae_kits.lst
 LANGUAGE:rotrpgae_languages.lst
-SKILL:rotrpgae_skills.lst
-EQUIPMENT:rotrpgae_equipment.lst
+
