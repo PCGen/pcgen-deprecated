@@ -118,15 +118,15 @@ function writePcgenFileItems($url, $viewProd, $maxRecs)
 
         <h2>Option 1. Download Latest Stable Release of PCGen<a class="" title="stable" name="stable"></a></h2>
         <p>Click on the link suited to your computer below. You can also look at
-        the <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/6.00.0/" style="font-size: 80%;">Full Package</a>
+        the <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/6.02.1/" style="font-size: 80%;">Full Package</a>
         for further files such as release notes, sources and SHA values for file integrity checking.
         </p>
         <p>This is the most recent stable or production PCGen Release. 
         </p>
 
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6020_win_install.exe">Download PCGen 6.02.0 for Windows<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6020_mac_install.dmg">Download PCGen 6.02.0 for Mac<small>&nbsp;</small></a></div><br />
-        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6020_full.zip">Download PCGen 6.02.0 for Other Systems<small>&nbsp;</small></a></div><br/>
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6021_win_install.exe">Download PCGen 6.02.1 for Windows<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6021_mac_install.dmg">Download PCGen 6.02.1 for Mac<small>&nbsp;</small></a></div><br />
+        <div class="downloadbar"><a href="http://downloads.sourceforge.net/pcgen/pcgen6021_full.zip">Download PCGen 6.02.1 for Other Systems<small>&nbsp;</small></a></div><br/>
 
 		<p>
         <a href="https://sourceforge.net/projects/pcgen/files/PCGen%20Stable/" style="font-size: 80%;">[View Older Production Releases]</a>
