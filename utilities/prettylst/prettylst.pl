@@ -124,6 +124,7 @@ my %validfiletype = (
 	'WEAPONPROF'	=> \&FILETYPE_parse,
 	'ARMORPROF'		=> \&FILETYPE_parse,
 	'SHIELDPROF'	=> \&FILETYPE_parse,
+	'VARIABLE'		=> \&FILETYPE_parse,
 	'#EXTRAFILE'	=> 1,
 );
 
@@ -155,6 +156,7 @@ my %writefiletype = (
 	'ARMORPROF'		=> 1,
 	'SHIELDPROF'	=> 1,
 	'#EXTRAFILE'	=> 0,
+	'VARIABLE'		=> 1,
 );
 
 # The active conversions
@@ -1481,6 +1483,19 @@ my %master_file_type = (
 			ValidateKeep	=> YES,
 		},
 	],
+
+	VARIABLE => [
+		\%SOURCE_file_type_def,
+		{ Linetype	=> 'VARIABLE',
+			RegEx			=> qr(^([^\t:]+)),
+			Mode			=> MAIN,
+			Format		=> BLOCK,
+			Header		=> BLOCK_HEADER,
+			ValidateKeep	=> YES,
+		},
+	],
+
+
 );
 
 # The PRExxx tags. They are used in many of the line types.
@@ -3476,6 +3491,12 @@ my %master_order = (
 		'SAB:.CLEAR',
 		'SAB:*',
 	],
+
+	'VARIABLE' => [
+		'000VariableName',
+		'EXPLANATION',			
+	],
+
 );
 
 #################################################################
@@ -3635,6 +3656,10 @@ my %column_with_no_tag = (
 
 	'WEAPONPROF' => [
 		'000WeaponName',
+	],
+
+	'VARIABLE' => [
+		'000VariableName',
 	],
 
 );
@@ -3925,6 +3950,9 @@ my %tagheader = (
 		'000ArmorName'		=> '# Armor Name',
 		'000ShieldName'		=> '# Shield Name',
 
+		'000VariableName'		=> '# Variable Name',
+
+
 		'ABILITY'			=> 'Ability',
 		'ACCHECK'			=> 'AC Penalty Check',
 		'ACHECK'			=> 'Skill Penalty Apply',
@@ -4047,6 +4075,7 @@ my %tagheader = (
 #		'EFFECTS'			=> 'Description',		# Deprecated a long time ago for TARGETAREA
 		'EQMOD'			=> 'Modifier',
 		'EXCLASS'			=> 'Ex Class',
+		'EXPLANATION'			=> 'Explanation',
 		'FACE'			=> 'Face/Space',
 		'FEAT'			=> 'Feat',
 		'FEATAUTO'			=> 'Feat Auto',
@@ -4487,6 +4516,11 @@ my %tagheader = (
 		'BONUSFEATS'		=> 'Number of Bonus Feats',
 		'FAVOREDCLASS'		=> 'Favored Class',
 		'GENDERLOCK'		=> 'Lock Gender Selection',
+	},
+
+	'VARIABLE' => {
+		'000VariableName'		=> '# Variable Name',
+		'EXPLANATION'			=> 'Explanation',
 	},
 
 );
@@ -9538,6 +9572,8 @@ sub validate_pre_tag {
 			];
 		}
 	}
+
+	# No Check for Variable File #
 
 	# Check for PRExxx that do not exist. We only check the
 	# tags that are embeded since parse_tag already took care
