@@ -3806,41 +3806,54 @@ my @token_AUTO_tag = (
 my %token_CHOOSE_tag = map { $_ => 1 } (
 	'ABILITY',
 	'ABILITYSELECTION',
-	'ARMORPROF',			# Deprecated 5.15 - Remove 6.0
+	'ALIGNMENT',
 	'ARMORPROFICIENCY',
-	'ARMORTYPE',
-	'CCSKILLLIST',		# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
-	'CSKILLS',
-	'COUNT',			# Deprecated 5.13.9 - Remove 5.16 Use SELECT instead.
+	'CHECK',
+	'CLASS',
+	'DEITY',
 	'DOMAIN',
-	'EQBUILDER.SPELL',
+	'EQBUILDER.SPELL',		# EQUIPMENT ONLY
 	'EQUIPMENT',
-	'EQUIPTYPE',
 	'FEAT',
-	'FEATADD',				# Deprecated 5.15 - Remove 6.00
-	'FEATLIST',				# Deprecated 5.15 - Remove 6.00
-	'FEATSELECT',			# Deprecated 5.15 - Remove 6.00
-	'HP',					# Deprecated 6.00 - Remove 6.02
+	'FEATSELECTION',
+	'LANG',
+	'LANGAUTO',
 	'NOCHOICE',
 	'NUMBER',
 	'NUMCHOICES',
-	'PROFICIENCY',
+	'PCSTAT',
 	'RACE',
-	'SALIST',			# Deprecated 6.00 - Remove 6.02
 	'SCHOOLS',
-	'SHIELDPROF',
+	'SHIELDPROFICIENCY',
+	'SIZE',
 	'SKILL',
-	'SKILLSNAMED',
-	'SPELLCLASSES',
+	'SKILLBONUS',
 	'SPELLLEVEL',
-	'SPELLLIST',
 	'SPELLS',
-	'STAT',
+	'STATBONUS',		# EQUIPMENT ONLY
 	'STRING',
+	'TEMPLATE',
 	'USERINPUT',
 	'WEAPONFOCUS',
-	'WEAPONPROF',
-	'WEAPONPROFS',
+	'WEAPONPROFICIENCY',
+	'STAT',					# Deprecated
+	'WEAPONPROF',			# Deprecated
+	'WEAPONPROFS',			# Deprecated
+	'SPELLLIST',			# Deprecated
+	'SPELLCLASSES',			# Deprecated
+	'PROFICIENCY',			# Deprecated
+	'SHIELDPROF',			# Deprecated
+	'EQUIPTYPE',			# Deprecated
+	'CSKILLS',				# Deprecated
+	'HP',					# Deprecated 6.00 - Remove 6.02
+	'CCSKILLLIST',			# Deprecated 5.13.9 - Remove 5.16. Use CHOOSE:SKILLSNAMED instead.
+	'ARMORTYPE',			# Deprecated 
+	'ARMORPROF',			# Deprecated 5.15 - Remove 6.0
+	'SKILLSNAMED',			# Deprecated
+	'SALIST',				# Deprecated 6.00 - Remove 6.02
+	'FEATADD',				# Deprecated 5.15 - Remove 6.00
+	'FEATLIST',				# Deprecated 5.15 - Remove 6.00
+	'FEATSELECT',			# Deprecated 5.15 - Remove 6.00
 );
 
 my %master_mult;		# Will hold the tags that can be there more then once
