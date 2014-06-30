@@ -3805,6 +3805,7 @@ my @token_AUTO_tag = (
 # validate the different CHOOSE types.
 my %token_CHOOSE_tag = map { $_ => 1 } (
 	'ABILITY',
+	'ABILITYSELECTION',
 	'ARMORPROF',			# Deprecated 5.15 - Remove 6.0
 	'ARMORPROFICIENCY',
 	'ARMORTYPE',
