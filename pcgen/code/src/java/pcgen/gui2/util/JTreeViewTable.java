@@ -156,7 +156,7 @@ public class JTreeViewTable<T> extends JTreeTable
 	{
 		@SuppressWarnings("unchecked")
 		ListMap<Visibility, TableColumn, List<TableColumn>> listMap =
-				CollectionMaps.createListMap(HashMap.class, ArrayList.class);
+				(ListMap<Visibility, TableColumn, List<TableColumn>>) CollectionMaps.createListMap(HashMap.class, ArrayList.class);
 		int index = 1;
 		for (DataViewColumn column : dataView.getDataColumns())
 		{

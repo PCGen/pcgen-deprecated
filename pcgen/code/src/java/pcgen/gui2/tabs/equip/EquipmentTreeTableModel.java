@@ -71,7 +71,7 @@ public class EquipmentTreeTableModel implements SortableTreeTableModel, ListList
 	{
 		this.character = character;
 		this.equipSet = equipSet;
-		pathMap = CollectionMaps.createListMap(HashMap.class, ArrayList.class);
+		pathMap = (ListMap<EquipNode, EquipNode, List<EquipNode>>) CollectionMaps.createListMap(HashMap.class, ArrayList.class);
 		bodySlotNodes = new ArrayList<EquipNode>();
 		initPathMap();
 		equipSet.getNodes().addListListener(this);
