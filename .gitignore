@@ -3,6 +3,8 @@
 pcgen/.idea
 *.editable.lst
 *.swp
+.classpath
+.project
 
 # Java files
 *.class
@@ -14,3 +16,4 @@ pcgen/.idea
 
 # Generate files #
 pcgen/doc/api
+/ide-bin/
