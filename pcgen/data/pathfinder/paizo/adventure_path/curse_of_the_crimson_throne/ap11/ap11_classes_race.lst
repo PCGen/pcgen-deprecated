@@ -1,8 +1,8 @@
-# CVS $Revision: $ $Author: $ -- Thu Jul 10 13:41:29 2014 -- reformated by prettylst.pl v1.51 (build 24365)
+# CVS $Revision: $ $Author: $ -- Thu Aug  7 11:38:58 2014 -- reformated by prettylst.pl v1.51 (build 24365)
 SOURCELONG:Curse of the Crimson Throne, Chapter 5 - Skeletons of Scarwall	SOURCESHORT:AP11	SOURCEWEB:http://paizo.com/pathfinder/adventurePath/curseOfTheCrimsonThrone/v5748btpy83yw	SOURCEDATE:2008-08
 
-# Class Name		Hit Dice	Type			Class Type		Max Level		Source Page		Save checks bonus								Combat bonus
-CLASS:Umbral Dragon	HD:12		TYPE:Monster	CLASSTYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p. 86	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex,BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE
+# Class Name		Hit Dice	Type			Class Type		Max Level		Source Page		Combat bonus										Bonus
+CLASS:Umbral Dragon	HD:12		TYPE:Monster	CLASSTYPE:Monster	MAXLEVEL:NOLIMIT	SOURCEPAGE:p. 86	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")|TYPE=Base.REPLACE	BONUS:SAVE|BASE.Fortitude,BASE.Reflex,BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name		Required Race			Reg. Race Type
 CLASS:Umbral Dragon	PRERACE:1,Dragon (Umbral%	PRERACETYPE:Dragon
 # Class Name		Skill Pts/Lvl	Add INT to Skill Points?	Class Skill
@@ -16,7 +16,7 @@ CLASS:Umbral Dragon	STARTSKILLPTS:6	MODTOSKILLS:YES			CSKILL:Appraise|Bluff|Clim
 13																									DEFINE:DragonAge|3
 15			BONUS:VAR|FireResistanceBonus,ElectricityResistanceBonus|10|TYPE=Resistance														ABILITY:Special Ability|AUTOMATIC|Resistance To Electricity|Resistance To Fire
 16																									DEFINE:DragonAge|4
-18	DR:5/Magic	BONUS:VAR|TurnLevelBase,TurnDamagePlusBase|CL/2	BONUS:VAR|TurnTimesBase|3+CHA|TYPE=Base	BONUS:VAR|TurnCheckBase|CHA|TYPE=Base					ABILITY:Special Ability|AUTOMATIC|Cleric ~ Channel Energy|Channel Negative Energy
+18	DR:5/Magic	BONUS:VAR|TurnLevelBase,TurnDamagePlusBase|CL/2	BONUS:VAR|TurnTimesBase|3+CHA|TYPE=Base	BONUS:VAR|TurnCheckBase|CHA|TYPE=Base					ABILITY:Special Ability|AUTOMATIC|Channel Negative Energy|Cleric ~ Channel Energy
 19																									DEFINE:DragonAge|5
 21
 22																									DEFINE:DragonAge|6

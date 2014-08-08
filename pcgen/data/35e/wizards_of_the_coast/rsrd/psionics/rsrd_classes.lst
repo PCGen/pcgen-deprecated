@@ -74,7 +74,7 @@ CLASS:Psychic Warrior	STARTSKILLPTS:2	CSKILL:Autohypnosis|Climb|Concentration|TY
 # Class Name		Spell Stat		Spell Type		Memorize	Caster level
 CLASS:Psychic Warrior	SPELLSTAT:WIS	SPELLTYPE:Psionic	MEMORIZE:NO	BONUS:CASTERLEVEL|Psychic Warrior|CL
 ###Block:Proficiencies
-1	ABILITY:Internal|AUTOMATIC|TYPE=WeaponProfMartial|TYPE=ArmorProfHeavy|TYPE=ShieldProf
+1	ABILITY:Internal|AUTOMATIC|TYPE=ArmorProfHeavy|TYPE=ShieldProf|TYPE=WeaponProfMartial
 ###Block: Psionic subtype, BasePowerPoints, BonusPowerPoints
 1	BONUS:VAR|PsychicWarriorML|CL	BONUS:VAR|PsychicWarriorML|var("BL=Psychic Warrior")																											DEFINE:PsychicWarriorML|0	TEMPLATE:Psionic
 1	BONUS:VAR|BasePowerPoints|0	BONUS:VAR|BasePowerPoints|1|PREVARGTEQ:PsychicWarriorML,2	BONUS:VAR|BasePowerPoints|2|PREVARGTEQ:PsychicWarriorML,3	BONUS:VAR|BasePowerPoints|2|PREVARGTEQ:PsychicWarriorML,4
@@ -111,7 +111,7 @@ CLASS:Soulknife	HD:10		TYPE:Base.Psionic.PC	CLASSTYPE:PC	MAXLEVEL:20	SOURCEPAGE:
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Soulknife	STARTSKILLPTS:4	CSKILL:Autohypnosis|Climb|Concentration|TYPE=Craft|Hide|Jump|Knowledge (Psionics)|Listen|Move Silently|TYPE=Profession|Spot|Tumble
 ###Block:Proficiencies
-1	ABILITY:Internal|AUTOMATIC|TYPE=WeaponProfSimple|TYPE=ArmorProfLight|TYPE=ShieldProf
+1	ABILITY:Internal|AUTOMATIC|TYPE=ArmorProfLight|TYPE=ShieldProf|TYPE=WeaponProfSimple
 
 ###Block: Mind Blade abilities by effective level; to add a PrC's class level to SK for
 #  mind blade powers, use BONUS:VAR|MndBladeECL|x in the PrC's class level line setup
@@ -139,7 +139,7 @@ CLASS:Wilder	STARTSKILLPTS:4	CSKILL:Autohypnosis|Balance|Bluff|Climb|Concentrati
 # Class Name	Spell Stat		Spell Type		Memorize	Caster level
 CLASS:Wilder	SPELLSTAT:CHA	SPELLTYPE:Psionic	MEMORIZE:NO	BONUS:CASTERLEVEL|Wilder|CL
 ###Block:Proficiencies
-1	ABILITY:Internal|AUTOMATIC|TYPE=WeaponProfSimple|TYPE=ArmorProfLight|TYPE=ShieldProf
+1	ABILITY:Internal|AUTOMATIC|TYPE=ArmorProfLight|TYPE=ShieldProf|TYPE=WeaponProfSimple
 ###Block: Psionic subtype, BasePowerPoints, BonusPowerPoints
 1	BONUS:VAR|WilderML|CL	BONUS:VAR|WilderML|var("BL=Wilder")																											DEFINE:WilderML|0	TEMPLATE:Psionic
 1	BONUS:VAR|BasePowerPoints|2	BONUS:VAR|BasePowerPoints|4|PREVARGTEQ:WilderML,2	BONUS:VAR|BasePowerPoints|5|PREVARGTEQ:WilderML,3	BONUS:VAR|BasePowerPoints|6|PREVARGTEQ:WilderML,4
@@ -280,7 +280,7 @@ CLASS:Slayer	PREFEAT:1,Track	PRESKILL:1,Knowledge (Dungeoneering)=4	PRETEMPLATE:
 # Class Name	Skill Pts/Lvl	Class Skill
 CLASS:Slayer	STARTSKILLPTS:4	CSKILL:Bluff|Concentration|Knowledge (Dungeoneering)|Listen|Psicraft|Sense Motive|Spot|Survival
 ###Block:Proficiencies
-1	ABILITY:Internal|AUTOMATIC|TYPE=WeaponProfMartial|TYPE=ArmorProfHeavy
+1	ABILITY:Internal|AUTOMATIC|TYPE=ArmorProfHeavy|TYPE=WeaponProfMartial
 ###Block: Class Info
 1	BONUS:ABILITYPOOL|Slayer Favored Enemy|1	BONUS:VAR|SlayerFavoredEnemy|2					ABILITY:Special Ability|AUTOMATIC|Sense Favored Enemy
 2								BONUS:VAR|BrainNausea|15+CL		ADD:SPELLCASTER|Psionic	ABILITY:Special Ability|AUTOMATIC|Brain Nausea

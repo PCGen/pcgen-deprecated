@@ -77,10 +77,11 @@ public class Bonus
 		for ( final BonusObj bonus : listToSort )
 		{
 			int iFound = 0;
+			String bonusInfo = bonus.getBonusInfo();
 			for (int ii = 0; ii < tempList.size(); ii++)
 			{
 				final BonusObj tempBonus = tempList.get(ii);
-				if (tempBonus.getDependsOn(bonus.getBonusInfo()))
+				if (tempBonus.getDependsOn(bonusInfo))
 				{
 					iFound = ii;
 				}
@@ -182,7 +183,7 @@ public class Bonus
 			}
 		}
 
-		final String bonusInfo = sep.next().toUpperCase();
+		String bonusInfo = sep.next();
 		String bValue = "0";
 
 		if (sep.hasNext())
@@ -280,6 +281,10 @@ public class Bonus
 			aBonus.setVariable(bonusName.substring(equalOffset + 1).intern());
 		}
 
+		if (!aBonus.requiresRealCaseTarget())
+		{
+			bonusInfo = bonusInfo.toUpperCase();
+		}
 		StringTokenizer aTok = new StringTokenizer(bonusInfo, ",");
 
 		if (!aTok.hasMoreTokens())

@@ -1,3 +1,4 @@
+# CVS $Revision$ $Author$ -- Thu Aug  7 11:38:58 2014 -- reformated by prettylst.pl v1.51 (build 24365)
 CAMPAIGN:Remarkable Races
 KEY:Remarkable Races
 GAMEMODE:Pathfinder
@@ -49,4 +50,3 @@ RACE:rr_races.lst
 RACE:rr_races_companion.lst
 SPELL:rr_spells.lst
 TEMPLATE:rr_templates.lst
-

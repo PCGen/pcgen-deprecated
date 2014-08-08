@@ -1,16 +1,16 @@
-# CVS $Revision$ $Author$ -- Fri Oct 19 20:16:09 2012 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Thu Aug  7 11:38:58 2014 -- reformated by prettylst.pl v1.51 (build 24365)
 SOURCELONG:Blood and Blades - The Profilers Guide to Slashers	SOURCESHORT:BloodBlades	SOURCEWEB:http://www.rpgobjects.com/index.php?page=pro&product_id=141	SOURCEDATE:2005-01
 #Original entry by: Frank Kliewe and Paul W. King
 
 ###Arawnite Guardian: Pass without Trace spell does not exist in modern. Should it be borrowed from Fantasy? I usually only do
 #that for spell-like abilities, because they are part of what defines a creature. For a class it is just a choice that is missing.
 
-# Class Name			Output Name				Hit Dice	Type			Max Level	Source Page		Save checks bonus												Combat bonus			Modify VAR
-CLASS:Bounty Hunter (BNB)	OUTPUTNAME:Bounty Hunter	HD:6		TYPE:PC.Advanced	MAXLEVEL:10	SOURCEPAGE:p.13	BONUS:CHECKS|BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Reflex,BASE.Will|(CL+3)*2/5	BONUS:COMBAT|BAB|(CL*3)/4	BONUS:VAR|ClassDefense|CL/2+1	BONUS:VAR|Reputation|CL/3+1	BONUS:VAR|Action|CL*6
+# Class Name			Output Name				Hit Dice	Type			Max Level	Source Page		Combat bonus								Modify VAR													Bonus
+CLASS:Bounty Hunter (BNB)	OUTPUTNAME:Bounty Hunter	HD:6		TYPE:PC.Advanced	MAXLEVEL:10	SOURCEPAGE:p.13	BONUS:COMBAT|BASEAB|(classlevel("APPLIEDAS=NONEPIC")*3)/4	BONUS:VAR|ClassDefense|CL/2+1	BONUS:VAR|Reputation|CL/3+1	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Reflex,BASE.Will|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5
 # Class Name			Req. Att.	Required Skill
 CLASS:Bounty Hunter (BNB)	PREATT:2	PRESKILL:3,Investigate=6,Listen=6,Sense Motive=6
 # Class Name			Skill Pts/Lvl	Class Skill
-CLASS:Bounty Hunter (BNB)	STARTSKILLPTS:5	CSKILL:Bluff|Computer Use|Disable Device|Drive|Forgery|Gather Information|Intimidate|Investigate|Knowledge (Behavioral Sciences)|Knowledge (Civics)|Knowledge (Current Events)|Knowledge (Streetwise)|Listen|Profession|Read/Write Language|Research|Sense Motive|Speak Language|Spot
+CLASS:Bounty Hunter (BNB)	STARTSKILLPTS:5	CSKILL:Bluff|Computer Use|Disable Device|Drive|Forgery|Gather Information|Intimidate|Investigate|Knowledge (Behavioral Sciences)|Knowledge (Civics)|Knowledge (Current Events)|Knowledge (Streetwise)|Listen|Profession|READ/WRITE LANGUAGE|Research|Sense Motive|SPEAK LANGUAGE|Spot
 1														AUTO:FEAT|Track
 2	SAB:Low-level Contact(Ex)
 3									ADD:FEAT|TYPE=BountyHunterBNB
@@ -22,12 +22,12 @@ CLASS:Bounty Hunter (BNB)	STARTSKILLPTS:5	CSKILL:Bluff|Computer Use|Disable Devi
 9									ADD:FEAT|TYPE=BountyHunterBNB
 10	SAB:Sixth Sense(Su)
 
-# Class Name		Output Name			Hit Dice	Type			Max Level	Source Page		Save checks bonus												Combat bonus		Modify VAR
-CLASS:Profiler (BNB)	OUTPUTNAME:Profiler	HD:6		TYPE:PC.Advanced	MAXLEVEL:10	SOURCEPAGE:p.15	BONUS:CHECKS|BASE.Fortitude|(CL+3)*2/5	BONUS:CHECKS|BASE.Reflex,BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL/2	BONUS:VAR|ClassDefense|CL/3+1	BONUS:VAR|Reputation|CL/3+2	BONUS:VAR|Action|CL*6
+# Class Name		Output Name			Hit Dice	Type			Max Level	Source Page		Combat bonus							Modify VAR													Bonus
+CLASS:Profiler (BNB)	OUTPUTNAME:Profiler	HD:6		TYPE:PC.Advanced	MAXLEVEL:10	SOURCEPAGE:p.15	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")/2	BONUS:VAR|ClassDefense|CL/3+1	BONUS:VAR|Reputation|CL/3+2	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5	BONUS:SAVE|BASE.Reflex,BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name		Required Feat		Required Skill
 CLASS:Profiler (BNB)	PREFEAT:1,Attentive	PRESKILL:3,Knowledge (Bahvioral)=6,Sense Motive=6,Gather Information=3
 # Class Name		Skill Pts/Lvl	Class Skill
-CLASS:Profiler (BNB)	STARTSKILLPTS:7	CSKILL:Craft (Visual Art)|Craft (Writing)|Decipher Script|Diplomacy|Disguise|Gather Information|Intimidate|Investigate|Knowledge (Behavioral Sciences)|Knowledge (Current Events)|Knowledge (Popular Culture)|Knowledge (Streetwise)|Profession|Read/Write Language|Research|Sense Motive|Speak Language|Spot
+CLASS:Profiler (BNB)	STARTSKILLPTS:7	CSKILL:Craft (Visual Art)|Craft (Writing)|Decipher Script|Diplomacy|Disguise|Gather Information|Intimidate|Investigate|Knowledge (Behavioral Sciences)|Knowledge (Current Events)|Knowledge (Popular Culture)|Knowledge (Streetwise)|Profession|READ/WRITE LANGUAGE|Research|Sense Motive|SPEAK LANGUAGE|Spot
 1	SAB:Profile(Ex)
 2	SAB:Read Target +%|ReadTarget	BONUS:VAR|ReadTarget|1	DEFINE:ReadTarget|0
 3														ADD:FEAT|TYPE=ProfilerBNB
@@ -41,12 +41,12 @@ CLASS:Profiler (BNB)	STARTSKILLPTS:7	CSKILL:Craft (Visual Art)|Craft (Writing)|D
 
 ###Slasher Advanced Classes
 
-# Class Name	Hit Dice	Type					Abbreviation	Max Level	Source Page		Save checks bonus												Combat bonus		Modify VAR
-CLASS:Alter Ego	HD:6		TYPE:PC.Advanced.Slasher	ABB:AEgo		MAXLEVEL:10	SOURCEPAGE:p.46	BONUS:CHECKS|BASE.Fortitude,BASE.Will|(CL+3)*2/5	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)*2/5+1	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|6
+# Class Name	Hit Dice	Type					Abbreviation	Max Level	Source Page		Combat bonus								Modify VAR														Bonus
+CLASS:Alter Ego	HD:6		TYPE:PC.Advanced.Slasher	ABB:AEgo		MAXLEVEL:10	SOURCEPAGE:p.46	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)*2/5+1	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|6	BONUS:SAVE|BASE.Fortitude,BASE.Will|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3
 # Class Name	Required Feat												Var. Max. Value
 CLASS:Alter Ego	PREFEAT:2,Mental Disorder (Dissociative),Slasher Occupation (Organized Killer)	PREVARLTEQ:CurrentSanity,-10
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Alter Ego	STARTSKILLPTS:3	CSKILL:Bluff|Diplomacy|Disguise|Forgery|Intimidate|Hide|Listen|Move Silently|Perform (Act)|Profession|Read/Write Language|Repair|Search|Sense Motive|Sleight of Hand|Speak Language|Spot
+CLASS:Alter Ego	STARTSKILLPTS:3	CSKILL:Bluff|Diplomacy|Disguise|Forgery|Intimidate|Hide|Listen|Move Silently|Perform (Act)|Profession|READ/WRITE LANGUAGE|Repair|Search|Sense Motive|Sleight of Hand|SPEAK LANGUAGE|Spot
 1	SAB:Other Personality(Ex)
 2	SAB:Signature(Ex)			BONUS:SKILL|Forgery|CL|TYPE=Insight
 3	SAB:Ladykiller +%|Ladykiller								BONUS:VAR|Ladykiller|2	DEFINE:Ladykiller|0
@@ -58,8 +58,8 @@ CLASS:Alter Ego	STARTSKILLPTS:3	CSKILL:Bluff|Diplomacy|Disguise|Forgery|Intimida
 9	SAB:Mental Retreat(Ex)
 10													BONUS:VAR|Ladykiller|2
 
-# Class Name		Hit Dice	Type					Max Level	Source Page		Save checks bonus											Combat bonus		Modify VAR
-CLASS:Arawnite Guardian	HD:6		TYPE:PC.Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.46	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/2+2	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)*2/5+1	BONUS:VAR|Reputation|CL/2+1	BONUS:VAR|Action|6
+# Class Name		Hit Dice	Type					Max Level	Source Page		Combat bonus								Modify VAR														Bonus
+CLASS:Arawnite Guardian	HD:6		TYPE:PC.Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.46	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)*2/5+1	BONUS:VAR|Reputation|CL/2+1	BONUS:VAR|Action|6	BONUS:SAVE|BASE.Fortitude,BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3
 # Class Name		Required Skill							Required Text
 CLASS:Arawnite Guardian	PRESKILL:1,Knowledge (Theology and Philosophy)=6	PRETEXT:Allegiance to Arawn
 # Class Name		Skill Pts/Lvl	Class Skill
@@ -75,23 +75,23 @@ CLASS:Arawnite Guardian	SPELLSTAT:WIS	SPELLTYPE:Divine	MEMORIZE:NO	KNOWNSPELLS:L
 1	SPELLLEVEL:CLASS|Arawnite Guardian=4|Bestow Curse,Confusion,Cure Critical Wounds,Divination,Fear,Scrying,Wire Walk
 1	SPELLLEVEL:CLASS|Arawnite Guardian=5|Flaming Wrath,Greater Command,Hold Monster,Passwall,Secret Vault,Synchronicity
 ###Block:Standard Block
-1	CAST:3,2		VISION:Darkvision (60')																					AUTO:LANG|Ogham
-2	CAST:4,3						SAB:Dark Blessing(Su)		BONUS:CHECKS|ALL|max(0,CHA)
+1	CAST:3,2		VISION:Darkvision (60')																AUTO:LANG|Ogham
+2	CAST:4,3						SAB:Dark Blessing(Su)															BONUS:SAVE|ALL|max(0,CHA)
 3	CAST:4,3,2						SAB:Trackless Step(Ex)
 4	CAST:5,4,3						SAB:Aura of Despair(Su)
-5	CAST:5,4,3,2															ABILITY:Talent|NORMAL|Evasion
-6	CAST:5,4,4,3															ABILITY:Talent|NORMAL|Uncanny Dodge I|Uncanny Dodge II
+5	CAST:5,4,3,2										ABILITY:Talent|NORMAL|Evasion
+6	CAST:5,4,4,3										ABILITY:Talent|NORMAL|Uncanny Dodge I|Uncanny Dodge II
 7	CAST:6,5,4,3,2					SAB:Slippery Mind(Ex)
 8	CAST:6,5,4,4,3					SAB:Hide in Plain Sight(Su)
 9	CAST:6,5,5,4,3,2					SAB:Venom Immunity(Ex)
 10	CAST:6,5,5,4,4,3					SAB:Improved Evasion(Ex)
 
-# Class Name	Hit Dice	Type					Max Level	Source Page		Save checks bonus												Combat bonus		Modify VAR
-CLASS:Mad Genius	HD:6		TYPE:PC.Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.48	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|(CL+3)*2/5	BONUS:COMBAT|BAB|CL/2	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|6
+# Class Name	Hit Dice	Type					Max Level	Source Page		Combat bonus							Modify VAR														Bonus
+CLASS:Mad Genius	HD:6		TYPE:PC.Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.48	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")/2	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|6	BONUS:SAVE|BASE.Fortitude,BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Will|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5
 # Class Name	Required Feat				Required Stat	Var. Max. Value
 CLASS:Mad Genius	PREFEAT:1,Occupation (Academic)	PRESTAT:1,INT=18	PREVARLTEQ:CurrentSanity,-10
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Mad Genius	STARTSKILLPTS:6	CSKILL:Bluff|Diplomacy|Disguise|Forgery|Intimidate|Hide|Listen|Move Silently|Perform (Act)|Profession|Read/Write Language|Repair|Search|Sense Motive|Sleight of Hand|Speak Language|Spot
+CLASS:Mad Genius	STARTSKILLPTS:6	CSKILL:Bluff|Diplomacy|Disguise|Forgery|Intimidate|Hide|Listen|Move Silently|Perform (Act)|Profession|READ/WRITE LANGUAGE|Repair|Search|Sense Motive|Sleight of Hand|SPEAK LANGUAGE|Spot
 1	SAB:Trapmaster(Ex)
 2	SAB:Scientific Improvisation(Ex)
 3	SAB:Mad Knowledge(Ex) +% Bonus|CL+INT+2*(skillinfo("RANK","Knowledge (History)")>=5)
@@ -103,12 +103,12 @@ CLASS:Mad Genius	STARTSKILLPTS:6	CSKILL:Bluff|Diplomacy|Disguise|Forgery|Intimid
 9	SAB:One Step Ahead(Ex)
 10	SAB:Sow Distrust(Ex) Will save DC %|10+CL/2+CHA
 
-# Class Name	Hit Dice	Type					Max Level	Source Page		Save checks bonus											Combat bonus		Modify VAR
-CLASS:Psychogene	HD:4		TYPE:PC.Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.50	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL/2	BONUS:VAR|ClassDefense|CL/2+1	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|6
+# Class Name	Hit Dice	Type					Max Level	Source Page		Combat bonus							Modify VAR													Bonus
+CLASS:Psychogene	HD:4		TYPE:PC.Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.50	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")/2	BONUS:VAR|ClassDefense|CL/2+1	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|6	BONUS:SAVE|BASE.Fortitude,BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name	Required Feat																																	Required Skill							Var. Max. Value
 CLASS:Psychogene	PREFEAT:1,Wild Talent,Wild Talent (Burst),Wild Talent (Daze),Wild Talent (Detect Psionics),Wild Talent (Far Hand),Wild Talent (Far Punch),Wild Talent (Finger of Fire),Wild Talent (Missive),Wild Talent (Verve)	PRESKILL:3,Bluff=6,Diplomacy=6,Gather Information=6	PREVARLTEQ:CurrentSanity,-10
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Psychogene	STARTSKILLPTS:4	CSKILL:Autohypnosis|Bluff|Concentration|Diplomacy|Gather Information|Knowledge (Behavioral Sciences)|Knowledge (Current Events)|Knowledge (Popular Culture)|Knowledge (Theology and Philosophy)|Profession|Psicraft|Read/Write Language|Sense Motive|Speak Language
+CLASS:Psychogene	STARTSKILLPTS:4	CSKILL:Autohypnosis|Bluff|Concentration|Diplomacy|Gather Information|Knowledge (Behavioral Sciences)|Knowledge (Current Events)|Knowledge (Popular Culture)|Knowledge (Theology and Philosophy)|Profession|Psicraft|READ/WRITE LANGUAGE|Sense Motive|SPEAK LANGUAGE
 # Class Name	Spell Stat		Spell Type		Memorize	Caster level
 CLASS:Psychogene	SPELLSTAT:SPELL	SPELLTYPE:Psionic	MEMORIZE:NO	BONUS:CASTERLEVEL|Psychogene|CL
 ###Block: Psionic subtype, BasePowerPoints, BonusPowerPoints
@@ -137,12 +137,12 @@ CLASS:Psychogene	SPELLSTAT:SPELL	SPELLTYPE:Psionic	MEMORIZE:NO	BONUS:CASTERLEVEL
 9	KNOWN:3,3,3,2
 10	KNOWN:3,3,3,2,1
 
-# Class Name	Hit Dice	Type					Max Level	Source Page		Save checks bonus												Combat bonus		Modify VAR
-CLASS:Stalker	HD:8		TYPE:PC:Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.51	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/3	BONUS:CHECKS|BASE.Reflex|CL/2+2	BONUS:COMBAT|BAB|CL/2	BONUS:VAR|ClassDefense|(CL+1)*2/3	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|6
+# Class Name	Hit Dice	Type					Max Level	Source Page		Combat bonus							Modify VAR														Bonus
+CLASS:Stalker	HD:8		TYPE:PC:Advanced.Slasher	MAXLEVEL:10	SOURCEPAGE:p.51	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")/2	BONUS:VAR|ClassDefense|(CL+1)*2/3	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|6	BONUS:SAVE|BASE.Fortitude,BASE.Will|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name	Req. Att.	Required Skill				Var. Max. Value
 CLASS:Stalker	PREATT:2	PRESKILL:2,Hide=6,Move Silently=6	PREVARLTEQ:CurrentSanity,-10
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Stalker	STARTSKILLPTS:6	CSKILL:Balance|Climb|Disable Device|Disguise|Escape Artist|Hide|Investigate|Jump|Listen|Move Silently|Read/Write Language|Search|Sleight of Hand|Speak Language|Spot|Tumble
+CLASS:Stalker	STARTSKILLPTS:6	CSKILL:Balance|Climb|Disable Device|Disguise|Escape Artist|Hide|Investigate|Jump|Listen|Move Silently|READ/WRITE LANGUAGE|Search|Sleight of Hand|SPEAK LANGUAGE|Spot|Tumble
 1					SAB:Death Attack (Fortitude DC %)|10+CL+INT	BONUS:VAR|SneakAttack|1	ADD:FEAT|Weapon Focus								ABILITY:Special Ability|NORMAL|Sneak Attack
 2																	ADD:ABILITY|Special Ability|NORMAL|Weapon Specialization
 3	VISION:Darkvision (60')									BONUS:VAR|SneakAttack|1

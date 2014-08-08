@@ -69,7 +69,8 @@ public final class Skill extends BonusObj
 
 		if (!token.equals("LIST") && !token.startsWith("STAT.")
 			&& !token.equals("%CHOICE") && !token.startsWith("STAT=")
-			&& !token.equals("%LIST") && !token.equals("%VAR"))
+			&& !token.equals("%LIST") && !token.equals("%VAR") 
+			&& !token.equals("TYPE=%LIST"))
 		{
 			//This is done entirely for the side effects
 			context.forgetMeNot(TokenUtilities.getReference(context, SKILL_CLASS, token));
@@ -103,5 +104,14 @@ public final class Skill extends BonusObj
 	public String getBonusHandled()
 	{
 		return "SKILL";
+	}
+
+	/**
+	 * @{inheritdoc}
+	 */
+	@Override
+	protected boolean requiresRealCaseTarget()
+	{
+		return true;
 	}
 }

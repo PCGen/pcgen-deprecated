@@ -373,7 +373,7 @@
 		<list_mods>${pcstring('SKILLLISTMODS')}</list_mods>
 		<max_class_skill_level>${pcstring('MAXSKILLLEVEL')}</max_class_skill_level>
 		<max_cross_class_skill_level>${pcstring('MAXCCSKILLLEVEL')}</max_cross_class_skill_level>
-	<@loop from=0 to=pcvar('count("SKILLSIT")')-1 ; skill ,skill_has_next>
+	<@loop from=0 to=pcvar('count("SKILLSIT", "VIEW=VISIBLE_EXPORT")')-1 ; skill ,skill_has_next>
 		<skill>
 			<name>${pcstring('SKILLSIT.${skill}')}</name>
 			<ranks>${pcstring('SKILLSIT.${skill}.RANK')}</ranks>
@@ -793,16 +793,8 @@
 		<type>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackType')}</type>
 		<threat>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackThreatRange')}${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackCritMult')}</threat>
 		<reach>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackReach.INTVAL')}</reach>
-		<range>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.${NaturalAttackRange}.TYPE=NaturalAttack.ASPECT.NaturalAttackRange')}</range>
 		<rangeincrement>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackRangeIncrement')}</rangeincrement>
-
-		<@loop from=0 to=4 ; NaturalAttackRange , NaturalAttackRange_has_next>
-		<range>
-			<distance>${pcstring('ABILITYALL.Natural Attack.${NaturalAttackRange}.TYPE=NaturalAttack.ASPECT.NaturalAttackRange')}</distance>
-			<rangeincrement>${pcstring('ABILITYALL.Natural Attack.${NaturalAttackRange}.TYPE=NaturalAttack.ASPECT.NaturalAttackRangeIncrement')}</rangeincrement>
-			<distance_unit>${pcstring('UNITSET.DISTANCEUNIT')}</distance_unit>
-		</range>
-		</@loop>
+		<range>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackRange')}</range>
 		<notes>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackNotes')}${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.DESC')}</notes>
 		<!--> Used to Validate Word Toggle between Crit / Mult vs. Crit <-->
 		<critmult>${pcstring('ABILITYALL.Natural Attack.${NaturalAttack}.TYPE=NaturalAttack.ASPECT.NaturalAttackCritMult')}</critmult>

@@ -1,12 +1,12 @@
-# CVS $Revision$ $Author$ -- Sat Mar 30 17:36:26 2013 -- reformated by prettylst.pl v1.50 (build 19091)
+# CVS $Revision$ $Author$ -- Thu Aug  7 11:38:58 2014 -- reformated by prettylst.pl v1.51 (build 24365)
 SOURCELONG:Modern System Reference Document	SOURCESHORT:MSRD	SOURCEWEB:http://www.wizards.com/D20/article.asp?x=msrd	SOURCEDATE:2002-01
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus											Combat bonus		Modify VAR
-CLASS:Ambassador	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|CL*6
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Ambassador	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude,BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name	Required Ability					Required Skill
 CLASS:Ambassador	PREABILITY:2,CATEGORY=Talent,Charm,Favor	PRESKILL:3,Diplomacy=6,Knowledge (Civics)=6,Knowledge (Theology and Philosophy)=6
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Ambassador	STARTSKILLPTS:4	CSKILL:Bluff|Computer Use|Diplomacy|Gather Information|Intimidate|Knowledge (Behavioral Sciences)|Knowledge (Civics)|Knowledge (Current Events)|Knowledge (History)|Knowledge (Theology and Philosophy)|Profession|Read/Write Language|Research|Sense Motive|Speak Language
+CLASS:Ambassador	STARTSKILLPTS:4	CSKILL:Bluff|Computer Use|Diplomacy|Gather Information|Intimidate|Knowledge (Behavioral Sciences)|Knowledge (Civics)|Knowledge (Current Events)|Knowledge (History)|Knowledge (Theology and Philosophy)|Profession|Read/Write Language|Research|Sense Motive|SPEAK LANGUAGE
 1												ABILITY:Special Ability|AUTOMATIC|Diplomatic Immunity
 2							BONUS:SKILL|Diplomacy|CL/2	ABILITY:Special Ability|AUTOMATIC|Open Arms
 3	BONUS:ABILITYPOOL|Ambassador Feat|1
@@ -18,8 +18,8 @@ CLASS:Ambassador	STARTSKILLPTS:4	CSKILL:Bluff|Computer Use|Diplomacy|Gather Info
 9	BONUS:ABILITYPOOL|Ambassador Feat|1
 10												ABILITY:Special Ability|AUTOMATIC|Select Consuls
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus												Combat bonus		Modify VAR
-CLASS:Dogfighter	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/3	BONUS:CHECKS|BASE.Reflex|CL/2+2	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL+1)/3	BONUS:VAR|Action|CL*6
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Dogfighter	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL+1)/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude,BASE.Will|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name	Required Check Base	Required Feat					Required Skill
 CLASS:Dogfighter	PRECHECKBASE:1,Reflex=2	PREFEAT:1,Starship Operation (Ultralight)	PRESKILL:1,Pilot=6
 # Class Name	Skill Pts/Lvl	Class Skill
@@ -33,8 +33,8 @@ CLASS:Dogfighter	STARTSKILLPTS:4	CSKILL:Bluff|Computer Use|Craft (Electronic)|Cr
 8													ABILITY:Special Ability|AUTOMATIC|Keep it Together
 9	BONUS:ABILITYPOOL|Dogfighter Feat|1
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus															Combat bonus		Modify VAR
-CLASS:Dreadnought	HD:12		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude|CL/2+2	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|(CL+3)*2/5	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|(CL-1)/3	BONUS:VAR|Action|CL*6
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Dreadnought	HD:12		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|(CL-1)/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude|classlevel("APPLIEDAS=NONEPIC")/2+2	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Will|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5
 # Class Name	Multiple Requirements																					Required Skill
 CLASS:Dreadnought	PREMULT:2,[PREFEAT:1,Improved Damage Threshold],[PREABILITY:2,CATEGORY=Talent,TYPE=DamageReduction,TYPE=EnergyResistance,TYPE=Unbreakable]	PRESKILL:1,Intimidate=6
 # Class Name	Skill Pts/Lvl	Class Skill
@@ -48,12 +48,12 @@ CLASS:Dreadnought	STARTSKILLPTS:2	CSKILL:Balance|Climb|Concentration|Intimidate|
 8																									BONUS:WEAPONPROF=ALL|PCSIZE|1					ABILITY:Special Ability|AUTOMATIC|Heavy Artillery
 9	BONUS:ABILITYPOOL|Dreadnought Feat|1
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus												Combat bonus		Modify VAR
-CLASS:Engineer	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|(CL+3)*2/5	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*6
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Engineer	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude,BASE.Reflex|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5	BONUS:SAVE|BASE.Will|classlevel("APPLIEDAS=NONEPIC")/3
 # Class Name	Required Skill
 CLASS:Engineer	PRESKILL:5,Computer Use=6,Craft (Electronic)=6,Craft (Mechanical)=6,Knowledge (Technology)=6,Repair=6
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Engineer	STARTSKILLPTS:6	CSKILL:Computer Use|Craft (Electronic)|Craft (Mechanical)|Craft (Structural)|Disable Device|Drive|Knowledge (Physical Sciences)|Knowledge (Technology)|Navigate|Pilot|Profession|Read/Write Language|Repair|Search|Speak Language
+CLASS:Engineer	STARTSKILLPTS:6	CSKILL:Computer Use|Craft (Electronic)|Craft (Mechanical)|Craft (Structural)|Disable Device|Drive|Knowledge (Physical Sciences)|Knowledge (Technology)|Navigate|Pilot|Profession|Read/Write Language|Repair|Search|SPEAK LANGUAGE
 1	BONUS:ABILITYPOOL|Builder|1		BONUS:VAR|ImproveKit|1		ABILITY:Special Ability|AUTOMATIC|Improve Kit
 2												ABILITY:Special Ability|AUTOMATIC|Quick Craft|Superior Repair
 3	BONUS:ABILITYPOOL|Engineer Feat|1
@@ -65,12 +65,12 @@ CLASS:Engineer	STARTSKILLPTS:6	CSKILL:Computer Use|Craft (Electronic)|Craft (Mec
 9	BONUS:ABILITYPOOL|Engineer Feat|1
 10												ABILITY:Special Ability|AUTOMATIC|Unflustered
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus									Combat bonus		Modify VAR
-CLASS:Explorer	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex,BASE.Will|(CL+3)*2/5	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*6
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Explorer	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude,BASE.Reflex,BASE.Will|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5
 # Class Name	Multiple Requirements
 CLASS:Explorer	PREMULT:2,[PRESKILL:3,Knowledge (Earth and Life Sciences)=6,Survival=6,Search=4],[PRESKILL:1,Knowledge (History)=4,Knowledge (Physical Sciences)=4,Knowledge (Theology and Philosophy)=4]
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Explorer	STARTSKILLPTS:6	CSKILL:Balance|Bluff|Climb|Decipher Script|Disable Device|Drive|Gather Information|Handle Animal|Investigate|Jump|Knowledge (Arcane Lore)|Knowledge (Art)|Knowledge (Earth and Life Sciences)|Knowledge (History)|Knowledge (Physical Sciences)|Knowledge (Theology and Philosophy)|Listen|Navigate|Pilot|Read/Write Language|Research|Ride|Search|Sense Motive|Speak Language|Spot|Survival|Swim|Treat Injury
+CLASS:Explorer	STARTSKILLPTS:6	CSKILL:Balance|Bluff|Climb|Decipher Script|Disable Device|Drive|Gather Information|Handle Animal|Investigate|Jump|Knowledge (Arcane Lore)|Knowledge (Art)|Knowledge (Earth and Life Sciences)|Knowledge (History)|Knowledge (Physical Sciences)|Knowledge (Theology and Philosophy)|Listen|Navigate|Pilot|Read/Write Language|Research|Ride|Search|Sense Motive|SPEAK LANGUAGE|Spot|Survival|Swim|Treat Injury
 1							BONUS:VAR|ExplorerLore|CL+INT	ABILITY:Special Ability|AUTOMATIC|Explorer Lore|Survivalist		AUTO:FEAT|Guide|Track
 2												ABILITY:Special Ability|AUTOMATIC|Resolve|Skilled Researcher
 3	BONUS:ABILITYPOOL|Explorer Feat|1
@@ -80,12 +80,12 @@ CLASS:Explorer	STARTSKILLPTS:6	CSKILL:Balance|Bluff|Climb|Decipher Script|Disabl
 8												ABILITY:Special Ability|AUTOMATIC|Explorer's Evasion
 9	BONUS:ABILITYPOOL|Explorer Feat|1
 
-# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus											Combat bonus		Modify VAR
-CLASS:Field Officer	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|CL*6
+# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus							Modify VAR														Bonus
+CLASS:Field Officer	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL+2)/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude,BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name		Req. Att.	Required Feat					Required Skill
 CLASS:Field Officer	PREATT:2	PREFEAT:1,Personal Firearms Proficiency	PRESKILL:2,Diplomacy=6,Knowledge (Tactics)=6
 # Class Name		Skill Pts/Lvl	Class Skill
-CLASS:Field Officer	STARTSKILLPTS:4	CSKILL:Bluff|Computer Use|Diplomacy|Gather Information|Intimidate|Knowledge (Behavioral Sciences)|Knowledge (Civics)|Knowledge (History)|Knowledge (Physical Sciences)|Knowledge (Tactics)|Knowledge (Theology and Philosophy)|Read/Write Language|Sense Motive|Speak Language
+CLASS:Field Officer	STARTSKILLPTS:4	CSKILL:Bluff|Computer Use|Diplomacy|Gather Information|Intimidate|Knowledge (Behavioral Sciences)|Knowledge (Civics)|Knowledge (History)|Knowledge (Physical Sciences)|Knowledge (Tactics)|Knowledge (Theology and Philosophy)|Read/Write Language|Sense Motive|SPEAK LANGUAGE
 1								ABILITY:Special Ability|AUTOMATIC|Leadership
 2								ABILITY:Special Ability|AUTOMATIC|Uncanny Survival
 3	BONUS:ABILITYPOOL|FieldOfficer Feat|1
@@ -97,8 +97,8 @@ CLASS:Field Officer	STARTSKILLPTS:4	CSKILL:Bluff|Computer Use|Diplomacy|Gather I
 9	BONUS:ABILITYPOOL|FieldOfficer Feat|1
 10								ABILITY:Special Ability|AUTOMATIC|Action Trust
 
-# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus												Combat bonus		Modify VAR
-CLASS:Helix Warrior	HD:10		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Will|(CL+3)*2/5	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:COMBAT|BAB|CL	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*6
+# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus							Modify VAR														Bonus
+CLASS:Helix Warrior	HD:10		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude,BASE.Will|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3
 # Class Name		Req. Att.	Required Feat		Required Skill
 CLASS:Helix Warrior	PREATT:3	PREFEAT:1,Endurance	PRESKILL:1,Knowledge (Tactics)=3
 # Class Name		Skill Pts/Lvl	Class Skill
@@ -114,8 +114,8 @@ CLASS:Helix Warrior	STARTSKILLPTS:2	CSKILL:Balance|Climb|Computer Use|Demolition
 9					BONUS:ABILITYPOOL|HelixWarrior Feat|1
 10																	ABILITY:Special Ability|AUTOMATIC|Decisive Attack
 
-# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus															Combat bonus		Modify VAR
-CLASS:Space Monkey	HD:10		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude|CL/2+2	BONUS:CHECKS|BASE.Reflex|(CL+3)*2/5	BONUS:CHECKS|BASE.Will|CL/3	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL-1)/4	BONUS:VAR|Action|CL*6
+# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Space Monkey	HD:10		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL-1)/4	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude|classlevel("APPLIEDAS=NONEPIC")/2+2	BONUS:SAVE|BASE.Reflex|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5	BONUS:SAVE|BASE.Will|classlevel("APPLIEDAS=NONEPIC")/3
 # Class Name		Multiple Requirements
 CLASS:Space Monkey	PREMULT:2,[PREABILITY:1,CATEGORY=Starting Occupation,Astronaut Trainee],[PREABILITY:1,CATEGORY=Talent,TYPE=Unbreakable]	PREMULT:2,[PRESKILL:1,Craft (Mechanical)=6,Craft (Structural)=6],[PRESKILL:1,Survival=6]
 # Class Name		Skill Pts/Lvl	Class Skill
@@ -131,12 +131,12 @@ CLASS:Space Monkey	STARTSKILLPTS:4	CSKILL:Balance|Bluff|Climb|Computer Use|Craft
 9	BONUS:ABILITYPOOL|SpaceMonkey Feat|1
 10																						ABILITY:Special Ability|AUTOMATIC|Monkey Shot
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus															Combat bonus		Modify VAR
-CLASS:Swindler	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Reflex|(CL+3)*2/5	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*7
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Swindler	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|CL/3	BONUS:VAR|Action|CL*7	BONUS:SAVE|BASE.Fortitude|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Reflex|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5	BONUS:SAVE|BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name	Required Ability								Required Skill
 CLASS:Swindler	PREABILITY:2,CATEGORY=Talent,Charm,Coordinate,Fast-Talk	PRESKILL:3,Bluff=6,Gamble=6,Disguise=4
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Swindler	STARTSKILLPTS:6	CSKILL:Bluff|Diplomacy|Disguise|Escape Artist|Forgery|Gamble|Gather Information|Knowledge (Behavioral Sciences)|Knowledge (Business)|Knowledge (Civics)|Knowledge (Current Events)|Knowledge (History)|Knowledge (Popular Culture)|Knowledge (Streetwise)|Knowledge (Theology and Philosophy)|Perform (Act)|Read/Write Language|Research|Sense Motive|Sleight of Hand|Speak Language|Tumble
+CLASS:Swindler	STARTSKILLPTS:6	CSKILL:Bluff|Diplomacy|Disguise|Escape Artist|Forgery|Gamble|Gather Information|Knowledge (Behavioral Sciences)|Knowledge (Business)|Knowledge (Civics)|Knowledge (Current Events)|Knowledge (History)|Knowledge (Popular Culture)|Knowledge (Streetwise)|Knowledge (Theology and Philosophy)|Perform (Act)|Read/Write Language|Research|Sense Motive|Sleight of Hand|SPEAK LANGUAGE|Tumble
 1														ABILITY:Special Ability|AUTOMATIC|Cheat Fate
 2														ABILITY:Special Ability|AUTOMATIC|Thousand Faces
 3	BONUS:ABILITYPOOL|Swindler Feat|1
@@ -145,12 +145,12 @@ CLASS:Swindler	STARTSKILLPTS:6	CSKILL:Bluff|Diplomacy|Disguise|Escape Artist|For
 6	BONUS:ABILITYPOOL|Swindler Feat|1
 9	BONUS:ABILITYPOOL|Swindler Feat|1
 
-# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus												Combat bonus		Modify VAR
-CLASS:Technosavant	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude|CL/3	BONUS:CHECKS|BASE.Reflex,BASE.Will|(CL+3)*2/5	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL-1)/3	BONUS:VAR|Action|CL*6
+# Class Name		Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Technosavant	HD:6		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/2	BONUS:VAR|Reputation|(CL-1)/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Reflex,BASE.Will|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5
 # Class Name		Multiple Requirements
 CLASS:Technosavant	PREMULT:2,[PRESKILL:3,Computer Use=6,Disable Device=6,Knowledge (Technology)=6],[PRESKILL:1,Craft (Electronic)=6,Craft (Mechanical)=6]
 # Class Name		Skill Pts/Lvl	Class Skill
-CLASS:Technosavant	STARTSKILLPTS:6	CSKILL:Computer Use|Craft (Electronic)|Craft (Mechanical)|Demolitions|Disable Device|Drive|Knowledge (Behavioral Sciences)|Knowledge (Earth and Life Sciences)|Knowledge (Physical Sciences)|Knowledge (Popular Culture)|Knowledge (Technology)|Navigate|Pilot|Profession|Read/Write Language|Repair|Research|Speak Language|Spot
+CLASS:Technosavant	STARTSKILLPTS:6	CSKILL:Computer Use|Craft (Electronic)|Craft (Mechanical)|Demolitions|Disable Device|Drive|Knowledge (Behavioral Sciences)|Knowledge (Earth and Life Sciences)|Knowledge (Physical Sciences)|Knowledge (Popular Culture)|Knowledge (Technology)|Navigate|Pilot|Profession|Read/Write Language|Repair|Research|SPEAK LANGUAGE|Spot
 1														ABILITY:Special Ability|AUTOMATIC|Technocrat					AUTO:FEAT|Salvage
 2														ABILITY:Special Ability|AUTOMATIC|Robomancer|Technophile
 3	BONUS:ABILITYPOOL|Technosavant Feat|1
@@ -162,8 +162,8 @@ CLASS:Technosavant	STARTSKILLPTS:6	CSKILL:Computer Use|Craft (Electronic)|Craft 
 9	BONUS:ABILITYPOOL|Technosavant Feat|1
 10														ABILITY:Special Ability|AUTOMATIC|Build Prototype
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus												Combat bonus		Modify VAR
-CLASS:Tracer	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude,BASE.Will|CL/3	BONUS:CHECKS|BASE.Reflex|CL/2+2	BONUS:COMBAT|BAB|CL	BONUS:VAR|ClassDefense|(CL+3)*2/5	BONUS:VAR|Action|CL*6
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus							Modify VAR									Bonus
+CLASS:Tracer	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")	BONUS:VAR|ClassDefense|(CL+3)*2/5	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude,BASE.Will|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name	Req. Att.	Required Feat	Multiple Requirements
 CLASS:Tracer	PREATT:2	PREFEAT:1,Track	PREMULT:2,[PRESKILL:2,Investigate=6,Survival=6],[PRESKILL:1,Knowledge (Behavioral Sciences)=6,Knowledge (Streetwise)=6]
 # Class Name	Skill Pts/Lvl	Class Skill
@@ -177,12 +177,12 @@ CLASS:Tracer	STARTSKILLPTS:4	CSKILL:Climb|Computer Use|Disable Device|Disguise|D
 9	BONUS:ABILITYPOOL|Tracer Feat|1
 10																				ABILITY:Special Ability|AUTOMATIC|Swift Tracking
 
-# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Save checks bonus															Combat bonus		Modify VAR
-CLASS:Xenophile	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:CHECKS|BASE.Fortitude|(CL+3)*2/5	BONUS:CHECKS|BASE.Reflex|CL/3	BONUS:CHECKS|BASE.Will|CL/2+2	BONUS:COMBAT|BAB|CL*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|(CL+1)/3	BONUS:VAR|Action|CL*6
+# Class Name	Hit Dice	Type			Class Type		Max Level	Source Page						Combat bonus								Modify VAR														Bonus
+CLASS:Xenophile	HD:8		TYPE:PC.Advanced	CLASSTYPE:PC	MAXLEVEL:10	SOURCEPAGE:FutureAdvancedClasses.rtf	BONUS:COMBAT|BASEAB|classlevel("APPLIEDAS=NONEPIC")*3/4	BONUS:VAR|ClassDefense|(CL+1)/3	BONUS:VAR|Reputation|(CL+1)/3	BONUS:VAR|Action|CL*6	BONUS:SAVE|BASE.Fortitude|(classlevel("APPLIEDAS=NONEPIC")+3)*2/5	BONUS:SAVE|BASE.Reflex|classlevel("APPLIEDAS=NONEPIC")/3	BONUS:SAVE|BASE.Will|classlevel("APPLIEDAS=NONEPIC")/2+2
 # Class Name	Required Ability								Required Skill
 CLASS:Xenophile	PREABILITY:1,CATEGORY=Talent,Linguist,Exploit Weakness	PRESKILL:2,Knowledge (Earth and Life Sciences)=6,Knowledge (Technology)=6
 # Class Name	Skill Pts/Lvl	Class Skill
-CLASS:Xenophile	STARTSKILLPTS:6	CSKILL:Bluff|Computer Use|Craft (Pharmaceutical)|Decipher Script|Diplomacy|Knowledge (Arcane Lore)|Knowledge (Behavioral Sciences)|Knowledge (Earth and Life Sciences)|Knowledge (History)|Knowledge (Technology)|Knowledge (Theology and Philosophy)|Read/Write Language|Research|Sense Motive|Speak Language|Treat Injury
+CLASS:Xenophile	STARTSKILLPTS:6	CSKILL:Bluff|Computer Use|Craft (Pharmaceutical)|Decipher Script|Diplomacy|Knowledge (Arcane Lore)|Knowledge (Behavioral Sciences)|Knowledge (Earth and Life Sciences)|Knowledge (History)|Knowledge (Technology)|Knowledge (Theology and Philosophy)|Read/Write Language|Research|Sense Motive|SPEAK LANGUAGE|Treat Injury
 1	BONUS:ABILITYPOOL|Xenotype|1												ABILITY:Special Ability|AUTOMATIC|Base Xenotype|Xenolore
 2												BONUS:VAR|Xenoresist|(CL+1)/3	ABILITY:Special Ability|AUTOMATIC|Xenoresistance
 3	BONUS:ABILITYPOOL|Xenophile Feat|1
