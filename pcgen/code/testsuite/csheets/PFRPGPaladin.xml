@@ -1577,7 +1577,7 @@ BIO
 				<short>M</short>
 			</size>
 			<special_properties></special_properties>
-			<type>MAGIC.ARMOR.HEAVY.SUIT.STANDARD.CUSTOM.METAL.MASTERWORK.ENHANCEMENT.PLUS1</type>
+			<type>MAGIC.ARMOR.HEAVY.ARMORPROFHEAVY.SUIT.STANDARD.CUSTOM.METAL.MASTERWORK.ENHANCEMENT.PLUS1</type>
 			<weight>50</weight>
 			<bonuslist></bonuslist>
 		</item>
@@ -2233,7 +2233,7 @@ BIO
 		</item>
 		<total>
 			<weight>98 lbs.</weight>
-			<value>7567.45 gp</value>
+			<value>7563.45 gp</value>
 			<load>Light</load>
 			<capacity>300</capacity>
 		</total>
@@ -2319,7 +2319,7 @@ BIO
 					<short>M</short>
 				</size>
 				<special_properties></special_properties>
-				<type>MAGIC.ARMOR.HEAVY.SUIT.STANDARD.CUSTOM.METAL.MASTERWORK.ENHANCEMENT.PLUS1</type>
+				<type>MAGIC.ARMOR.HEAVY.ARMORPROFHEAVY.SUIT.STANDARD.CUSTOM.METAL.MASTERWORK.ENHANCEMENT.PLUS1</type>
 				<weight>50</weight>
 				<bonuslist></bonuslist>
 			</item>
@@ -3303,6 +3303,17 @@ BIO
 		</ability_object>
 		<ability_object>
 			<name>Default</name>
+			<description></description>
+			<type></type>
+			<associated></associated>
+			<count>0</count>
+			<auto>T</auto>
+			<hidden>F</hidden>
+			<virtual>F</virtual>
+			<category>Internal</category>
+		</ability_object>
+		<ability_object>
+			<name>Equipment ~ Heavy Armor Grants Gauntlet</name>
 			<description></description>
 			<type></type>
 			<associated></associated>
