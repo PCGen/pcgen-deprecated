@@ -17,3 +17,7 @@ pcgen/.idea
 # Generate files #
 pcgen/doc/api
 /ide-bin/
+/.settings/
+
+# Gradle files
+**/.gradle
