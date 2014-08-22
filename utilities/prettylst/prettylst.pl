@@ -9899,6 +9899,7 @@ BEGIN {
 		'roll',
 		'var',
 		'mastervar',
+		'APPLIEDAS',
 	);
 
 	sub add_to_xcheck_tables {
@@ -10484,7 +10485,7 @@ BEGIN {
 		abs	rand	mod	sqrt	sum	if	str
 
 		ceil	cl	classlevel	count	floor	min
-		max	roll	skillinfo	var	mastervar
+		max	roll	skillinfo	var	mastervar	APPLIEDAS
 	);
 
 	# Definition of a valid Jep identifiers. Note that all functions are
