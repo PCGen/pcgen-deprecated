@@ -653,28 +653,24 @@ my %valid_game_modes = map { $_ => 1 } (
 	'CMP_D20_Modern',
 	'CMP_DnD_Oriental_Adventures_v30e',
 	'CMP_DnD_Oriental_Adventures_v35e',
-	'CMP_D20_Fantasy_v30e',,
-	'CMP_D20_Fantasy_v35e',,
+	'CMP_D20_Fantasy_v30e',
+	'CMP_D20_Fantasy_v35e',
 	'CMP_D20_Fantasy_v35e_Kalamar',
-	'DnD_v3.5e_VPWP',,
+	'DnD_v3.5e_VPWP',
 	'CMP_D20_Fantasy_v35e_VPWP',
-
-# 
-	4e
-	5e
-	DnDNext
-#
-	AE
-	Arcana_Evolved
-	Dragon_Age
-	MC_WoD
-	MutantsAndMasterminds3e
-	Starwars_SE
-	SWSE
-	Starwars_Edge
-	T20
-	Traveller20
-
+	'4e',
+	'5e',
+	'DnDNext',
+	'AE',
+	'Arcana_Evolved',
+	'Dragon_Age',
+	'MC_WoD',
+	'MutantsAndMasterminds3e',
+	'Starwars_SE',
+	'SWSE',
+	'Starwars_Edge',
+	'T20',
+	'Traveller20',
 
 );
 
@@ -1836,7 +1832,6 @@ my @QUALIFY_Tags = (
 # line type will get the same sort order.
 # BONUSes only valid for specific line types are listed on those line types
 my @Global_BONUS_Tags = (
-
 	'BONUS:ABILITYPOOL:*',		# Global
 	'BONUS:CASTERLEVEL:*',		# Global
 	'BONUS:CHECKS:*',			# Global	DEPRECATED
@@ -1855,8 +1850,8 @@ my @Global_BONUS_Tags = (
 	'BONUS:POSTRANGEADD:*',		# Global
 	'BONUS:RANGEADD:*',		# Global
 	'BONUS:RANGEMULT:*',		# Global
-	'BONUS:SAVE:*'				# Global	Replacement for CHECKS
-	'BONUS:SITUATION:*',		# Global
+	'BONUS:SAVE:*',				# Global	Replacement for CHECKS
+	'BONUS:SITUATION:',		# Global
 	'BONUS:SIZEMOD:*',		# Global
 	'BONUS:SKILL:*',			# Global
 	'BONUS:SKILLPOINTS:*',		# Global
@@ -1882,7 +1877,7 @@ my @Global_BONUS_Tags = (
 #	'BONUS:ESIZE:*',			# Not listed in the Docs
 #	'BONUS:HD',				# Class Lines
 #	'BONUS:LANGUAGES:*',		# Not listed in the Docs
-#	'BONUS:LANG:*'			# BONUS listed in the Code which is to be used instead of the deprecated BONUS:LANGNUM tag.
+#	'BONUS:LANG:*',			# BONUS listed in the Code which is to be used instead of the deprecated BONUS:LANGNUM tag.
 #	'BONUS:MONSKILLPTS',		# Templates
 #	'BONUS:REPUTATION:*',		# Not listed in the Docs
 #	'BONUS:RING:*',			# Not listed in the Docs
@@ -2014,7 +2009,7 @@ my %master_order = (
 		'SPELLLEVEL:CLASS:*',
 		'SPELLLEVEL:DOMAIN:*',
 		'UNENCUMBEREDMOVE',
-		'TEMPBONUS'
+		'TEMPBONUS',
 		'SA:.CLEAR',		# Deprecated
 		'SA:*',				# Deprecated
 		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
@@ -2161,7 +2156,7 @@ my %master_order = (
 		'SPELLLEVEL:DOMAIN',
 		'UNENCUMBEREDMOVE',
 		'TEMPBONUS',
-		'ROLE'
+		'ROLE',
 		'HASSPELLFORMULA',		# [ 1893279 ] HASSPELLFORMULA Class Line tag  # [ 1973497 ] HASSPELLFORMULA is deprecated
 		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
 		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
@@ -4099,7 +4094,7 @@ my %tagheader = (
 		'CSKILL'					=> 'Class Skill',
 		'CT'						=> 'Casting Threshold',
 		'DAMAGE'					=> 'Damage',
-		'DEF',						=> 'Def',
+		'DEF'						=> 'Def',
 		'DEFINE'					=> 'Define',
 		'DEFINESTAT'				=> 'Define Stat',
 		'DEITY'						=> 'Deity',
@@ -4122,7 +4117,7 @@ my %tagheader = (
 		'FEAT'						=> 'Feat',
 		'FEATAUTO'					=> 'Feat Auto',
 		'FOLLOWERS'					=> 'Allow Follower',
-		'FREE',						=> 'Free',
+		'FREE'						=> 'Free',
 		'FUMBLERANGE'				=> 'Fumble Range',
 		'GENDER'					=> 'Gender',
 		'HANDS'						=> 'Nb Hands',
@@ -4221,7 +4216,7 @@ my %tagheader = (
 		'!PREKIT'					=> 'Prohibited Kit',
 		'PREMOVE'					=> 'Required Movement Rate',
 		'!PREMOVE'					=> 'Prohibited Movement Rate',
-		'PREMULT',					=> 'Multiple Requirements',
+		'PREMULT'					=> 'Multiple Requirements',
 		'!PREMULT'					=> 'Multiple Prohibitions',
 		'PREPCLEVEL'				=> 'Required Non-Monster Lvl',
 		'PREPROFWITHARMOR'			=> 'Required Armor Proficiencies',
@@ -4388,7 +4383,7 @@ my %tagheader = (
 	},
 
 	'ABILITYCATEGORY' => {
-		'000AbilityCategory',	=> '# Ability Category',
+		'000AbilityCategory'	=> '# Ability Category',
 		'CATEGORY'			=> 'Category of Object',
 		'DISPLAYLOCATION'		=> 'Display Location',
 		'DISPLAYNAME'		=> 'Display where?',
@@ -13539,7 +13534,7 @@ BEGIN {
 				my %spell_tags = (
 				BONUSSPELLSTAT			=> 1,
 				'BONUS:CASTERLEVEL'		=> 1,
-				'BONUS:DC',				=> 1,  #[ 1037456 ] Move BONUS:DC on class line to the spellcasting portion
+				'BONUS:DC'				=> 1,  #[ 1037456 ] Move BONUS:DC on class line to the spellcasting portion
 				'BONUS:SCHOOL'			=> 1,
 				'BONUS:SPELL'			=> 1,
 				'BONUS:SPECIALTYSPELLKNOWN'	=> 1,
