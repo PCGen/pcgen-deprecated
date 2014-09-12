@@ -1,41 +1,25 @@
-# CVS $Revision$ $Author$ -- Sat Oct 13 01:30:35 2012 -- reformated by prettylst.pl v1.39 (build 15052)
+# CVS $Revision$ $Author$ -- Wed Sep  3 00:18:24 2014 -- reformated by prettylst.pl v1.51 (build 24947)
 SOURCELONG:Revised (v.3.5) System Reference Document	SOURCESHORT:RSRD	SOURCEWEB:http://www.wizards.com/default.asp?x=d20/article/srd35	SOURCEDATE:2000-01
 
 #Light
-# Armor Name
-Padded
-Leather
-Studded Leather
-Chain Shirt
+# Armor Name	Type
+Padded		TYPE:Light.ArmorProfLight
+Leather		TYPE:Light.ArmorProfLight
+Studded Leather	TYPE:Light.ArmorProfLight
+Chain Shirt		TYPE:Light.ArmorProfLight
 
 #Medium
-Hide
-Scale Mail
-Chainmail
-Breastplate
+Hide			TYPE:Medium.ArmorProfMedium
+Scale Mail		TYPE:Medium.ArmorProfMedium
+Chainmail		TYPE:Medium.ArmorProfMedium
+Breastplate		TYPE:Medium.ArmorProfMedium
 
 #Heavy
-Splint Mail
-Banded Mail
-Half-Plate
-Full Plate
+Splint Mail		TYPE:Heavy.ArmorProfHeavy
+Banded Mail		TYPE:Heavy.ArmorProfHeavy
+Half-Plate		TYPE:Heavy.ArmorProfHeavy
+Full Plate		TYPE:Heavy.ArmorProfHeavy
 
-# Barding
-#Light
-Barding (Padded)
-Barding (Leather)
-Barding (Studded Leather)
-Barding (Chain Shirt)
-#Medium
-Barding (Hide)
-Barding (Scale Mail)
-Barding (Chainmail)
-Barding (Breastplate)
-#Heavy
-Barding (Splint Mail)
-Barding (Banded Mail)
-Barding (Half-Plate)
-Barding (Full Plate)
 #
 # End
 #

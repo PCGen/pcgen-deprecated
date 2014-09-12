@@ -1399,6 +1399,7 @@ public final class PCGVer2Creator implements IOConstants
 			{
 				writeAbilityToBuffer(buffer, ability);
 			}
+			boolean hasVirt = false;
 			for (final CNAbilitySelection ability : virtSave)
 			{
 				CNAbility cnAbility = ability.getCNAbility();
@@ -1406,9 +1407,11 @@ public final class PCGVer2Creator implements IOConstants
 				{
 					//TODO Need to write each CNAbility only once :/
 					writeAbilityToBuffer(buffer, cnAbility);
+					hasVirt = true;
 				}
 			}
-			if (!normalAbilitiesToSave.isEmpty() || !virtSave.isEmpty() || thePC.getUserPoolBonus(cat) != 0.0)
+			if (!normalAbilitiesToSave.isEmpty() || hasVirt
+				|| thePC.getUserPoolBonus(cat) != 0.0)
 			{
 				buffer.append(TAG_USERPOOL).append(TAG_END);
 				buffer.append(EntityEncoder.encode(cat.getKeyName())).append(
@@ -1516,10 +1519,13 @@ public final class PCGVer2Creator implements IOConstants
 				buffer.append(EntityEncoder.encode(follower.getType()
 					.getKeyName()));
 				buffer.append('|');
-				buffer.append(TAG_RACE).append(':');
-				buffer.append(EntityEncoder.encode(follower.getRace()
+				if (follower.getRace() != null)
+				{
+					buffer.append(TAG_RACE).append(':');
+					buffer.append(EntityEncoder.encode(follower.getRace()
 						.getKeyName().toUpperCase()));
-				buffer.append('|');
+					buffer.append('|');
+				}
 				buffer.append(TAG_HITDICE).append(':');
 				buffer.append(follower.getUsedHD());
 				buffer.append('|');

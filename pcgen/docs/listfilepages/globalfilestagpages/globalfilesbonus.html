@@ -288,7 +288,8 @@
 
 <hr>
 
-	<p class="indent0"><strong><a name="CHECKS">Tag Name:</a></strong> BONUS:CHECKS|x,x|y</p>
+	<p class="lstdep"><a name="CHECKS">*** deprecated 6.03.00 - Remove for 6.6</a> - Use <a href="#SAVE">BONUS:SAVE</a></p>
+	<p class="indent0"><strong>Tag Name:</strong> BONUS:CHECKS|x,x|y</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> Text (Check name)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> BASE.Text (Check name)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> ALL</p>
@@ -321,15 +322,17 @@
 
 <hr>
 
-	<p class="lststatus"><a name="COMBAT">*** Updated 5.11.4</a></p>
+	<p class="lstupnew"><a name="COMBAT">*** Updated 6.03.04</a></p>
 	<p class="indent0"><strong>Tag Name:</strong> BONUS:COMBAT|x|y</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> AC</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> ATTACKS</p>
-	<p class="indent1"><strong>Variables Used (x):</strong> BAB</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> BAB    <span class="lstdep">This sub-token is deprecated - Use BASEAB instead.</span></p>
+	<p class="indent1"><strong>Variables Used (x):</strong> BASEAB</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> DAMAGE.Text (Weapon or damage type)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> DAMAGEMULT:Number (0 for off-hand, 1 for primary, and 2 for two-handed)</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> DAMAGESIZE</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> DAMAGE-SHORTRANGE</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> EPICAB</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> INITIATIVE</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> REACH</p>
 	<p class="indent1"><strong>Variables Used (x):</strong> RANGEPENALTY</p>
@@ -347,7 +350,7 @@
 			<ul>
 				<li>Using the <code>AC</code> syntax adds to the armor class.</li>
 				<li>Using the <code>ATTACKS</code> syntax adds to the number of attacks the primary hand gets.</li>
-				<li>Using the <code>BAB</code> syntax increases the base attack bonus and may increase the number of attacks the primary hand gets.</li>
+				<li>Using the <code>BASEAB</code> syntax increases the base attack bonus and may increase the number of attacks the primary hand gets.</li>
 				<li>Using the <code>DAMAGE</code> syntax increases the damage bonus but the weapon and damage types specified must be valid equipment types 
 					assigned to a weapon in the current data set or must have been defined by the <code>WEAPONTYPE</code> tag in the current gamemode. 
 					Examples of standard Weapon and Weapon Damage types can be found on the <a href="globalfilestype.html#Equipment">Global Type</a> page.</li>
@@ -424,6 +427,7 @@
 					</ul>
 				</li>
 				<li>Using the <code>DAMAGE-SHORTRANGE</code> syntax adds to the damage of a weapon at short range as defined in the GameMode files.</li>
+				<li>Using the <code>EPICAB</code> syntax increases the epic attack bonus and may increase the number of attacks the primary hand gets.</li>
 				<li>Using the <code>INITIATIVE</code> syntax increases the character's initiative.</li>
 				<li>Using the <code>REACH</code> syntax modifies the character's reach.</li>
 				<li>Using the <code>RANGEPENALTY</code> syntax modifies the character's range increment penalty.</li>
@@ -445,7 +449,7 @@
 	<p class="indent3">Replaces the natural armor bonus to seven.</p>
 	<p class="indent2"><code>BONUS:COMBAT|ATTACKS|2</code></p>
 	<p class="indent3">Increases number of attacks by two.</p>
-	<p class="indent2"><code>BONUS:COMBAT|BAB|1</code></p>
+	<p class="indent2"><code>BONUS:COMBAT|BASEAB|1</code></p>
 	<p class="indent3">Increases base attack bonus by one.</p>
 	<p class="indent2"><code>BONUS:COMBAT|BAB|CL|TYPE=Base.REPLACE</code></p>
 	<p class="indent3">Increases base attack bonus by Character Level, replacing the Base value.</p>
@@ -469,6 +473,8 @@
 	<p class="indent3">If the base damage dice is 1d4 this would scale it down to 1d3.</p>
 	<p class="indent2"><code>BONUS:COMBAT|DAMAGE-SHORTRANGE|1</code></p>
 	<p class="indent3">Increases the damage done by a weapon at short range by 1.</p>
+	<p class="indent2"><code>BONUS:COMBAT|EPICAB|1</code></p>
+	<p class="indent3">Increases epic attack bonus by one.</p>
 	<p class="indent2"><code>BONUS:COMBAT|INITIATIVE|3</code></p>
 	<p class="indent3">Increases initiative by three.</p>
 	<p class="indent2"><code>BONUS:COMBAT|INITIATIVE|2|TYPE=Competence</code></p>
@@ -497,6 +503,9 @@
 	<p class="indent3">Increases Secondary Attack bonus by one.</p>
 	<p class="indent2"><code>BONUS:COMBAT|TOHIT-SHORTRANGE|1</code></p>
 	<p class="indent3">Adds one to character's short range To-Hit attack rolls.</p>
+	<p class="indent1"><strong>Deprecated Syntax:</strong> <span class="lstdep">Remove for 6.6</span></p>
+	<p class="indent2"><code>BONUS:COMBAT|BAB|1</code></p>
+	<p class="indent3">Becomes <code>BONUS:COMBAT|BASEAB|1</code></p>
 	<p></p>
 
 <hr>
@@ -914,6 +923,40 @@
 	<p class="indent3">Would increase the range of thrown weapons by 100% (x2).</p>
 	<p class="indent2"><code>BONUS:RANGEMULT|TYPE=Starship|50</code></p>
 	<p class="indent3">Would increase the range of starship weapons by 50% (x1.5).</p>
+	<p></p>
+
+<hr>
+
+	<p class="lstnew"><a name="SAVE">*** New 6.03.00</a></p>
+	<p class="indent0"><strong>Tag Name:</strong> BONUS:SAVE|x,x|y</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> Text (Save name)</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> BASE.Text (Save name)</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> ALL</p>
+	<p class="indent1"><strong>Variables Used (y):</strong> Number, variable or formula (Save Bonus)</p>
+	<p class="indent1"><strong>What it Does:</strong></p>
+	<ul class="indent2">
+		<li>Adds to the indicated save.</li>
+		<li>Using the <code>BASE.x</code> syntax adds to indicated base save (normally only used in class progressions).</li>
+		<li>Valid saves, e.g. Fortitude,Reflex,Will, are defined in the GameMode.</li>
+		<li>Substitution is allowed through the use of <code>%LIST</code>.</li>
+	</ul>
+	<p class="indent1"><strong>Example:</strong></p>
+	<p class="indent2"><code>BONUS:SAVE|Fortitude,Reflex|1</code></p>
+	<p class="indent3">Adds one to &quot;Fortitude&quot; and &quot;Reflex&quot; saves.</p>
+	<p class="indent2"><code>CHOOSE:NUMCHOICES=1|CHECKS|Fortitude|Reflex|Will &lt;tab&gt; BONUS:SAVE|%LIST|1</code></p>
+	<p class="indent3">The selection, &quot;Fortitude&quot;, &quot;Reflex&quot; or &quot;Will&quot;, is put 
+		into the <code>BONUS:SAVE</code> tag in place of the <code>%LIST</code></p>
+	<p class="indent2"><code>BONUS:SAVE|Willpower||max(CHA,WIS)-WIS</code></p>
+	<p class="indent3">How does one code up something like 'you can add your Charisma modifier instead of
+		Wisdom for Willpower saves'?</p>
+	<p class="indent2"><code>BONUS:SAVE|Fortitude|2|TYPE=Resistance</code></p>
+	<p class="indent3">Adds two to Fortitude saves due to Resistance.</p>
+	<p class="indent2"><code>BONUS:SAVE|BASE.Fortitude,BASE.Reflex|1</code></p>
+	<p class="indent3">Adds one to the base &quot;Fortitude&quot; and &quot;Reflex&quot; saves.</p>
+	<p class="indent2"><code>BONUS:SAVE|ALL|1</code></p>
+	<p class="indent3">Adds one to the all saves.</p>
+	<p class="indent2"><code>TEMPBONUS:ANYPC|SAVE|ALL|3|TYPE=Morale</code></p>
+	<p class="indent3">Adds three to all saves, due to morale, to all PC Characters.</p>
 	<p></p>
 
 <hr>

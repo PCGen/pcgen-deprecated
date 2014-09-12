@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- this first line is the ultimate container node.  if you add new nodes, it needs to satisfy well formed constraints before insertion and must be placed between this node and the very last node. -->
+<!-- Previous Author unknown.  This Author only seperated the nodes into sections, removed extra barbarian calculations from the combat section, and removed temporary bonus calculations that were messing up dice rollers from the combat section. Marcus J. Cathey aka Vraeden on 02/13/2007 -->
+<nodehandler class="tabber_handler" icon="d20" module="containers" name="|NAME|">  
+<!-- START OF 1 DETAILS NODE -->
+<nodehandler class="form_handler" icon="form" module="forms" name="Details">     
+  <form height="400" width="400"></form>
+  <nodehandler class="textctrl_handler" icon="note" module="forms" name="Name">   
+   <text multiline="0" send_button="0">|NAME|</text>
+  </nodehandler>                                                                  
+  <nodehandler class="textctrl_handler" icon="note" module="forms" name="Race">
+   <text multiline="0" send_button="0">|RACE|</text>
+  </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Classes">
+ <text multiline="0" send_button="0">|CLASSLIST|</text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Speed">
+      <text multiline="0" send_button="0">|MOVEMENT|</text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="AC: Total / Touch / Flat Footed">
+      <text multiline="0" send_button="0">|AC.Total| / |AC.Touch| / |AC.Flatfooted|</text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Face / Reach">
+      <text multiline="0" send_button="0">|FACE|/|REACH|</text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="XP / For Next">
+      <text multiline="0" send_button="0">|EXP.CURRENT| / |EXP.NEXT|</text>
+    </nodehandler>
+    <nodehandler class="rpg_grid_handler" icon="grid" module="rpg_grid" name="Abilities">
+      <grid autosize="1" border="1">
+|FOR,%stat,0,COUNT[STATS]-1,1,1|      
+        <row>
+          <cell>|STAT.%stat.NAME|</cell>
+          <cell>|STAT.%stat|</cell>
+          <cell>|STAT.%stat.MOD|</cell>
+        </row>
+|ENDFOR| 
+      </grid>
+      <macros>
+        <macro name=""></macro>
+      </macros>
+    </nodehandler>
+    <nodehandler class="rpg_grid_handler" icon="grid" module="rpg_grid" name="Skills" version="1.0">
+      <grid autosize="1" border="0">
+        <row><cell>Skill</cell><cell>Total</cell><cell>Rnk</cell><cell>Stat</cell><cell>Msc</cell></row>
+|FOR.0,COUNT[SKILLS],1,<cell>\SKILL.%\</cell><cell>\SKILL.%.TOTAL\</cell><cell>\SKILL.%.RANK\</cell><cell>\SKILL.%.ABMOD\</cell><cell>\SKILL.%.MISC\</cell>,        <row>,</row>,1|
+      </grid>
+      <macros>
+        <macro name=""></macro>
+      </macros>
+    </nodehandler>
+    
+  </nodehandler>
+  <!-- END OF 1 DETAILS NODE -->
+  <!-- START OF 2 SPECIAL ABILITIES NODE -->
+  <nodehandler class="form_handler" icon="form" module="forms" name="Special Abilities">
+    <form height="600" width="400"></form>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Feats" version="1.0">
+      <text multiline="1" send_button="0">
+|FEATALLLIST.DESC|
+
+</text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Special Abilities">
+      <text multiline="1" send_button="0">
+|FOR,%,0,COUNT[SA],1,1|
+|SPECIALABILITY.%||BR|
+|ENDFOR|
+      </text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Templates">
+      <text multiline="0" send_button="0">|TEMPLATELIST|</text>
+    </nodehandler>
+  </nodehandler>
+<!-- END OF 2 SPECIAL ABILITIES NODE -->
+<!-- START OF 3 COMBAT NODE (THIS HAS THE MOST DICE ROLLS) -->
+
+<nodehandler class="form_handler" icon="form" module="forms" name="Combat">
+    <form height="600" width="400"></form>
+<!--BASIC-->    
+<nodehandler class="textctrl_handler" icon="d20" module="forms" name="Basic Attack Bonus">
+      <text multiline="0" send_button="1">|ATTACK.MELEE.BASE|</text>
+</nodehandler>
+<!--TEMP TO HIT-->
+<nodehandler class="textctrl_handler" icon="d20" module="forms" name="Temporary To Hit Bonus">
+      <text multiline="0" send_button="1">0</text>
+</nodehandler>
+<!--TEMP DMG BONUS-->
+<nodehandler class="textctrl_handler" icon="d20" module="forms" name="Temporary Damage Bonus">
+   <text multiline="0" send_button="1">0</text>
+</nodehandler>
+<!--TEMP AC BONUS-->
+<nodehandler class="textctrl_handler" icon="d20" module="forms" name="Temporary AC Bonus">
+      <text multiline="0" send_button="1">0</text>
+</nodehandler>
+<!--INITIATIVE-->
+<nodehandler class="textctrl_handler" icon="d20" module="forms" name="Initiative">
+      <text multiline="0" send_button="1">[1d20|INITIATIVEMOD|]</text>
+</nodehandler>
+<!--CURRENT HP-->
+<nodehandler class="textctrl_handler" icon="note" module="forms" name="Current HP (out of |HP|)">
+      <text multiline="0" send_button="0"></text>
+</nodehandler>
+<!--SAVING THROWS-->
+<nodehandler class="listbox_handler" icon="gear" module="forms" name="Saving Throws">
+      <list send_button="1" type="0">
+        <option selected="0" value="0">Fortitude [|CHECK.FORTITUDE.TOTAL|+1d20]</option>
+        <option selected="0" value="0">Reflex [|CHECK.REFLEX.TOTAL|+1d20]</option>
+        <option selected="1" value="0">Will [|CHECK.2.TOTAL|+1d20]</option>
+      </list>
+</nodehandler>
+<!--ABILITIES-->    
+<nodehandler class="listbox_handler" icon="gear" module="forms" name="Abilities">
+      <list send_button="1" type="0">
+|FOR,%stat,0,COUNT[STATS]-1,1,1|      
+        <option selected="0" value="0">|STAT.%stat.NAME| [1d20|STAT.%stat.MOD|]</option>
+|ENDFOR|
+      </list>
+</nodehandler>
+<!--SKILLS-->
+<nodehandler class="listbox_handler" icon="gear" module="forms" name="Skills">
+      <list send_button="1" type="0">
+|FOR.0,COUNT[SKILLS],1,\SKILL.%\ Check: [\SKILL.%.TOTAL\+1d20],        <option selected="0" value="0">,</option>,1|
+      </list>
+</nodehandler>
+<!--WEAPONS WEAPONS WEAPONS-->
+<nodehandler class="tabber_handler" icon="tabber" module="containers" name="Weapons" version="1.0">
+|FOR,%weap,0,COUNT[EQTYPE.Weapon]-1,1,1|
+   <nodehandler class="tabber_handler" icon="gear" module="containers" name="|WEAPON.%weap.NAME.NOSTAR|">
+
+|IIF(WEAPON.%weap.CATEGORY:Ranged)|
+<!-- ranged -->
+<!-- no contents -->
+|FOR,%range,0,4,1,0|
+	    <nodehandler class="form_handler" icon="form" module="forms" name="|WEAPON.%weap.RANGELIST.%range|" version="1.0">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|	
+		      <nodehandler class="textctrl_handler" icon="d20" module="forms" name="|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|:">
+      		   <text multiline="0" send_button="1">[1d20|WEAPON.%weap.RANGELIST.%range.TOTALHIT.%atk|] Damage [|WEAPON.%weap.RANGELIST.%range.DAMAGE|]</text>
+    	    </nodehandler>
+|ENDFOR|
+      </nodehandler>
+|ENDFOR| 
+|ELSE|
+<!-- not ranged -->
+      <nodehandler class="form_handler" icon="form" module="forms" name="Separated">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|
+	       <nodehandler class="textctrl_handler" icon="d20" module="forms" name="|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|:">
+            <text multiline="0" send_button="1">  [1d20|WEAPON.%weap.TOTALHIT.%atk|] Damage [|WEAPON.%weap.DAMAGE|]</text>
+         </nodehandler>
+|ENDFOR|    
+      </nodehandler>
+		  <nodehandler class="listbox_handler" icon="gear" module="forms" name="As Equipped (|WEAPON.%weap.HAND|)">
+           <list send_button="3" type="1">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|
+             <option selected="1" value="0">|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|: [1d20|WEAPON.%weap.TOTALHIT.%atk|] Damage [|WEAPON.%weap.DAMAGE|]</option>
+|ENDFOR|
+            </list>
+          </nodehandler>
+         <nodehandler class="listbox_handler" icon="gear" module="forms" name="One Hand">
+           <list send_button="1" type="1">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|
+             <option selected="1" value="0">|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|: [1d20|WEAPON.%weap.TOTALHIT.%atk|] Damage [|WEAPON.%weap.BASICDAMAGE|]</option>
+|ENDFOR|
+            </list>
+          </nodehandler>
+         <nodehandler class="listbox_handler" icon="gear" module="forms" name="Off Hand">
+           <list send_button="1" type="1">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|
+             <option selected="1" value="0">|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|: [1d20|WEAPON.%weap.OHHIT.%atk|] Damage [|WEAPON.%weap.OHDAMAGE|]</option>
+|ENDFOR|
+            </list>
+          </nodehandler>        
+         <nodehandler class="listbox_handler" icon="gear" module="forms" name="2 Hand">
+           <list send_button="1" type="1">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|
+             <option selected="1" value="0">|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|: [1d20|WEAPON.%weap.THHIT.%atk|] Damage [|WEAPON.%weap.THDAMAGE|]</option>
+|ENDFOR|
+            </list>
+          </nodehandler>
+         <nodehandler class="listbox_handler" icon="gear" module="forms" name="2WP HOH">
+           <list send_button="1" type="1">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|
+             <option selected="1" value="0">|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|: [1d20|WEAPON.%weap.TWPHITH.%atk|] Damage [|WEAPON.%weap.BASICDAMAGE|]</option>
+|ENDFOR|
+            </list>
+          </nodehandler>
+         <nodehandler class="listbox_handler" icon="gear" module="forms" name="2WP LOH">
+           <list send_button="1" type="1">
+|FOR,%atk,0,WEAPON.%weap.NUMATTACKS-1,1,0|
+             <option selected="1" value="0">|WEAPON.%weap.NAME.NOSTAR| |(%atk+1).INTVAL|/|WEAPON.%weap.NUMATTACKS.INTVAL|: [1d20|WEAPON.%weap.TWPHITL.%atk|] Damage [|WEAPON.%weap.BASICDAMAGE|]</option>
+|ENDFOR|
+            </list>
+          </nodehandler>
+         <nodehandler class="listbox_handler" icon="gear" module="forms" name="2W 2ndary">
+           <list send_button="1" type="1">
+             <option selected="1" value="0">|WEAPON.%weap.NAME.NOSTAR|   Secondary: [1d20|WEAPON.%weap.TWOHIT|] Damage [|WEAPON.%weap.OHDAMAGE|]</option>
+            </list>
+         </nodehandler>
+     <!-- end not ranged -->
+|ENDIF|
+     </nodehandler>
+|ENDFOR|
+</nodehandler> <!--WEAPONS ONLY-->
+</nodehandler>
+<!-- END OF 3 COMBAT NODE -->
+<!-- START OF 3A OPTIONAL NODE -->
+<nodehandler class="tabber_handler" icon="tabber" module="containers" name="Optional" version="1.0">
+<nodehandler class="textctrl_handler" icon="note" module="forms" name="Optional Intro">
+<text autosize="1" multiline="1">Psionic and Turning Undead Powers appear below.</text>
+</nodehandler>
+<!--Psychic-->
+
+|%VAR.TOTALPOWERPOINTS.GTEQ.1|
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Base PP">
+      <text multiline="0" send_button="0">|VAR.BASEPOWERPOINTS.INTVAL|</text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Bonus PP">
+      <text multiline="0" send_button="0">|VAR.BONUSPOWERPOINTS.INTVAL|</text>
+    </nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Total PP">
+      <text multiline="0" send_button="0">|VAR.TOTALPOWERPOINTS.INTVAL|</text>
+    </nodehandler>
+|%| 
+
+<!--CLERIC TURN-->
+
+|IIF(HASFEAT:Turn Undead.OR.HASFEAT:Rebuke Undead)|
+<nodehandler class="tabber_handler" icon="tabber" module="containers" name="Turn/Rebuke |VAR.TurnTimesUndead.INTVAL| times per day">
+<nodehandler class="textctrl_handler" icon="note" module="forms" name="Turning Check">
+      <text multiline="0" send_button="1">[1d20|VAR.TurnCheckUndead.INTVAL.SIGN.NOZERO|]</text>
+</nodehandler>
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="Turning Damage">
+      <text multiline="0" send_button="1">[|VAR.TurnDamagePlusUndead.INTVAL.NOZERO|+|VAR.TurnDiceUndead.INTVAL|d|VAR.TurnDieSizeUndead.INTVAL|]</text>
+    </nodehandler>
+    <nodehandler class="rpg_grid_handler" icon="grid" module="rpg_grid" name="Turning Results" version="1.0">
+      <grid autosize="1" border="0">
+<row><cell>Check Result</cell><cell>Max HD Affected</cell></row>
+<row><cell> &gt;0    </cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL-4])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL-4|</cell></row>
+<row><cell>1 - 3  </cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL-3])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL-3|</cell></row>
+<row><cell>4 - 6  </cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL-2])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL-2|</cell></row>
+<row><cell>7 - 9  </cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL-1])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL-1|</cell></row>
+<row><cell>10 - 12</cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL+0])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL|</cell></row>
+<row><cell>13 - 15</cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL+1])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL+1|</cell></row>
+<row><cell>16 - 18</cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL+2])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL+2|</cell></row>
+<row><cell>19 - 21</cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL+3])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL+3|</cell></row>
+<row><cell>22 +   </cell><cell>     |FOR.1,((8-STRLEN[VAR.TurnLevelUndead.INTVAL+4])/2+1).INTVAL,8, ,NONE,NONE,1||VAR.TurnLevelUndead.INTVAL+4|</cell></row>
+              </grid>
+      <macros>
+        <macro name=""></macro>
+      </macros>
+</nodehandler>
+</nodehandler>
+|ENDIF|
+</nodehandler>
+
+<!-- END OF 3A OPTIONAL NODE -->
+<!-- START OF 4 WEAPON SUMMARY NODE -->
+<nodehandler class="tabber_handler" icon="tabber" module="containers" name="Weapon Summary" version="1.0">
+|FOR,%weap,0,COUNT[EQTYPE.WEAPON]-1,1,0|  
+    <nodehandler class="textctrl_handler" icon="note" module="forms" name="|WEAPON.%weap.NAME.NOSTAR|">
+      <text multiline="1" send_button="0">  
+Name: |WEAPON.%weap.NAME.NOSTAR|
+Hands: |WEAPON.%weap.HAND|
+Damage Type: |WEAPON.%weap.TYPE|
+Weapon Size: |WEAPON.%weap.SIZE|
+Weapon Critical: |WEAPON.%weap.CRIT|/x|WEAPON.%weap.MULT|
+Special Properties: |WEAPON.%weap.SPROP|
+
+|IIF(WEAPON.%weap.CATEGORY:Exotic)|
+  to hit: |WEAPON.%weap.TOTALHIT|
+  damage: |WEAPON.%weap.DAMAGE|
+  range: |WEAPON.%weap.RANGE|
+
+This weapon is too exotic for an automatic statistical calculation.
+|else|
+|IIF(WEAPON.%weap.CATEGORY:Ranged)| 
+Ranges
+|FOR,%range,0,4,1,0|
+  distance: |WEAPON.%weap.RANGELIST.%range|
+  to hit: |WEAPON.%weap.RANGELIST.%range.TOTALHIT|
+  damage: |WEAPON.%weap.RANGELIST.%range.DAMAGE|
+|ENDFOR|
+|ELSE|
+One weapon, 1 hand, primary hand
+  to hit: |WEAPON.%weap.TOTALHIT|   
+  damage: |WEAPON.%weap.BASICDAMAGE| 
+One weapon, 1 handed, offhand
+  to hit: |WEAPON.%weap.OHHIT| 
+  damage: |WEAPON.%weap.OHDAMAGE| 
+One weapon, 2 handed
+  to hit: |WEAPON.%weap.TOTALHIT| 
+  damage: |WEAPON.%weap.THDAMAGE| 
+Two weapons, this weapon in primary hand, other hand with heavy weapon
+  to hit: |WEAPON.%weap.TWPHITH| 
+  damage: |WEAPON.%weap.BASICDAMAGE| 
+Two weapons, this weapon in primary hand, other hand with light weapon
+  to hit: |WEAPON.%weap.TWPHITL| 
+  damage: |WEAPON.%weap.BASCIDAMAGE| 
+Two weapons, this weapon in off-hand
+  to hit: |WEAPON.%weap.TWOHIT| 
+  damage: |WEAPON.%weap.OHDAMAGE| 
+|ENDIF|
+|ENDIF|
+      </text>
+    </nodehandler>
+|ENDFOR|
+  </nodehandler>
+<!-- END OF 4 WEAPONS SUMMARY NODE -->
+<!-- START OF 5 EQUIPMENT NODE -->
+<nodehandler class="rpg_grid_handler" icon="grid" module="rpg_grid" name="Equipment">
+<grid autosize="1" border="1">
+<row>
+<cell size="200">Name</cell><cell size="200">QTY</cell><cell size="200"> LBS</cell><cell size="200"></cell><cell size="200"></cell>
+</row>
+|FOR,%equip,0,15,1,1|
+|IIF(EQ.NOT.Contained.NOT.CONTAINER.%equip.NAME: )|
+|IIF(EQ.NOT.Contained.NOT.CONTAINER.%equip.SPROP: )|
+<row>|EQ.NOT.Contained.NOT.CONTAINER.%equip.LONGNAME|
+|FOR.1,((48-STRLEN[EQ.NOT.Contained.NOT.CONTAINER.%equip.LONGNAME])).INTVAL,48, ,NONE,NONE,1|
+<cell>|EQ.NOT.Contained.NOT.CONTAINER.%equip.QTY.INTVAL|</cell> <cell>|EQ.NOT.Contained.NOT.CONTAINER.%equip.TOTALWT.INTVAL|lbs</cell> <cell>Special: |EQ.NOT.Contained.NOT.CONTAINER.%equip.SPROP|</cell></row>
+|ELSE|
+<row><cell>|EQ.NOT.Contained.NOT.CONTAINER.%equip.LONGNAME|</cell>
+|FOR.1,((48-STRLEN[EQ.NOT.Contained.NOT.CONTAINER.%equip.LONGNAME])).INTVAL,48, ,NONE,NONE,1|
+<cell>|EQ.NOT.Contained.NOT.CONTAINER.%equip.QTY.INTVAL|</cell><cell> |EQ.NOT.Contained.NOT.CONTAINER.%equip.TOTALWT.INTVAL|lbs</cell></row>
+|ENDIF|
+|ENDIF|
+|ENDFOR|
+
+|FOR,%container,0,COUNT[CONTAINERS]-1,1,1|
+<row><cell>|EQ.IS.CONTAINER.%container.LONGNAME|</cell><cell></cell><cell> (|EQCONTAINER.%container.TOTALWEIGHT| lbs.)</cell> </row>
+|FOR,%equip,0,EQ.IS.CONTAINER.%container.CONTENTSNUM-1,1,1|
+|IIF(EQ.IS.CONTAINER.%container.CONTENTS.%equip.SPROP: )|
+<row><cell>|EQ.IS.CONTAINER.%container.CONTENTS.%equip.LONGNAME|</cell>
+|FOR.1,((45-STRLEN[EQ.IS.CONTAINER.%container.CONTENTS.%equip.LONGNAME])).INTVAL,45, ,NONE,NONE,1|
+<cell>|EQ.IS.CONTAINER.%container.CONTENTS.%equip.QTY.INTVAL| </cell><cell>|EQ.IS.CONTAINER.%container.CONTENTS.%equip.TOTALWT.INTVAL|lbs </cell><cell>Special:</cell><cell>|EQ.IS.CONTAINER.%container.CONTENTS.%equip.SPROP|</cell></row>
+|ELSE|
+<row><cell>|EQ.IS.CONTAINER.%container.CONTENTS.%equip.LONGNAME|</cell>
+|FOR.1,((45-STRLEN[EQ.IS.CONTAINER.%container.CONTENTS.%equip.LONGNAME])).INTVAL,45, ,NONE,NONE,1|
+<cell>|EQ.IS.CONTAINER.%container.CONTENTS.%equip.QTY.INTVAL| </cell><cell>|EQ.IS.CONTAINER.%container.CONTENTS.%equip.TOTALWT.INTVAL|lbs</cell></row>
+|ENDIF|
+|ENDFOR|
+|ENDFOR|
+<row><cell>Total weight carried:</cell><cell>|TOTAL.WEIGHT.INTVAL|</cell></row>
+<row><cell>Current load:</cell><cell>|TOTAL.LOAD|</cell></row>
+
+<row><cell>   Encumbrance  </cell></row>
+<row><cell>Light:</cell><cell>|WEIGHT.LIGHT.INTVAL|</cell></row>   
+<row><cell>Medium:</cell><cell>|WEIGHT.MEDIUM.INTVAL|</cell></row>   
+<row><cell>Heavy:</cell><cell>|WEIGHT.HEAVY.INTVAL|</cell></row>
+
+ </grid>     <macros>
+        <macro name=""></macro>
+      </macros>
+</nodehandler>
+<!-- END OF 5 EQUIPMENT NODE -->
+<!-- START OF 6 MAGIC NODE -->
+<nodehandler class="tabber_handler" icon="gear" module="containers" name="Magic"> 
+|%SPELLLISTBOOK.0.0.1|
+<nodehandler class="form_handler" icon="form" module="forms" name="Innate Spells"> 
+<form height="600" width="400"></form>
+<nodehandler class="textctrl_handler" icon="note" module="forms" name="Spell List"> 
+|FOR,%spell,0,COUNT[SPELLSINBOOK0.1.0]-1,1,0|
+<text multiline="1" send_button="1">
+|SPELLMEM.0.1.0.%spell.NAME| -- (|SPELLMEM.0.1.0.%spell.SCHOOL|) - |SPELLMEM.0.1.0.%spell.TIMES| per day  |BR|
+Saves: |SPELLMEM.0.1.0.%spell.SAVEINFO||BR|
+DC: |SPELLMEM.0.1.0.%spell.DC||BR|
+Casting: |SPELLMEM.0.1.0.%spell.CASTINGTIME||BR|
+Duration: |SPELLMEM.0.1.0.%spell.DURATION||BR|
+Range: |SPELLMEM.0.1.0.%spell.RANGE||BR|
+Components: |SPELLMEM.0.1.0.%spell.COMPONENTS||BR|
+SR: |SPELLMEM.0.1.0.%spell.SR||BR|
+Effect: |SPELLMEM.0.1.0.%spell.EFFECT||BR|
+Target: |SPELLMEM.0.1.0.%spell.TARGET||BR|
+</text>
+|ENDFOR|
+</nodehandler>                          
+</nodehandler>                           
+|%|
+|FOR,%class,COUNT[SPELLRACE],COUNT[CLASSES],1,0|
+|%SPELLLISTCLASS.%class|
+<nodehandler class="form_handler" icon="form" module="forms" name="|SPELLLISTCLASS.%class| Spells">
+<form height="600" width="400"></form>
+<nodehandler class="tabber_handler" icon="gear" module="containers" name="Spellbooks">            
+|FOR,%sbook,0,COUNT[SPELLBOOKS]-1,1,1|
+|%SPELLLISTBOOK.%class.1.%sbook|
+<nodehandler class="tabber_handler" icon="gear" module="containers" name="|SPELLBOOKNAME.%sbook|">
+|FOR,%level,0,9,1,1|
+|%||%SPELLLISTBOOK.%class.%level.%sbook|
+<nodehandler class="form_handler" icon="form" module="forms" name="Level |%level|">
+<form height="600" width="400"></form>        
+|FOR,%spell,0,COUNT[SPELLSINBOOK.%class.%sbook.%level]-1,1,0|
+|IIF(%sbook:0)|
+<nodehandler class="textctrl_handler" icon="note" module="form" name="|SPELLMEM.%class.%sbook.%level.%spell.NAME|">
+<text multiline="1" send_button="1">
+|SPELLMEM.%class.%sbook.%level.%spell.NAME| -- (|SPELLMEM.%class.%sbook.%level.%spell.SCHOOL|)|BR|
+Saves: |SPELLMEM.%class.%sbook.%level.%spell.SAVEINFO||BR|
+DC: |SPELLMEM.%class.%sbook.%level.%spell.DC||BR|
+Casting: |SPELLMEM.%class.%sbook.%level.%spell.CASTINGTIME||BR|
+Duration: |SPELLMEM.%class.%sbook.%level.%spell.DURATION||BR|
+Range: |SPELLMEM.%class.%sbook.%level.%spell.RANGE||BR|
+Components: |SPELLMEM.%class.%sbook.%level.%spell.COMPONENTS||BR|
+SR: |SPELLMEM.%class.%sbook.%level.%spell.SR||BR|
+Effect: |SPELLMEM.%class.%sbook.%level.%spell.EFFECT||BR|
+Target: |SPELLMEM.%class.%sbook.%level.%spell.TARGET||BR|
+</text>
+</nodehandler>           
+|ELSE|
+<nodehandler class="textctrl_handler" icon="note" module="forms" name="* * |SPELLMEM.%class.%sbook.%level.%spell.NAME|"><text multiline="0" send_button="0"> (|SPELLMEM.%class.%sbook.%level.%spell.SCHOOL|) |SPELLMEM.%class.%sbook.%level.%spell.TIMES| per day
+</text></nodehandler>           
+|ENDIF|
+|ENDFOR|
+</nodehandler>            
+|%||%SPELLLISTBOOK.%class.1.%sbook|
+|ENDFOR|
+</nodehandler>    
+|%||%SPELLLISTCLASS.%class|
+|ENDFOR|    
+</nodehandler>      
+</nodehandler>        
+|%|     
+|ENDFOR|    
+</nodehandler>            
+<!-- END OF 6 MAGIC NODE -->
+<!-- START OF 7 DESCRIPTION ETC NODES -->
+<nodehandler class="form_handler" icon="compass" module="forms" name="Description">
+    <form height="600" width="400"></form>
+ <nodehandler class="textctrl_handler" icon="note" module="forms" name="Summary">
+      <text multiline="1" send_button="1">
+Height: |HEIGHT| 
+Weight: |WEIGHT| 
+Gender: |GENDER.LONG| 
+Dominant Hand: |HANDED|
+Eyes: |COLOR.EYE| 
+Hair: |COLOR.HAIR|,|LENGTH.HAIR| 
+Skin: |COLOR.SKIN|
+Quirks: |PERSONALITY1|, |PERSONALITY2| 
+Speech style: |SPEECHTENDENCY| 
+Quotable: |CATCHPHRASE|
+</text>
+ </nodehandler>
+ <nodehandler class="textctrl_handler" icon="note" module="forms" name="Full Description">
+      <text multiline="1" send_button="1">|DESCRIPTION|</text>
+ </nodehandler>
+</nodehandler>
+<!--END OF DESCRIPTION ONLY -->
+<nodehandler class="form_handler" icon="compass" module="forms" name="Misc.">
+ <form height="600" width="400"></form>
+ <nodehandler class="textctrl_handler" icon="note" module="forms" name="Background">
+  <text multiline="1" send_button="1">|BIO|</text>
+ </nodehandler>
+ <nodehandler class="textctrl_handler" icon="note" module="forms" name="Notes">
+  <text multiline="1" send_button="0"></text>
+ </nodehandler>
+ <nodehandler class="textctrl_handler" icon="note" module="forms" name="Languages">
+  <text multiline="0" send_button="0">|LANGUAGES|</text>
+ </nodehandler>
+ <nodehandler class="textctrl_handler" icon="note" module="forms" name="Alignment">
+  <text multiline="0" send_button="0">|ALIGNMENT|</text>
+ </nodehandler>
+</nodehandler>
+<!-- END OF 7 DESCRIPTION ETC NODES -->
+</nodehandler>

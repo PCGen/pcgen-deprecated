@@ -1,4 +1,4 @@
-# CVS $Revision$ $Author$ -- Thu Aug  7 11:38:58 2014 -- reformated by prettylst.pl v1.51 (build 24365)
+# CVS $Revision$ $Author$ -- Wed Sep  3 00:18:24 2014 -- reformated by prettylst.pl v1.51 (build 24947)
 SOURCELONG:System Reference Document	SOURCESHORT:SRD	SOURCEWEB:http://groups.yahoo.com/group/pcgen/files/3.0%20SRD/	SOURCEDATE:2000-01
 # Original Entry by Tir Gwaith
 
@@ -10,7 +10,7 @@ SOURCELONG:System Reference Document	SOURCESHORT:SRD	SOURCEWEB:http://groups.yah
 
 # Ability Name				Category of Ability		Type								Visible	Define																														Description																																																		Ability										Modify VAR																																										Source Page						Aspects									Temporary Bonus
 Sneak Attack				CATEGORY:Special Ability	TYPE:SpecialAttack					VISIBLE:YES	DEFINE:SneakAttackDice|0	DEFINE:SneakAttackDie|0																							DESC:%1d%2 damage any time your target would be denied a Dexterity bonus to AC or when you flank your target|SneakAttackDice|SneakAttackDie																																							BONUS:VAR|SneakAttackDie|6|TYPE=Base																																					SOURCEPAGE:srdbasiccharacterclassesii.rtf	ASPECT:Ability Benefit|%1d%2|SneakAttackDice|SneakAttackDie
-Rage						CATEGORY:Special Ability	TYPE:SpecialQuality.AttackOption.ModifyAC		VISIBLE:YES	DEFINE:RageTimes|0	DEFINE:RageDuration|0	DEFINE:RageConBonus|0	DEFINE:RageStrBonus|0	DEFINE:RageACPenalty|0	DEFINE:RageMorale|0	DEFINE:Enraged|0	DEFINE:RageBonus|0	DESC:%1 times/day (%2 rounds)|RageTimes|RageDuration|PREVARLT:GreaterRage,1	DESC:%1 times/day (%2 rounds)|RageTimes|RageDuration|PREMULT:2,[PREVARGTEQ:GreaterRage,1],[PREVARLT:TirelessRage,1]	DESC:%1 times/day and no longer winded after (%2 rounds)|RageTimes|RageDuration|PREVARGTEQ:TirelessRage,1												BONUS:VAR|RageBonus|4	BONUS:VAR|RageDuration|CON+3+(RageConBonus/2)	BONUS:VAR|RageConBonus|RageBonus	BONUS:VAR|RageStrBonus|RageBonus	BONUS:VAR|RageACPenalty|2	BONUS:VAR|RageMorale|RageBonus/2	BONUS:VAR|RageBonus|2|PREVARGTEQ:GreaterRage,1																		TEMPBONUS:PC|CHECKS|Will|RageMorale|TYPE=Rage	TEMPBONUS:PC|COMBAT|AC|-1*RageACPenalty|TYPE=Rage	TEMPBONUS:PC|STAT|CON|RageConBonus|TYPE=Rage	TEMPBONUS:PC|STAT|STR|RageStrBonus|TYPE=Rage	TEMPBONUS:PC|VAR|RageDuration|-(RageConBonus/2)|TYPE=Rage	TEMPBONUS:PC|VAR|Enraged|1|TYPE=Rage
+Rage						CATEGORY:Special Ability	TYPE:SpecialQuality.AttackOption.ModifyAC		VISIBLE:YES	DEFINE:RageTimes|0	DEFINE:RageDuration|0	DEFINE:RageConBonus|0	DEFINE:RageStrBonus|0	DEFINE:RageACPenalty|0	DEFINE:RageMorale|0	DEFINE:Enraged|0	DEFINE:RageBonus|0	DESC:%1 times/day (%2 rounds)|RageTimes|RageDuration|PREVARLT:GreaterRage,1	DESC:%1 times/day (%2 rounds)|RageTimes|RageDuration|PREMULT:2,[PREVARGTEQ:GreaterRage,1],[PREVARLT:TirelessRage,1]	DESC:%1 times/day and no longer winded after (%2 rounds)|RageTimes|RageDuration|PREVARGTEQ:TirelessRage,1												BONUS:VAR|RageBonus|4	BONUS:VAR|RageDuration|CON+3+(RageConBonus/2)	BONUS:VAR|RageConBonus|RageBonus	BONUS:VAR|RageStrBonus|RageBonus	BONUS:VAR|RageACPenalty|2	BONUS:VAR|RageMorale|RageBonus/2	BONUS:VAR|RageBonus|2|PREVARGTEQ:GreaterRage,1																		TEMPBONUS:PC|SAVE|Will|RageMorale|TYPE=Rage	TEMPBONUS:PC|COMBAT|AC|-1*RageACPenalty|TYPE=Rage	TEMPBONUS:PC|STAT|CON|RageConBonus|TYPE=Rage	TEMPBONUS:PC|STAT|STR|RageStrBonus|TYPE=Rage	TEMPBONUS:PC|VAR|RageDuration|-(RageConBonus/2)|TYPE=Rage	TEMPBONUS:PC|VAR|Enraged|1|TYPE=Rage
 Retain Dex To AC ~ Flat-footed	CATEGORY:Special Ability	TYPE:Internal						VISIBLE:NO																																DESC:You retain your Dexterity bonus to AC even when flat-footed
 Uncanny Dodge				CATEGORY:Special Ability	TYPE:SpecialQuality					VISIBLE:YES	DEFINE:UncannyDodge|0	DEFINE:ImprovedUncannyDodge|0	DEFINE:UncannyTraps|0																			DESC:Dex bonus to AC|PREVARGT:UncannyDodge,0	DESC:Can't be flanked|PREVARGT:ImprovedUncannyDodge,0	DESC:+%1 against traps|UncannyTraps|PREVARGT:UncannyTraps,0																									ABILITY:Special Ability|AUTOMATIC|Retain Dex To AC ~ Flat-footed	BONUS:VAR|ImprovedUncannyDodge|max(UncannyDodge-1,0)	BONUS:VAR|UncannyTraps|max(UncannyDodge-2,0)
 Evasion					CATEGORY:Special Ability	TYPE:SpecialQuality.Extraordinary.ModifyAC	VISIBLE:YES																																DESC:If you make a successful Reflex saving throw against an attack that normally deals half damage on a successful save, you instead take no damage.																																																																																	SOURCEPAGE:srdbasiccharacterclassesii.rtf
@@ -41,17 +41,39 @@ Negative Levels	CATEGORY:Special Ability	TYPE:SpecialQuality	VISIBLE:YES	DEFINE:
 
 
 ###Block: Class Proficiencies
-# Ability Name				Unique Key						Category of Ability		Type			Visible		Serves As						Description											Automatically Gained Weapon Prof.
-All Automatic Proficiencies									CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO																					AUTO:WEAPONPROF|Gauntlet|Unarmed Strike|Spells(Ray)|Grapple
-All Martial Weapon Proficiencies								CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO		SERVESAS:FEAT|Martial Weapon Proficiency													AUTO:WEAPONPROF|TYPE=Martial
-Druid Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO																					AUTO:WEAPONPROF|Club|Dagger|Dart|Halfspear|Longspear|Quarterstaff|Scimitar|Sickle|Shortspear|Sling
-Monk Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO																					AUTO:WEAPONPROF|Unarmed Strike|Club|Crossbow (Light)|Crossbow (Heavy)|Dagger|Handaxe|Javelin|Kama|Nunchaku|Quarterstaff|Shuriken|Siangham|Sling
-Rogue Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO																					AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Dagger|Dagger (Punching)|Dart|Mace (Light)|Sap|Shortbow|Shortbow (Composite)|Sword (Short)	AUTO:WEAPONPROF|Club|Crossbow (Heavy)|Mace (Heavy)|Morningstar|Quarterstaff|Rapier|PRESIZEGTEQ:M
-Wizard Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO																					AUTO:WEAPONPROF|Club|Dagger|Crossbow (Heavy)|Crossbow (Light)|Quarterstaff
-Shadowdancer Weapon Proficiencies								CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO																					AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Dagger|Dart|Mace (Light)|Sap|Shortbow|Shortbow (Composite)|Club|Crossbow (Heavy)|Mace (Heavy)|Morningstar|Quarterstaff|Rapier
-Assassin Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal	VISIBLE:NO																					AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Crossbow (Heavy)|Dart|Rapier|Sap|Shortbow|Shortbow (Composite)|Sword (Short)|TYPE=Dagger
+# Ability Name				Unique Key						Category of Ability		Type												Visible		Serves As						Description											Auto Weapon Prof
+All Automatic Proficiencies									CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO																					AUTO:WEAPONPROF|Gauntlet|Unarmed Strike|Spells(Ray)|Grapple
+All Martial Weapon Proficiencies								CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO		SERVESAS:FEAT|Martial Weapon Proficiency													AUTO:WEAPONPROF|TYPE=Martial
+Druid Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO																					AUTO:WEAPONPROF|Club|Dagger|Dart|Halfspear|Longspear|Quarterstaff|Scimitar|Sickle|Shortspear|Sling
+Monk Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO																					AUTO:WEAPONPROF|Unarmed Strike|Club|Crossbow (Light)|Crossbow (Heavy)|Dagger|Handaxe|Javelin|Kama|Nunchaku|Quarterstaff|Shuriken|Siangham|Sling
+Rogue Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO																					AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Dagger|Dagger (Punching)|Dart|Mace (Light)|Sap|Shortbow|Shortbow (Composite)|Sword (Short)	AUTO:WEAPONPROF|Club|Crossbow (Heavy)|Mace (Heavy)|Morningstar|Quarterstaff|Rapier|PRESIZEGTEQ:M
+Wizard Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO																					AUTO:WEAPONPROF|Club|Dagger|Crossbow (Heavy)|Crossbow (Light)|Quarterstaff
+Shadowdancer Weapon Proficiencies								CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO																					AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Dagger|Dart|Mace (Light)|Sap|Shortbow|Shortbow (Composite)|Club|Crossbow (Heavy)|Mace (Heavy)|Morningstar|Quarterstaff|Rapier
+Assassin Weapon Proficiencies									CATEGORY:Special Ability	TYPE:Internal										VISIBLE:NO																					AUTO:WEAPONPROF|Crossbow (Hand)|Crossbow (Light)|Crossbow (Heavy)|Dart|Rapier|Sap|Shortbow|Shortbow (Composite)|Sword (Short)|TYPE=Dagger
 
-Martial Weapon Proficiency		KEY:Martial Weapon Proficiency Output	CATEGORY:FEAT			TYPE:Internal	VISIBLE:EXPORT								DESC:You understand how to use all types of martial weapons in combat.
+Martial Weapon Proficiency		KEY:Martial Weapon Proficiency Output	CATEGORY:FEAT			TYPE:Internal										VISIBLE:EXPORT								DESC:You understand how to use all types of martial weapons in combat.
+
+
+# Ability Name				Unique Key						Category of Ability		Type												Visible		Serves As						Description											Auto Weapon Prof
+Weapon Prof ~ Auto										CATEGORY:Internal			TYPE:WeaponProfAuto.WeaponProfSimple.WeaponProfMartial.WeaponProfExotic																							AUTO:WEAPONPROF|Unarmed Strike|Gauntlet|Grapple
+Weapon Prof ~ Simple										CATEGORY:Internal			TYPE:WeaponProfSimple.WeaponProfMartial.WeaponProfExotic						SERVESAS:FEAT|Simple Weapon Proficiency													AUTO:WEAPONPROF|TYPE=Simple
+Weapon Prof ~ Martial										CATEGORY:Internal			TYPE:WeaponProfMartial.WeaponProfExotic									SERVESAS:FEAT|Martial Weapon Proficiency													AUTO:WEAPONPROF|TYPE=Martial
+Weapon Prof ~ Exotic										CATEGORY:Internal			TYPE:WeaponProfExotic												SERVESAS:FEAT|Exotic Weapon Proficiency													AUTO:WEAPONPROF|TYPE=Exotic
+
+###Block: Armor Types
+# Ability Name		Category of Ability	Type									Serves As						Auto Armor Prof
+Armor Prof ~ Light	CATEGORY:Internal		TYPE:ArmorProfLight.ArmorProfMedium.ArmorProfHeavy	SERVESAS:FEAT|Armor Proficiency (Light)	AUTO:ARMORPROF|ARMORTYPE=Light
+Armor Prof ~ Medium	CATEGORY:Internal		TYPE:ArmorProfMedium.ArmorProfHeavy				SERVESAS:FEAT|Armor Proficiency (Medium)	AUTO:ARMORPROF|ARMORTYPE=Medium
+Armor Prof ~ Heavy	CATEGORY:Internal		TYPE:ArmorProfHeavy						SERVESAS:FEAT|Armor Proficiency (Heavy)	AUTO:ARMORPROF|ARMORTYPE=Heavy
+
+###Block: Shield Types
+# Ability Name		Category of Ability	Type						Serves As						Automatically Gained Shield Prof.
+#Shield Prof ~ Tower	CATEGORY:Internal		TYPE:ShieldProfTower			SERVESAS:FEAT|Tower Shield Proficiency	AUTO:SHIELDPROF|SHIELDTYPE=Tower
+# Ability Name	Category of Ability	Type						Serves As					Auto Shield Prof
+Shield Prof		CATEGORY:Internal		TYPE:ShieldProfTower.ShieldProf	SERVESAS:FEAT|Shield Proficiency	AUTO:SHIELDPROF|SHIELDTYPE=Buckler|SHIELDTYPE=Heavy|SHIELDTYPE=Light
+
+
+
 
 
 #######################################
@@ -134,7 +156,7 @@ Wildshape Blindsight	CATEGORY:Special Ability	TYPE:Internal				VISIBLE:NO							
 ###Block:Monk abilities
 # Ability Name			Output Name				Category of Ability		Type						Visible	Define											Description																			Combat bonus											Add to base move																																																Add to magical move																																																										Modify VAR																								Source Page						Aspects
 Stunning Attack								CATEGORY:Special Ability	TYPE:SpecialAttack			VISIBLE:YES	DEFINE:StunningAttack|0	DEFINE:StunDC|0	DEFINE:MonkStunningLVL|0	DESC:%1 times per day (DC %2)|StunningAttack|StunDC																																																																																																																																								BONUS:VAR|StunDC|10+WIS	BONUS:VAR|StunningAttack|MonkStunningLVL|TYPE=NoStack.REPLACE	BONUS:VAR|StunDC|MonkStunningLVL/2|TYPE=NoStack.REPLACE	SOURCEPAGE:srdbasiccharacterclassesi.rtf	ASPECT:Ability Benefit|%1/day|StunningAttack
-Monk AC									CATEGORY:Special Ability	TYPE:Internal				VISIBLE:NO	DEFINE:MonkACCheck|0S	DEFINE:MonkACLVL|0	DEFINE:MonkAC|0																						BONUS:COMBAT|AC|MonkAC|PREVARGTEQ:MonkACCheck,0	BONUS:COMBAT|AC|max(WIS,0)																																																																																																																BONUS:VAR|MonkACCheck|MonkAC+WIS	BONUS:VAR|MonkAC|MonkACLVL/5															SOURCEPAGE:srdbasiccharacterclassesi.rtf
+Monk AC									CATEGORY:Special Ability	TYPE:Internal				VISIBLE:NO	DEFINE:MonkACCheck|0	DEFINE:MonkACLVL|0	DEFINE:MonkAC|0																						BONUS:COMBAT|AC|MonkAC|PREVARGTEQ:MonkACCheck,0	BONUS:COMBAT|AC|max(WIS,0)																																																																																																																BONUS:VAR|MonkACCheck|MonkAC+WIS	BONUS:VAR|MonkAC|MonkACLVL/5															SOURCEPAGE:srdbasiccharacterclassesi.rtf
 Monk Fast Movement		OUTPUTNAME:Fast Movement	CATEGORY:Special Ability	TYPE:SpecialQuality			VISIBLE:YES	DEFINE:MonkSpeedLVL|0																																										BONUS:MOVEADD|TYPE.Walk|5|TYPE=Normal.REPLACE|PREVARGTEQ:MonkSpeedLVL,3|PREVAREQ:MOVEBASE,20,ENCUMBERANCE,0,COUNT[EQTYPE.ARMOR.EQUIPPED],0	BONUS:MOVEADD|TYPE.Walk|min(floor(MonkSpeedLVL/3)*10,20)|TYPE=Normal.REPLACE|PREVAREQ:MOVEBASE,30,ENCUMBERANCE,0,var("COUNT[EQTYPE.ARMOR.EQUIPPED]"),0	BONUS:POSTMOVEADD|TYPE=Walk|min(floor(max(MonkSpeedLVL-6,0)/3)*5,20)+floor(max(MonkSpeedLVL/15,0))*5|TYPE=Magic.REPLACE|PREVAREQ:MOVEBASE,20,ENCUMBERANCE,0,var("COUNT[EQTYPE.ARMOR.EQUIPPED]"),0	BONUS:POSTMOVEADD|TYPE=Walk|min(floor(max(MonkSpeedLVL-6,0)/3)*10,40)|TYPE=Magic.REPLACE|PREVAREQ:MOVEBASE,30,ENCUMBERANCE,0,var("COUNT[EQTYPE.ARMOR.EQUIPPED]"),0																										SOURCEPAGE:srdbasiccharacterclassesi.rtf
 Still Mind									CATEGORY:Special Ability	TYPE:SpecialQuality			VISIBLE:YES
 Slow Fall									CATEGORY:Special Ability	TYPE:SpecialQuality			VISIBLE:YES	DEFINE:SlowFallMonkProgression|0	DEFINE:SlowFall|0				DESC:%1 feet|SlowFall|PREVARGTEQ:SlowFallMonkProgression,1	DESC:Any distance|PREVARGTEQ:SlowFallMonkProgression,2
@@ -171,14 +193,14 @@ Favored Enemy V	CATEGORY:Special Ability	TYPE:SpecialAttack.AttackOption.Favored
 
 
 ###Block:Rogue special abilities
-# Ability Name	Category of Ability		Type										Visible		Description																					Stackable?	Multiple?	Choose		Selections		Bonus Number of Feats	Source Page
-Crippling Strike	CATEGORY:Special Ability	TYPE:SpecialAttack.RogueAbilities					VISIBLE:YES		DESC:You can sneak attack opponents with such precision that her blows weaken and hamper them.																					SOURCEPAGE:srdbasiccharacterclassesii.rtf
-Defensive Roll	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities.ModifyAC			VISIBLE:YES		DESC:You can roll with a potentially lethal blow to take less damage from it than you otherwise would.																			SOURCEPAGE:srdbasiccharacterclassesii.rtf
-Improved Evasion	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities.Extraordinary.ModifyAC	VISIBLE:YES		DESC:You take only half damage on a failed save.																												SOURCEPAGE:srdbasiccharacterclassesii.rtf
-Opportunist		CATEGORY:Special Ability	TYPE:SpecialAttack.RogueAbilities					VISIBLE:YES		DESC:You can make an attack of opportunity against an opponent who has just been struck for damage in melee by another character.															SOURCEPAGE:srdbasiccharacterclassesii.rtf
-Skill Mastery	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities					VISIBLE:YES		DESC:You may take 10 on the following skills even if stress and distractions would normally prevent her from doing so, %1|%LIST	STACK:NO	MULT:YES	CHOOSE:SKILL|ALL	SELECT:3+INT					SOURCEPAGE:srdbasiccharacterclassesii.rtf
-Slippery Mind	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities.ModifyAC			VISIBLE:YES		DESC:You can wriggle free from magical effects that would otherwise control or compel you.																					SOURCEPAGE:srdbasiccharacterclassesii.rtf
-Rogue Bonus Feat	CATEGORY:Special Ability	TYPE:Internal.RogueAbilities						VISIBLE:DISPLAY																							STACK:YES	MULT:YES	CHOOSE:NOCHOICE				BONUS:FEAT|POOL|1		SOURCEPAGE:srdbasiccharacterclassesii.rtf
+# Ability Name	Category of Ability		Type										Visible		Description																					Stackable?	Multiple?	Choose		Selections		Number of Feats	Source Page
+Crippling Strike	CATEGORY:Special Ability	TYPE:SpecialAttack.RogueAbilities					VISIBLE:YES		DESC:You can sneak attack opponents with such precision that her blows weaken and hamper them.																				SOURCEPAGE:srdbasiccharacterclassesii.rtf
+Defensive Roll	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities.ModifyAC			VISIBLE:YES		DESC:You can roll with a potentially lethal blow to take less damage from it than you otherwise would.																		SOURCEPAGE:srdbasiccharacterclassesii.rtf
+Improved Evasion	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities.Extraordinary.ModifyAC	VISIBLE:YES		DESC:You take only half damage on a failed save.																											SOURCEPAGE:srdbasiccharacterclassesii.rtf
+Opportunist		CATEGORY:Special Ability	TYPE:SpecialAttack.RogueAbilities					VISIBLE:YES		DESC:You can make an attack of opportunity against an opponent who has just been struck for damage in melee by another character.														SOURCEPAGE:srdbasiccharacterclassesii.rtf
+Skill Mastery	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities					VISIBLE:YES		DESC:You may take 10 on the following skills even if stress and distractions would normally prevent her from doing so, %1|%LIST	STACK:NO	MULT:YES	CHOOSE:SKILL|ALL	SELECT:3+INT				SOURCEPAGE:srdbasiccharacterclassesii.rtf
+Slippery Mind	CATEGORY:Special Ability	TYPE:SpecialQuality.RogueAbilities.ModifyAC			VISIBLE:YES		DESC:You can wriggle free from magical effects that would otherwise control or compel you.																				SOURCEPAGE:srdbasiccharacterclassesii.rtf
+Rogue Bonus Feat	CATEGORY:Special Ability	TYPE:Internal.RogueAbilities						VISIBLE:DISPLAY																							STACK:YES	MULT:YES	CHOOSE:NOCHOICE				BONUS:FEAT|POOL|1	SOURCEPAGE:srdbasiccharacterclassesii.rtf
 
 ###Block: Wizard
 # Ability Name	Category of Ability	Template

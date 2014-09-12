@@ -64,11 +64,10 @@
 
 <hr>
 
-	<p class="lststatus"><a name="PREABILITY">*** New 5.11.7</a></p>
+	<p class="lstupnew"><a name="PREABILITY">*** Updated 6.03.00</a></p>
 	<p class="indent0"><strong>Tag Name:</strong>PREABILITY:x,CATEGORY=y,z,z</p>
 	<p class="indent1"><strong>Variables Used (x):</strong>Number (Number of abilities needed).</p>
 	<p class="indent1"><strong>Variables Used (y):</strong>Text (Category name).</p>
-	<p class="indent1"><strong>Variables Used (y):</strong>ALL</p>
 	<p class="indent1"><strong>Variables Used (z):</strong>Text (Ability name).</p>
 	<p class="indent1"><strong>Variables Used (z):</strong>TYPE.Text (Ability TYPE).</p>
 	<p class="indent1"><strong>Variables Used (z):</strong>ALL</p>
@@ -76,8 +75,6 @@
 	<ul class="indent2">
 		<li>Checks for the required number of Abilities.</li>
 		<li>The <code>CATEGORY</code> tag will take only &quot;parent&quot; categories.</li>
-		<li>If <code>CATEGORY=ALL</code> is not used the tag checks all categories (including feats) for an 
-			ability of the specified name or type.</li>
 		<li>The list of abilities, by name and/or type, is a comma-delimited (,) list.</li>
 		<li>Enclosing and ability specified, by name or type, in square brackets ([z]) is used to identify 
 			abilities that the character must not have.</li>
@@ -85,10 +82,6 @@
 	<p class="indent1"><strong>Example:</strong></p>
 	<p class="indent2"><code>PREABILITY:1,CATEGORY=Special Quality,Night Vision,Acid Blast</code></p>
 	<p class="indent3">Requires the Night Vision or Acid Blast Special Quality</p>
-	<p class="indent2"><code>PREABILITY:1,CATEGORY=ANY,Sneak Attack</code></p>
-	<p class="indent3">Requires the Sneak Attack Ability from any category.</p>
-	<p class="indent2"><code>!PREABILITY:1,CATEGORY=ANY,Sneak Attack</code></p>
-	<p class="indent3">Requires that the Sneak Attack Ability from any category not be present.</p>
 	<p class="indent2"><code>PREABILITY:3,CATEGORY=Mutation,ANY</code></p>
 	<p class="indent3">Requires any 3 Mutation category Abilities.</p>
 	<p class="indent2"><code>PREABILITY:2,CATEGORY=Mutation,TYPE.MajorMutation</code></p>
@@ -1189,7 +1182,7 @@
 	<p class="indent1"><strong>What it does:</strong></p>
 	<p class="indent2">Sets situational skill requirements.</p>
 	<p class="indent1"><strong>Examples:</strong></p>
-	<p class="indent2"><code>PRESKILLSIT:1,Spot,Woodlands=10</code></p>
+	<p class="indent2"><code>PRESKILLSIT:1,SKILL=Spot,Woodlands=10</code></p>
 	<p class="indent3">Character must have at least 10 ranks in &quot;Spot (Woodlands)&quot;.</p>
 	<p></p>
 
@@ -1418,6 +1411,18 @@
 	<p class="indent1"><strong>Example:</strong></p>
 	<p class="indent2"><code>PRETEXT:Character must make a sacrifice of bananas to the Monkey God.</code></p>
 	<p class="indent3">Explains what additional requirements are needed for the character to qualify.</p>
+	<p></p>
+
+<hr>
+
+	<p class="lstnew"><a name="PRETOTALAB">*** New 6.03.x</a></p>
+	<p class="indent0"><strong>Tag Name:</a></strong> PRETOTALAB:x</p>
+	<p class="indent1"><strong>Variables Used (x):</strong> Number (Integer)</p>
+	<p class="indent1"><strong>What it does:</strong></p>
+	<p class="indent2">This sets the total attack bonus requirement and considers both the base attack bonu and the epic attack bonus.</p>
+	<p class="indent1"><strong>Example:</strong></p>
+	<p class="indent2"><code>PRETOTALAB:21</code></p>
+	<p class="indent3">Required total attack bonus is 21.</p>
 	<p></p>
 
 <hr>

@@ -113,9 +113,8 @@ ${pcstring('TEXT.LOWERCASE.CLASS.${class}')}
 of ${pcstring('DEITY')}
 </#if>
 <@loop from=0 to=pcvar('countdistinct("ABILITIES","CATEGORY=Archetype","TYPE=Archetype","VISIBILITY=DEFAULT[or]VISIBILITY=OUTPUT_ONLY")-1') ; archetype , archetype_has_next>
-|IIF(ABILITYALL.Archetype.VISIBLE.%archetype.TYPE=Archetype.TYPE:CLASS.%class)|
-<#if (pcstring("ABILITYALL.Archetype.VISIBLE.${archetype}.TYPE=Archetype.TYPE")?contains(pcstring("CLASS.${class}"))) >
-(${pcstring("TEXT.LOWERCASE.ABILITYALL.Archetype.VISIBLE.${archetype}.TYPE=Archetype")}")
+<#if (pcstring("ABILITYALL.Archetype.VISIBLE.${archetype}.TYPE=Archetype.TYPE")?lower_case?contains(pcstring("CLASS.${class}")?lower_case)) >
+(${pcstring("TEXT.LOWERCASE.ABILITYALL.Archetype.VISIBLE.${archetype}.TYPE=Archetype")})
 </#if>
 </@loop>
 
@@ -1115,10 +1114,10 @@ ${' '}(${pcstring('EQ.NOT.Magic.NOT.Armor.NOT.Weapon.NOT.Consumable.${equip}.QTY
 <@loop from=2 to=pcvar('COUNT[SPELLBOOKS]-1') ; spellbook , spellbook_has_next>
 <#if (pcstring("SPELLBOOK.${spellbook}.TYPE") = "Spell Book")>
 <br><b>${pcstring('SPELLBOOKNAME.${spellbook}')}</b>
-<@loop from=pcvar('COUNT[SPELLRACE]') to=pcvar('COUNT[SPELLRACE]+COUNT[CLASSES]-2') ; class , class_has_next> <#-- TODO: Loop was of early exit type 1 -->
+<@loop from=pcvar('COUNT[SPELLRACE]') to=pcvar('COUNT[SPELLRACE]+COUNT[CLASSES]') ; class , class_has_next> <#-- TODO: Loop was of early exit type 1 -->
 <#if (pcstring("SPELLLISTMEMORIZE.${class}") = "false")>
 <#else>
-<@loop from=0 to=pcvar('9') ; level , level_has_next> <#-- TODO: Loop was of early exit type 1 -->
+<@loop from=0 to=9 ; level , level_has_next>
 <@loop from=pcvar('COUNT[SPELLSINBOOK.${class}.${spellbook}.${level}]') to=pcvar('COUNT[SPELLSINBOOK.${class}.${spellbook}.${level}]') ; spelllevelcount , spelllevelcount_has_next>
 <#if (spelllevelcount = 0)>
 <!-- no memorized spells for SPELLSINBOOK.${class} ${spellbook} ${level} -->

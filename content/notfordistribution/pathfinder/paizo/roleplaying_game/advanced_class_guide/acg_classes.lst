@@ -83,10 +83,10 @@ CLASS:Bloodrager	SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:NO	BONUS:CASTERLEVEL|Bl
 4	ABILITY:Bloodrager Class Ability|AUTOMATIC|Bloodrager ~ Blood Casting|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerBloodCasting
 4	ABILITY:Bloodrager Class Ability|AUTOMATIC|Bloodrager ~ Eschew Materials|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerEschewMaterials
 7	ABILITY:Bloodrager Class Ability|AUTOMATIC|Bloodrager ~ Damage Reduction|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerDamageReduction
-11	ABILITY:Bloodrager Class Ability|AUTOMATIC|Greater Bloodrager ~ Bloodrage|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerGreaterBloodrage
+11	ABILITY:Bloodrager Class Ability|AUTOMATIC|Bloodrager ~ Greater Bloodrage|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerGreaterBloodrage
 14	ABILITY:Bloodrager Class Ability|AUTOMATIC|Bloodrager ~ Indomitable Will|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerIndomitableWill
-17	ABILITY:Bloodrager Class Ability|AUTOMATIC|Tireless Bloodrager ~ Bloodrage|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerTirelessBloodrage
-20	ABILITY:Bloodrager Class Ability|AUTOMATIC|Mighty Bloodrager ~ Bloodrage|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerMightyBloodrage
+17	ABILITY:Bloodrager Class Ability|AUTOMATIC|Bloodrager ~ Tireless Bloodrage|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerTirelessBloodrage
+20	ABILITY:Bloodrager Class Ability|AUTOMATIC|Bloodrager ~ Mighty Bloodrage|!PREABILITY:1,CATEGORY=Archetype,TYPE.BloodragerMightyBloodrage
 ###Block: Spell Level progression
 4	CAST:0,1		KNOWN:0,2
 5	CAST:0,1		KNOWN:0,3
@@ -240,6 +240,7 @@ CLASS:Skald		SPELLSTAT:CHA	SPELLTYPE:Arcane	MEMORIZE:YES	SPELLBOOK:YES	BONUS:CAS
 1	ABILITY:Skald Class Ability|AUTOMATIC|Skald ~ Raging Song|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldRagingSong
 1	ABILITY:Skald Class Ability|AUTOMATIC|Skald ~ Scribe Scroll|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldScribeScroll
 2	ABILITY:Skald Class Ability|AUTOMATIC|Skald ~ Well-Versed|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldWellVersed
+2	ABILITY:Skald Class Ability|AUTOMATIC|Skald ~ Versatile Performance|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldVersatilePerformance
 3	ABILITY:Skald Class Ability|AUTOMATIC|Skald ~ Rage Powers|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldRagePowers
 5	ABILITY:Skald Class Ability|AUTOMATIC|Skald ~ Spell Kenning|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldSpellKenning
 7	ABILITY:Skald Class Ability|AUTOMATIC|Skald ~ Lore Master|!PREABILITY:1,CATEGORY=Archetype,TYPE.SkaldLoreMaster
