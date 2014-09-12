@@ -322,7 +322,7 @@ public class TreeViewTableModel<E> extends AbstractTreeTableModel
 			loadedChildren = true;
 			if (childValue != null)
 			{
-				ListMap<Object, TreeViewPath<? super E>, Vector<TreeViewPath<? super E>>> vectorMap = CollectionMaps.createListMap(
+				ListMap<Object, TreeViewPath<? super E>, Vector<TreeViewPath<? super E>>> vectorMap = (ListMap<Object, TreeViewPath<? super E>, Vector<TreeViewPath<? super E>>>) CollectionMaps.createListMap(
 						HashMap.class,
 						Vector.class);
 				Vector<TreeViewPath<? super E>> vector = (Vector<TreeViewPath<? super E>>) childValue;
