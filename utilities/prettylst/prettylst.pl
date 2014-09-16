@@ -2801,6 +2801,7 @@ my %master_order = (
 		'BONUS:HP:*',
 		'BONUS:MOVEMULT:*',
 		'BONUS:POSTMOVEADD:*',
+		'BONUS:SAVE:*',				# Global	Replacement for CHECKS
 		'BONUS:SKILL:*',
 		'BONUS:STAT:*',
 		'BONUS:UDAM:*',
@@ -3098,6 +3099,7 @@ my %master_order = (
 		'BONUS:MOVEMULT:*',
 		'BONUS:POSTMOVEADD',
 		'BONUS:RANGEMULT:*',
+		'BONUS:SAVE:*',				# Global	Replacement for CHECKS
 		'BONUS:SIZEMOD',
 		'BONUS:SKILL:*',
 		'BONUS:STAT:*',
@@ -3144,6 +3146,7 @@ my %master_order = (
 		'BONUS:DC:*',
 		'BONUS:FEAT:*',
 		'BONUS:HD:*',
+		'BONUS:SAVE:*',				# Global	Replacement for CHECKS
 		'BONUS:SKILL:*',
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
@@ -3203,6 +3206,7 @@ my %master_order = (
 		'BONUS:DC:*',
 		'BONUS:FEAT:*',
 		'BONUS:HD:*',
+		'BONUS:SAVE:*',				# Global	Replacement for CHECKS
 		'BONUS:SKILL:*',
 		'BONUS:UDAM:*',
 		'BONUS:VAR:*',
@@ -14260,8 +14264,8 @@ sub embedded_coma_split {
 				}
 			}
 			# ex. ALIGNMENTNAME:Lawful Good ABB:LG
-			elsif ( my ($alingment) = ( $line =~ / \A ALIGNMENTNAME: .* ABB: ( [^\t]* ) /xms ) ) {
-				push @verified_alignments, $alingment;
+			elsif ( my ($alignment) = ( $line =~ / \A ALIGNMENTNAME: .* ABB: ( [^\t]* ) /xms ) ) {
+				push @verified_alignments, $alignment;
 			}
 			# ex. CHECKNAME:Fortitude   BONUS:CHECKS|Fortitude|CON
 			elsif ( my ($check_name) = ( $line =~ / \A CHECKNAME: .* BONUS:CHECKS [|] ( [^\t|]* ) /xms ) ) {
