@@ -2385,6 +2385,7 @@ my %master_order = (
 	'EQUIPMENT' => [
 		'000EquipmentName',
 		'KEY',
+		'SORTKEY',
 		'NAMEISPI',
 		'OUTPUTNAME',
 		'PROFICIENCY:WEAPON',
@@ -3740,6 +3741,7 @@ my %token_BONUS_tag = map { $_ => 1 } (
 	'RANGEMULT',
 	'REPUTATION',	# Not listed in the Docs
 	'SIZEMOD',
+	'SAVE',
 	'SKILL',
 	'SITUATION',
 	'SKILLPOINTS',
