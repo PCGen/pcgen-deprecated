@@ -16555,7 +16555,7 @@ end of the line.
 
 Add support for the new SOURCEPAGE, SOURCEWEB, SOURCELONG and SOURCESHORT tags.
 
-Add conversion code that replace the SOURCE:p. tags by SOURCEPAGE:p.tags.
+Add conversion code that replace the SOURCE:p. tags by SOURCEPAGE:p. tags.
 
 Add convertion code that remove the ROOT tags in the SKILL files and add the
 new format of the TYPE tag.
