@@ -1851,7 +1851,7 @@ my @Global_BONUS_Tags = (
 	'BONUS:RANGEADD:*',		# Global
 	'BONUS:RANGEMULT:*',		# Global
 	'BONUS:SAVE:*',				# Global	Replacement for CHECKS
-	'BONUS:SITUATION:',		# Global
+	'BONUS:SITUATION:*',		# Global
 	'BONUS:SIZEMOD:*',		# Global
 	'BONUS:SKILL:*',			# Global
 	'BONUS:SKILLPOINTS:*',		# Global
@@ -16555,7 +16555,7 @@ end of the line.
 
 Add support for the new SOURCEPAGE, SOURCEWEB, SOURCELONG and SOURCESHORT tags.
 
-Add conversion code that replace the SOURCE:p. tags by SOURCEPAGE:p. tags.
+Add conversion code that replace the SOURCE:p. tags by SOURCEPAGE:p.tags.
 
 Add convertion code that remove the ROOT tags in the SKILL files and add the
 new format of the TYPE tag.
