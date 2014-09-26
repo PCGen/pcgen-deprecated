@@ -6,7 +6,7 @@ PCGen currently supports the d20 RPG system and includes data sets based upon ga
 The project's current focus is on gaming material released under Wizards of the Coast's Open Gaming License (OGL) and sources supporting the Pathfinder RPG by Paizo, but the PCGen team also works with publishers to get permission to include limited Closed Content as well.
 PCGen runs on Windows, Mac OS X and Unix/Linux using Java
 
-# What's new for v6.4.0 RC3
+# What's new for v6.4.0
 
 PCGen v6.04.0 RC3 is a release candidate for PCGen 6.4. It represents a
 product we believe is ready for production use and which we would like your 
@@ -16,27 +16,30 @@ The highlights of the changes for PCGen 6.4 are listed below:
 
 ## Notable Changes
 
-* New Pathfinder Board output sheet
-* Reduced memory use when switching or reloading datasets
-* New conditional skill system
-* [Pathfinder] Apply Ultimate Combat 2nd printing errata
-* Implement Race Builder in ARG
-* Update Guide to PSOP to recently released 5.0 version
-* Bonuses to epic BAB and CHECKs now handled separately to non epic
-* Implement calculation of assorted undead save DCs
-* Pathfinder: Prevent inadvertent stacking of resistances
-* Custom, Homebrew and Vendordata folder locations recalled between installs from 6.3.5 onwards
-* Newer, more compliant, PDF generation library (FOP 1.0)
-* New output sheet language - Freemarker (optional)
-* Migrate many sheets to use FreeMarker
-* Eliminate Ability Cloning / Ability Processing Consistency
-* Improved error handling when exporting characters
-* Improved character file safety
-* Improved loading of older characters
-* Lots of fixes to output
-* Many data fixes
-* Converter run on all sets
-* Improved Spanish language support
+*  For Players and GMs
+    *  New Pathfinder Board output sheet
+    *  [Pathfinder] Apply Ultimate Combat 2nd printing errata
+    *  Implement Race Builder in ARG
+    *  Update Guide to PSOP to recently released 5.0 version
+    *  Implement calculation of assorted undead save DCs
+    *  Pathfinder: Prevent inadvertent stacking of resistances
+    *  Newer, more compliant, PDF generation library (FOP 1.0)
+    *  Improved error handling when exporting characters
+    *  Improved character file safety
+    *  Improved loading of older characters
+    *  Custom, Homebrew and Vendordata folder locations recalled between installs from 6.3.5 onwards
+    *  Lots of fixes to output
+    *  Many data fixes
+    *  Improved Spanish language support
+*  For Data Authors
+    *  New conditional skill system
+    *  Bonuses to epic BAB and CHECKs now handled separately to non epic
+    *  Eliminate Ability Cloning / Ability Processing Consistency
+    *  Reduced memory use when switching or reloading datasets
+    *  New output sheet language - Freemarker (optional)
+    *  Migrate many sheets to use FreeMarker
+    *  Converter run on all sets
+
 
 ## New Sources
 
@@ -58,17 +61,15 @@ The following new sources were added in 6.4.0
 
 
 For full details of the new changes in this release, see the 
-[Release Notes](http://sourceforge.net/projects/pcgen/files/PCGen%20Unstable/6.04.00%20RC3/pcgen-release-notes-60400RC3.html/download) in the list above.
+[Release Notes](http://sourceforge.net/projects/pcgen/files/PCGen%20Stable/6.04.00/pcgen-release-notes-60400.html/download) in the list above.
 
-*James Dempsey* for the PCGEN Team -- 17 September, 2014.
+*James Dempsey* for the PCGEN Team -- 27 September, 2014.
 
-SHA-256 digest for pcgen-6.04.00RC3-full.zip:
-88e031f927fe463a33422b38e64a9ec106ab84bce0b376ab2ebda082986ba42d
+SHA-256 digest for pcgen-6.04.00-full.zip:
+90c0c919eb9b172e78ceb45873eaabfd381d0a0140da666e5cc5fb2ace789f1d
 
-SHA-256 digest for pcgen-6.04.00RC3-sources.jar:
-b877fa1bd298c96b2a7d23669ac91a73d249a3bc2e77e92813b5bf0be8f0079a
+SHA-256 digest for pcgen-6.04.00-sources.jar:
+e6bd55e0e2537a2b7f69d72a86b0b83b258e0ba2838aba5748eb5b6dea3a95a9
 
-SHA-256 digest for pcgen60400RC3_win_install.exe:
-cef577daa449832b500bdc07f30ddacddbb222330758031fa969c12bbc2774aa
-
-
+SHA-256 digest for pcgen60400_win_install.exe:
+2f5a968375ffb61ebf17c5af2d5a568c9dbadabe3aaaf01d9de32d60ab23e17d
