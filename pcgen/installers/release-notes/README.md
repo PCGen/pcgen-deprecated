@@ -8,11 +8,9 @@ PCGen runs on Windows, Mac OS X and Unix/Linux using Java
 
 # What's new for v6.4.0
 
-PCGen v6.04.0 RC3 is a release candidate for PCGen 6.4. It represents a
-product we believe is ready for production use and which we would like your 
-assistance in testing out. In particular the PCGen team would appreciate your 
-feedback on importing your characters and data from earlier versions of PCGen. 
-The highlights of the changes for PCGen 6.4 are listed below:
+Welcome to PCGen v6.04.00, the latest stable release of PCGen. This release includes hundreds of 
+new features and bug fixes along with some great new sources. The highlights of the changes for 
+PCGen 6.4 are listed below:
 
 ## Notable Changes
 
