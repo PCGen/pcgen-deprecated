@@ -113,7 +113,7 @@ CLASS:Brawler		HD:10		TYPE:Base.PC	CLASSTYPE:PC	ABB:Brw		MAXLEVEL:20	SOURCEPAGE:
 # Class Name	Skill Pts/Lvl
 CLASS:Brawler	STARTSKILLPTS:4
 ###Block:Proficiencies
-1	ABILITY:Special Ability|AUTOMATIC|Weapon and Armor Proficiency ~ Brawler|!PREABILITY:1,CATEGORY=Archetype,TYPE.BrawlerWeaponProficiencies
+1	ABILITY:Special Ability|AUTOMATIC|Brawler ~ Weapon and Armor Proficiency|!PREABILITY:1,CATEGORY=Archetype,TYPE.BrawlerWeaponProficiencies
 1	ABILITY:Internal|AUTOMATIC|Weapon Proficiencies ~ Brawler|!PREABILITY:1,CATEGORY=Archetype,TYPE.BrawlerWeaponProficiencies
 1	ABILITY:Internal|AUTOMATIC|Class Skills ~ Brawler|!PREABILITY:1,CATEGORY=Archetype,TYPE.BrawlerClassSkills
 #PREVAREQ:BrawlerDefaultSkill,0
@@ -337,7 +337,7 @@ CLASS:Slayer	PREMULT:1,[PRECLASS:1,Slayer],[!PRECLASS:1,TYPE=Ranger,TYPE=Rogue]
 # Class Name	Skill Pts/Lvl
 CLASS:Slayer	STARTSKILLPTS:6
 ###Block:Proficiencies
-1	ABILITY:Special Ability|AUTOMATIC|Weapon and Armor Proficiency ~ Slayer|!PREABILITY:1,CATEGORY=Archetype,TYPE.SlayerArmorProficiencies,TYPE.SlayerWeaponProficiency,TYPE.SlayerArmorProficiencies,TYPE.SlayerMediumArmorProficiency,TYPE.SlayerLightArmorProficiency,TYPE.SlayerShieldProficiency
+1	ABILITY:Special Ability|AUTOMATIC|Slayer ~ Weapon and Armor Proficiency|!PREABILITY:1,CATEGORY=Archetype,TYPE.SlayerArmorProficiencies,TYPE.SlayerWeaponProficiency,TYPE.SlayerArmorProficiencies,TYPE.SlayerMediumArmorProficiency,TYPE.SlayerLightArmorProficiency,TYPE.SlayerShieldProficiency
 1	ABILITY:Internal|AUTOMATIC|Weapon Prof ~ Martial|Weapon Prof ~ Simple|!PREABILITY:1,CATEGORY=Archetype,TYPE.SlayerWeaponProficiency,TYPE.SlayerWeaponProficiencies
 1	ABILITY:Internal|AUTOMATIC|Armor Prof ~ Light|!PREABILITY:1,CATEGORY=Archetype,TYPE.SlayerArmorProficiencies,TYPE.SlayerLightArmorProficiency
 1	ABILITY:Internal|AUTOMATIC|Armor Prof ~ Medium|!PREABILITY:1,CATEGORY=Archetype,TYPE.SlayerArmorProficiencies,TYPE.SlayerMediumArmorProficiency
