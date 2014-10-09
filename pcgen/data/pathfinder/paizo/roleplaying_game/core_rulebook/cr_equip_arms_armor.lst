@@ -304,22 +304,22 @@ Starknife.MOD				TYPE:Weapon Group Blades Light
 
 #Bows:
 #Bows: composite longbow, composite shortbow, longbow, and shortbow.
-#Composite Longbow.MOD	TYPE:Bow
-#Composite Shortbow.MOD	TYPE:Bow
+Composite Longbow.MOD	TYPE:Weapon Group Bows
+Composite Shortbow.MOD	TYPE:Weapon Group Bows
 Longbow.MOD					TYPE:Weapon Group Bows
 Shortbow.MOD				TYPE:Weapon Group Bows
 
 #Close:
 #Close: gauntlet, heavy shield, light shield, punching dagger, sap, spiked armor, spiked gauntlet, spiked shield, and unarmed strike.
 Gauntlet.MOD				TYPE:Weapon Group Close
-#Shield (Heavy).MOD	TYPE:Close
-#Shield (Light).MOD	TYPE:Close
-#Shieldbash.MOD				TYPE:Weapon Group Close
+Shield (Heavy).MOD	TYPE:Weapon Group Close
+Shield (Light).MOD	TYPE:Weapon Group Close
+Shieldbash.MOD				TYPE:Weapon Group Close
 Dagger (Punching).MOD			TYPE:Weapon Group Close
 Sap.MOD					TYPE:Weapon Group Close
-#Spiked Armor.MOD	TYPE:Close
+Spiked Armor.MOD	TYPE:Weapon Group Close
 Gauntlet (Spiked).MOD			TYPE:Weapon Group Close
-#Spiked Shield.MOD	TYPE:Close
+Spiked Shield.MOD	TYPE:Weapon Group Close
 Unarmed Strike.MOD			TYPE:Weapon Group Close
 
 #Crossbows:
