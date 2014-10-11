@@ -185,24 +185,15 @@ CLASS:Hunter	SPELLSTAT:INT	SPELLTYPE:Divine	BONUS:CASTERLEVEL|Hunter|CL		MEMORIZ
 2	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Track|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTrack
 3	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Hunter Tactics|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterHunterTactics
 3	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Teamwork Feats|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeats
-3	ABILITY:Internal|AUTOMATIC|Hunter ~ Teamwork Feat 3|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeats,TYPE.HunterTeamworkFeat3
 4	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Improved Empathic Link|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeat
 5	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Woodland Stride|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterWoodlandStride
-6	ABILITY:Internal|AUTOMATIC|Hunter ~ Teamwork Feat 6|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeats,TYPE.HunterTeamworkFeat6
 7	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Bonus Tricks|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterBonusTricks
-7	ABILITY:Internal|AUTOMATIC|Hunter ~ Bonus Trick 7|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterBonusTricks,TYPE.HunterBonusTrick7
 8	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Second Animal Focus|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterSecondAnimalFocus
 8	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Swift Tracker|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterSwiftTracker
-9	ABILITY:Internal|AUTOMATIC|Hunter ~ Teamwork Feat 9|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeats,TYPE.HunterTeamworkFeat9
 10	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Raise Animal Companion|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterRaiseAnimalCompanion
 11	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Speak With Master|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterSpeakWithMaster
-12	ABILITY:Internal|AUTOMATIC|Hunter ~ Teamwork Feat 12|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeats,TYPE.HunterTeamworkFeat12
-13	ABILITY:Internal|AUTOMATIC|Hunter ~ Bonus Trick 13|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterBonusTricks,TYPE.HunterBonusTrick13
 14	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Greater Empathic Link|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterGreaterEmpathicLink
-15	ABILITY:Internal|AUTOMATIC|Hunter ~ Teamwork Feat 15|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeats,TYPE.HunterTeamworkFeat15
 17	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ One With The Wild|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterOneWithTheWild
-18	ABILITY:Internal|AUTOMATIC|Hunter ~ Teamwork Feat 18|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterTeamworkFeats,TYPE.HunterTeamworkFeat18
-19	ABILITY:Internal|AUTOMATIC|Hunter ~ Bonus Trick 19|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterBonusTricks,TYPE.HunterBonusTrick19
 20	ABILITY:Hunter Class Ability|AUTOMATIC|Hunter ~ Master Hunter|!PREABILITY:1,CATEGORY=Archetype,TYPE.HunterMasterHunter
 ###Block: Vars
 1	BONUS:VAR|AnimalCompanionLVL|CL|PREABILITY:1,CATEGORY=Special Ability,TYPE.HunterAnimalCompanion
