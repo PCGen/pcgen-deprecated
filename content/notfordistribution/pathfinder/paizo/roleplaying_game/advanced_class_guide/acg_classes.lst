@@ -358,16 +358,16 @@ CLASS:Warpriest	SPELLSTAT:WIS	SPELLTYPE:Divine	KNOWNSPELLS:LEVEL=0|LEVEL=1|LEVEL
 1			ABILITY:Cleric Class Feature|VIRTUAL|Aura of Evil|PREDEITYALIGN:LE,NE,CE
 1			ABILITY:Cleric Class Feature|VIRTUAL|Aura of Good|PREDEITYALIGN:LG,NG,CG
 1			ABILITY:Cleric Class Feature|VIRTUAL|Aura of Law|PREDEITYALIGN:LG,LN,LE
-1			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Weapon and Armor Proficiency
-1			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Orisons
-1			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Spontaneous Casting
-1			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Weapon Focus
-1			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Blessings
-1			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Sacred Weapon
-2			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Fervor
-3			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Bonus Feats
-4			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Channel Positive Energy
-7			ABILITY:Warpriest Class Feature|AUTOMATIC|Warpriest ~ Sacred Armor
+1			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Weapon and Armor Proficiency
+1			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Orisons
+1			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Spontaneous Casting
+1			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Weapon Focus
+1			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Blessings
+1			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Sacred Weapon
+2			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Fervor
+3			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Bonus Feats
+4			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Channel Positive Energy
+7			ABILITY:Warpriest Class Ability|AUTOMATIC|Warpriest ~ Sacred Armor
 
 ###Block: Spell Alignment Restrictions
 1	PROHIBITSPELL:ALIGNMENT.Good|PREALIGN:LE,NE,CE		PROHIBITSPELL:ALIGNMENT.Good|PREALIGN:LE,NE,CE		PROHIBITSPELL:ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE		PROHIBITSPELL:ALIGNMENT.Good|PREDEITYALIGN:LE,NE,CE
