@@ -1,0 +1,16 @@
+# CVS $Revision: 12957 $ $Author: nuance $ -- Mon Aug  4 18:36:57 2014 -- reformated by prettylst.pl v1.51 (build 23662)
+SOURCELONG:Advanced Class Guide	SOURCESHORT:ACG	SOURCEWEB:http://paizo.com/products/btpy92zi	SOURCEDATE:2014-08
+# Original Entry by: Stefan Radermacher and Andrew Wilson
+
+# Ability Name	Unique Key						Category of Ability	Type																						Required Class		Multiple Requirements																																					Description																																																																																																																																			Ability																																																																													Cost		Source Page		Aspects
+CATEGORY=Archetype,Hunter Archetype ~ Divine Hunter.MOD						TYPE:PFSLegal
+CATEGORY=Archetype,Hunter Archetype ~ Feral Hunter.MOD						TYPE:PFSLegal
+CATEGORY=Archetype,Hunter Archetype ~ Packmaster.MOD						TYPE:PFSNotLegal	VISIBLE:NO
+CATEGORY=Archetype,Hunter Archetype ~ Primal Companion Hunter.MOD		TYPE:PFSNotLegal	VISIBLE:NO
+CATEGORY=Archetype,Hunter Archetype ~ Verminous Hunter.MOD					TYPE:PFSLegal
+
+
+#
+# End
+#
+
