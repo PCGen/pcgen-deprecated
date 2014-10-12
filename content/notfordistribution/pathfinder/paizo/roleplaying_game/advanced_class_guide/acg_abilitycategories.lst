@@ -53,7 +53,7 @@ ABILITYCATEGORY:Bloodrager Archetype			VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:YES
 #
 ABILITYCATEGORY:Brawler Archetype	VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:NO		FRACTIONALPOOL:NO		CATEGORY:Archetype	TYPE:BrawlerArchetype	PLURAL:Brawler Archetypes	DISPLAYLOCATION:Archetype
 ABILITYCATEGORY:Brawler Bonus Feat		VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:FEAT			TYPE:Combat																	PLURAL:Brawler Bonus Feats		DISPLAYLOCATION:Feats
-ABILITYCATEGORY:Brawler's Strike Alignment Selection		VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Special Ability	TYPE:BrawlerStrikeAlignmentSelection																	PLURAL:Brawler's Strike Alignment Selections		DISPLAYLOCATION:Class Abilities
+ABILITYCATEGORY:Brawler's Strike Alignment Selection		VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal	TYPE:BrawlersStrikeAlignmentSelection																	PLURAL:Brawler's Strike Alignment Selections		DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Maneuver Training I Selection		VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal	TYPE:BrawlerManeuverTrainingISelection																	PLURAL:Maneuver Training I Selections		DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Maneuver Training II Selection		VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal	TYPE:BrawlerManeuverTrainingIISelection																	PLURAL:Maneuver Training II Selections		DISPLAYLOCATION:Class Abilities
 ABILITYCATEGORY:Maneuver Training III Selection		VISIBLE:QUALIFY	EDITABLE:YES	EDITPOOL:YES	FRACTIONALPOOL:NO		CATEGORY:Internal	TYPE:BrawlerManeuverTrainingIIISelection																	PLURAL:Maneuver Training III Selections		DISPLAYLOCATION:Class Abilities
