@@ -1,6 +1,5 @@
 # CVS $Revision: 12957 $ $Author: nuance $ -- Mon Aug  4 18:36:57 2014 -- reformated by prettylst.pl v1.51 (build 23662)
 SOURCELONG:Advanced Class Guide	SOURCESHORT:ACG	SOURCEWEB:http://paizo.com/products/btpy92zi	SOURCEDATE:2014-08
-# Original Entry by: Stefan Radermacher and Andrew Wilson
 
 # Ability Name	Unique Key						Category of Ability	Type																						Required Class		Multiple Requirements																																					Description																																																																																																																																			Ability																																																																													Cost		Source Page		Aspects
 CATEGORY=Archetype|Alchemist Archetype ~ Inspired Chemist.MOD						TYPE:PFSLegal
@@ -107,7 +106,4 @@ CATEGORY=Archetype|Witch Archetype ~ Mountain Witch.MOD					TYPE:PFSLegal
 CATEGORY=Archetype|Wizard Archetype ~ Spell Sage.MOD					TYPE:PFSLegal
 CATEGORY=Archetype|Wizard Archetype ~ Spirit Whisperer.MOD					TYPE:PFSLegal
 
-#
-# End
-#
-
+CATEGORY=Special Ability|Order of the Beast.MOD	TYPE:PFSNotLegal	VISIBLE:NO
