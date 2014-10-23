@@ -25,7 +25,7 @@ Staff of Hungry Shadows			TYPE:Staff.Magic					COST:65000			EQMOD:CHARGED_ITEM_5
 
 Staff of Mithral Might			TYPE:Staff.Magic					COST:46500			EQMOD:PLUS2W	EQMOD:CHARGED_ITEM_50|CHARGES[50]												BONUS:STAT|INT|2|TYPE=Enhancement
 #Aura Strong transmutation; CL 12th
-#• bull’s strength (1 charge)
+#• bull's strength (1 charge)
 #• enlarge person (1 charge)
 #• telekinesis (3 charges)
 #• flesh to stone (4 charges)
