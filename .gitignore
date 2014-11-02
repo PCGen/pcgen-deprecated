@@ -3,6 +3,7 @@
 pcgen/.idea
 *.editable.lst
 *.swp
+*~
 
 # Java files
 *.class
