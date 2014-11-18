@@ -2068,6 +2068,7 @@ my %master_order = (
 
 	'CLASS' => [
 		'000ClassName',
+		'SORTKEY',
 		'KEY',				# [ 1695877 ] KEY tag is global
 		'NAMEISPI',
 		'OUTPUTNAME',
@@ -2251,6 +2252,7 @@ my %master_order = (
 
 	'COMPANIONMOD' => [
 		'000Follower',
+		'SORTKEY',
 		'KEY',			# [ 1695877 ] KEY tag is global
 		'FOLLOWER',
 		'TYPE',
@@ -2295,6 +2297,7 @@ my %master_order = (
 
 	'DEITY' => [
 		'000DeityName',
+		'SORTKEY',
 		'KEY',			# [ 1695877 ] KEY tag is global
 		'NAMEISPI',
 		'OUTPUTNAME',
@@ -2329,6 +2332,7 @@ my %master_order = (
 
 	'DOMAIN' => [
 		'000DomainName',
+		'SORTKEY',
 		'KEY',			# [ 1695877 ] KEY tag is global
 		'NAMEISPI',
 		'OUTPUTNAME',
@@ -2888,6 +2892,7 @@ my %master_order = (
 
 	'RACE' => [
 		'000RaceName',
+		'SORTKEY',
 		'KEY',			# [ 1695877 ] KEY tag is global
 		'NAMEISPI',
 		'OUTPUTNAME',
@@ -3002,6 +3007,7 @@ my %master_order = (
 
 	'SKILL' => [
 		'000SkillName',
+		'SORTKEY',
 		'KEY',				# [ 1695877 ] KEY tag is global
 		'NAMEISPI',
 		'OUTPUTNAME',
@@ -3051,6 +3057,7 @@ my %master_order = (
 
 	'SPELL' => [
 		'000SpellName',
+		'SORTKEY',
 		'KEY',				# [ 1695877 ] KEY tag is global
 		'NAMEISPI',
 		'OUTPUTNAME',
@@ -3398,6 +3405,7 @@ my %master_order = (
 
 	'TEMPLATE' => [
 		'000TemplateName',
+		'SORTKEY',
 		'KEY',				# [ 1695877 ] KEY tag is global
 		'NAMEISPI',
 		'OUTPUTNAME',
