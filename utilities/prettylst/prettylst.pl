@@ -697,9 +697,9 @@ my %tag_fix_value = (
 	MODS			=> { YES => 1, NO => 1, REQUIRED => 1 },
 	MODTOSKILLS		=> { YES => 1, NO => 1 },
 	NAMEISPI		=> { YES => 1, NO => 1 },
-	RACIAL		=> { YES => 1, NO => 1 },
+	RACIAL			=> { YES => 1, NO => 1 },
 	REMOVABLE		=> { YES => 1, NO => 1 },
-	RESIZE		=> { YES => 1, NO => 1 },	# [ 1956719 ] Add RESIZE tag to Equipment file
+	RESIZE			=> { YES => 1, NO => 1 },	# [ 1956719 ] Add RESIZE tag to Equipment file
 	PREALIGN		=> { map { $_ => 1 } @valid_system_alignments },
 	PRESPELLBOOK	=> { YES => 1, NO => 1 },
 	SHOWINMENU		=> { YES => 1, NO => 1 },	# [ 1718370 ] SHOWINMENU tag missing for PCC files
@@ -709,7 +709,7 @@ my %tag_fix_value = (
 	TIMEUNIT		=> { map { $_ => 1 } ( 'Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Round', 'Encounter', 'Charges' ) },
 	USEUNTRAINED	=> { YES => 1, NO => 1 },
 	USEMASTERSKILL	=> { YES => 1, NO => 1 },
-	VISIBLE		=> { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
+	VISIBLE			=> { YES => 1, NO => 1, EXPORT => 1, DISPLAY => 1, QUALIFY => 1, CSHEET => 1, GUI => 1, ALWAYS => 1 }, #[ 1593907 ] False warning: Invalid value "CSHEET" for tag "VISIBLE"
 );
 
 # This hash is used to convert 1 character choices to proper fix values.
