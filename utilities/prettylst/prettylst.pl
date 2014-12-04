@@ -2015,6 +2015,7 @@ my %master_order = (
 		'ADD:SPECIAL',		# Deprecated - Remove 5.16 - Special abilities are now set using hidden feats 0r Abilities.
 		'LANGAUTO:.CLEAR',	# Deprecated - 6.0
 		'LANGAUTO:*',		# Deprecated - 6.0
+		'SPELLPOINTCOST:*',
 	],
 
 	'ABILITYCATEGORY' => [
@@ -3130,6 +3131,7 @@ my %master_order = (
 		'DESC:*',
 		'TEMPDESC',
 		'TEMPBONUS',
+		'SPELLPOINTCOST:*',
 	],
 
 	'SUBCLASS' => [
