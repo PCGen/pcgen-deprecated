@@ -2328,6 +2328,7 @@ my %master_order = (
 		'SAB:*',
 		'ABILITY:*',
 		'UNENCUMBEREDMOVE',
+		'RACE:*',
 	],
 
 	'DOMAIN' => [
