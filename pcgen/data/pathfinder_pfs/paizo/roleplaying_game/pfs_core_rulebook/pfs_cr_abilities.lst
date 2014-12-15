@@ -8,3 +8,5 @@ Remove Cavalier Expert Trainer	CATEGORY:Archetype	TYPE:Homebrew.ClassAbilityRemo
 ###Block: Language Support
 # Ability Name			Template
 CATEGORY=Internal|Default.MOD	TEMPLATE:Race Bonus Language ~ Modern Human Language
+
+CATEGORY=Internal|Default.MOD	BONUS:ABILITYPOOL|Favored Class|1|PREPCLEVEL:MIN=1
