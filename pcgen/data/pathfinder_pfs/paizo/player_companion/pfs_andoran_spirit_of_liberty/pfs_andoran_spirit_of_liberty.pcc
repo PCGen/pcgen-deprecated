@@ -1,14 +1,14 @@
 # CVS $Revision: 23152 $ $Author: amaitland $ -- Thu Feb  6 20:36:08 2014 -- reformated by prettylst.pl v1.51 (build 22988)
 CAMPAIGN:Andoran, Spirit of Liberty (PFS)
 KEY:PFS ~ Andoran - Spirit of Liberty
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Player Companion
 RANK:3
 STATUS:BETA
 GENRE:Fantasy
 BOOKTYPE:Supplement
 SETTING:Pathfinder|Golarion
-PRECAMPAIGN:2,Pathfinder Society Core Assumption,INCLUDES=Advanced Player's Guide
+PRECAMPAIGN:2,INCLUDES=Guide To Pathfinder Society Organized Play,INCLUDES=Advanced Player's Guide
 PUBNAMELONG:Paizo Inc.
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://paizo.com/
@@ -43,7 +43,7 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Player Companion: Andoran Spi
 
 # TODO: This line doesn;t work
 !PRECAMPAIGN:1,Andoran - Spirit of Liberty
-PCC:@/pathfinder/paizo/player_companion/andoran_spirit_of_liberty/andoran_spirit_of_liberty.pcc
+#PCC:@/pathfinder/paizo/player_companion/andoran_spirit_of_liberty/andoran_spirit_of_liberty.pcc
 
 LSTEXCLUDE:@/pathfinder/paizo/player_companion/andoran_spirit_of_liberty/asol_feats.lst
 LSTEXCLUDE:@/pathfinder/paizo/player_companion/andoran_spirit_of_liberty/asol_kits.lst

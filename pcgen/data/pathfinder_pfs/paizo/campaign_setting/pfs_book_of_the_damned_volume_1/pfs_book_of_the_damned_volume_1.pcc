@@ -1,7 +1,7 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
 CAMPAIGN:Princes of Darkness (PFS)
 KEY:PFS ~ Princes of Darkness
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Campaign Setting
 RANK:2
 STATUS:BETA
@@ -38,4 +38,4 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Chronicles: Princes of Darkne
 # Prestige Class: Diabolist; Spells: agonize, hellfire ray, malediction, vision of hell
 
 !PRECAMPAIGN:1,Princes of Darkness - Book of the Damned - Volume 1
-PCC:@/pathfinder/paizo/campaign_setting/book_of_the_damned_volume_1/book_of_the_damned_volume_1.pcc
+#PCC:@/pathfinder/paizo/campaign_setting/book_of_the_damned_volume_1/book_of_the_damned_volume_1.pcc

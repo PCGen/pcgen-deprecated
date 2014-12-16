@@ -1,14 +1,14 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
 CAMPAIGN:Curse of the Crimson Throne Player's Guide (Conversion) (PFS)
 KEY:PFS ~ Curse of the Crimson Throne Player's Guide (Conversion)
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Adventure Path.Curse of the Crimson Throne
 RANK:3
 STATUS:ALPHA
 GENRE:Fantasy
 BOOKTYPE:Supplement
 SETTING:Pathfinder|Golarion
-PRECAMPAIGN:3,Pathfinder Society Core Assumption,INCLUDES=Advanced Player's Guide,INCLUDES=Bestiary
+PRECAMPAIGN:3,INCLUDES=Guide To Pathfinder Society Organized Play,INCLUDES=Advanced Player's Guide,INCLUDES=Bestiary
 PUBNAMELONG:Paizo Inc.
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://paizo.com

@@ -1,7 +1,7 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
 CAMPAIGN:Core Rulebook (PFS)
 KEY:PFS ~ Core Rulebook
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Roleplaying Game
 RANK:0
 STATUS:RELEASE
@@ -40,9 +40,9 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder RPG Core Rulebook" Copyright 
 #EXTRAFILE:OGL.txt
 
 # Data Files
-PCC:@/pathfinder/paizo/roleplaying_game/core_rulebook/core_rulebook.pcc
-ABILITY:pfs_cr_abilities.lst
-CLASS:pfs_cr_classes.lst
-FEAT:pfs_cr_feats.lst
-SPELL:pfs_cr_spells.lst
+#PCC:@/pathfinder/paizo/roleplaying_game/core_rulebook/core_rulebook.pcc
+ABILITY:pfs_cr_abilities.lst|PRECAMPAIGN:1,INCLUDES=Core Rulebook
+CLASS:pfs_cr_classes.lst|PRECAMPAIGN:1,INCLUDES=Core Rulebook
+FEAT:pfs_cr_feats.lst|PRECAMPAIGN:1,INCLUDES=Core Rulebook
+SPELL:pfs_cr_spells.lst|PRECAMPAIGN:1,INCLUDES=Core Rulebook
 

@@ -1,14 +1,14 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
 CAMPAIGN:Bestiary 2 (PFS)
 KEY:PFS ~ Bestiary 2
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Roleplaying Game
 RANK:1
 STATUS:RELEASE
 GENRE:Fantasy
 BOOKTYPE:Supplement
 SETTING:Pathfinder
-PRECAMPAIGN:2,Pathfinder Society Core Assumption,INCLUDES=Bestiary
+PRECAMPAIGN:2,INCLUDES=Guide To Pathfinder Society Organized Play,INCLUDES=Bestiary
 !PRECAMPAIGN:1,INCLUDES=Bonus Bestiary
 
 PUBNAMELONG:Paizo Inc.
@@ -102,7 +102,7 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder RPG Bestiary 2" Copyright 201
 # Other: all creatures in this book are legal for polymorph effects (including a druid's wild shape ability) within the boundaries of each spell or ability's parameters.
 
 !PRECAMPAIGN:1,Bestiary 2
-PCC:@/pathfinder/paizo/roleplaying_game/bestiary_2/bestiary_2.pcc
+#PCC:@/pathfinder/paizo/roleplaying_game/bestiary_2/bestiary_2.pcc
 
-EQUIPMENT:pfs_b2_equip_arms_armor.lst
-EQUIPMENT:pfs_b2_equip_general.lst
+EQUIPMENT:pfs_b2_equip_arms_armor.lst|PRECAMPAIGN:1,INCLUDES=Bestiary 2
+EQUIPMENT:pfs_b2_equip_general.lst|PRECAMPAIGN:1,INCLUDES=Bestiary 2

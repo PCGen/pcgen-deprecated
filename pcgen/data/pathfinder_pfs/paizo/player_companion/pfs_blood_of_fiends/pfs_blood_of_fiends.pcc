@@ -1,14 +1,14 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
 CAMPAIGN:Blood of Fiends (PFS)
 KEY:PFS ~ Blood of Fiends
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Player Companion
 RANK:3
 STATUS:BETA
 GENRE:Fantasy
 BOOKTYPE:Supplement
 SETTING:Pathfinder|Golarion
-PRECAMPAIGN:3,Pathfinder Society Core Assumption,INCLUDES=Bestiary,INCLUDES=Advanced Player's Guide
+PRECAMPAIGN:3,INCLUDES=Guide To Pathfinder Society Organized Play,INCLUDES=Bestiary,INCLUDES=Advanced Player's Guide
 PUBNAMELONG:Paizo Inc.
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://www.paizo.com
@@ -49,5 +49,5 @@ COPYRIGHT:PCGen dataset conversion for "Player Companion: Blood of Fiends" Copyr
 # Traits: all traits on pages 30-31 are legal
 
 !PRECAMPAIGN:1,Blood of Fiends
-PCC:@/pathfinder/paizo/player_companion/blood_of_fiends/blood_of_fiends.pcc
+#PCC:@/pathfinder/paizo/player_companion/blood_of_fiends/blood_of_fiends.pcc
 

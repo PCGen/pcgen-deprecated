@@ -1,14 +1,14 @@
 # CVS $Revision$ $Author$ -- Wed Dec  3 18:59:40 2014 -- reformated by prettylst.pl v1.51 (build 25490)
 CAMPAIGN:Lords of Chaos (PFS)
 KEY:PFS ~ Lords of Chaos
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Campaign Setting
 RANK:2
 STATUS:BETA
 GENRE:Fantasy
 BOOKTYPE:Campaign Setting
 SETTING:Pathfinder|Golarion
-PRECAMPAIGN:3,Pathfinder Society Core Assumption,INCLUDES=Bestiary,INCLUDES=Advanced Player's Guide
+PRECAMPAIGN:3,INCLUDES=Guide To Pathfinder Society Organized Play,INCLUDES=Bestiary,INCLUDES=Advanced Player's Guide
 PUBNAMELONG:Paizo Inc.
 PUBNAMESHORT:Paizo
 PUBNAMEWEB:http://paizo.com
@@ -55,7 +55,7 @@ COPYRIGHT:PCGen dataset conversion for "Pathfinder Campaign Setting: Lords of Ch
 
 !PRECAMPAIGN:1,Lords of Chaos - Book of the Damned - Volume 2
 #PCC:@/pathfinder/paizo/campaign_setting/book_of_the_damned_volume_2/_book_of_the_damned_volume_2.pcc
-SPELL:@/pathfinder/paizo/campaign_setting/book_of_the_damned_volume_2/botd2_spells.lst|(INCLUDE:Disfiguring Touch,Vermin Shape I,Vermin Shape II)
+SPELL:@/pathfinder/paizo/campaign_setting/book_of_the_damned_volume_2/botd2_spells.lst|(INCLUDE:Disfiguring Touch,Vermin Shape I,Vermin Shape II)|PRECAMPAIGN:1,INCLUDES=Lords of Chaos - Book of the Damned - Volume 2
 
 LSTEXCLUDE:@/pathfinder/paizo/campaign_setting/book_of_the_damned_volume_2/botd2_abilitycategories.lst
 LSTEXCLUDE:@/pathfinder/paizo/campaign_setting/book_of_the_damned_volume_2/botd2_abilities_classes.lst

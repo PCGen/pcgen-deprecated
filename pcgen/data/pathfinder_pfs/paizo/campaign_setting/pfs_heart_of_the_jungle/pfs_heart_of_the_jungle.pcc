@@ -1,7 +1,7 @@
 # CVS $Revision$ $Author$ -- Sat Nov 23 14:46:39 2013 -- reformated by prettylst.pl v1.50 (build 22134)
 CAMPAIGN:Heart of the Jungle (PFS)
 KEY:PFS ~ Heart of the Jungle
-GAMEMODE:Pathfinder|Pathfinder_PFS
+#GAMEMODE:Pathfinder|Pathfinder_PFS
 TYPE:Paizo Publishing PFS.Pathfinder Campaign Setting
 RANK:2
 STATUS:RELEASE
@@ -47,5 +47,5 @@ COPYRIGHT:PCGen dataset conversion for "Heart of the Jungle" Copyright 2010, PCG
 # Animal Companion: pygmy hippopotamus
 
 !PRECAMPAIGN:1,Heart of the Jungle
-PCC:@/pathfinder/paizo/campaign_setting/heart_of_the_jungle/heart_of_the_jungle.pcc
+#PCC:@/pathfinder/paizo/campaign_setting/heart_of_the_jungle/heart_of_the_jungle.pcc
 
