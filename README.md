@@ -52,10 +52,10 @@ How to compile PCGen?
 
 On Debian/Ubuntu:
 
-    ```bash
-    apt-get install openjdk-6-jdk ant
-    apt-get install subversion git
-    ```
+```bash
+apt-get install openjdk-6-jdk ant
+apt-get install subversion git
+```
 
 On MacOSX, Ant is installed, Java is also installed. Please get GIT or SVN. 
 
